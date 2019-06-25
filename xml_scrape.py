@@ -3,9 +3,10 @@ import yaml
 
 from xml.etree import ElementTree as et
 from pathlib import Path
-from pprint import pprint
 
 from anytree import Node, RenderTree, PreOrderIter
+
+from qud_object import QudObject
 
 CONFIG_FILE = "config.yml"
 IMAGE_OVERRIDES = {'Asphodel': 'Earl_asphodel.png',
