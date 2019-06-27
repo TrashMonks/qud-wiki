@@ -7,17 +7,11 @@ from pprint import pprint
 
 from anytree import Node, RenderTree, PreOrderIter
 
+from config import config
 from qud_object import QudObject, qindex
 from melee_weapon import get_melee_weapon_stats, wikify_melee_weapon
 from creature import get_npc_stats, wikify_npc
 from item import get_item_stats, wikify_item
-
-CONFIG_FILE = "config.yml"
-IMAGE_OVERRIDES = {'Asphodel': 'Earl_asphodel.png',
-                   }
-
-with open(CONFIG_FILE) as f:
-    config = yaml.safe_load(f)
 
 # Do some repair of invalid XML
 pattern = re.compile("(&#15;)|(&#11;)")
