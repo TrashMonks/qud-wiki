@@ -1,9 +1,8 @@
 import re
 
 from qud_object import QudObject
-
-IMAGE_OVERRIDES = {'Asphodel': 'Earl_asphodel.png',
-                   }
+from config import config
+IMAGE_OVERRIDES = config['Image overrides']
 
 
 def get_npc_stats(npc: QudObject) -> dict:

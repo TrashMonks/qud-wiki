@@ -41,6 +41,7 @@ class QudObject(NodeMixin):
         except KeyError:
             return False
 
+
     def __getattr__(self, attr):
         if attr.startswith('_'):  # guard against NodeMixIn housekeeping
             raise AttributeError
@@ -48,15 +49,17 @@ class QudObject(NodeMixin):
             raise AttributeError
         path = attr.split('_')
         try:
-            tag = self.attributes[path[0]]
-            name = tag[path[1]]
-            attrib = name[path[2]]
+            seek = self.attributes[path[0]]
+            if len(path) > 1:
+                seek = seek[path[1]]
+            if len(path) > 2:
+                seek = seek[path[2]]
         except KeyError:
             if self.is_root:
-                attrib = None
+                seek = None
             else:
-                attrib = self.parent.__getattr__(attr)
-        return attrib
+                seek = self.parent.__getattr__(attr)
+        return seek
 
     def __str__(self):
         return self.name + ' ' + str(self.attributes)
