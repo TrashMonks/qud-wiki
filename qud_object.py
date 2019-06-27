@@ -43,6 +43,29 @@ class QudObject(NodeMixin):
 
 
     def __getattr__(self, attr):
+        """Implemented to get inherited tags from the Qud object tree
+
+        Example: given the following Qud object:
+          <object Name="Bandage" Inherits="Item">
+            <part Name="Examiner" Complexity="0"></part>
+            <part Name="Render" Tile="Items/sw_hit.bmp" DetailColor="R" DisplayName="&amp;ybandage" ColorString="&amp;y" RenderString="012" RenderLayer="5"></part>
+            <part Name="Physics" Category="Meds" Weight="0"></part>
+            <part Name="Description" Short="A roll of gauze, suited to staunch bleeding."></part>
+            <part Name="Commerce" Value="1"></part>
+            <part Name="Medication"></part>
+            <part Name="BandageMedication"></part>
+            <tag Name="AlwaysStack" Value="Yes"></tag>
+            <intproperty Name="Inorganic" Value="0" />
+          </object>
+
+        this_object.part_Render_Tile would retrieve 'Items/sw_hit.bmp'
+        this_object.tag would retrieve {'AlwaysStack': {'Value': 'Yes'}}
+        this_object.stat_Strength would retrieve None (after searching the inheritance tree)
+        'meds' if this_object.part_Medication is not None else 'no_meds'
+          would evaluate to 'meds'
+        thisobject.tag_TinkerCategory would retrieve {'Value': 'utility'}
+          (inherited from Item)
+        """
         if attr.startswith('_'):  # guard against NodeMixIn housekeeping
             raise AttributeError
         if attr == 'attributes':  # guard against recursion

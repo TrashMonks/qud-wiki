@@ -7,7 +7,9 @@ IMAGE_OVERRIDES = config['Image overrides']
 
 
 def get_item_stats(item: QudObject) -> dict:
-    """Retrieve display stats for a certain item"""
+    """Retrieve a dictionary of stats from a Qud object
+
+    Calculates any stats that aren't directly included in the object entry"""
     # directly available:
     stats = {'title': item.part_Render_DisplayName,
              'level': item.stat_Level_Value,
