@@ -8,6 +8,11 @@ verify_ssl = true
 [packages]
 pyyaml = "*"
 anytree = "*"
+pyside2 = "*"
 
 [requires]
 python_version = "3.7"
+
+[scripts]
+designer = "C:/Users/Jeff/.virtualenvs/qud-wiki-CxkOCm1p/Lib/site-packages/PySide2/designer.exe"
+uic = "C:/Users/Jeff/.virtualenvs/qud-wiki-CxkOCm1p/Scripts/pyside2-uic.exe qud_explorer_window.ui -o qud_explorer_window.py"
