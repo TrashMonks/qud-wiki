@@ -41,12 +41,12 @@ def get_item_stats(item: QudObject) -> dict:
     # penetration bonus (i.e. carbide folding hammer)
     pen_bonus = item.part_MeleeWeapon_PenBonus
     if pen_bonus:
-        stats['pv'] += pen_bonus
+        stats['pv'] += int(pen_bonus)
 
     # maximum penetration bonus from strength
     pv_bonus = item.part_MeleeWeapon_MaxStrengthBonus
     if pv_bonus:
-        stats['maxpv'] = stats['pv'] + pv_bonus
+        stats['maxpv'] = stats['pv'] + int(pv_bonus)
     else:
         stats['maxpv'] = stats['pv']
 
@@ -66,7 +66,7 @@ def wikify_item(stats: dict) -> str:
     """Output the stats for an item in wiki format"""
     output = "{{Weapon\n"
     output += "| title = {{Qud text|" + stats['title'] + "}}\n"
-    for stat in ('pv', 'maxpv', 'damage', 'commerce', 'id', 'tier', 'weight', 'desc', 'twohanded', 'skill'):
+    for stat in ('pv', 'maxpv', 'damage', 'commerce', 'id', 'tier', 'weight', 'desc', 'skill'):
         output += f"| {stat} = {stats[stat]}\n"
     output += "}}\n"
     return output

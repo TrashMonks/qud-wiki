@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'qud_explorer_window.ui',
 # licensing of 'qud_explorer_window.ui' applies.
 #
-# Created: Tue Jul  2 23:20:36 2019
+# Created: Wed Jul  3 21:47:21 2019
 #      by: pyside2-uic  running on PySide2 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,37 +13,36 @@ from PySide2 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 600)
+        MainWindow.resize(800, 641)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(10, 10, 781, 531))
-        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
+        self.gridLayout.setObjectName("gridLayout")
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.treeView = QtWidgets.QTreeView(self.horizontalLayoutWidget)
+        self.treeView = QtWidgets.QTreeView(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(1)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.treeView.sizePolicy().hasHeightForWidth())
+        self.treeView.setSizePolicy(sizePolicy)
+        self.treeView.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.treeView.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.treeView.setObjectName("treeView")
         self.horizontalLayout.addWidget(self.treeView)
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
-        self.label = QtWidgets.QLabel(self.horizontalLayoutWidget)
+        self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
-        self.plainTextEdit = QtWidgets.QPlainTextEdit(self.horizontalLayoutWidget)
+        self.plainTextEdit = QtWidgets.QPlainTextEdit(self.centralwidget)
         self.plainTextEdit.setAutoFillBackground(False)
         self.plainTextEdit.setObjectName("plainTextEdit")
         self.verticalLayout.addWidget(self.plainTextEdit)
         self.horizontalLayout.addLayout(self.verticalLayout)
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.label_2 = QtWidgets.QLabel(self.horizontalLayoutWidget)
-        self.label_2.setObjectName("label_2")
-        self.verticalLayout_2.addWidget(self.label_2)
-        self.plainTextEdit_2 = QtWidgets.QPlainTextEdit(self.horizontalLayoutWidget)
-        self.plainTextEdit_2.setObjectName("plainTextEdit_2")
-        self.verticalLayout_2.addWidget(self.plainTextEdit_2)
-        self.horizontalLayout.addLayout(self.verticalLayout_2)
+        self.horizontalLayout.setStretch(0, 1)
+        self.horizontalLayout.setStretch(1, 2)
+        self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
@@ -66,9 +65,8 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "MainWindow", None, -1))
-        self.label.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
-        self.label_2.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
+        MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "Qud Blueprint Explorer", None, -1))
+        self.label.setText(QtWidgets.QApplication.translate("MainWindow", "Wiki template view", None, -1))
         self.menuFile.setTitle(QtWidgets.QApplication.translate("MainWindow", "File", None, -1))
         self.actionOpen_ObjectBlueprints_xml.setText(QtWidgets.QApplication.translate("MainWindow", "Open ObjectBlueprints.xml...", None, -1))
         self.actionExit.setText(QtWidgets.QApplication.translate("MainWindow", "Exit", None, -1))
