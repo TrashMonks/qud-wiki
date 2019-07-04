@@ -32,12 +32,14 @@ class QudObject(NodeMixin):
     def is_specified(self, attr):
         """Return True if `attr` is specified explicitly for this object,
         False if it is inherited or does not exist"""
+        # TODO: doesn't work right
         path = attr.split('_')
         try:
-            tag = self.attributes[path[0]]
-            name = tag[path[1]]
-            attrib = name[path[2]]
-            return True
+            seek = self.attributes[path[0]]
+            if len(path) > 1:
+                seek = seek[path[1]]
+            if len(path) > 2:
+                seek = seek[path[2]]
         except KeyError:
             return False
 
@@ -68,15 +70,15 @@ class QudObject(NodeMixin):
         """
         if attr.startswith('_'):  # guard against NodeMixIn housekeeping
             raise AttributeError
-        if attr == 'attributes':  # guard against recursion
+        if attr == 'attributes':  # guard against uninvited recursion
             raise AttributeError
         path = attr.split('_')
         try:
-            seek = self.attributes[path[0]]
+            seek = self.attributes[path[0]]  # XML tag portion
             if len(path) > 1:
-                seek = seek[path[1]]
+                seek = seek[path[1]]  # Name portion
             if len(path) > 2:
-                seek = seek[path[2]]
+                seek = seek[path[2]]  # attribute portion
         except KeyError:
             if self.is_root:
                 seek = None

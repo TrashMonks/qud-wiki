@@ -1,3 +1,4 @@
+import pprint
 import sys
 
 from PySide2.QtCore import QModelIndex
@@ -29,14 +30,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if not qud_object.is_leaf:
             for child in qud_object.children:
                 item.appendRow(self.init_qud_object(model, child))
+        if qud_object.is_specified('tag_BaseObject'):
+            item.setSelectable(False)
         item.setData(qud_object)
         return item
 
     def tree_item_clicked(self, index):
         item = self.qud_object_model.itemFromIndex(index)
         qud_object = item.data()
-        wiki_text = wikify_item(get_item_stats(qud_object))
-        self.plainTextEdit.setPlainText(wiki_text)
+        text = pprint.pformat(qud_object.attributes)
+        self.plainTextEdit.setPlainText(text)
 
 
 app = QApplication(sys.argv)
