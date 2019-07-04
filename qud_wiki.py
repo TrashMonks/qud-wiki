@@ -41,15 +41,16 @@ exclude = ('Projectile',)
 for _ in exclude:
     qindex[_].parent = None
 
-
-while True:
-    query = input("Query: ")
-    try:
-        print("Raw attributes:")
-        pprint(qindex[query].attributes)
-        print()
-    except KeyError:
-        print("Not found in qindex")
-    print("Decoded stats:")
-    pprint(get_item_stats(qindex[query]))
-    # pprint(wikify_item(get_item_stats(qindex[query])))
+# interactive test loop
+if __name__ == '__main__':
+    while True:
+        query = input("Query: ")
+        try:
+            print("Raw attributes:")
+            pprint(qindex[query].attributes)
+            print()
+        except KeyError:
+            print("Not found in qindex")
+        print("Decoded stats:")
+        pprint(get_item_stats(qindex[query]))
+        # pprint(wikify_item(get_item_stats(qindex[query])))
