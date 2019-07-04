@@ -5,12 +5,15 @@ from xml.etree.ElementTree import Element
 
 from anytree import NodeMixin
 
-qindex = {}  # fast lookup of name->QudObject
-
 
 class QudObject(NodeMixin):
-    """Represents a Caves of Qud object blueprint with attribute inheritance"""
-    def __init__(self, blueprint: Element):
+    """Represents a Caves of Qud object blueprint with attribute inheritance.
+
+    Parameters:
+        blueprint: an XML Element to parse into dictionaries
+        qindex: a dictionary to stash our Name:self mapping, for use later"""
+
+    def __init__(self, blueprint: Element, qindex):
         self.name = blueprint.get('Name')
         qindex[self.name] = self
         parent_name = blueprint.get('Inherits')
@@ -53,9 +56,12 @@ class QudObject(NodeMixin):
         return True
 
     def __getattr__(self, attr):
-        """Implemented to get inherited tags from the Qud object tree
+        """Implemented to get explicit or inherited tags from the Qud object tree.
 
-        Example: given the following Qud object:
+        These virtual attributes take the form
+          (XML tag) _ (Value of name attribute) _ (Other attribute)
+
+        Example: given the following Qud object in the XML source file:
           <object Name="Bandage" Inherits="Item">
             <part Name="Examiner" Complexity="0"></part>
             <part Name="Render" Tile="Items/sw_hit.bmp" DetailColor="R" DisplayName="&amp;ybandage" ColorString="&amp;y" RenderString="012" RenderLayer="5"></part>
@@ -68,12 +74,16 @@ class QudObject(NodeMixin):
             <intproperty Name="Inorganic" Value="0" />
           </object>
 
-        this_object.part_Render_Tile would retrieve 'Items/sw_hit.bmp'
-        this_object.tag would retrieve {'AlwaysStack': {'Value': 'Yes'}}
+        For the most basic usage,
+            `this_object.part_Render_Tile` would retrieve the string 'Items/sw_hit.bmp'
+
+        Other uses:
+        this_object.tag would retrieve the dictionary {'AlwaysStack': {'Value': 'Yes'}}
         this_object.stat_Strength would retrieve None (after searching the inheritance tree)
-        'meds' if this_object.part_Medication is not None else 'no_meds'
-          would evaluate to 'meds'
-        thisobject.tag_TinkerCategory would retrieve {'Value': 'utility'}
+        The expression:
+          'meds' if this_object.part_Medication is not None else 'no_meds'
+        would evaluate to 'meds'
+        thisobject.tag_TinkerCategory would retrieve the dictionary {'Value': 'utility'}
           (inherited from Item)
         """
         if attr.startswith('_'):  # guard against NodeMixIn housekeeping

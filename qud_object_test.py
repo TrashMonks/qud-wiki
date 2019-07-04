@@ -1,7 +1,8 @@
 import pytest
 
-import qud_object_tree  # build the tree for method testing
+from qud_object_tree import qindex  # build the tree for method testing
 from qud_object import *  # what we are actually testing
+
 
 def test_inherits_from():
     obj = qindex['Stopsvaalinn']
@@ -13,6 +14,7 @@ def test_inherits_from():
     assert not obj.inherits_from('Widget')
     obj = qindex['Object']
     assert not obj.inherits_from('Object')
+
 
 def test_is_specified():
     obj = qindex['Stopsvaalinn']
