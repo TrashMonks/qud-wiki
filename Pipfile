@@ -9,6 +9,7 @@ verify_ssl = true
 pyyaml = "*"
 anytree = "*"
 pyside2 = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.7"
