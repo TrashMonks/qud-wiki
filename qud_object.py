@@ -29,6 +29,14 @@ class QudObject(NodeMixin):
             element_name = element.attrib.pop('Name')
             self.attributes[element.tag][element_name] = element.attrib
 
+    def inherits_from(self, name: str):
+        """Returns True if this object inherits from the object named 'name', False otherwise."""
+        if self.is_root:
+            return False
+        if self.parent.name == name:
+            return True
+        return self.parent.inherits_from(name)
+
     def is_specified(self, attr):
         """Return True if `attr` is specified explicitly for this object,
         False if it is inherited or does not exist"""
@@ -42,7 +50,7 @@ class QudObject(NodeMixin):
                 seek = seek[path[2]]
         except KeyError:
             return False
-
+        return True
 
     def __getattr__(self, attr):
         """Implemented to get inherited tags from the Qud object tree
