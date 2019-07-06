@@ -20,3 +20,12 @@ def test_is_specified():
     obj = qindex['Stopsvaalinn']
     assert obj.is_specified('part_Commerce_Value')
     assert not obj.is_specified('fart_Commerce_Value')
+
+
+def test_properties():
+    obj = qindex['Asphodel']
+    assert obj.lv == '30'
+    assert obj.hp == '500'
+    assert obj.av == '8'
+    assert obj.dv == '12'
+    assert obj.ma == '12'

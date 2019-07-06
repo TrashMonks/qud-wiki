@@ -134,7 +134,7 @@ class QudObject(NodeMixin):
         return 'QudObject(' + self.name + ')'
 
     # The following properties are implemented to make wiki formatting far simpler.
-    # Sorted alphabetically.
+    # Sorted alphabetically. All return types should be strings.
 
     @property
     def accuracy(self):
@@ -158,52 +158,66 @@ class QudObject(NodeMixin):
     @property
     def ammo(self):
         """What type of ammo is used."""
-        # TODO
-        pass
+        ammo = self.part_MagazineAmmoLoader_AmmoPart
+        texts = {'AmmoSlug': 'lead slug',
+                 'AmmoShotgunShell': 'shotgun shell',
+                 'AmmoGrenade': 'grenade',
+                 'AmmoMissile': 'missile',
+                 'AmmoArrow': 'arrow',
+                 'AmmoDart': 'dart',
+                 }
+        return texts.get(ammo)
 
     @property
     def av(self):
-        if self.stat_AV_Value:  # the AV of creatures and stationary objects
-            av = self.stat_AV_Value
+        av = None
         if self.part_Armor_AV:  # the AV of armor
             av = self.part_Armor_AV
         if self.part_Shield_AV:  # the AV of a shield
             av = self.part_Shield_AV
+        if self.stat_AV_Value and self.inherits_from('Creature'):  # the AV of creatures and stationary objects
+            av = self.stat_AV_Value
         return av
 
     @property
     def bits(self):
-        # TODO
-        pass
+        """The bits you can get from disassembling the object."""
+        return self.part_TinkerItem_Bits
 
     @property
     def bookid(self):
         """Id in books.xml."""
-        # TODO
+        return self.part_Book_ID
 
     @property
     def canbuild(self):
-        # TODO
-        pass
+        """Whether or not the player can tinker up this item."""
+        if self.inherits_from('Item'):  # don't want to see 'false' on, for example, NPCs
+            return self.part_TinkerItem_CanBuild
 
     @property
     def charge(self):
         """How much charge is used per shot."""
+        return self.part_EnergyAmmoLoader_ChargeUse
 
     @property
     def cold(self):
-        """The elemental resistance/weakness the mutation has."""
+        """The elemental resistance/weakness the mutation/item/NPC has."""
+        if self.part_Armor:
+            return self.part_Armor_Cold
         return self.stat_ColdResistance
 
     @property
     def commerce(self):
         """The value of the object."""
-        return self.part_Commerce_Value
+        if self.inherits_from('Item'):
+            return self.part_Commerce_Value
 
     @property
     def complexity(self):
-        # TODO
-        pass
+        """The tinker examination complexity of the object."""
+        if self.canbuild == 'true':
+            return self.part_Examiner_Complexity
 
     @property
     def damage(self):
@@ -216,8 +230,16 @@ class QudObject(NodeMixin):
 
     @property
     def dv(self):
-        # TODO: calculate DV of NPCs
-        return self.stat_DV_Value
+        dv = None
+        if self.inherits_from('Creature'):
+            dv = 0
+            if self.agility:
+                dv = int((int(self.agility) - 16) / 2)
+            if self.skill_Acrobatics_Tumble:
+                dv += 1
+        elif self.stat_DV_Value:
+            dv = self.stat_DV_Value
+        return str(dv) if dv else None
 
     @property
     def ego(self):
@@ -247,15 +269,14 @@ class QudObject(NodeMixin):
     @property
     def hp(self):
         if self.stat_Hitpoints_sValue:
-            return self.stat_Hitpoints.sValue
+            return self.stat_Hitpoints_sValue
         elif self.stat_Hitpoints_Value:
             return self.stat_Hitpoints_Value
 
     @property
     def hunger(self):
         """How much hunger it satiates."""
-        # TODO
-        pass
+        return self.part_Food_Satiation
 
     @property
     def id(self):
@@ -290,18 +311,18 @@ class QudObject(NodeMixin):
     @property
     def lightradius(self):
         """Radius of light it gives off."""
-        # TODO
-        pass
+        return self.part_LightSource_Radius
 
     @property
     def liquidgen(self):
         """For liquid generators. how many turns it takes for 1 dram to generate."""
-        # TODO
-        pass
+        # TODO: is this correct?
+        return self.part_LiquidProducer_Rate
 
     @property
     def liquidtype(self):
         """For liquid generators, the type of liquid generated."""
+        return self.part_LiquidProducer_Liquid
 
     @property
     def lv(self):
@@ -315,70 +336,72 @@ class QudObject(NodeMixin):
     @property
     def maxammo(self):
         """How much ammo a gun can have loaded at once."""
-        # TODO
-        pass
+        return self.part_MagazineAmmoLoader_MaxAmmo
 
     @property
     def maxcharge(self):
         """How much charge it can hold (usually reserved for cells)."""
-        # TODO
-        pass
+        return self.part_EnergyCell_MaxCharge
 
     @property
     def maxvol(self):
         """The maximum liquid volume."""
-        # TODO
-        pass
+        return self.part_LiquidVolume_MaxVolume
 
     @property
     def maxpv(self):
         """The max strength bonus + base PV."""
-        maxpv = self.pv
-        if self.part_MeleeWeapon_MaxStrengthBonus:
-            maxpv += int(self.part_MeleeWeapon_MaxStrengthBonus)
-        return maxpv
+        try:
+            maxpv = int(self.pv)
+        except TypeError:
+            return None  # borrow from the PV validity detection
+        else:
+            if self.part_MeleeWeapon_MaxStrengthBonus:
+                maxpv += int(self.part_MeleeWeapon_MaxStrengthBonus)
+            return str(maxpv)
 
     @property
     def metal(self):
         """Whether the object is made out of metal."""
-        # TODO
-        pass
-
-    @property
-    def pen_bonus(self):
-        # TODO
-        if self.part_MeleeWeapon_PenBonus:
-            pass
+        if self.part_Metal:
+            return 'true'
+        # skipping returning 'false' because it's not interesting to see
 
     @property
     def pv(self):
         """The base PV, which is by default 4 if not set. Optional."""
-        pv = 4
-        if self.part_MeleeWeapon_PenBonus:
-            pv += int(self.part_MeleeWeapon_PenBonus)
-        return pv
+        # TODO: does this have meaning for other than MeleeWeapons?
+        if self.inherits_from('MeleeWeapon') or self.part_MeleeWeapon:
+            pv = 4
+            if self.part_MeleeWeapon_PenBonus:
+                pv += int(self.part_MeleeWeapon_PenBonus)
+            return str(pv)
 
     @property
     def pvpowered(self):
-        # TODO
-        pass
+        """If true, adds a row that shows the unpowered pv (4)."""
+        # TODO: is this necessary?
+        if self.pv:
+            return True
 
     @property
     def renderstr(self):
         """What the item looks like with tiles mode off."""
-        # TODO
-        pass
+        return self.part_Render_RenderString
 
     @property
     def shots(self):
         """How many shots are fired in one round."""
-        # TODO
-        pass
+        return self.part_MissileWeapon_ShotsPerAction
 
     @property
     def skill(self):
         """The skill tree required for use."""
-        return self.part_MeleeWeapon_Skill
+        print("Skill")
+        if self.inherits_from('MeleeWeapon') or self.is_specified('part_MeleeWeapon'):
+            return self.part_MeleeWeapon_Skill
+        if self.inherits_from('MissileWeapon'):
+            return self.part_MissileWeapon_Skill
 
     @property
     def strength(self):
@@ -392,8 +415,7 @@ class QudObject(NodeMixin):
     @property
     def thirst(self):
         """How much thirst it slakes."""
-        # TODO
-        pass
+        return self.part_Food_Thirst
 
     @property
     def tier(self):
@@ -407,8 +429,8 @@ class QudObject(NodeMixin):
     @property
     def tohit(self):
         """The bonus or penalty to hit."""
-        # TODO
-        pass
+        if self.inherits_from('Armor'):
+            return self.part_Armor_ToHit
 
     @property
     def toughness(self):
@@ -422,9 +444,10 @@ class QudObject(NodeMixin):
     @property
     def twohanded(self):
         """Whether this is a two-handed item."""
-        if self.part_Physics_bUsesTwoSlots:
-            return 'true'
-        return 'false'
+        if self.inherits_from('MeleeWeapon') or self.inherits_from('MissileWeapon'):
+            if self.part_Physics_bUsesTwoSlots:
+                return 'true'
+            return 'false'
 
     @property
     def vibro(self):
