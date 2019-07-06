@@ -45,6 +45,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             recursive_expand(item, self.treeView, self.qud_object_model)
         self.treeView.setIndentation(10)
         self.treeView.clicked[QModelIndex].connect(self.tree_item_clicked)
+        self.lineEdit.textChanged.connect(self.search_changed)
         self.show()
 
     def init_qud_object(self, model: QStandardItemModel, qud_object: QudObject):
@@ -58,6 +59,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             item.setSelectable(False)
         item.setCheckable(True)
         item.setData(qud_object)
+
         if qud_object.name in INITIAL_EXPANSION_TARGETS:
             self.items_to_expand.append(item)
         return item
@@ -66,9 +68,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """Registered in __init__ as the handler for tree clicks."""
         item = self.qud_object_model.itemFromIndex(index)
         qud_object = item.data()
-        text = pprint.pformat(qud_object.attributes)
-        self.plainTextEdit.setPlainText(text)
+        self.plainTextEdit.setPlainText(qud_object.wikify())
 
+    def search_changed(self):
+        pass
 
 app = QApplication(sys.argv)
 app.setApplicationName("Qud Blueprint Explorer")

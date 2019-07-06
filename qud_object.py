@@ -1,9 +1,14 @@
 """attr specification:
 QudObject.part_name_attribute"""
 
+import re
 from xml.etree.ElementTree import Element
 
 from anytree import NodeMixin
+
+from config import config
+
+IMAGE_OVERRIDES = config['Image overrides']
 
 
 class QudObject(NodeMixin):
@@ -104,8 +109,341 @@ class QudObject(NodeMixin):
                 seek = self.parent.__getattr__(attr)
         return seek
 
+    def wikify(self):
+        """Return a string representation of self in the Caves of Qud wiki item template format."""
+        fields = ('image', 'lv', 'pv', 'maxpv', 'vibro', 'pvpowered', 'hp', 'av', 'dv',
+                  'ma', 'tohit', 'ammo', 'accuracy', 'shots', 'maxammo', 'maxvol',
+                  'liquidgen', 'liquidtype', 'maxcharge', 'charge', 'weight', 'commerce',
+                  'complexity', 'tier', 'bits', 'canbuild', 'skill', 'renderstr', 'id',
+                  'bookid', 'lightradius', 'hunger', 'thirst', 'twohanded', 'metal',
+                  'lightprojectile', 'extra', 'strength', 'agility', 'toughness',
+                  'intelligence', 'willpower', 'ego', 'acid', 'electric', 'cold', 'heat')
+        output = "{{Item\n"
+        output += "| title = {{Qud text|" + self.title + "}}\n"
+        for stat in fields:
+            if getattr(self, stat) is not None:
+                output += f"| {stat} = {getattr(self, stat)}\n"
+        output += "| desc = {{ Qud text|" + self.desc + "}}\n"
+        output += "}}\n"
+        return output
+
     def __str__(self):
         return self.name + ' ' + str(self.attributes)
 
     def __repr__(self):
         return 'QudObject(' + self.name + ')'
+
+    # The following properties are implemented to make wiki formatting far simpler.
+    # Sorted alphabetically.
+
+    @property
+    def accuracy(self):
+        """How accurate the gun is."""
+        return self.part_MissileWeapon_WeaponAccuracy
+
+    @property
+    def acid(self):
+        """The elemental resistance/weakness the mutation has."""
+        return self.stat_AcidResistance
+
+    @property
+    def agility(self):
+        """The agility the mutation affects, or the agility of the creature."""
+        if self.inherits_from('Creature'):
+            if self.stat_Agility_sValue:
+                return self.stat_Agility_sValue
+            elif self.stat_Agility_Value:
+                return self.stat_Agility_Value
+
+    @property
+    def ammo(self):
+        """What type of ammo is used."""
+        # TODO
+        pass
+
+    @property
+    def av(self):
+        if self.stat_AV_Value:  # the AV of creatures and stationary objects
+            av = self.stat_AV_Value
+        if self.part_Armor_AV:  # the AV of armor
+            av = self.part_Armor_AV
+        if self.part_Shield_AV:  # the AV of a shield
+            av = self.part_Shield_AV
+        return av
+
+    @property
+    def bits(self):
+        # TODO
+        pass
+
+    @property
+    def bookid(self):
+        """Id in books.xml."""
+        # TODO
+
+    @property
+    def canbuild(self):
+        # TODO
+        pass
+
+    @property
+    def charge(self):
+        """How much charge is used per shot."""
+
+    @property
+    def cold(self):
+        """The elemental resistance/weakness the mutation has."""
+        return self.stat_ColdResistance
+
+    @property
+    def commerce(self):
+        """The value of the object."""
+        return self.part_Commerce_Value
+
+    @property
+    def complexity(self):
+        # TODO
+        pass
+
+    @property
+    def damage(self):
+        return self.part_MeleeWeapon_BaseDamage
+
+    @property
+    def desc(self):
+        """The short description of the object, with color codes included (ampersands escaped)."""
+        return re.sub('&', '&amp;', self.part_Description_Short)
+
+    @property
+    def dv(self):
+        # TODO: calculate DV of NPCs
+        return self.stat_DV_Value
+
+    @property
+    def ego(self):
+        """The ego the mutation effects, or the ego of the creature."""
+        if self.inherits_from('Creature'):
+            if self.stat_Ego_sValue:
+                return self.stat_Ego_sValue
+            elif self.stat_Ego_Value:
+                return self.stat_Ego_Value
+
+    @property
+    def electric(self):
+        """The elemental resistance/weakness the mutation has."""
+        return self.stat_ElectricResistance
+
+    @property
+    def extra(self):
+        """Any other features that do not have an associated variable."""
+        # TODO
+        pass
+
+    @property
+    def heat(self):
+        """The elemental resistance/weakness the mutation has."""
+        return self.stat_HeatResistance
+
+    @property
+    def hp(self):
+        if self.stat_Hitpoints_sValue:
+            return self.stat_Hitpoints.sValue
+        elif self.stat_Hitpoints_Value:
+            return self.stat_Hitpoints_Value
+
+    @property
+    def hunger(self):
+        """How much hunger it satiates."""
+        # TODO
+        pass
+
+    @property
+    def id(self):
+        """The name of the object in ObjectBlueprints.xml."""
+        return self.name
+
+    @property
+    def image(self):
+        """The image. If the item has no associated sprite, return None."""
+        if self.name in IMAGE_OVERRIDES:
+            return IMAGE_OVERRIDES[self.name]
+        else:
+            # "Creatures/sw_flower.bmp" becomes "sw_flower.png"
+            tile = self.part_Render_Tile.split('/')[-1]
+            tile = re.sub('bmp$', 'png', tile)
+            return tile
+
+    @property
+    def intelligence(self):
+        """The intelligence the mutation affects, or the intelligence of the creature."""
+        if self.inherits_from('Creature'):
+            if self.stat_Intelligence_sValue:
+                return self.stat_Intelligence_sValue
+            elif self.stat_Intelligence_Value:
+                return self.stat_Intelligence_Value
+
+    @property
+    def lightprojectile(self):
+        # TODO
+        pass
+
+    @property
+    def lightradius(self):
+        """Radius of light it gives off."""
+        # TODO
+        pass
+
+    @property
+    def liquidgen(self):
+        """For liquid generators. how many turns it takes for 1 dram to generate."""
+        # TODO
+        pass
+
+    @property
+    def liquidtype(self):
+        """For liquid generators, the type of liquid generated."""
+
+    @property
+    def lv(self):
+        """The object's level."""
+        return self.stat_Level_Value
+
+    @property
+    def ma(self):
+        return self.stat_MA_Value
+
+    @property
+    def maxammo(self):
+        """How much ammo a gun can have loaded at once."""
+        # TODO
+        pass
+
+    @property
+    def maxcharge(self):
+        """How much charge it can hold (usually reserved for cells)."""
+        # TODO
+        pass
+
+    @property
+    def maxvol(self):
+        """The maximum liquid volume."""
+        # TODO
+        pass
+
+    @property
+    def maxpv(self):
+        """The max strength bonus + base PV."""
+        maxpv = self.pv
+        if self.part_MeleeWeapon_MaxStrengthBonus:
+            maxpv += int(self.part_MeleeWeapon_MaxStrengthBonus)
+        return maxpv
+
+    @property
+    def metal(self):
+        """Whether the object is made out of metal."""
+        # TODO
+        pass
+
+    @property
+    def pen_bonus(self):
+        # TODO
+        if self.part_MeleeWeapon_PenBonus:
+            pass
+
+    @property
+    def pv(self):
+        """The base PV, which is by default 4 if not set. Optional."""
+        pv = 4
+        if self.part_MeleeWeapon_PenBonus:
+            pv += int(self.part_MeleeWeapon_PenBonus)
+        return pv
+
+    @property
+    def pvpowered(self):
+        # TODO
+        pass
+
+    @property
+    def renderstr(self):
+        """What the item looks like with tiles mode off."""
+        # TODO
+        pass
+
+    @property
+    def shots(self):
+        """How many shots are fired in one round."""
+        # TODO
+        pass
+
+    @property
+    def skill(self):
+        """The skill tree required for use."""
+        return self.part_MeleeWeapon_Skill
+
+    @property
+    def strength(self):
+        """The strength the mutation affects, or the strength of the creature."""
+        if self.inherits_from('Creature'):
+            if self.stat_Strength_sValue:
+                return self.stat_Strength_sValue
+            elif self.stat_Strength_Value:
+                return self.stat_Strength_Value
+
+    @property
+    def thirst(self):
+        """How much thirst it slakes."""
+        # TODO
+        pass
+
+    @property
+    def tier(self):
+        return self.tag_Tier_Value
+
+    @property
+    def title(self):
+        """The display name of the item."""
+        return re.sub('&', '&amp;', self.part_Render_DisplayName)
+
+    @property
+    def tohit(self):
+        """The bonus or penalty to hit."""
+        # TODO
+        pass
+
+    @property
+    def toughness(self):
+        """The toughness the mutation affects, or the toughness of the creature."""
+        if self.inherits_from('Creature'):
+            if self.stat_Toughness_sValue:
+                return self.stat_Toughness_sValue
+            elif self.stat_Toughness_Value:
+                return self.stat_Toughness_Value
+
+    @property
+    def twohanded(self):
+        """Whether this is a two-handed item."""
+        if self.part_Physics_bUsesTwoSlots:
+            return 'true'
+        return 'false'
+
+    @property
+    def vibro(self):
+        """Whether this is a vibro weapon."""
+        if self.inherits_from('NaturalWeapon') or self.inherits_from('MeleeWeapon'):
+            if self.tag_VibroWeapon:
+                return 'true'
+            return 'false'
+
+    @property
+    def weight(self):
+        """The weight of the object."""
+        return self.part_Physics_Weight
+
+    @property
+    def willpower(self):
+        """The willpower the mutation affects, or the willpower of the creature.."""
+        if self.inherits_from('Creature'):
+            if self.stat_Willpower_sValue:
+                return self.stat_Willpower_sValue
+            elif self.stat_Willpower_Value:
+                return self.stat_Willpower_Value
