@@ -5,25 +5,26 @@ For on-demand access to individual Qud objects by name, use the `qindex` from qu
 import re
 
 from xml.etree import ElementTree as et
-from pathlib import Path
 
-from config import config
 from qud_object import QudObject, qindex
 
-# Do some repair of invalid XML
-pattern = re.compile("(&#15;)|(&#11;)")
-xmlpath = Path(config['xmlpath'])
-repaired = []
-with open(xmlpath/'ObjectBlueprints.xml', 'r', encoding='utf-8') as f:
-    for line in f:
-        repaired.append(pattern.sub('', line))
-raw = et.fromstringlist(repaired)
 
-# Build the Qud object hierarchy from the XML data
-for element in raw:
-    if element.tag != 'object':
-        continue
-    newobj = QudObject(element, qindex)
+def load(path):
+    """Load ObjectBlueprints.xml from the specified filepath and return a reference to the root."""
+    # Do some repair of invalid XML
+    pattern = re.compile("(&#15;)|(&#11;)")
+    repaired = []
+    with open(path, 'r', encoding='utf-8') as f:
+        for line in f:
+            repaired.append(pattern.sub('', line))
+    raw = et.fromstringlist(repaired)
 
-# import into other modules for access to the root of the Qud object hierarchy
-qud_object_root = qindex['Object']
+    # Build the Qud object hierarchy from the XML data
+    for element in raw:
+        if element.tag != 'object':
+            continue
+        newobj = QudObject(element, qindex)
+
+    # import into other modules for access to the root of the Qud object hierarchy
+    qud_object_root = qindex['Object']
+    return qud_object_root

@@ -1,14 +1,12 @@
-import pprint
 import sys
 
-from PySide2.QtCore import QModelIndex
 from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon
-from PySide2.QtWidgets import QMainWindow, QApplication, QTreeView, QSizePolicy, QAbstractItemView
+from PySide2.QtWidgets import QMainWindow, QApplication, QTreeView, QSizePolicy, QAbstractItemView, \
+    QFileDialog
 
-from item import wikify_item, get_item_stats
+import qud_object_tree
 from qud_explorer_window import Ui_MainWindow
 from qud_object import QudObject
-from qud_object_tree import qud_object_root
 
 # most interesting targets to have expanded in the tree to start
 INITIAL_EXPANSION_TARGETS = ['Food', 'MeleeWeapon', 'MissileWeapon', 'Armor', 'Shield', 'Token',
@@ -60,15 +58,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def open_xml(self):
         """Browse for and open ObjectBluePrints.xml."""
-        pass
+        filename = QFileDialog.getOpenFileName()[0]
+        if filename.endswith('ObjectBlueprints.xml'):
+            self.qud_object_root = qud_object_tree.load(filename)
+            self.init_qud_tree_model()
 
     def init_qud_tree_view(self):
-        self.qud_object_model = QStandardItemModel()
-        self.qud_object_model.setHorizontalHeaderLabels(['Name', 'Display Name'])
-        self.items_to_expand = []  # filled out during recursion of the Qud object tree
-        # We only need to add Object to the model, since all other Objects are loaded as children:
-        self.qud_object_model.appendRow(
-            self.init_qud_object(self.qud_object_model, qud_object_root))
         size_policy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         size_policy.setHorizontalStretch(1)
         size_policy.setVerticalStretch(0)
@@ -78,10 +73,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.treeView.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.treeView.setObjectName("treeView")
         self.verticalLayout_2.addWidget(self.treeView)
-        self.treeView.setModel(self.qud_object_model)
+        self.treeView.setIndentation(10)
+
+    def init_qud_tree_model(self):
+        self.qud_object_model = QStandardItemModel()
+        # self.qud_object_model.setHorizontalHeaderLabels(['Name', 'Display Name'])
+        self.items_to_expand = []  # filled out during recursion of the Qud object tree
+        # We only need to add Object to the model, since all other Objects are loaded as children:
+        self.qud_object_model.appendRow(
+            self.init_qud_object(self.qud_object_model, self.qud_object_root))
         for item in self.items_to_expand:
             recursive_expand(item, self.treeView, self.qud_object_model)
-        self.treeView.setIndentation(10)
+        self.treeView.setModel(self.qud_object_model)
 
     def init_qud_object(self, model: QStandardItemModel, qud_object: QudObject):
         """Recursive function to translate hierarchy from the Qud object AnyTree model to the
@@ -110,6 +113,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def search_changed(self):
         pass
+
 
 app = QApplication(sys.argv)
 app.setApplicationName("Qud Blueprint Explorer")
