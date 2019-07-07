@@ -5,16 +5,9 @@ from PySide2.QtWidgets import QMainWindow, QApplication, QTreeView, QSizePolicy,
     QFileDialog
 
 import qud_object_tree
+from config import config
 from qud_explorer_window import Ui_MainWindow
 from qud_object import QudObject
-
-# most interesting targets to have expanded in the tree to start
-INITIAL_EXPANSION_TARGETS = ['Food', 'MeleeWeapon', 'MissileWeapon', 'Armor', 'Shield', 'Token',
-                             'LightSource', 'Tool', 'Tonic', 'Trinket', 'Energy Cell',
-                             'Security Card', ]
-
-# TODO: development targets:
-INITIAL_EXPANSION_TARGETS += ['Barathrumite', 'SapientMutatedFlower']
 
 
 def recursive_expand(item: QStandardItem, treeview: QTreeView, model: QStandardItemModel):
@@ -98,7 +91,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         item.setCheckable(True)
         item.setData(qud_object)
 
-        if qud_object.name in INITIAL_EXPANSION_TARGETS:
+        if qud_object.name in config['Interface']['Initial expansion targets']:
             self.items_to_expand.append(item)
         return item
 

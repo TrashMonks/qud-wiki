@@ -8,7 +8,7 @@ from anytree import NodeMixin
 
 from config import config
 
-IMAGE_OVERRIDES = config['Image overrides']
+IMAGE_OVERRIDES = config['Templates']['Image overrides']
 
 qindex = {}  # fast lookup of name->QudObject
 
@@ -145,14 +145,7 @@ class QudObject(NodeMixin):
 
     def wikify(self):
         """Return a string representation of self in the Caves of Qud wiki item template format."""
-        fields = ('image', 'lv', 'pv', 'maxpv', 'vibro', 'pvpowered', 'hp', 'av', 'dv',
-                  'ma', 'tohit', 'ammo', 'accuracy', 'shots', 'maxammo', 'maxvol',
-                  'liquidgen', 'liquidtype', 'maxcharge', 'charge', 'weight', 'commerce',
-                  'complexity', 'tier', 'bits', 'canbuild', 'skill', 'renderstr', 'id',
-                  'bookid', 'lightradius', 'hunger', 'thirst', 'twohanded', 'metal',
-                  'lightprojectile', 'extra', 'strength', 'agility', 'toughness',
-                  'intelligence', 'willpower', 'ego', 'acid', 'electric', 'cold', 'heat',
-                  'desc')
+        fields = config['Templates']['Fields']
         output = "{{Item\n"
         output += "| title = {{Qud text|" + self.title + "}}\n"
         for stat in fields:
