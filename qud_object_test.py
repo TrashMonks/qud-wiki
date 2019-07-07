@@ -1,7 +1,15 @@
-import pytest
-
-from qud_object_tree import qindex  # build the tree for method testing
+import qud_object_tree  # to build the qindex in qud_object.py
 from qud_object import *  # what we are actually testing
+
+
+def test_yes_no_none():
+    @yes_no_none
+    def f(x):
+        return x
+    assert f('true') == 'yes'
+    assert f('false') == 'no'
+    assert f(True) == 'yes'
+    assert f(False) == 'no'
 
 
 def test_inherits_from():

@@ -10,6 +10,21 @@ from config import config
 
 IMAGE_OVERRIDES = config['Image overrides']
 
+qindex = {}  # fast lookup of name->QudObject
+
+
+def yes_no_none(func):
+    """Decorator to convert 'true'/'false'/None, or True/False/None into 'yes'/'no'/None"""
+    conv = {'true': 'yes',
+            'false': 'no',
+            True: 'yes',
+            False: 'no',
+            }
+
+    def wrapper(*args, **kwargs):
+        return conv.get(func(*args, **kwargs))
+    return wrapper
+
 
 class QudObject(NodeMixin):
     """Represents a Caves of Qud object blueprint with attribute inheritance.
@@ -20,6 +35,7 @@ class QudObject(NodeMixin):
 
     def __init__(self, blueprint: Element, qindex):
         self.name = blueprint.get('Name')
+        self.blueprint = blueprint
         qindex[self.name] = self
         parent_name = blueprint.get('Inherits')
         if parent_name:
@@ -28,13 +44,17 @@ class QudObject(NodeMixin):
             self.parent = None
         self.attributes = {}
         for element in blueprint:
-            if 'Name' not in element.attrib:
-                # don't need these for now - inventory, etc.
-                # print(self.name, element.tag, element.attrib)
+            if 'Name' not in element.attrib and element.tag != 'inventoryobject':
+                # probably something we don't need
                 continue
             if element.tag not in self.attributes:
                 self.attributes[element.tag] = {}
-            element_name = element.attrib.pop('Name')
+            if 'Name' in element.attrib:
+                # most tags
+                element_name = element.attrib.pop('Name')
+            elif 'Blueprint' in element.attrib:
+                # for tag: inventoryobject
+                element_name = element.attrib.pop('Blueprint')
             self.attributes[element.tag][element_name] = element.attrib
 
     def inherits_from(self, name: str):
@@ -59,6 +79,20 @@ class QudObject(NodeMixin):
         except KeyError:
             return False
         return True
+
+    def parse_multi_sValue(self, svalue: str):
+        """Derive an integer from an sValue comma-separated format stat string for self.
+
+        Example:
+            "16,1d3,(t-1)d2" becomes 17 by this process:
+            16 is the base
+            1d3 is taken as average (2)
+            t is calculated as (Level // 5 + 1) or 2
+            2d2 is taken as average (3)
+
+        """
+        base, roll, final = svalue.split(',')
+        t = int(self.lv) // 5 + 1
 
     def __getattr__(self, attr):
         """Implemented to get explicit or inherited tags from the Qud object tree.
@@ -117,13 +151,13 @@ class QudObject(NodeMixin):
                   'complexity', 'tier', 'bits', 'canbuild', 'skill', 'renderstr', 'id',
                   'bookid', 'lightradius', 'hunger', 'thirst', 'twohanded', 'metal',
                   'lightprojectile', 'extra', 'strength', 'agility', 'toughness',
-                  'intelligence', 'willpower', 'ego', 'acid', 'electric', 'cold', 'heat')
+                  'intelligence', 'willpower', 'ego', 'acid', 'electric', 'cold', 'heat',
+                  'desc')
         output = "{{Item\n"
         output += "| title = {{Qud text|" + self.title + "}}\n"
         for stat in fields:
             if getattr(self, stat) is not None:
                 output += f"| {stat} = {getattr(self, stat)}\n"
-        output += "| desc = {{ Qud text|" + self.desc + "}}\n"
         output += "}}\n"
         return output
 
@@ -144,7 +178,7 @@ class QudObject(NodeMixin):
     @property
     def acid(self):
         """The elemental resistance/weakness the mutation has."""
-        return self.stat_AcidResistance
+        return self.stat_AcidResistance_Value
 
     @property
     def agility(self):
@@ -170,19 +204,28 @@ class QudObject(NodeMixin):
 
     @property
     def av(self):
+        """The AV that an item provides, or the AV that a creature has."""
         av = None
         if self.part_Armor_AV:  # the AV of armor
             av = self.part_Armor_AV
         if self.part_Shield_AV:  # the AV of a shield
             av = self.part_Shield_AV
-        if self.stat_AV_Value and self.inherits_from('Creature'):  # the AV of creatures and stationary objects
-            av = self.stat_AV_Value
-        return av
+        if self.stat_AV_Value and self.inherits_from('Creature'):
+            # the AV of creatures and stationary objects
+            av = int(self.stat_AV_Value)  # first, creature's intrinsic AV
+            if self.inventoryobject:
+                # might be wearing armor
+                for name in list(self.inventoryobject.keys()):
+                    item = qindex[name]
+                    if item.av:
+                        av += int(item.av)
+        return str(av) if av else None
 
     @property
     def bits(self):
         """The bits you can get from disassembling the object."""
-        return self.part_TinkerItem_Bits
+        if self.part_TinkerItem_CanDisassemble:
+            return self.part_TinkerItem_Bits
 
     @property
     def bookid(self):
@@ -190,10 +233,22 @@ class QudObject(NodeMixin):
         return self.part_Book_ID
 
     @property
+    @yes_no_none
     def canbuild(self):
         """Whether or not the player can tinker up this item."""
-        if self.inherits_from('Item'):  # don't want to see 'false' on, for example, NPCs
+        if self.part_TinkerItem_CanBuild == 'true':
+            return 'yes'
+        if self.part_TinkerItem_CanDisassemble == 'true':
             return self.part_TinkerItem_CanBuild
+
+    @property
+    @yes_no_none
+    def candisassemble(self):
+        """Whether or not the player can disassemble this item."""
+        if self.part_TinkerItem_CanDisassemble == 'true':
+            return 'yes'
+        if self.part_TinkerItem_CanBuild == 'true':
+            return self.part_TinkerItem_CanDisassemble
 
     @property
     def charge(self):
@@ -205,7 +260,7 @@ class QudObject(NodeMixin):
         """The elemental resistance/weakness the mutation/item/NPC has."""
         if self.part_Armor:
             return self.part_Armor_Cold
-        return self.stat_ColdResistance
+        return self.stat_ColdResistance_Value
 
     @property
     def commerce(self):
@@ -226,19 +281,24 @@ class QudObject(NodeMixin):
     @property
     def desc(self):
         """The short description of the object, with color codes included (ampersands escaped)."""
-        return re.sub('&', '&amp;', self.part_Description_Short)
+        if self.part_Description_Short:
+            return re.sub('&', '&amp;', self.part_Description_Short)
+        else:
+            return ""
 
     @property
     def dv(self):
         dv = None
         if self.inherits_from('Creature'):
-            dv = 0
+            dv = 6
             if self.agility:
-                dv = int((int(self.agility) - 16) / 2)
+                dv += int((int(self.agility) - 16) / 2)
             if self.skill_Acrobatics_Tumble:
                 dv += 1
-        elif self.stat_DV_Value:
-            dv = self.stat_DV_Value
+        elif self.inherits_from('Armor'):
+            dv = self.part_Armor_DV
+        # elif self.stat_DV_Value:  # is this actually needed for anything?
+        #     dv = self.stat_DV_Value
         return str(dv) if dv else None
 
     @property
@@ -253,7 +313,7 @@ class QudObject(NodeMixin):
     @property
     def electric(self):
         """The elemental resistance/weakness the mutation has."""
-        return self.stat_ElectricResistance
+        return self.stat_ElectricResistance_Value
 
     @property
     def extra(self):
@@ -264,14 +324,15 @@ class QudObject(NodeMixin):
     @property
     def heat(self):
         """The elemental resistance/weakness the mutation has."""
-        return self.stat_HeatResistance
+        return self.stat_HeatResistance_Value
 
     @property
     def hp(self):
-        if self.stat_Hitpoints_sValue:
-            return self.stat_Hitpoints_sValue
-        elif self.stat_Hitpoints_Value:
-            return self.stat_Hitpoints_Value
+        if self.inherits_from('Creature'):
+            if self.stat_Hitpoints_sValue:
+                return self.stat_Hitpoints_sValue
+            elif self.stat_Hitpoints_Value:
+                return self.stat_Hitpoints_Value
 
     @property
     def hunger(self):
@@ -310,7 +371,7 @@ class QudObject(NodeMixin):
 
     @property
     def lightradius(self):
-        """Radius of light it gives off."""
+        """Radius of light the object gives off."""
         return self.part_LightSource_Radius
 
     @property
@@ -364,14 +425,14 @@ class QudObject(NodeMixin):
     def metal(self):
         """Whether the object is made out of metal."""
         if self.part_Metal:
-            return 'true'
-        # skipping returning 'false' because it's not interesting to see
+            return 'yes'
+        # skipping returning 'no' because it's not interesting to see
 
     @property
     def pv(self):
         """The base PV, which is by default 4 if not set. Optional."""
         # TODO: does this have meaning for other than MeleeWeapons?
-        if self.inherits_from('MeleeWeapon') or self.part_MeleeWeapon:
+        if self.inherits_from('MeleeWeapon') or self.is_specified('part_MeleeWeapon'):
             pv = 4
             if self.part_MeleeWeapon_PenBonus:
                 pv += int(self.part_MeleeWeapon_PenBonus)
@@ -382,7 +443,7 @@ class QudObject(NodeMixin):
         """If true, adds a row that shows the unpowered pv (4)."""
         # TODO: is this necessary?
         if self.pv:
-            return True
+            return 'yes'
 
     @property
     def renderstr(self):
@@ -397,7 +458,6 @@ class QudObject(NodeMixin):
     @property
     def skill(self):
         """The skill tree required for use."""
-        print("Skill")
         if self.inherits_from('MeleeWeapon') or self.is_specified('part_MeleeWeapon'):
             return self.part_MeleeWeapon_Skill
         if self.inherits_from('MissileWeapon'):
@@ -424,7 +484,10 @@ class QudObject(NodeMixin):
     @property
     def title(self):
         """The display name of the item."""
-        return re.sub('&', '&amp;', self.part_Render_DisplayName)
+        if self.part_Render_DisplayName:
+            return re.sub('&', '&amp;', self.part_Render_DisplayName)
+        else:
+            return self.name
 
     @property
     def tohit(self):
@@ -446,16 +509,16 @@ class QudObject(NodeMixin):
         """Whether this is a two-handed item."""
         if self.inherits_from('MeleeWeapon') or self.inherits_from('MissileWeapon'):
             if self.part_Physics_bUsesTwoSlots:
-                return 'true'
-            return 'false'
+                return 'yes'
+            return 'no'
 
     @property
     def vibro(self):
         """Whether this is a vibro weapon."""
         if self.inherits_from('NaturalWeapon') or self.inherits_from('MeleeWeapon'):
-            if self.tag_VibroWeapon:
-                return 'true'
-            return 'false'
+            if self.part_VibroWeapon:
+                return 'yes'
+            return 'no'
 
     @property
     def weight(self):
@@ -464,7 +527,7 @@ class QudObject(NodeMixin):
 
     @property
     def willpower(self):
-        """The willpower the mutation affects, or the willpower of the creature.."""
+        """The willpower the mutation affects, or the willpower of the creature."""
         if self.inherits_from('Creature'):
             if self.stat_Willpower_sValue:
                 return self.stat_Willpower_sValue

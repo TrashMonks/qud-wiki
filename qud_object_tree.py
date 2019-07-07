@@ -8,9 +8,7 @@ from xml.etree import ElementTree as et
 from pathlib import Path
 
 from config import config
-from qud_object import QudObject
-
-qindex = {}  # fast lookup of name->QudObject
+from qud_object import QudObject, qindex
 
 # Do some repair of invalid XML
 pattern = re.compile("(&#15;)|(&#11;)")
