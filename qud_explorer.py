@@ -80,14 +80,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def init_qud_tree_model(self):
         self.qud_object_model = QStandardItemModel()
+        self.treeView.setModel(self.qud_object_model)
         # self.qud_object_model.setHorizontalHeaderLabels(['Name', 'Display Name'])
         self.items_to_expand = []  # filled out during recursion of the Qud object tree
         # We only need to add Object to the model, since all other Objects are loaded as children:
-        self.qud_object_model.appendRow(
-            self.init_qud_object(self.qud_object_model, self.qud_object_root))
+        root_item = self.init_qud_object(self.qud_object_model, self.qud_object_root)
+        root_item.setSelectable(False)
+        self.qud_object_model.appendRow(root_item)
         for item in self.items_to_expand:
             recursive_expand(item, self.treeView, self.qud_object_model)
-        self.treeView.setModel(self.qud_object_model)
 
     def init_qud_object(self, model: QStandardItemModel, qud_object: QudObject):
         """Recursive function to translate hierarchy from the Qud object AnyTree model to the
