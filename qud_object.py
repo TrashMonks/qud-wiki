@@ -257,6 +257,12 @@ class QudObject(NodeMixin):
         return self.stat_ColdResistance_Value
 
     @property
+    def colorstr(self):
+        """The Qud color code associated with the RenderString."""
+        if self.part_Render_ColorString:
+            return re.sub('&', '&amp;', self.part_Render_ColorString)
+
+    @property
     def commerce(self):
         """The value of the object."""
         if self.inherits_from('Item'):

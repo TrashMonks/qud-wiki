@@ -14,7 +14,7 @@ Templates:
     [image, lv, pv, maxpv, vibro, pvpowered, hp, av, dv,
     ma, tohit, ammo, accuracy, shots, maxammo, maxvol,
     liquidgen, liquidtype, maxcharge, charge, weight, commerce,
-    complexity, tier, bits, canbuild, skill, renderstr, id,
+    complexity, tier, bits, canbuild, skill, colorstr, renderstr, id,
     bookid, lightradius, hunger, thirst, twohanded, metal,
     lightprojectile, extra, strength, agility, toughness,
     intelligence, willpower, ego, acid, electric, cold, heat,
