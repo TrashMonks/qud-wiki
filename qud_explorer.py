@@ -1,8 +1,9 @@
 import sys
+import os
 
 from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon
 from PySide2.QtWidgets import QMainWindow, QApplication, QTreeView, QSizePolicy, QAbstractItemView, \
-    QFileDialog
+    QFileDialog, QLabel
 
 import qud_object_tree
 from config import config
@@ -47,14 +48,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowIcon(icon)
         self.lineEdit.textChanged.connect(self.search_changed)
         self.actionOpen_ObjectBlueprints_xml.triggered.connect(self.open_xml)
+        if os.path.exists('last_xml_location'):
+            with open('last_xml_location') as f:
+                filename = f.read()
+            self.open_xml(filename)
         self.show()
 
-    def open_xml(self):
+    def open_xml(self, filename: None):
         """Browse for and open ObjectBluePrints.xml."""
-        filename = QFileDialog.getOpenFileName()[0]
+        if not filename:
+            filename = QFileDialog.getOpenFileName()[0]
         if filename.endswith('ObjectBlueprints.xml'):
             self.qud_object_root = qud_object_tree.load(filename)
             self.init_qud_tree_model()
+        with open('last_xml_location', 'w') as f:
+            f.write(filename)
+        filename_widget = QLabel(text=filename)
+        self.statusbar.addWidget(filename_widget)
 
     def init_qud_tree_view(self):
         size_policy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
