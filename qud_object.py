@@ -14,6 +14,16 @@ IMAGE_OVERRIDES = config['Templates']['Image overrides']
 qindex = {}  # fast lookup of name->QudObject
 
 
+def escape_ampersands(text: str):
+    """Convert & to &amp; for use in wiki template."""
+    return re.sub('&', '&amp;', text)
+
+
+def strip_qud_color_codes(text: str):
+    """Remove Qud color codes like `&Y` from the provided text."""
+    return re.sub('&.', '', text)
+
+
 def yes_no_none(func):
     """Decorator to convert 'true'/'false'/None, or True/False/None into 'yes'/'no'/None"""
     conv = {'true': 'yes',
@@ -260,7 +270,7 @@ class QudObject(NodeMixin):
     def colorstr(self):
         """The Qud color code associated with the RenderString."""
         if self.part_Render_ColorString:
-            return re.sub('&', '&amp;', self.part_Render_ColorString)
+            return escape_ampersands(self.part_Render_ColorString)
 
     @property
     def commerce(self):
@@ -282,7 +292,7 @@ class QudObject(NodeMixin):
     def desc(self):
         """The short description of the object, with color codes included (ampersands escaped)."""
         if self.part_Description_Short:
-            return re.sub('&', '&amp;', self.part_Description_Short)
+            return escape_ampersands(self.part_Description_Short)
         else:
             return ""
 
@@ -489,7 +499,7 @@ class QudObject(NodeMixin):
     def title(self):
         """The display name of the item."""
         if self.part_Render_DisplayName:
-            return re.sub('&', '&amp;', self.part_Render_DisplayName)
+            return escape_ampersands(self.part_Render_DisplayName)
         else:
             return self.name
 
@@ -537,3 +547,12 @@ class QudObject(NodeMixin):
                 return self.stat_Willpower_sValue
             elif self.stat_Willpower_Value:
                 return self.stat_Willpower_Value
+
+    # UI properties
+    @property
+    def ui_displayname(self):
+        """The display name of the object, with color codes removed. Used in explorer tree."""
+        dname = self.part_Render_DisplayName
+        if dname:
+            dname = strip_qud_color_codes(dname)
+        return dname
