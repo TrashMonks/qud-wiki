@@ -7,6 +7,7 @@ from xml.etree.ElementTree import Element
 from anytree import NodeMixin
 
 from config import config
+from helpers import cp437_to_unicode
 
 IMAGE_OVERRIDES = config['Templates']['Image overrides']
 
@@ -443,8 +444,7 @@ class QudObject(NodeMixin):
         """What the item looks like with tiles mode off."""
         if self.part_Render_RenderString and len(self.part_Render_RenderString) > 1:
             # some RenderStrings are given as CP437 character codes in base 10
-            byte = bytes.fromhex(hex(int(self.part_Render_RenderString))[-2:])
-            return byte.decode(encoding='cp437')
+            return cp437_to_unicode(int(self.part_Render_RenderString))
         else:
             return self.part_Render_RenderString
 
