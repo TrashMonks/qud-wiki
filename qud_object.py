@@ -441,7 +441,12 @@ class QudObject(NodeMixin):
     @property
     def renderstr(self):
         """What the item looks like with tiles mode off."""
-        return self.part_Render_RenderString
+        if self.part_Render_RenderString and len(self.part_Render_RenderString) > 1:
+            # some RenderStrings are given as CP437 character codes in base 10
+            byte = bytes.fromhex(hex(int(self.part_Render_RenderString))[-2:])
+            return byte.decode(encoding='cp437')
+        else:
+            return self.part_Render_RenderString
 
     @property
     def shots(self):
