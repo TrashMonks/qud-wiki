@@ -1,6 +1,18 @@
 import qud_object_tree  # to build the qindex in qud_object.py
 from qud_object import *  # what we are actually testing
 
+TEST_XML_LOC = "D:/SteamLibrary/SteamApps/common/Caves of Qud/CoQ_Data/StreamingAssets/Base/ObjectBlueprints.xml"
+
+qud_object_tree.load(TEST_XML_LOC)
+
+
+def test_escape_ampersands():
+    assert escape_ampersands('&yfloating&G &Yglowsphere') == '&amp;yfloating&amp;G &amp;Yglowsphere'
+
+
+def test_strip_qud_color_codes():
+    assert strip_qud_color_codes('&yfloating&G &Yglowsphere') == 'floating glowsphere'
+
 
 def test_yes_no_none():
     @yes_no_none
@@ -34,6 +46,5 @@ def test_properties():
     obj = qindex['Asphodel']
     assert obj.lv == '30'
     assert obj.hp == '500'
-    assert obj.av == '8'
-    assert obj.dv == '12'
-    assert obj.ma == '12'
+    assert obj.av == '11'  # natural 8 + clay pot
+    assert obj.dv == '12'  # base 6 plus (28 - 16) / 2
