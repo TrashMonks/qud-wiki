@@ -68,6 +68,23 @@ class QudObject(NodeMixin):
                 element_name = element.attrib.pop('Blueprint')
             self.attributes[element.tag][element_name] = element.attrib
 
+    def ui_displayname(self):
+        """The display name of the object, with color codes removed. Used in explorer tree."""
+        dname = ""
+        if self.is_specified('part_Render_DisplayName'):
+            dname = self.part_Render_DisplayName
+            dname = strip_qud_color_codes(dname)
+        return dname
+
+    def ui_inheritance_path(self) -> str:
+        """Return a textual representation of this object's inheritance path."""
+        text = self.name
+        ancestor = self.parent
+        while ancestor is not None:
+            text = ancestor.name + "➜" + text
+            ancestor = ancestor.parent
+        return text
+
     def inherits_from(self, name: str):
         """Returns True if this object inherits from the object named 'name', False otherwise."""
         if self.is_root:
@@ -547,12 +564,3 @@ class QudObject(NodeMixin):
                 return self.stat_Willpower_sValue
             elif self.stat_Willpower_Value:
                 return self.stat_Willpower_Value
-
-    # UI properties
-    @property
-    def ui_displayname(self):
-        """The display name of the object, with color codes removed. Used in explorer tree."""
-        dname = self.part_Render_DisplayName
-        if dname:
-            dname = strip_qud_color_codes(dname)
-        return dname

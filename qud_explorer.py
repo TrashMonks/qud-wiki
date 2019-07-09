@@ -3,19 +3,12 @@ import os
 
 from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon
 from PySide2.QtWidgets import QMainWindow, QApplication, QTreeView, QSizePolicy, QAbstractItemView, \
-    QFileDialog, QLabel
+    QFileDialog, QLabel, QHeaderView
 
 import qud_object_tree
 from config import config
 from qud_explorer_window import Ui_MainWindow
 from qud_object import QudObject
-
-
-def recursive_expand(item: QStandardItem, treeview: QTreeView, model: QStandardItemModel):
-    index = model.indexFromItem(item)
-    treeview.expand(index)
-    if item.parent() is not None:
-        recursive_expand(item.parent(), treeview, model)
 
 
 class QudTreeView(QTreeView):
@@ -42,16 +35,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.app = app
         self.setupUi(self)  # lay out the inherited UI as in the graphical designer
         # instantiate custom QTreeView subclass
-        self.treeView = QudTreeView(self.tree_selection_handler, self.centralwidget)
+        self.treeView = QudTreeView(self.tree_selection_handler, self.tree_target_widget)
         self.init_qud_tree_view()
         icon = QIcon("book.png")
         self.setWindowIcon(icon)
-        self.lineEdit.textChanged.connect(self.search_changed)
+        self.search_line_edit.textChanged.connect(self.search_changed)
         self.actionOpen_ObjectBlueprints_xml.triggered.connect(self.open_xml)
         if os.path.exists('last_xml_location'):
             with open('last_xml_location') as f:
                 filename = f.read()
             self.open_xml(filename)
+        self.expand_all_button.clicked.connect(self.expand_all)
+        self.collapse_all_button.clicked.connect(self.collapse_all)
+        self.restore_all_button.clicked.connect(self.expand_default)
         self.show()
 
     def open_xml(self, filename: None):
@@ -63,8 +59,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.init_qud_tree_model()
         with open('last_xml_location', 'w') as f:
             f.write(filename)
-        filename_widget = QLabel(text=filename)
-        self.statusbar.addWidget(filename_widget)
+        self.setWindowTitle("Qud Blueprint Explorer - " + filename)
 
     def init_qud_tree_view(self):
         size_policy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -81,42 +76,80 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def init_qud_tree_model(self):
         self.qud_object_model = QStandardItemModel()
         self.treeView.setModel(self.qud_object_model)
-        # self.qud_object_model.setHorizontalHeaderLabels(['Name', 'Display Name'])
+        self.qud_object_model.setHorizontalHeaderLabels(['Name', 'Display Name'])
+        header = self.treeView.header()
+        header.setSectionResizeMode(QHeaderView.ResizeToContents)
         self.items_to_expand = []  # filled out during recursion of the Qud object tree
+
+        # # Multi column test
+        # col1 = QStandardItem('id')
+        # col2 = QStandardItem('displayname')
+        # self.qud_object_model.appendRow([col1, col2])
+
         # We only need to add Object to the model, since all other Objects are loaded as children:
-        root_item = self.init_qud_object(self.qud_object_model, self.qud_object_root)
-        root_item.setSelectable(False)
-        self.qud_object_model.appendRow(root_item)
-        for item in self.items_to_expand:
-            recursive_expand(item, self.treeView, self.qud_object_model)
+        root = self.init_qud_object(self.qud_object_model, self.qud_object_root)
+        root.setSelectable(False)
+        display_name = QStandardItem(root.data().ui_displayname())
+        display_name.setSelectable(False)
+        self.qud_object_model.appendRow([root, display_name])
+        self.expand_default()
 
     def init_qud_object(self, model: QStandardItemModel, qud_object: QudObject):
         """Recursive function to translate hierarchy from the Qud object AnyTree model to the
         Qt StandardItemModel model."""
         item = QStandardItem(qud_object.name)
-        if not qud_object.is_leaf:
-            for child in qud_object.children:
-                item.appendRow(self.init_qud_object(model, child))
+        display_name = QStandardItem(qud_object.ui_displayname())
+        item.setData(qud_object)
         if qud_object.is_specified('tag_BaseObject'):
             item.setSelectable(False)
-        item.setCheckable(True)
-        item.setData(qud_object)
+        display_name.setSelectable(False)
+        if not qud_object.is_leaf:
+            for child in qud_object.children:
+                sub_item = self.init_qud_object(model, child)
+                sub_display_name = QStandardItem(child.ui_displayname())
+                sub_display_name.setSelectable(False)
+                item.appendRow([sub_item, sub_display_name])
 
         if qud_object.name in config['Interface']['Initial expansion targets']:
             self.items_to_expand.append(item)
         return item
 
+    def recursive_expand(self, item: QStandardItem):
+        index = self.qud_object_model.indexFromItem(item)
+        self.treeView.expand(index)
+        if item.parent() is not None:
+            self.recursive_expand(item.parent())
+
     def tree_selection_handler(self, indices):
         """Registered with custom QudTreeView class as the handler for selection."""
+        self.statusbar.clearMessage()
         text = ""
         for index in indices:
-            item = self.qud_object_model.itemFromIndex(index)
-            qud_object = item.data()
-            text += qud_object.wikify()
+            if index.column() == 0:
+                item = self.qud_object_model.itemFromIndex(index)
+                qud_object = item.data()
+                text += qud_object.wikify()
+                self.statusbar.showMessage(qud_object.ui_inheritance_path())
         self.plainTextEdit.setPlainText(text)
 
+    def collapse_all(self):
+        self.treeView.collapseAll()
+
+    def expand_all(self):
+        self.treeView.expandAll()
+
+    def expand_default(self):
+        self.collapse_all()
+        for item in self.items_to_expand:
+            self.recursive_expand(item)
+
     def search_changed(self):
-        pass
+        self.treeView.keyboardSearch(self.search_line_edit.text())
+        selected = self.treeView.selectedIndexes()
+        if len(selected) > 0:
+            item = self.qud_object_model.itemFromIndex(selected[0]).data()
+            print(item)
+            self.recursive_expand(self.qud_object_model.itemFromIndex(selected[0]))
 
 
 app = QApplication(sys.argv)
