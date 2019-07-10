@@ -7,7 +7,7 @@ from xml.etree.ElementTree import Element
 from anytree import NodeMixin
 
 from config import config
-from helpers import cp437_to_unicode
+from helpers import cp437_to_unicode, parse_svalue
 
 IMAGE_OVERRIDES = config['Templates']['Image overrides']
 
@@ -86,7 +86,9 @@ class QudObject(NodeMixin):
         return text
 
     def inherits_from(self, name: str):
-        """Returns True if this object inherits from the object named 'name', False otherwise."""
+        """Returns True if this object is 'name' or inherits from 'name', False otherwise."""
+        if self.name == name:
+            return True
         if self.is_root:
             return False
         if self.parent.name == name:
@@ -180,7 +182,18 @@ class QudObject(NodeMixin):
             if getattr(self, stat) is not None:
                 output += f"| {stat} = {getattr(self, stat)}\n"
         output += "}}\n"
+        category = self.wiki_category()
+        if category:
+            output += "[[Category:" + category + "]]\n"
         return output
+
+    def wiki_category(self):
+        cat = None
+        for config_cat, names in config['Wiki']['Categories'].items():
+            for name in names:
+                if self.inherits_from(name):
+                    cat = config_cat
+        return cat
 
     def __str__(self):
         return self.name + ' ' + str(self.attributes)
@@ -237,6 +250,9 @@ class QudObject(NodeMixin):
             if self.inventoryobject:
                 # might be wearing armor
                 for name in list(self.inventoryobject.keys()):
+                    if name[0] in '*#@':
+                        # special values like '*Junk 1'
+                        continue
                     item = qindex[name]
                     if item.av:
                         av += int(item.av)

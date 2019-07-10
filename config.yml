@@ -23,3 +23,16 @@ Templates:
     # If the image for an object was uploaded under a different name than in the
     # game data, override it here:
     Asphodel: Earl_asphodel.png
+
+Wiki:
+  Categories:
+    Items: [Item]
+    Weapons: [MeleeWeapon, MissileWeapon]
+    Equipment: [Armor, Shield]
+    Energy cells: [Energy Cell]
+    Thrown weapons: [BaseThrownWeapon]
+    Plants: [Plant]
+    Creatures: [Creature]
+    Characters: [Phinae Hoshaiah, Barathrumite, Argyve, ElderBob, Mehmet, Warden Ualraig, Warden Esthers,
+      Eskhind, Meyehind, Liihart, Isahind, Neelahind, Keh, Kesehind, Angohind, Lulihart, AgateSeveranceStar,
+      Mayor Nuntu, Oboroqoru, Asphodel, Yurl, Euclid]
