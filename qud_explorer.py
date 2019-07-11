@@ -89,7 +89,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # We only need to add Object to the model, since all other Objects are loaded as children:
         root = self.init_qud_object(self.qud_object_model, self.qud_object_root)
         root.setSelectable(False)
-        display_name = QStandardItem(root.data().ui_displayname())
+        display_name = QStandardItem(root.data().displayname)
         display_name.setSelectable(False)
         self.qud_object_model.appendRow([root, display_name])
         self.expand_default()
@@ -98,7 +98,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """Recursive function to translate hierarchy from the Qud object AnyTree model to the
         Qt StandardItemModel model."""
         item = QStandardItem(qud_object.name)
-        display_name = QStandardItem(qud_object.ui_displayname())
+        display_name = QStandardItem(qud_object.displayname)
         item.setData(qud_object)
         if qud_object.is_specified('tag_BaseObject'):
             item.setSelectable(False)
@@ -106,7 +106,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if not qud_object.is_leaf:
             for child in qud_object.children:
                 sub_item = self.init_qud_object(model, child)
-                sub_display_name = QStandardItem(child.ui_displayname())
+                sub_display_name = QStandardItem(child.displayname)
                 sub_display_name.setSelectable(False)
                 item.appendRow([sub_item, sub_display_name])
 

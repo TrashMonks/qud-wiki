@@ -13,10 +13,10 @@ Templates:
     # The fields that (if applicable) will be generated for each item, in this order:
     # (title comes first, but is not listed here)
     [image, lv, pv, maxpv, vibro, pvpowered, hp, av, dv, ma, tohit, ammo, accuracy, shots, maxammo,
-     maxvol, liquidgen, liquidtype, maxcharge, charge, weight, commerce, complexity, tier, bits,
-     canbuild, skill, colorstr, renderstr, id, bookid, lightradius, hunger, thirst, twohanded,
-     metal, lightprojectile, extra, strength, agility, toughness, intelligence, willpower, ego,
-     acid, electric, cold, heat, desc]
+     maxvol, liquidgen, liquidtype, maxcharge, chargeused, chargeperdram, weight, commerce,
+     complexity, tier, bits, canbuild, skill, colorstr, renderstr, id, bookid, lightradius, hunger,
+     thirst, twohanded, metal, lightprojectile, extra, strength, agility, toughness, intelligence,
+     willpower, ego, acid, electric, cold, heat, desc, wornon, usesslots]
   Image overrides:
     # If the image for an object was uploaded under a different name than in the
     # game data, override it here:

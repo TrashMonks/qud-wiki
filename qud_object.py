@@ -68,14 +68,6 @@ class QudObject(NodeMixin):
                 element_name = element.attrib.pop('Blueprint')
             self.attributes[element.tag][element_name] = element.attrib
 
-    def ui_displayname(self):
-        """The display name of the object, with color codes removed. Used in explorer tree."""
-        dname = ""
-        if self.is_specified('part_Render_DisplayName'):
-            dname = self.part_Render_DisplayName
-            dname = strip_qud_color_codes(dname)
-        return dname
-
     def ui_inheritance_path(self) -> str:
         """Return a textual representation of this object's inheritance path."""
         text = self.name
@@ -288,7 +280,12 @@ class QudObject(NodeMixin):
             return self.part_TinkerItem_CanDisassemble
 
     @property
-    def charge(self):
+    def chargeperdram(self):
+        """How much charge is available per dram (for liquid cells)."""
+        return self.part_LiquidFueledEnergyCell_ChargePerDram
+
+    @property
+    def chargeused(self):
         """How much charge is used per shot."""
         return self.part_EnergyAmmoLoader_ChargeUse
 
@@ -328,6 +325,15 @@ class QudObject(NodeMixin):
             return escape_ampersands(self.part_Description_Short)
         else:
             return ""
+
+    @property
+    def displayname(self):
+        """The display name of the object, with color codes removed. Used in UI and wiki."""
+        dname = ""
+        if self.is_specified('part_Render_DisplayName'):
+            dname = self.part_Render_DisplayName
+            dname = strip_qud_color_codes(dname)
+        return dname
 
     @property
     def dv(self):
@@ -393,9 +399,9 @@ class QudObject(NodeMixin):
         if self.name in IMAGE_OVERRIDES:
             return IMAGE_OVERRIDES[self.name]
         else:
-            # "Creatures/sw_flower.bmp" becomes "sw_flower.png"
-            tile = self.part_Render_Tile.split('/')[-1]
-            tile = re.sub('bmp$', 'png', tile)
+            tile = self.displayname
+            tile = re.sub(r"[^a-zA-Z\d ]", '', tile)
+            tile = tile.casefold() + '.png'
             return tile
 
     @property
@@ -560,6 +566,10 @@ class QudObject(NodeMixin):
             return 'no'
 
     @property
+    def usesslots(self):
+        return self.tag_UsesSlots_Value
+
+    @property
     def vibro(self):
         """Whether this is a vibro weapon."""
         if self.inherits_from('NaturalWeapon') or self.inherits_from('MeleeWeapon'):
@@ -580,3 +590,13 @@ class QudObject(NodeMixin):
                 return self.stat_Willpower_sValue
             elif self.stat_Willpower_Value:
                 return self.stat_Willpower_Value
+
+    @property
+    def wornon(self):
+        """The slot(s) that an item gets equipped to."""
+        wornon = None
+        if self.part_Shield_WornOn:
+            wornon = self.part_Shield_WornOn
+        if self.part_Armor_WornOn:
+            wornon = self.part_Armor_WornOn
+        return wornon
