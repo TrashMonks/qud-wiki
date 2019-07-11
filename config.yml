@@ -4,21 +4,19 @@ Interface:
   # Interface options
   Initial expansion targets:
     # These object category IDs will be expanded when the tree is initialized:
-    [Food, MeleeWeapon, MissileWeapon, Armor, Shield, Token, LightSource, Tool, Tonic, Trinket, Energy Cell, Security Card, Barathrumite, SapientMutatedFlower]
+    [Food, MeleeWeapon, MissileWeapon, Armor, Shield, Token, LightSource, Tool, Tonic, Trinket,
+     Energy Cell, Security Card, Barathrumite, SapientMutatedFlower]
 
 Templates:
   # Options controlling the generation of wiki infobox templates
   Fields:
     # The fields that (if applicable) will be generated for each item, in this order:
     # (title comes first, but is not listed here)
-    [image, lv, pv, maxpv, vibro, pvpowered, hp, av, dv,
-    ma, tohit, ammo, accuracy, shots, maxammo, maxvol,
-    liquidgen, liquidtype, maxcharge, charge, weight, commerce,
-    complexity, tier, bits, canbuild, skill, colorstr, renderstr, id,
-    bookid, lightradius, hunger, thirst, twohanded, metal,
-    lightprojectile, extra, strength, agility, toughness,
-    intelligence, willpower, ego, acid, electric, cold, heat,
-    desc]
+    [image, lv, pv, maxpv, vibro, pvpowered, hp, av, dv, ma, tohit, ammo, accuracy, shots, maxammo,
+     maxvol, liquidgen, liquidtype, maxcharge, charge, weight, commerce, complexity, tier, bits,
+     canbuild, skill, colorstr, renderstr, id, bookid, lightradius, hunger, thirst, twohanded,
+     metal, lightprojectile, extra, strength, agility, toughness, intelligence, willpower, ego,
+     acid, electric, cold, heat, desc]
   Image overrides:
     # If the image for an object was uploaded under a different name than in the
     # game data, override it here:
@@ -26,6 +24,8 @@ Templates:
 
 Wiki:
   Categories:
+    # Each wiki category is followed by a list of nodes in the inheritance tree whose child objects
+    # should be in that category. Objects may also be explicitly specified.
     Items: [Item]
     Weapons: [MeleeWeapon, MissileWeapon]
     Equipment: [Armor, Shield]
@@ -33,6 +33,7 @@ Wiki:
     Thrown weapons: [BaseThrownWeapon]
     Plants: [Plant]
     Creatures: [Creature]
-    Characters: [Phinae Hoshaiah, Barathrumite, Argyve, ElderBob, Mehmet, Warden Ualraig, Warden Esthers,
-      Eskhind, Meyehind, Liihart, Isahind, Neelahind, Keh, Kesehind, Angohind, Lulihart, AgateSeveranceStar,
-      Mayor Nuntu, Oboroqoru, Asphodel, Yurl, Euclid]
+    Characters: [Phinae Hoshaiah, Barathrumite, Argyve, ElderBob, Mehmet, Warden Ualraig,
+                 Warden Esthers, Eskhind, Meyehind, Liihart, Isahind, Neelahind, Keh, Kesehind,
+                 Angohind, Lulihart, AgateSeveranceStar, Mayor Nuntu, Oboroqoru, Asphodel, Yurl,
+                 Euclid]

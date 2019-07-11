@@ -11,13 +11,28 @@ from qud_object import QudObject, qindex
 
 def load(path):
     """Load ObjectBlueprints.xml from the specified filepath and return a reference to the root."""
-    # Do some repair of invalid XML
-    pattern = re.compile("(&#15;)|(&#11;)")
-    repaired = []
+    # Do some repair of invalid XML:
+    # First, delete some invalid characters
+    pat_invalid = re.compile("(&#15;)|(&#11;)")
     with open(path, 'r', encoding='utf-8') as f:
-        for line in f:
-            repaired.append(pattern.sub('', line))
-    raw = et.fromstringlist(repaired)
+        contents = f.read()
+    contents = re.sub(pat_invalid, '', contents)
+
+    # Second, replace line breaks inside attributes with proper XML line breaks
+    # ^\s*<[^!][^>]*\n[^>]*>
+    pat_linebreaks = r"^\s*<[^!][^>]*\n.*?>"
+    match = re.search(pat_linebreaks, contents, re.MULTILINE)
+    while match:
+        before = match.string[:match.start()]
+        fixed = match.string[match.start():match.end()].replace('\n', '&#10;')
+        after = match.string[match.end():]
+        contents = before + fixed + after
+        match = re.search(pat_linebreaks, contents, re.MULTILINE)
+    # Uncomment to have a diff-able file to double check XML repairs.
+    # with open('test_output.xml', 'w', encoding='utf-8') as f:
+    #     f.write(contents)
+
+    raw = et.fromstring(contents)
 
     # Build the Qud object hierarchy from the XML data
     for element in raw:
