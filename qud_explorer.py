@@ -8,7 +8,7 @@ from PySide2.QtWidgets import QMainWindow, QApplication, QTreeView, QSizePolicy,
 import qud_object_tree
 from config import config
 from qud_explorer_window import Ui_MainWindow
-from qud_object import QudObject
+from qudobject import QudObject
 
 
 class QudTreeView(QTreeView):
@@ -144,12 +144,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.recursive_expand(item)
 
     def search_changed(self):
-        self.treeView.keyboardSearch(self.search_line_edit.text())
-        selected = self.treeView.selectedIndexes()
-        if len(selected) > 0:
-            item = self.qud_object_model.itemFromIndex(selected[0]).data()
-            print(item)
-            self.recursive_expand(self.qud_object_model.itemFromIndex(selected[0]))
+        if self.search_line_edit.text() != '':
+            self.treeView.keyboardSearch(self.search_line_edit.text())
+            selected = self.treeView.selectedIndexes()
+            if len(selected) > 0:
+                item = self.qud_object_model.itemFromIndex(selected[0]).data()
+                self.recursive_expand(self.qud_object_model.itemFromIndex(selected[0]))
 
 
 app = QApplication(sys.argv)

@@ -1,7 +1,7 @@
 import os
 
-import qud_object_tree  # to build the qindex in qud_object.py
-from qud_object import *  # what we are actually testing
+import qud_object_tree  # to build the qindex in qudobject.py
+from qudobject import *  # what we are actually testing
 
 # fallback location
 TEST_XML_LOC = "D:/SteamLibrary/SteamApps/common/Caves of Qud/CoQ_Data/StreamingAssets/Base/ObjectBlueprints.xml"
