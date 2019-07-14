@@ -145,6 +145,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def search_changed(self):
         if self.search_line_edit.text() != '':
+            self.treeView.scrollToTop()  # keyboardSearch is bad
+            self.treeView.clearSelection()  # keyboardSearch is bad
             self.treeView.keyboardSearch(self.search_line_edit.text())
             selected = self.treeView.selectedIndexes()
             if len(selected) > 0:

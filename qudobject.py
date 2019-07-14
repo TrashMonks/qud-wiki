@@ -208,6 +208,43 @@ class QudObject(NodeMixin):
         return 'QudObject(' + self.name + ')'
 
     # PROPERTY HELPERS
+    # Helper methods to simplify the calculation of properties, further below.
+    # Sorted alphabetically. All return types should be strings.
+    def attribute_helper(self, attr: str):
+        """Helper for retrieving attributes (Strength, etc.)"""
+        val = None
+        if self.inherits_from('Creature'):
+            if getattr(self, f'stat_{attr}_sValue'):
+                val = getattr(self, f'stat_{attr}_sValue')
+            elif getattr(self, f'stat_{attr}_Value'):
+                val = getattr(self, f'stat_{attr}_Value')
+        if val and ',' in val:
+            val = self.parse_svalue_tier(val)
+        boost = getattr(self, f'stat_{attr}_Boost')
+        if boost:
+            val += f' (+{boost} boost)'
+        return val
+
+    def parse_svalue_tier(self, svalue: str):
+        """Partial parsing of sValue format dice, substituting `t`.
+
+        Example:
+            "16,1d3,(t-1)d2"
+            on a creature of unspecified level, using the formula
+            t = level // 5 + 1,
+            we take level to be 1, and return
+            "16,1d3,0d2"
+            """
+        if self.lv is None:
+            level = 1
+        else:
+            level = int(self.lv)
+        t = level // 5 + 1
+        svalue = svalue.replace('(t)', str(t))
+        svalue = svalue.replace('(t-1)', str(t-1))
+        svalue = svalue.replace('(t+1)', str(t+1))
+        return svalue
+
     def resistance(self, element):
         """The elemental resistance/weakness the equipment or NPC has.
         Helper function for properties."""
@@ -232,15 +269,7 @@ class QudObject(NodeMixin):
     @property
     def agility(self):
         """The agility the mutation affects, or the agility of the creature."""
-        val = None
-        if self.inherits_from('Creature'):
-            if self.stat_Agility_sValue:
-                val = self.stat_Agility_sValue
-            elif self.stat_Agility_Value:
-                val = self.stat_Agility_Value
-        # if val and ',' in val:
-        #     val = parse_svalue(val)
-        return val
+        return self.attribute_helper('Agility')
 
     @property
     def ammo(self):
@@ -387,7 +416,7 @@ class QudObject(NodeMixin):
         if self.inherits_from('Creature'):
             dv = 6
             if self.agility:
-                dv += int((int(self.agility) - 16) / 2)
+                dv += (int(self.agility) - 16) // 2
             if self.skill_Acrobatics_Tumble:
                 dv += 1
         elif self.inherits_from('Armor'):
@@ -399,11 +428,7 @@ class QudObject(NodeMixin):
     @property
     def ego(self):
         """The ego the mutation effects, or the ego of the creature."""
-        if self.inherits_from('Creature'):
-            if self.stat_Ego_sValue:
-                return self.stat_Ego_sValue
-            elif self.stat_Ego_Value:
-                return self.stat_Ego_Value
+        return self.attribute_helper('Ego')
 
     @property
     def electric(self):
@@ -475,11 +500,7 @@ class QudObject(NodeMixin):
     @property
     def intelligence(self):
         """The intelligence the mutation affects, or the intelligence of the creature."""
-        if self.inherits_from('Creature'):
-            if self.stat_Intelligence_sValue:
-                return self.stat_Intelligence_sValue
-            elif self.stat_Intelligence_Value:
-                return self.stat_Intelligence_Value
+        return self.attribute_helper('Intelligence')
 
     @property
     def lightprojectile(self):
@@ -625,11 +646,7 @@ class QudObject(NodeMixin):
     @property
     def strength(self):
         """The strength the mutation affects, or the strength of the creature."""
-        if self.inherits_from('Creature'):
-            if self.stat_Strength_sValue:
-                return self.stat_Strength_sValue
-            elif self.stat_Strength_Value:
-                return self.stat_Strength_Value
+        return self.attribute_helper('Strength')
 
     @property
     def thirst(self):
@@ -657,11 +674,7 @@ class QudObject(NodeMixin):
     @property
     def toughness(self):
         """The toughness the mutation affects, or the toughness of the creature."""
-        if self.inherits_from('Creature'):
-            if self.stat_Toughness_sValue:
-                return self.stat_Toughness_sValue
-            elif self.stat_Toughness_Value:
-                return self.stat_Toughness_Value
+        return self.attribute_helper('Toughness')
 
     @property
     def twohanded(self):
@@ -699,11 +712,7 @@ class QudObject(NodeMixin):
     @property
     def willpower(self):
         """The willpower the mutation affects, or the willpower of the creature."""
-        if self.inherits_from('Creature'):
-            if self.stat_Willpower_sValue:
-                return self.stat_Willpower_sValue
-            elif self.stat_Willpower_Value:
-                return self.stat_Willpower_Value
+        return self.attribute_helper('Willpower')
 
     @property
     def wornon(self):
