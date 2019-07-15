@@ -1,3 +1,5 @@
+"""pytest functions to test functions in qudobject.py"""
+
 import os
 
 import qud_object_tree  # to build the qindex in qudobject.py
@@ -41,7 +43,7 @@ def test_inherits_from():
     assert obj.inherits_from('Object')
     assert not obj.inherits_from('Widget')
     obj = qindex['Object']
-    assert not obj.inherits_from('Object')
+    assert obj.inherits_from('Object')
 
 
 def test_is_specified():
