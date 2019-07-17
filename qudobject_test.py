@@ -6,7 +6,7 @@ import qud_object_tree  # to build the qindex in qudobject.py
 from qudobject import *  # what we are actually testing
 
 # fallback location
-TEST_XML_LOC = "D:/SteamLibrary/SteamApps/common/Caves of Qud/CoQ_Data/StreamingAssets/Base/ObjectBlueprints.xml"
+TEST_XML_LOC = "C:/Steam/SteamApps/common/Caves of Qud/CoQ_Data/StreamingAssets/Base/ObjectBlueprints.xml"
 
 if os.path.exists('last_xml_location'):
     with open('last_xml_location') as f:

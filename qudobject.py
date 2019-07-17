@@ -2,12 +2,14 @@
 QudObject.part_name_attribute"""
 
 import re
+from copy import deepcopy
 from xml.etree.ElementTree import Element
 
 from anytree import NodeMixin
 
 from config import config
 from helpers import cp437_to_unicode
+from svalue import sValue
 
 IMAGE_OVERRIDES = config['Templates']['Image overrides']
 
@@ -73,6 +75,46 @@ class QudObject(NodeMixin):
                 # for tag: inventoryobject
                 element_name = element.attrib.pop('Blueprint')
             self.attributes[element.tag][element_name] = element.attrib
+        self.all_attributes = self.resolve_inheritance()
+
+    def resolve_inheritance(self):
+        """Fetch a dictionary with all inherited tags and attributes.
+
+        Recurses back all the way to the root Object and combines all data into
+        the returned dict. Attributes of tags in children overwrite ancestors.
+
+        Example:
+          <object Name="BaseFarmer" Inherits="NPC">
+            <part Name="Render" DisplayName="[farmer]" ...
+        with the child object:
+          <object Name="BaseWatervineFarmer" Inherits="BaseFarmer">
+            <part Name="Render" DisplayName="watervine farmer" ...
+        overwrites the DisplayName but not the rest of the Render dict.
+        """
+        if self.name == 'Object':
+            return self.attributes
+        inherited = self.parent.all_attributes
+        all_attributes = deepcopy(self.attributes)
+        for tag in inherited:
+            if not tag in all_attributes:
+                all_attributes[tag] = {}
+            for name in inherited[tag]:
+                if not name in all_attributes[tag]:
+                    all_attributes[tag][name] = {}
+                for attr in inherited[tag][name]:
+                    if not attr in all_attributes[tag][name]:
+                        # parent has this attribute but we don't
+                        # print(tag, name, attr, "didn't exist in exists in", self.name)
+                        if inherited[tag][name][attr] == '*noinherit':
+                            # this attribute shows that its name should not be inherited
+                            del all_attributes[tag][name]
+                        else:
+                            all_attributes[tag][name][attr] = inherited[tag][name][attr]
+                    else:
+                        # we already had this defined for us - don't overwrite
+                        # print(tag, name, attr, "already exists in", self.name)
+                        pass
+        return all_attributes
 
     def ui_inheritance_path(self) -> str:
         """Return a textual representation of this object's inheritance path."""
@@ -164,16 +206,13 @@ class QudObject(NodeMixin):
             raise AttributeError
         path = attr.split('_')
         try:
-            seek = self.attributes[path[0]]  # XML tag portion
+            seek = self.all_attributes[path[0]]  # XML tag portion
             if len(path) > 1:
                 seek = seek[path[1]]  # Name portion
             if len(path) > 2:
                 seek = seek[path[2]]  # attribute portion
         except KeyError:
-            if self.is_root:
-                seek = None
-            else:
-                seek = self.parent.__getattr__(attr)
+            seek = None
         return seek
 
     def wikify(self):
@@ -215,35 +254,13 @@ class QudObject(NodeMixin):
         val = None
         if self.inherits_from('Creature'):
             if getattr(self, f'stat_{attr}_sValue'):
-                val = getattr(self, f'stat_{attr}_sValue')
+                val = str(sValue(getattr(self, f'stat_{attr}_sValue'), level=int(self.lv)))
             elif getattr(self, f'stat_{attr}_Value'):
                 val = getattr(self, f'stat_{attr}_Value')
-        if val and ',' in val:
-            val = self.parse_svalue_tier(val)
         boost = getattr(self, f'stat_{attr}_Boost')
         if boost:
             val += f' (+{boost} boost)'
         return val
-
-    def parse_svalue_tier(self, svalue: str):
-        """Partial parsing of sValue format dice, substituting `t`.
-
-        Example:
-            "16,1d3,(t-1)d2"
-            on a creature of unspecified level, using the formula
-            t = level // 5 + 1,
-            we take level to be 1, and return
-            "16,1d3,0d2"
-            """
-        if self.lv is None:
-            level = 1
-        else:
-            level = int(self.lv)
-        t = level // 5 + 1
-        svalue = svalue.replace('(t)', str(t))
-        svalue = svalue.replace('(t-1)', str(t-1))
-        svalue = svalue.replace('(t+1)', str(t+1))
-        return svalue
 
     def resistance(self, element):
         """The elemental resistance/weakness the equipment or NPC has.
@@ -413,16 +430,38 @@ class QudObject(NodeMixin):
     @property
     def dv(self):
         dv = None
-        if self.inherits_from('Creature'):
-            dv = 6
-            if self.agility:
-                dv += (int(self.agility) - 16) // 2
-            if self.skill_Acrobatics_Tumble:
-                dv += 1
-        elif self.inherits_from('Armor'):
+        if self.inherits_from('Armor'):
+            # the 'DV' we are interested in is the DV modifier of the armor
             dv = self.part_Armor_DV
-        # elif self.stat_DV_Value:  # is this actually needed for anything?
-        #     dv = self.stat_DV_Value
+        elif self.inherits_from('Creature'):
+            # the 'DV' here is the actual DV of the creature or NPC, after:
+            # skills, agility modifier (which may be a range determined by
+            # dice rolls, and which changes DV by 1 for every 2 points of agility
+            # over/under 16), and any equipment that is guaranteed to be worn
+            dv = 6  # base DV of all Creatures
+            if self.skill_Acrobatics_Dodge:
+                # the 'Spry' skill
+                dv += 2
+            if self.skill_Acrobatics_Tumble:
+                # the 'Tumble' skill
+                dv += 1
+            ag = self.agility
+            if ag:
+                if '-' in ag:
+                    # a range, e.g. '18 - 20'
+                    lower, upper = ag.split('-')
+                    dvlower = dv + (int(lower) - 16) // 2
+                    dvupper = dv + (int(upper) - 16) // 2
+                    if dvlower == dvupper:
+                        dv = dvlower
+                    else:
+                        # agility was a range so DV may be a range as well
+                        dv = str(dvlower) + ' - ' + str(dvupper)
+                else:
+                    # an integer, not a range
+                    dv += (int(ag) - 16) // 2
+        if self.stat_DV_Value:  # this seems to be an override
+            dv = self.stat_DV_Value
         return str(dv) if dv else None
 
     @property
