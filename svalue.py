@@ -13,7 +13,6 @@ class sValue:
         __str__: Return the source sValue string
     """
     def __init__(self, svalue: str, level: int = 1):
-        # TODO: include Boost
         self.svalue = svalue
         t = level // 5 + 1
         # substitute creature tier in dice
@@ -61,4 +60,10 @@ class sValue:
         return sum(self) // len(self)
 
     def __str__(self):
-        return self.svalue
+        if len(self) == 1:
+            return str(self.low)
+        else:
+            return str(self.low) + " - " + str(self.high)
+
+    def __repr__(self):
+        return "sValue " + self.svalue

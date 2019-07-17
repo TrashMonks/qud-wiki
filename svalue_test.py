@@ -5,7 +5,7 @@ from svalue import sValue
 
 def test_creation():
     _ = sValue('16,1d3,(t-1)d2')
-    assert str(_) == '16,1d3,(t-1)d2'
+    assert _.__repr__() == 'sValue 16,1d3,(t-1)d2'
 
 
 def test_simple():

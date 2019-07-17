@@ -75,7 +75,7 @@ class QudObject(NodeMixin):
                 # for tag: inventoryobject
                 element_name = element.attrib.pop('Blueprint')
             self.attributes[element.tag][element_name] = element.attrib
-        self.all_attributes = self.resolve_inheritance()
+        self.all_attributes, self.inherited = self.resolve_inheritance()
 
     def resolve_inheritance(self):
         """Fetch a dictionary with all inherited tags and attributes.
@@ -92,7 +92,7 @@ class QudObject(NodeMixin):
         overwrites the DisplayName but not the rest of the Render dict.
         """
         if self.name == 'Object':
-            return self.attributes
+            return self.attributes, {}
         inherited = self.parent.all_attributes
         all_attributes = deepcopy(self.attributes)
         for tag in inherited:
@@ -114,7 +114,7 @@ class QudObject(NodeMixin):
                         # we already had this defined for us - don't overwrite
                         # print(tag, name, attr, "already exists in", self.name)
                         pass
-        return all_attributes
+        return all_attributes, inherited
 
     def ui_inheritance_path(self) -> str:
         """Return a textual representation of this object's inheritance path."""

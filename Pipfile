@@ -11,6 +11,7 @@ pyinstaller = "*"
 pyyaml = "*"
 anytree = "*"
 pyside2 = "*"
+mwclient = "*"
 
 [requires]
 python_version = "3.7"
