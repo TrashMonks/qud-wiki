@@ -1,7 +1,7 @@
 import sys
 import os
 
-from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon
+from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon, QPixmap
 from PySide2.QtWidgets import QMainWindow, QApplication, QTreeView, QSizePolicy, QAbstractItemView, \
     QFileDialog, QLabel, QHeaderView
 
@@ -76,7 +76,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def init_qud_tree_model(self):
         self.qud_object_model = QStandardItemModel()
         self.treeView.setModel(self.qud_object_model)
-        self.qud_object_model.setHorizontalHeaderLabels(['Name', 'Display Name'])
+        self.qud_object_model.setHorizontalHeaderLabels(['Name', 'Display Name', 'Tile'])
         header = self.treeView.header()
         header.setSectionResizeMode(QHeaderView.ResizeToContents)
         self.items_to_expand = []  # filled out during recursion of the Qud object tree
@@ -87,32 +87,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # self.qud_object_model.appendRow([col1, col2])
 
         # We only need to add Object to the model, since all other Objects are loaded as children:
-        root = self.init_qud_object(self.qud_object_model, self.qud_object_root)
-        root.setSelectable(False)
-        display_name = QStandardItem(root.data().displayname)
-        display_name.setSelectable(False)
-        self.qud_object_model.appendRow([root, display_name])
+        self.qud_object_model.appendRow(self.init_qud_object_children(self.qud_object_root))
         self.expand_default()
 
-    def init_qud_object(self, model: QStandardItemModel, qud_object: QudObject):
+    def init_qud_object_children(self, qud_object: QudObject):
         """Recursive function to translate hierarchy from the Qud object AnyTree model to the
         Qt StandardItemModel model."""
         item = QStandardItem(qud_object.name)
-        display_name = QStandardItem(qud_object.displayname)
-        item.setData(qud_object)
         if qud_object.is_specified('tag_BaseObject'):
             item.setSelectable(False)
+        display_name = QStandardItem(qud_object.displayname)
         display_name.setSelectable(False)
+        if qud_object.tile is not None:
+            item.setIcon(QIcon(QPixmap.fromImage(qud_object.tile.qtimage)))
+        item.setData(qud_object)
         if not qud_object.is_leaf:
             for child in qud_object.children:
-                sub_item = self.init_qud_object(model, child)
-                sub_display_name = QStandardItem(child.displayname)
-                sub_display_name.setSelectable(False)
-                item.appendRow([sub_item, sub_display_name])
-
+                item.appendRow(self.init_qud_object_children(child))
         if qud_object.name in config['Interface']['Initial expansion targets']:
             self.items_to_expand.append(item)
-        return item
+        return [item, display_name]
 
     def recursive_expand(self, item: QStandardItem):
         index = self.qud_object_model.indexFromItem(item)

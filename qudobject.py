@@ -9,6 +9,7 @@ from anytree import NodeMixin
 
 from config import config
 from helpers import cp437_to_unicode
+from qudtile import QudTile
 from svalue import sValue
 
 IMAGE_OVERRIDES = config['Templates']['Image overrides']
@@ -76,6 +77,14 @@ class QudObject(NodeMixin):
                 element_name = element.attrib.pop('Blueprint')
             self.attributes[element.tag][element_name] = element.attrib
         self.all_attributes, self.inherited = self.resolve_inheritance()
+        self.tile = self.render_tile()
+
+    def render_tile(self):
+        tile = None
+        if self.part_Render_Tile and not self.tag_BaseObject:
+            print(self.name, self.part_Render_Tile, self.part_Render_TileColor, self.part_Render_DetailColor)
+            tile = QudTile(self.part_Render_Tile, self.part_Render_TileColor, self.part_Render_DetailColor)
+        return tile
 
     def resolve_inheritance(self):
         """Fetch a dictionary with all inherited tags and attributes.

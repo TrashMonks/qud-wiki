@@ -12,6 +12,7 @@ pyyaml = "*"
 anytree = "*"
 pyside2 = "*"
 mwclient = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.7"

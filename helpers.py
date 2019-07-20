@@ -11,9 +11,12 @@ with open(CP437_MAP_FILE) as f:
 
 
 def cp437_to_unicode(val: int):
-    """Convert an IBM Code Page 437 code point to its Unicode equivalent."""
-    if val > 127:
-        # no control characters, just "upper ascii"
+    """Convert an IBM Code Page 437 code point to its Unicode equivalent.
+
+    https://stackoverflow.com/questions/46942721/is-cp437-decoding-broken-for-control-characters
+    """
+    if val > 0x1f:
+        # no control characters, just ascii and "upper ascii"
         hex_val = hex(val)[2:]
         if len(hex_val) == 1:
             hex_val = '0' + hex_val
