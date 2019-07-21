@@ -24,30 +24,13 @@ QUD_COLORS = {'r': (166, 74, 46),  # dark red
               'O': (233, 159, 16),
               }
 
-# From modding wiki but wrong?
-# QUD_COLORS = {'r': (128, 0, 0),  # dark red
-#               'R': (255, 0, 0),  # bright red
-#               'w': (153, 51, 0),  # brown
-#               'W': (255, 255, 0),  # yellow
-#               'c': (51, 204, 204),  # dark cyan
-#               'C': (0, 255, 255),  # bright cyan
-#               'b': (0, 0, 128),  # dark blue
-#               'B': (51, 102, 255),  # bright blue
-#               'g': (0, 128, 0),  # dark green
-#               'G': (0, 255, 0),  # bright green
-#               'm': (128, 0, 128),  # dark magenta
-#               'M': (255, 0, 255),  # bright magenta
-#               'y': (192, 192, 192),  # bright grey
-#               'Y': (255, 255, 255),  # white
-#               'k': (0, 0, 0),  # black
-#               'K': (128, 128, 128),  # dark grey
-#               }
-QUD_REG_COLOR = (0, 0, 0, 255)
-QUD_DETAIL_COLOR = (255, 255, 255, 255)
+TILE_COLOR = (0, 0, 0, 255)
+DETAIL_COLOR = (255, 255, 255, 255)
 QUD_VIRIDIAN = (15, 64, 63, 255)
 
 tiles_dir = Path('tiles')
-blank_image = Image.new('RGBA', (16, 24), color=(0, 0, 0, 255))
+blank_image = Image.new('RGBA', (16, 24), color=(0, 0, 0, 0))
+blank_qtimage = ImageQt.ImageQt(blank_image)
 # index keys are like "creatures/caste_flipped_22.bmp" as in XML
 image_cache = {}
 
@@ -55,36 +38,41 @@ image_cache = {}
 class QudTile:
     """Class to load and color a Qud tile."""
     def __init__(self, filename, tilecolor, detailcolor):
+        self.filename = filename
         if tilecolor is None:
-            tilecolor = 'y'
+            self.tilecolor = QUD_COLORS['y']
         else:
             if '^' in tilecolor:
-                # this seems to be for setting background
+                # TODO: this seems to be for setting background
                 tilecolor = tilecolor.split('^')[0]
-            tilecolor = tilecolor.strip('&')
+            self.tilecolor = QUD_COLORS[tilecolor.strip('&')]
         if detailcolor is None:
-            detailcolor = 'Y'
+            self.detailcolor = QUD_COLORS['k']  # checked correct with Portable Beehive
         else:
-            detailcolor = detailcolor.strip('&')
+            self.detailcolor = QUD_COLORS[detailcolor.strip('&')]
         if filename in image_cache:
-            image = image_cache[filename]
+            self.image = image_cache[filename].copy()
+            self.color_image()
         else:
             fullpath = tiles_dir / filename
             try:
-                image = Image.open(fullpath)
-            except:
-                print("Couldn't load tile at " + str(fullpath.absolute()))
-                image = blank_image
-            image_cache[filename] = image
+                self.image = Image.open(fullpath)
+                self.color_image()
+            except FileNotFoundError:
+                self.image = blank_image
+            image_cache[filename] = self.image
+        self.qtimage = ImageQt.ImageQt(self.image)
 
-        for y in range(image.height):
-            for x in range(image.width):
-                px = image.getpixel((x, y))
-                if px == QUD_REG_COLOR:
-                    image.putpixel((x, y), QUD_COLORS[tilecolor])
-                elif px == QUD_DETAIL_COLOR:
-                    image.putpixel((x, y), QUD_COLORS[detailcolor])
+    def color_image(self):
+        for y in range(self.image.height):
+            for x in range(self.image.width):
+                px = self.image.getpixel((x, y))
+                if px == TILE_COLOR:
+                    self.image.putpixel((x, y), self.tilecolor)
+                elif px == DETAIL_COLOR:
+                    self.image.putpixel((x, y), self.detailcolor)
+                elif px[3] == 0:
+                    pass  # fully transparent
                 else:
-                    image.putpixel((x, y), QUD_VIRIDIAN)
-        self.image = image
-        self.qtimage = ImageQt.ImageQt(image)
+                    print(self.filename, self.tilecolor, self.detailcolor, px)
+

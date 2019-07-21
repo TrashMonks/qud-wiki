@@ -82,7 +82,6 @@ class QudObject(NodeMixin):
     def render_tile(self):
         tile = None
         if self.part_Render_Tile and not self.tag_BaseObject:
-            print(self.name, self.part_Render_Tile, self.part_Render_TileColor, self.part_Render_DetailColor)
             tile = QudTile(self.part_Render_Tile, self.part_Render_TileColor, self.part_Render_DetailColor)
         return tile
 

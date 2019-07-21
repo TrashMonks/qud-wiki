@@ -1,6 +1,7 @@
 import sys
 import os
 
+from PySide2.QtCore import QSize
 from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon, QPixmap
 from PySide2.QtWidgets import QMainWindow, QApplication, QTreeView, QSizePolicy, QAbstractItemView, \
     QFileDialog, QLabel, QHeaderView
@@ -9,6 +10,7 @@ import qud_object_tree
 from config import config
 from qud_explorer_window import Ui_MainWindow
 from qudobject import QudObject
+from qudtile import blank_qtimage
 
 
 class QudTreeView(QTreeView):
@@ -72,19 +74,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.treeView.setObjectName("treeView")
         self.verticalLayout_2.addWidget(self.treeView)
         self.treeView.setIndentation(10)
+        self.treeView.setIconSize(QSize(16, 24))
 
     def init_qud_tree_model(self):
         self.qud_object_model = QStandardItemModel()
         self.treeView.setModel(self.qud_object_model)
-        self.qud_object_model.setHorizontalHeaderLabels(['Name', 'Display Name', 'Tile'])
+        self.qud_object_model.setHorizontalHeaderLabels(['Name', 'Display Name'])
         header = self.treeView.header()
         header.setSectionResizeMode(QHeaderView.ResizeToContents)
         self.items_to_expand = []  # filled out during recursion of the Qud object tree
-
-        # # Multi column test
-        # col1 = QStandardItem('id')
-        # col2 = QStandardItem('displayname')
-        # self.qud_object_model.appendRow([col1, col2])
 
         # We only need to add Object to the model, since all other Objects are loaded as children:
         self.qud_object_model.appendRow(self.init_qud_object_children(self.qud_object_root))
@@ -98,8 +96,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             item.setSelectable(False)
         display_name = QStandardItem(qud_object.displayname)
         display_name.setSelectable(False)
-        if qud_object.tile is not None:
-            item.setIcon(QIcon(QPixmap.fromImage(qud_object.tile.qtimage)))
+        display_name.setSizeHint(QSize(0, 25))
+        if qud_object.tile is None:
+            display_name.setIcon(QIcon(QPixmap.fromImage(blank_qtimage)))
+        else:
+            display_name.setIcon(QIcon(QPixmap.fromImage(qud_object.tile.qtimage)))
         item.setData(qud_object)
         if not qud_object.is_leaf:
             for child in qud_object.children:
