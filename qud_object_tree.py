@@ -11,6 +11,7 @@ from qudobject import QudObject, qindex
 
 def load(path):
     """Load ObjectBlueprints.xml from the specified filepath and return a reference to the root."""
+    print("Repairing invalid XML characters...")
     # Do some repair of invalid XML:
     # First, delete some invalid characters
     pat_invalid = re.compile("(&#15;)|(&#11;)")
@@ -18,6 +19,7 @@ def load(path):
         contents = f.read()
     contents = re.sub(pat_invalid, '', contents)
 
+    print("Repairing invalid XML line breaks...")
     # Second, replace line breaks inside attributes with proper XML line breaks
     # ^\s*<[^!][^>]*\n[^>]*>
     pat_linebreaks = r"^\s*<[^!][^>]*\n.*?>"
@@ -34,6 +36,7 @@ def load(path):
 
     raw = et.fromstring(contents)
 
+    print("Building Qud object hierarchy and adding tiles...")
     # Build the Qud object hierarchy from the XML data
     for element in raw:
         if element.tag != 'object':
