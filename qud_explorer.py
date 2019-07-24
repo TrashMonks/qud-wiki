@@ -79,7 +79,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def init_qud_tree_model(self):
         self.qud_object_model = QStandardItemModel()
         self.treeView.setModel(self.qud_object_model)
-        self.qud_object_model.setHorizontalHeaderLabels(['Name', 'Display Name'])
+        self.qud_object_model.setHorizontalHeaderLabels(['Name', 'Display'])
         header = self.treeView.header()
         header.setSectionResizeMode(QHeaderView.ResizeToContents)
         self.items_to_expand = []  # filled out during recursion of the Qud object tree

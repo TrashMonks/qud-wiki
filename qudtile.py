@@ -28,7 +28,7 @@ TILE_COLOR = (0, 0, 0, 255)
 DETAIL_COLOR = (255, 255, 255, 255)
 QUD_VIRIDIAN = (15, 64, 63, 255)
 
-tiles_dir = Path('tiles')
+tiles_dir = Path('Textures')
 blank_image = Image.new('RGBA', (16, 24), color=(0, 0, 0, 0))
 blank_qtimage = ImageQt.ImageQt(blank_image)
 # index keys are like "creatures/caste_flipped_22.bmp" as in XML
@@ -37,8 +37,10 @@ image_cache = {}
 
 class QudTile:
     """Class to load and color a Qud tile."""
-    def __init__(self, filename, tilecolor, detailcolor):
+    def __init__(self, filename, colorstring, tilecolor, detailcolor):
         self.filename = filename
+        if tilecolor is None:
+            tilecolor = colorstring
         if tilecolor is None:
             self.tilecolor = QUD_COLORS['y']
         else:
@@ -47,7 +49,7 @@ class QudTile:
                 tilecolor = tilecolor.split('^')[0]
             self.tilecolor = QUD_COLORS[tilecolor.strip('&')]
         if detailcolor is None:
-            self.detailcolor = QUD_COLORS['k']  # checked correct with Portable Beehive
+            self.detailcolor = QUD_COLORS['k']
         else:
             self.detailcolor = QUD_COLORS[detailcolor.strip('&')]
         if filename in image_cache:
@@ -72,7 +74,9 @@ class QudTile:
                 elif px == DETAIL_COLOR:
                     self.image.putpixel((x, y), self.detailcolor)
                 elif px[3] == 0:
+                    self.image.putpixel((x, y), QUD_VIRIDIAN)
                     pass  # fully transparent
                 else:
-                    print(self.filename, self.tilecolor, self.detailcolor, px)
-
+                    # uncomment for debugging of extra tile colors
+                    # print(self.filename, self.tilecolor, self.detailcolor, px)
+                    pass
