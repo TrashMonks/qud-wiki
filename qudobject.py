@@ -33,19 +33,6 @@ def strip_qud_color_codes(text: str):
     return re.sub('&.', '', text)
 
 
-def yes_no_none(func):
-    """Decorator to convert 'true'/'false'/None, or True/False/None into 'yes'/'no'/None"""
-    conv = {'true': 'yes',
-            'false': 'no',
-            True: 'yes',
-            False: 'no',
-            }
-
-    def wrapper(*args, **kwargs):
-        return conv.get(func(*args, **kwargs))
-    return wrapper
-
-
 class QudObject(NodeMixin):
     """Represents a Caves of Qud object blueprint with attribute inheritance.
 
@@ -351,22 +338,20 @@ class QudObject(NodeMixin):
         return self.part_Butcherable_OnSuccess
 
     @property
-    @yes_no_none
     def canbuild(self):
         """Whether or not the player can tinker up this item."""
         if self.part_TinkerItem_CanBuild == 'true':
             return 'yes'
-        if self.part_TinkerItem_CanDisassemble == 'true':
-            return self.part_TinkerItem_CanBuild
+        elif self.part_TinkerItem_CanDisassemble == 'true':
+            return 'no'  # it's interesting if an item can't be built but can be disassembled
 
     @property
-    @yes_no_none
     def candisassemble(self):
         """Whether or not the player can disassemble this item."""
         if self.part_TinkerItem_CanDisassemble == 'true':
             return 'yes'
-        if self.part_TinkerItem_CanBuild == 'true':
-            return self.part_TinkerItem_CanDisassemble
+        elif self.part_TinkerItem_CanBuild == 'true':
+            return 'no'  # # it's interesting if an item can't be disassembled but can be built
 
     @property
     def chargeperdram(self):
