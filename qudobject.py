@@ -478,7 +478,7 @@ class QudObject(NodeMixin):
     @property
     def electric(self):
         """The elemental resistance/weakness the equipment or NPC has."""
-        return self.resistance('Electric')
+        return self.resistance('Elec')
 
     @property
     def empsensitive(self):
