@@ -16,7 +16,7 @@ Templates:
      accuracy, shots, maxammo, maxvol, liquidgen, liquidtype, maxcharge, chargeperdram, chargeused,
      weight, commerce, complexity, tier, bits, canbuild, candisassemble, skill, colorstr, renderstr,
      id, bookid, lightradius, hunger, thirst, healing, butcheredinto, harvestedinto, preservedinto,
-     preservedquantity, exoticfood, twohanded, metal, lightprojectile, extra, strength,
+     preservedquantity, cookeffect, ismeat, isplant, isfungus, exoticfood, twohanded, metal, lightprojectile, reflect, extra, strength,
      agility, toughness, intelligence, willpower, ego, acid, electric, cold, heat, poison,
      reputationbonus, wornon, usesslots, desc]
   Image overrides:
@@ -28,13 +28,13 @@ Wiki:
     # Each wiki category is followed by a list of nodes in the inheritance tree whose child objects
     # should be in that category. Objects may also be explicitly specified.
     # Order matters since later, more specific entries can override earlier, more general ones.
-    Items: [Item]
-    Weapons: [MeleeWeapon, MissileWeapon]
-    Equipment: [Armor, Shield]
-    Energy cells: [Energy Cell]
-    Thrown weapons: [BaseThrownWeapon]
-    Plants: [Plant]
-    Creatures: [Creature]
+    Items: [Items]
+    Weapons: [Melee Weapons, Missile Weapons]
+    Equipment: [Armor, Shields]
+    Energy cells: [Energy Cells]
+    Thrown weapons: [Thrown Weapons]
+    Plants: [Plants]
+    Creatures: [Creatures]
     Characters: [Phinae Hoshaiah, Barathrumite, Argyve, ElderBob, Mehmet, Warden Ualraig,
                  Warden Esthers, Eskhind, Meyehind, Liihart, Isahind, Neelahind, Keh, Kesehind,
                  Angohind, Lulihart, AgateSeveranceStar, Mayor Nuntu, Oboroqoru, Asphodel, Yurl,
