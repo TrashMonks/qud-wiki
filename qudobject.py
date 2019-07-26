@@ -403,6 +403,11 @@ class QudObject(NodeMixin):
             return self.part_Examiner_Complexity
 
     @property
+    def cursed(self):
+        """If the item cannot be removed by normal circumstances."""
+        return self.part_Cursed
+
+    @property
     def damage(self):
         val = None
         if self.inherits_from('MeleeWeapon') or self.is_specified('part_MeleeWeapon'):
