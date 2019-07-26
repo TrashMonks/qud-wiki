@@ -431,6 +431,9 @@ class QudObject(NodeMixin):
         if self.inherits_from('Armor'):
             # the 'DV' we are interested in is the DV modifier of the armor
             dv = self.part_Armor_DV
+        if self.inherits_from('Shield'):
+            # same here
+            dv = self.part_Shield_DV
         elif self.inherits_from('Creature') and self.stat_DV_Value:
             dv = self.stat_DV_Value  # sometimes explicitly given instead of to be calculated
         elif self.inherits_from('Creature'):
@@ -641,7 +644,10 @@ class QudObject(NodeMixin):
             # some RenderStrings are given as CP437 character codes in base 10
             return '<nowiki>' + cp437_to_unicode(int(self.part_Render_RenderString)) + '</nowiki>'
         else:
-            return '<nowiki>' + self.part_Render_RenderString + '</nowiki>'
+            if self.part_Render_RenderString is not None:
+                return '<nowiki>' + self.part_Render_RenderString + '</nowiki>'
+            else:
+                return None
 
     @property
     def reputationbonus(self):
