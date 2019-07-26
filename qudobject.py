@@ -324,7 +324,7 @@ class QudObject(NodeMixin):
     @property
     def bits(self):
         """The bits you can get from disassembling the object."""
-        if self.part_TinkerItem_CanDisassemble:
+        if self.part_TinkerItem and self.part_TinkerItem_CanDisassemble != 'false':
             return self.part_TinkerItem_Bits.translate(BIT_TRANS)
 
     @property
@@ -409,6 +409,8 @@ class QudObject(NodeMixin):
     @property
     def desc(self):
         """The short description of the object, with color codes included (ampersands escaped)."""
+        if self.part_Description_Short == 'A hideous specimen.':
+            return None  # hide items with no description of their own
         if self.part_Description_Short:
             return escape_ampersands(self.part_Description_Short)
         else:
@@ -429,6 +431,8 @@ class QudObject(NodeMixin):
         if self.inherits_from('Armor'):
             # the 'DV' we are interested in is the DV modifier of the armor
             dv = self.part_Armor_DV
+        elif self.inherits_from('Creature') and self.stat_DV_Value:
+            dv = self.stat_DV_Value  # sometimes explicitly given instead of to be calculated
         elif self.inherits_from('Creature'):
             # the 'DV' here is the actual DV of the creature or NPC, after:
             # skills, agility modifier (which may be a range determined by
@@ -456,8 +460,6 @@ class QudObject(NodeMixin):
                 else:
                     # an integer, not a range
                     dv += (int(ag) - 16) // 2
-        if self.stat_DV_Value:  # this seems to be an override
-            dv = self.stat_DV_Value
         return str(dv) if dv else None
 
     @property
@@ -632,12 +634,14 @@ class QudObject(NodeMixin):
 
     @property
     def renderstr(self):
-        """What the item looks like with tiles mode off."""
+        """What the item looks like with tiles mode off.
+
+        Including <nowiki> to get around some rendering bugs with characters like } """
         if self.part_Render_RenderString and len(self.part_Render_RenderString) > 1:
             # some RenderStrings are given as CP437 character codes in base 10
-            return cp437_to_unicode(int(self.part_Render_RenderString))
+            return '<nowiki>' + cp437_to_unicode(int(self.part_Render_RenderString)) + '</nowiki>'
         else:
-            return self.part_Render_RenderString
+            return '<nowiki>' + self.part_Render_RenderString + '</nowiki>'
 
     @property
     def reputationbonus(self):
@@ -715,6 +719,8 @@ class QudObject(NodeMixin):
     def twohanded(self):
         """Whether this is a two-handed item."""
         if self.inherits_from('MeleeWeapon') or self.inherits_from('MissileWeapon'):
+            if self.tag_UsesSlots and self.tag_UsesSlots != 'Hand':
+                return None  # exclude things like Slugsnout Snout
             if self.part_Physics_bUsesTwoSlots:
                 return 'yes'
             return 'no'
