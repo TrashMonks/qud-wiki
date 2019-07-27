@@ -394,7 +394,7 @@ class QudObject(NodeMixin):
     @property
     def complexity(self):
         """The tinker examination complexity of the object."""
-        if self.canbuild == 'true':
+        if self.canbuild == 'yes':
             return self.part_Examiner_Complexity
 
     @property
