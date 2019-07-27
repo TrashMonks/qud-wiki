@@ -671,7 +671,7 @@ class QudObject(NodeMixin):
 
     @property
     def reflect(self):
-        """When preserved, how many preserves a preservable item produces."""
+        """If it reflects, what percentage of damage is reflected."""
         return self.part_ModGlassArmor_Tier
 
     @property
