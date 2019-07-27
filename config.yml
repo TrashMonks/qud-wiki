@@ -59,6 +59,8 @@ Wiki:
     Tools: [Tool]
     Tonics: [Tonic]
     Corpses: [Corpse]
+    Trade Goods: [Copper Nugget, Silver Nugget, Gold Nugget, Gemstone, Bronze Ingot, BoxOfCrayons,
+                  Polyhedral Rings, Silver Rondure, Blood-stained neck-ring]
     Plants: [Plant]
     Creatures: [Creature]
     Characters: [Phinae Hoshaiah, Barathrumite, Argyve, ElderBob, Mehmet, Warden Ualraig,

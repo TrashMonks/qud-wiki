@@ -72,7 +72,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.treeView.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.treeView.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.treeView.setObjectName("treeView")
-        self.verticalLayout_2.addWidget(self.treeView)
+        self.verticalLayout.addWidget(self.treeView)
         self.treeView.setIndentation(10)
         self.treeView.setIconSize(QSize(16, 24))
 
@@ -125,6 +125,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 qud_object = item.data()
                 text += qud_object.wikify()
                 self.statusbar.showMessage(qud_object.ui_inheritance_path())
+                if qud_object.tile is not None:
+                    self.tile_label.setPixmap(QPixmap.fromImage(qud_object.tile.get_big_qtimage()))
+                else:
+                    self.tile_label.clear()
         self.plainTextEdit.setPlainText(text)
 
     def collapse_all(self):

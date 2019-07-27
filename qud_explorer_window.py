@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'qud_explorer_window.ui',
 # licensing of 'qud_explorer_window.ui' applies.
 #
-# Created: Mon Jul  8 22:14:23 2019
+# Created: Fri Jul 26 23:26:16 2019
 #      by: pyside2-uic  running on PySide2 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -20,13 +20,17 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName("gridLayout")
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
         self.plainTextEdit = QtWidgets.QPlainTextEdit(self.centralwidget)
-        self.plainTextEdit.setAutoFillBackground(False)
         self.plainTextEdit.setObjectName("plainTextEdit")
-        self.verticalLayout_2.addWidget(self.plainTextEdit)
-        self.verticalLayout.addLayout(self.verticalLayout_2)
+        self.horizontalLayout.addWidget(self.plainTextEdit)
+        self.tile_label = QtWidgets.QLabel(self.centralwidget)
+        self.tile_label.setMinimumSize(QtCore.QSize(160, 240))
+        self.tile_label.setText("")
+        self.tile_label.setObjectName("tile_label")
+        self.horizontalLayout.addWidget(self.tile_label)
+        self.verticalLayout.addLayout(self.horizontalLayout)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()

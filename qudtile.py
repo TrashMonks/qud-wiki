@@ -54,18 +54,18 @@ class QudTile:
             self.detailcolor = QUD_COLORS[detailcolor.strip('&')]
         if filename in image_cache:
             self.image = image_cache[filename].copy()
-            self.color_image()
+            self._color_image()
         else:
             fullpath = tiles_dir / filename
             try:
                 self.image = Image.open(fullpath)
-                self.color_image()
+                self._color_image()
             except FileNotFoundError:
                 self.image = blank_image
             image_cache[filename] = self.image
         self.qtimage = ImageQt.ImageQt(self.image)
 
-    def color_image(self):
+    def _color_image(self):
         for y in range(self.image.height):
             for x in range(self.image.width):
                 px = self.image.getpixel((x, y))
@@ -74,9 +74,17 @@ class QudTile:
                 elif px == DETAIL_COLOR:
                     self.image.putpixel((x, y), self.detailcolor)
                 elif px[3] == 0:
-                    self.image.putpixel((x, y), QUD_VIRIDIAN)
+                    # self.image.putpixel((x, y), QUD_VIRIDIAN)
                     pass  # fully transparent
                 else:
                     # uncomment for debugging of extra tile colors
                     # print(self.filename, self.tilecolor, self.detailcolor, px)
                     pass
+
+    def get_big_image(self):
+        """Draw the 160x240 image for the wiki."""
+        return self.image.resize((160, 240))
+
+    def get_big_qtimage(self):
+        """Draw the 160x240 image for the explorer."""
+        return ImageQt.ImageQt(self.get_big_image())
