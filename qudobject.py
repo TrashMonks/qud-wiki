@@ -392,10 +392,20 @@ class QudObject(NodeMixin):
             return self.part_Commerce_Value
 
     @property
+    def cookeffect(self):
+        """The possible cooking effects of an item"""
+        return self.part_PreparedCookingIngredient_type
+
+    @property
     def complexity(self):
         """The tinker examination complexity of the object."""
         if self.canbuild == 'true':
             return self.part_Examiner_Complexity
+
+    @property
+    def cursed(self):
+        """If the item cannot be removed by normal circumstances."""
+        return self.part_Cursed
 
     @property
     def damage(self):
@@ -473,7 +483,13 @@ class QudObject(NodeMixin):
     @property
     def electric(self):
         """The elemental resistance/weakness the equipment or NPC has."""
-        return self.resistance('Electric')
+        return self.resistance('Elec')
+
+    @property
+    def empsensitive(self):
+        """Returns yes if the object is empensitive. Can be found in multiple parts."""
+        if self.part_EquipStatBoost_IsEMPSensitive == 'true' or self.part_BootSequence_IsEMPSensitive == 'true' or self.part_NavigationBonus_IsEMPSensitive == 'true' or self.part_SaveModifier_IsEMPSensitive == 'true' or self.part_LiquidFueledPowerPlant_IsEMPSensitive == 'true' or self.part_LiquidProducer_IsEMPSensitive == 'true' or self.part_TemperatureAdjuster_IsEMPSensitive == 'true':
+            return 'yes'
 
     @property
     def exoticfood(self):
@@ -543,9 +559,27 @@ class QudObject(NodeMixin):
         return self.attribute_helper('Intelligence')
 
     @property
+    def isfungus(self):
+        """If the food item contains fungus."""
+        if self.part_Mushroom is not None:
+            return 'yes'
+
+    @property
+    def ismeat(self):
+        """If the food item contains meat."""
+        if self.part_Meat is not None:
+            return 'yes'
+    @property
+    def isplant(self):
+        """If the food item contains plants."""
+        if self.part_Plant is not None:
+            return 'yes'
+
+    @property
     def lightprojectile(self):
-        # TODO
-        pass
+        """If the gun fires light projectiles (heat immune creatures will not take damage from it)."""
+        if self.tag_Light is not None:
+            return 'yes'
 
     @property
     def lightradius(self):
@@ -636,6 +670,11 @@ class QudObject(NodeMixin):
             return 'yes'
 
     @property
+    def reflect(self):
+        """If it reflects, what percentage of damage is reflected."""
+        return self.part_ModGlassArmor_Tier
+
+    @property
     def renderstr(self):
         """What the item looks like with tiles mode off.
 
@@ -655,7 +694,6 @@ class QudObject(NodeMixin):
         # <part Name="AddsRep" Faction="Apes" Value="-100" />
         # <part Name="AddsRep" Faction="Antelopes,Goatfolk" Value="100" />
         # <part Name="AddsRep" Faction="Fungi:200,Consortium:-200" />
-
         ret = None
         if self.part_AddsRep:
             ret = ''
