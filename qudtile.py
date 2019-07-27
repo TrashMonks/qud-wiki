@@ -1,5 +1,5 @@
 # https://stackoverflow.com/questions/3752476/python-pil-replace-a-single-rgba-color
-
+import io
 from pathlib import Path
 
 from PIL import Image, ImageQt
@@ -37,7 +37,7 @@ image_cache = {}
 
 class QudTile:
     """Class to load and color a Qud tile."""
-    def __init__(self, filename, colorstring, tilecolor, detailcolor):
+    def __init__(self, filename, colorstring, tilecolor, detailcolor, qudname):
         self.filename = filename
         if tilecolor is None:
             tilecolor = colorstring  # fall back to text mode color
@@ -67,7 +67,7 @@ class QudTile:
                 image_cache[filename] = self.image.copy()
                 self._color_image()
             except FileNotFoundError:
-                print(filename)
+                print(f'Couldn\'t render tile for {qudname}: {filename} not found')
                 self.image = blank_image
         self.qtimage = ImageQt.ImageQt(self.image)
 
@@ -94,3 +94,11 @@ class QudTile:
     def get_big_qtimage(self):
         """Draw the 160x240 image for the explorer."""
         return ImageQt.ImageQt(self.get_big_image())
+
+    def get_big_bytesio(self):
+        """Get a BytesIO representation of a PNG encoding of the big image.
+
+        Used for uploading to the wiki."""
+        png_b = io.BytesIO()
+        self.get_big_image().save(png_b, format='png')
+        return png_b

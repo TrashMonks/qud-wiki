@@ -71,7 +71,21 @@
           <item>
            <widget class="QPushButton" name="restore_all_button">
             <property name="text">
-             <string>Revert to configured expansions</string>
+             <string>Default expansion</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="upload_templates_button">
+            <property name="text">
+             <string>Upload selected templates</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="upload_tiles_button">
+            <property name="text">
+             <string>Upload selected tiles</string>
             </property>
            </widget>
           </item>

@@ -72,7 +72,8 @@ class QudObject(NodeMixin):
             tile = QudTile(self.part_Render_Tile,
                            self.part_Render_ColorString,
                            self.part_Render_TileColor,
-                           self.part_Render_DetailColor)
+                           self.part_Render_DetailColor,
+                           self.name)
         return tile
 
     def resolve_inheritance(self):
@@ -94,13 +95,13 @@ class QudObject(NodeMixin):
         inherited = self.parent.all_attributes
         all_attributes = deepcopy(self.attributes)
         for tag in inherited:
-            if not tag in all_attributes:
+            if tag not in all_attributes:
                 all_attributes[tag] = {}
             for name in inherited[tag]:
-                if not name in all_attributes[tag]:
+                if name not in all_attributes[tag]:
                     all_attributes[tag][name] = {}
                 for attr in inherited[tag][name]:
-                    if not attr in all_attributes[tag][name]:
+                    if attr not in all_attributes[tag][name]:
                         # parent has this attribute but we don't
                         # print(tag, name, attr, "didn't exist in exists in", self.name)
                         if inherited[tag][name][attr] == '*noinherit':
@@ -569,6 +570,7 @@ class QudObject(NodeMixin):
         """If the food item contains meat."""
         if self.part_Meat is not None:
             return 'yes'
+
     @property
     def isplant(self):
         """If the food item contains plants."""
@@ -577,7 +579,7 @@ class QudObject(NodeMixin):
 
     @property
     def lightprojectile(self):
-        """If the gun fires light projectiles (heat immune creatures will not take damage from it)."""
+        """If the gun fires light projectiles (heat immune creatures will not take damage)."""
         if self.tag_Light is not None:
             return 'yes'
 

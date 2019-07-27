@@ -11,6 +11,8 @@ from config import config
 from qud_explorer_window import Ui_MainWindow
 from qudobject import QudObject
 from qudtile import blank_qtimage
+from wiki_config import site
+from wikipage import WikiPage
 
 
 class QudTreeView(QTreeView):
@@ -50,6 +52,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.expand_all_button.clicked.connect(self.expand_all)
         self.collapse_all_button.clicked.connect(self.collapse_all)
         self.restore_all_button.clicked.connect(self.expand_default)
+        self.upload_templates_button.clicked.connect(self.upload_selected_templates)
+        self.upload_tiles_button.clicked.connect(self.upload_selected_tiles)
+        self.currently_selected = []
         self.show()
 
     def open_xml(self, filename: None):
@@ -115,8 +120,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if item.parent() is not None:
             self.recursive_expand(item.parent())
 
-    def tree_selection_handler(self, indices):
+    def tree_selection_handler(self, indices: list):
         """Registered with custom QudTreeView class as the handler for selection."""
+        self.currently_selected = indices
         self.statusbar.clearMessage()
         text = ""
         for index in indices:
@@ -151,6 +157,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if len(selected) > 0:
                 item = self.qud_object_model.itemFromIndex(selected[0]).data()
                 self.recursive_expand(self.qud_object_model.itemFromIndex(selected[0]))
+
+    def upload_selected_templates(self):
+        for index in self.currently_selected:
+            if index.column() == 0:
+                item = self.qud_object_model.itemFromIndex(index)
+                qud_object = item.data()
+                page = WikiPage(qud_object)
+                print(f'Page {page} exists:', page.exists())
+                page.upload_template()
+
+    def upload_selected_tiles(self):
+        for index in self.currently_selected:
+            if index.column() == 0:
+                item = self.qud_object_model.itemFromIndex(index)
+                qud_object = item.data()
+                if qud_object.name in config['Templates']['Image overrides']:
+                    filename = config['Templates']['Image overrides'][qud_object.name]
+                else:
+                    filename = qud_object.displayname + '.png'
+                print(site.upload(qud_object.tile.get_big_bytesio(),
+                            filename=filename,
+                            description='Automatically rendered by [[Qud Blueprint Explorer]].',
+                            comment='automatically rendered by Qud Blueprint Explorer'))
 
 
 app = QApplication(sys.argv)

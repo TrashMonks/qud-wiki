@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'qud_explorer_window.ui',
 # licensing of 'qud_explorer_window.ui' applies.
 #
-# Created: Sat Jul 27 09:56:23 2019
+# Created: Sat Jul 27 13:05:44 2019
 #      by: pyside2-uic  running on PySide2 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -51,6 +51,12 @@ class Ui_MainWindow(object):
         self.restore_all_button = QtWidgets.QPushButton(self.centralwidget)
         self.restore_all_button.setObjectName("restore_all_button")
         self.horizontalLayout_2.addWidget(self.restore_all_button)
+        self.upload_templates_button = QtWidgets.QPushButton(self.centralwidget)
+        self.upload_templates_button.setObjectName("upload_templates_button")
+        self.horizontalLayout_2.addWidget(self.upload_templates_button)
+        self.upload_tiles_button = QtWidgets.QPushButton(self.centralwidget)
+        self.upload_tiles_button.setObjectName("upload_tiles_button")
+        self.horizontalLayout_2.addWidget(self.upload_tiles_button)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
         self.tree_target_widget = QtWidgets.QWidget(self.centralwidget)
         self.tree_target_widget.setObjectName("tree_target_widget")
@@ -83,7 +89,9 @@ class Ui_MainWindow(object):
         self.search_label.setText(QtWidgets.QApplication.translate("MainWindow", "Search:", None, -1))
         self.expand_all_button.setText(QtWidgets.QApplication.translate("MainWindow", "Expand all", None, -1))
         self.collapse_all_button.setText(QtWidgets.QApplication.translate("MainWindow", "Collapse all", None, -1))
-        self.restore_all_button.setText(QtWidgets.QApplication.translate("MainWindow", "Revert to configured expansions", None, -1))
+        self.restore_all_button.setText(QtWidgets.QApplication.translate("MainWindow", "Default expansion", None, -1))
+        self.upload_templates_button.setText(QtWidgets.QApplication.translate("MainWindow", "Upload selected templates", None, -1))
+        self.upload_tiles_button.setText(QtWidgets.QApplication.translate("MainWindow", "Upload selected tiles", None, -1))
         self.menuFile.setTitle(QtWidgets.QApplication.translate("MainWindow", "File", None, -1))
         self.actionOpen_ObjectBlueprints_xml.setText(QtWidgets.QApplication.translate("MainWindow", "Open ObjectBlueprints.xml...", None, -1))
         self.actionExit.setText(QtWidgets.QApplication.translate("MainWindow", "Exit", None, -1))

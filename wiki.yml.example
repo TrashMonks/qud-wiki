@@ -1,0 +1,8 @@
+# Copy to wiki.yml to set up your own bot user
+# Use Special:BotPasswords to set up bot user
+# Ensure image uploading checkboxes are ticked on that page
+
+username: Yourusername@Botname
+password: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+base: cavesofqud.gamepedia.com
+path: /

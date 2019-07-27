@@ -24,6 +24,10 @@ Templates:
     Asphodel: Earl_asphodel.png
 
 Wiki:
+  Article overrides:
+    # Manually specify the article title to be used for an object ID:
+    # Example:
+    ClockworkBeetle: Clockwork Beetle
   Categories:
     # Each wiki category is followed by a list of nodes in the inheritance tree whose child objects
     # should be in that category. Objects may also be explicitly specified.
