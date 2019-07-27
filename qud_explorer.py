@@ -175,7 +175,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if qud_object.name in config['Templates']['Image overrides']:
                     filename = config['Templates']['Image overrides'][qud_object.name]
                 else:
-                    filename = qud_object.displayname + '.png'
+                    filename = qud_object.image
                 print(site.upload(qud_object.tile.get_big_bytesio(),
                             filename=filename,
                             description='Automatically rendered by [[Qud Blueprint Explorer]].',
