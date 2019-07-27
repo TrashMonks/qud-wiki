@@ -33,30 +33,38 @@ blank_image = Image.new('RGBA', (16, 24), color=(0, 0, 0, 0))
 blank_qtimage = ImageQt.ImageQt(blank_image)
 # index keys are like "creatures/caste_flipped_22.bmp" as in XML
 image_cache = {}
-
+tricolor_image_cache = set()
+bad_tile_color = set()
+bad_detail_color = set()
+uses_details = set()
 
 class QudTile:
     """Class to load and color a Qud tile."""
-    def __init__(self, filename, colorstring, tilecolor, detailcolor, qudname):
+    def __init__(self, filename, colorstring, raw_tilecolor, raw_detailcolor, qudname):
         self.filename = filename
-        if tilecolor is None:
-            tilecolor = colorstring  # fall back to text mode color
-        if tilecolor is None:
+        self.raw_tilecolor = raw_tilecolor
+        self.raw_detailcolor = raw_detailcolor
+        self.qudname = qudname
+        if raw_tilecolor is None:
+            raw_tilecolor = colorstring  # fall back to text mode color
+        if raw_tilecolor is None:
             self.tilecolor = QUD_COLORS['y']  # render in white
         else:
-            if '^' in tilecolor:
+            if '^' in raw_tilecolor:
                 # TODO: this seems to be for setting background
-                tilecolor = tilecolor.split('^')[0]
-            self.tilecolor = QUD_COLORS[tilecolor.strip('&')]
-        if detailcolor is None or detailcolor == 'k':
-            # self.detailcolor = QUD_COLORS['k']  # on-ground rendering
-            self.detailcolor = (0, 0, 0)  # in-inventory rendering (more detail)
-        else:
-            self.detailcolor = QUD_COLORS[detailcolor.strip('&')]
+                raw_tilecolor = raw_tilecolor.split('^')[0]
+            raw_tilecolor = QUD_COLORS[raw_tilecolor.strip('&')]
+            self.tilecolor = raw_tilecolor
         if filename.lower().startswith('assets_content_textures'):
             # repair bad access paths
             filename = filename[24:]
             filename = filename.replace('_', '/', 1)
+        if raw_detailcolor is None or raw_detailcolor == 'k':
+            # self.detailcolor = QUD_COLORS['k']  # on-ground rendering
+            self.detailcolor = (0, 0, 0)  # in-inventory rendering (more detail)
+            bad_detail_color.add(self.qudname)
+        else:
+            self.detailcolor = QUD_COLORS[raw_detailcolor.strip('&')]
         if filename in image_cache:
             self.image = image_cache[filename].copy()
             self._color_image()
@@ -67,7 +75,7 @@ class QudTile:
                 image_cache[filename] = self.image.copy()
                 self._color_image()
             except FileNotFoundError:
-                print(f'Couldn\'t render tile for {qudname}: {filename} not found')
+                print(f'Couldn\'t render tile for {self.qudname}: {filename} not found')
                 self.image = blank_image
         self.qtimage = ImageQt.ImageQt(self.image)
 
@@ -79,13 +87,16 @@ class QudTile:
                     self.image.putpixel((x, y), self.tilecolor)
                 elif px == DETAIL_COLOR:
                     self.image.putpixel((x, y), self.detailcolor)
+                    uses_details.add(self.qudname)
                 elif px[3] == 0:
                     # self.image.putpixel((x, y), QUD_VIRIDIAN)
                     pass  # fully transparent
                 else:
-                    # uncomment for debugging of extra tile colors
-                    # print(self.filename, self.tilecolor, self.detailcolor, px)
-                    pass
+                    if self.qudname in tricolor_image_cache:
+                        pass
+                    else:
+                        tricolor_image_cache.add(self.qudname)
+                        print(f"No tile will be generated for {self.qudname} because of unknown color {px}")
 
     def get_big_image(self):
         """Draw the 160x240 image for the wiki."""
