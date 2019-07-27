@@ -406,7 +406,8 @@ class QudObject(NodeMixin):
     @property
     def cursed(self):
         """If the item cannot be removed by normal circumstances."""
-        return self.part_Cursed
+        if self.part_Cursed is not None:
+            return 'yes'
 
     @property
     def damage(self):
