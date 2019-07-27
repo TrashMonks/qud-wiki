@@ -40,18 +40,23 @@ class QudTile:
     def __init__(self, filename, colorstring, tilecolor, detailcolor):
         self.filename = filename
         if tilecolor is None:
-            tilecolor = colorstring
+            tilecolor = colorstring  # fall back to text mode color
         if tilecolor is None:
-            self.tilecolor = QUD_COLORS['y']
+            self.tilecolor = QUD_COLORS['y']  # render in white
         else:
             if '^' in tilecolor:
                 # TODO: this seems to be for setting background
                 tilecolor = tilecolor.split('^')[0]
             self.tilecolor = QUD_COLORS[tilecolor.strip('&')]
-        if detailcolor is None:
-            self.detailcolor = QUD_COLORS['k']
+        if detailcolor is None or detailcolor == 'k':
+            # self.detailcolor = QUD_COLORS['k']  # on-ground rendering
+            self.detailcolor = (0, 0, 0)  # in-inventory rendering (more detail)
         else:
             self.detailcolor = QUD_COLORS[detailcolor.strip('&')]
+        if filename.lower().startswith('assets_content_textures'):
+            # repair bad access paths
+            filename = filename[24:]
+            filename = filename.replace('_', '/', 1)
         if filename in image_cache:
             self.image = image_cache[filename].copy()
             self._color_image()
@@ -59,10 +64,11 @@ class QudTile:
             fullpath = tiles_dir / filename
             try:
                 self.image = Image.open(fullpath)
+                image_cache[filename] = self.image.copy()
                 self._color_image()
             except FileNotFoundError:
+                print(filename)
                 self.image = blank_image
-            image_cache[filename] = self.image
         self.qtimage = ImageQt.ImageQt(self.image)
 
     def _color_image(self):

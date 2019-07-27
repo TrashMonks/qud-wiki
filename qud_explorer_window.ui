@@ -30,6 +30,9 @@
             <height>240</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(15, 59, 58);</string>
+          </property>
           <property name="text">
            <string/>
           </property>
