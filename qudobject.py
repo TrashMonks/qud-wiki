@@ -502,8 +502,11 @@ class QudObject(NodeMixin):
     @property
     def extra(self):
         """Any other features that do not have an associated variable."""
-        # TODO
-        pass
+        # TODO: add more
+        extra = None
+        if self.property_Role:
+            extra = self.property_Role_Value
+        return extra
 
     @property
     def gender(self):
@@ -782,7 +785,8 @@ class QudObject(NodeMixin):
 
     @property
     def usesslots(self):
-        return self.tag_UsesSlots_Value
+        if self.tag_UsesSlots_Value:
+            return self.tag_UsesSlots_Value.replace(',', ', ')
 
     @property
     def vibro(self):
