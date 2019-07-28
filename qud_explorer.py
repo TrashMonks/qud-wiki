@@ -104,6 +104,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         display_name.setSizeHint(QSize(0, 25))
         if qud_object.tile is None:
             display_name.setIcon(QIcon(QPixmap.fromImage(blank_qtimage)))
+        elif qud_object.tile.blacklisted:
+            display_name.setIcon(QIcon(QPixmap.fromImage(blank_qtimage)))
         else:
             display_name.setIcon(QIcon(QPixmap.fromImage(qud_object.tile.qtimage)))
         item.setData(qud_object)
@@ -131,10 +133,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 qud_object = item.data()
                 text += qud_object.wikify()
                 self.statusbar.showMessage(qud_object.ui_inheritance_path())
-                if qud_object.tile is not None:
+                if qud_object.tile is not None and not qud_object.tile.blacklisted:
                     self.tile_label.setPixmap(QPixmap.fromImage(qud_object.tile.get_big_qtimage()))
                 else:
                     self.tile_label.clear()
+        if len(indices) == 0:
+            self.tile_label.clear()
         self.plainTextEdit.setPlainText(text)
 
     def collapse_all(self):
@@ -172,6 +176,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if index.column() == 0:
                 item = self.qud_object_model.itemFromIndex(index)
                 qud_object = item.data()
+                if qud_object.tile is None:
+                    print(f'{qud_object.name} has no tile, so not uploading.')
+                    continue
+                if qud_object.tile.blacklisted:
+                    print(f'{qud_object.name} had a tile, but bad rendering, so not uploading.')
+                    continue
                 if qud_object.name in config['Templates']['Image overrides']:
                     filename = config['Templates']['Image overrides'][qud_object.name]
                 else:

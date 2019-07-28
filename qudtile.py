@@ -41,6 +41,7 @@ uses_details = set()
 class QudTile:
     """Class to load and color a Qud tile."""
     def __init__(self, filename, colorstring, raw_tilecolor, raw_detailcolor, qudname):
+        self.blacklisted = False  # set True if problems with tile generation encountered
         self.filename = filename
         self.raw_tilecolor = raw_tilecolor
         self.raw_detailcolor = raw_detailcolor
@@ -76,6 +77,7 @@ class QudTile:
                 self._color_image()
             except FileNotFoundError:
                 print(f'Couldn\'t render tile for {self.qudname}: {filename} not found')
+                self.blacklisted = True
                 self.image = blank_image
         self.qtimage = ImageQt.ImageQt(self.image)
 
@@ -89,14 +91,14 @@ class QudTile:
                     self.image.putpixel((x, y), self.detailcolor)
                     uses_details.add(self.qudname)
                 elif px[3] == 0:
-                    # self.image.putpixel((x, y), QUD_VIRIDIAN)
                     pass  # fully transparent
                 else:
                     if self.qudname in tricolor_image_cache:
                         pass
                     else:
                         tricolor_image_cache.add(self.qudname)
-                        print(f"No tile will be generated for {self.qudname} because of unknown color {px}")
+                        self.blacklisted = True
+                        print(f"No tile will be generated for {self.qudname} because of color {px}")
 
     def get_big_image(self):
         """Draw the 160x240 image for the wiki."""
