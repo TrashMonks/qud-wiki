@@ -266,6 +266,8 @@ class QudObject(NodeMixin):
         Helper function for properties."""
         val = getattr(self, f'stat_{element}Resistance_Value')
         if self.part_Armor:
+            if element == "Electric":
+                element = "Elec"  # short form in armor
             val = getattr(self, f'part_Armor_{element}')
         return val
 
@@ -485,7 +487,7 @@ class QudObject(NodeMixin):
     @property
     def electric(self):
         """The elemental resistance/weakness the equipment or NPC has."""
-        return self.resistance('Elec')
+        return self.resistance('Electric')
 
     @property
     def empsensitive(self):
