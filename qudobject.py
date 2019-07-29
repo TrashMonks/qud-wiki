@@ -11,6 +11,7 @@ from config import config
 from helpers import cp437_to_unicode
 from qudtile import QudTile
 from svalue import sValue
+from wikitemplate import WikiTemplate
 
 IMAGE_OVERRIDES = config['Templates']['Image overrides']
 
@@ -214,26 +215,31 @@ class QudObject(NodeMixin):
             seek = None
         return seek
 
-    def wikify(self):
-        """Return a string representation of self in the Caves of Qud wiki item template format."""
-        fields = config['Templates']['Fields']
-        if self.inherits_from('Creature'):
-            output = "{{Character\n"
-        elif self.inherits_from('Food'):
-            output = "{{Food\n"
-        elif (self.inherits_from('RobotLimb') or self.inherits_from('Corpse')) and (self.name != "Albino Ape Pelt" and self.name != "Crystal of Eve" and self.name != "Black Puma Haunch" and self.name != "Arsplice Seed" and self.name != "Albino Ape Heart" and self.name != "Ogre Ape Heart"):
-            output = "{{Corpse\n"
-        else:
-            output = "{{Item\n"
-        output += "| title = {{Qud text|" + self.title + "}}\n"
-        for stat in fields:
-            if getattr(self, stat) is not None:
-                output += f"| {stat} = {getattr(self, stat)}\n"
-        output += "}}\n"
+    def wiki_template(self):
+        template_type = self.wiki_template_type()
+        template = WikiTemplate.from_qud_object(template_type, self)
         category = self.wiki_category()
         if category:
-            output += "[[Category:" + category + "]]\n"
-        return output
+            template += "[[Category:" + category + "]]\n"
+        return template
+
+    def wiki_template_type(self) -> str:
+        """Determine which template to use for the wiki."""
+        val = "Item"
+        not_corpses = ('Albino Ape Pelt',
+                       'Crystal of Eve',
+                       'Black Puma Haunch',
+                       'Arsplice Seed',
+                       'Albino Ape Heart',
+                       'Ogre Ape Heart')
+        if self.inherits_from('Creature'):
+            val = "Character"
+        elif self.inherits_from('Food'):
+            val = "Food"
+        elif (self.inherits_from('RobotLimb') or self.inherits_from('Corpse')) and\
+                (self.name not in not_corpses):
+            val = "Corpse"
+        return val
 
     def wiki_category(self):
         cat = None

@@ -137,7 +137,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if index.column() == 0:
                 item = self.qud_object_model.itemFromIndex(index)
                 qud_object = item.data()
-                text += qud_object.wikify() + '\n'
+                text += qud_object.wiki_template() + '\n'
                 self.statusbar.showMessage(qud_object.ui_inheritance_path())
                 if qud_object.tile is not None and not qud_object.tile.blacklisted:
                     self.tile_label.setPixmap(QPixmap.fromImage(qud_object.tile.get_big_qtimage()))
