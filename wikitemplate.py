@@ -64,7 +64,8 @@ class WikiTemplate:
         output = '{{' + f'{self.template_type}'
         output += "| title = {{Qud text|" + self.attribs['title'] + "}}\n"
         for stat in self.attribs:
-            output += f"| {stat} = {self.attribs[stat]}\n"
+            if stat != self.attribs['title']:
+                output += f"| {stat} = {self.attribs[stat]}\n"
         output += "}}\n"
         return output
 
