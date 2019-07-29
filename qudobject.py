@@ -423,7 +423,7 @@ class QudObject(NodeMixin):
     @property
     def corpsechance(self):
         """The chance of a corpse dropping, if corpsechance is >0"""
-        if self.part_Corpse_CorpseChance > 0:
+        if self.part_Corpse_CorpseChance is not None and int(self.part_Corpse_CorpseChance) > 0:
             return self.part_Corpse_CorpseChance
 
     @property

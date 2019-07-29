@@ -18,7 +18,7 @@ Templates:
      id, bookid, lightradius, hunger, thirst, healing, butcheredinto, harvestedinto, preservedinto,
      preservedquantity, cookeffect, ismeat, isplant, isfungus, exoticfood, corpse, corpsechance, twohanded, metal, lightprojectile, reflect, cursed, extra, strength,
      agility, toughness, intelligence, willpower, ego, acid, electric, cold, heat, poison,
-     reputationbonus, wornon, usesslots, desc, eatdesc]
+     reputationbonus, wornon, usesslots, desc]
   Image overrides:
     # Manually specify the image name to be shown for an object ID:
     Asphodel: Earl_asphodel.png
