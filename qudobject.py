@@ -495,6 +495,11 @@ class QudObject(NodeMixin):
         return str(dv) if dv else None
 
     @property
+    def eatdesc(self):
+        """The text when you eat this item."""
+        return self.part_Food_Message
+
+    @property
     def ego(self):
         """The ego the mutation effects, or the ego of the creature."""
         return self.attribute_helper('Ego')
