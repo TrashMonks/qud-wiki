@@ -218,10 +218,11 @@ class QudObject(NodeMixin):
     def wiki_template(self):
         template_type = self.wiki_template_type()
         template = WikiTemplate.from_qud_object(template_type, self)
+        text = template.to_text()
         category = self.wiki_category()
         if category:
-            template += "[[Category:" + category + "]]\n"
-        return template
+            text += "[[Category:" + category + "]]\n"
+        return text
 
     def wiki_template_type(self) -> str:
         """Determine which template to use for the wiki."""

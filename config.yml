@@ -13,7 +13,7 @@ Templates:
   Fields:
     # The fields that (if applicable) will be generated for each item, in this order:
     # (title comes first, but is not listed here)
-    [image, pv, maxpv, vibro, pvpowered, damage, unpowereddamage, hp, av, dv, ma, tohit, ammo,
+    [title, image, pv, maxpv, vibro, pvpowered, damage, unpowereddamage, hp, av, dv, ma, tohit, ammo,
      accuracy, shots, maxammo, maxvol, liquidgen, liquidtype, maxcharge, chargeperdram, chargeused,
      weight, commerce, complexity, tier, bits, canbuild, candisassemble, empsensitive, skill, colorstr, renderstr,
      id, bookid, lightradius, hunger, thirst, healing, butcheredinto, harvestedinto, preservedinto,

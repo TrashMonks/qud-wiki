@@ -65,7 +65,7 @@ class WikiTemplate:
         output += "| title = {{Qud text|" + self.attribs['title'] + "}}\n"
         for stat in self.attribs:
             output += f"| {stat} = {self.attribs[stat]}\n"
-        output += "\n}}\n"
+        output += "}}\n"
         return output
 
     def __eq__(self, other) -> bool:
