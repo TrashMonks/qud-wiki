@@ -724,10 +724,12 @@ class QudObject(NodeMixin):
         Including <nowiki> to get around some rendering bugs with characters like } """
         if self.part_Render_RenderString and len(self.part_Render_RenderString) > 1:
             # some RenderStrings are given as CP437 character codes in base 10
-            return '<nowiki>' + cp437_to_unicode(int(self.part_Render_RenderString)) + '</nowiki>'
+            return cp437_to_unicode(int(self.part_Render_RenderString))
         else:
             if self.part_Render_RenderString is not None:
-                return '<nowiki>' + self.part_Render_RenderString + '</nowiki>'
+                if self.part_Render_RenderString == '}':
+                    return '&#125;'
+                return self.part_Render_RenderString
             else:
                 return None
 
