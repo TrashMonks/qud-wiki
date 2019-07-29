@@ -5,8 +5,8 @@ from wiki_config import site, wiki_config
 
 TEMPLATE_RE = ''
 
-CREATED_SUMMARY = f'automatically created by [[Qud Blueprint Explorer]] {config["Version"]}'
-EDITED_SUMMARY = f'automatically updated by [[Qud Blueprint Explorer]] {config["Version"]}'
+CREATED_SUMMARY = f'Created by {wiki_config["operator"]} using {config["Wiki name"]} {config["Version"]}'
+EDITED_SUMMARY = f'Updated by {wiki_config["operator"]} using {config["Wiki name"]} {config["Version"]}'
 
 
 class WikiPage:
@@ -25,7 +25,7 @@ class WikiPage:
             self.blacklisted = True
         else:
             self.article_name = article_name[0].upper() + article_name[1:]
-            self.template_text = qud_object.wikify()
+            self.template_text = qud_object.wiki_template()
             self.page = site.pages[article_name]
 
     def exists(self):

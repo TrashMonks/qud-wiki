@@ -4,5 +4,7 @@
 
 username: Yourusername@Botname
 password: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+operator: >-
+  [[User:you|you]]
 base: cavesofqud.gamepedia.com
 path: /
