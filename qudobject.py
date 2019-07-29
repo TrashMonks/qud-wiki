@@ -219,6 +219,10 @@ class QudObject(NodeMixin):
         fields = config['Templates']['Fields']
         if self.inherits_from('Creature'):
             output = "{{Character\n"
+        elif self.inherits_from('Food'):
+            output = "{{Food\n"
+        elif (self.inherits_from('RobotLimb') or self.inherits_from('Corpse')) and (self.name != "Albino Ape Pelt" and self.name != "Crystal of Eve" and self.name != "Black Puma Haunch" and self.name != "Arsplice Seed" and self.name != "Albino Ape Heart" and self.name != "Ogre Ape Heart"):
+            output = "{{Corpse\n"
         else:
             output = "{{Item\n"
         output += "| title = {{Qud text|" + self.title + "}}\n"
@@ -410,6 +414,17 @@ class QudObject(NodeMixin):
         """If the item cannot be removed by normal circumstances."""
         if self.part_Cursed is not None:
             return 'yes'
+
+    @property
+    def corpse(self):
+        """What corpse a character drops."""
+        return self.part_Corpse_CorpseBlueprint
+
+    @property
+    def corpsechance(self):
+        """The chance of a corpse dropping, if corpsechance is >0"""
+        if self.part_Corpse_CorpseChance > 0:
+            return self.part_Corpse_CorpseChance
 
     @property
     def damage(self):
