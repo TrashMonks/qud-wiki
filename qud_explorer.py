@@ -40,11 +40,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.app = app
         self.setupUi(self)  # lay out the inherited UI as in the graphical designer
-        # instantiate custom QTreeView subclass
-        self.treeView = QudTreeView(self.tree_selection_handler, self.tree_target_widget)
-        self.init_qud_tree_view()
         icon = QIcon("book.png")
         self.setWindowIcon(icon)
+        self.qud_object_model = QStandardItemModel()
+        self.items_to_expand = []  # filled out during recursion of the Qud object tree
+        self.treeView = QudTreeView(self.tree_selection_handler, self.tree_target_widget)
+        self.init_qud_tree_view()
         self.search_line_edit.textChanged.connect(self.search_changed)
         self.actionOpen_ObjectBlueprints_xml.triggered.connect(self.open_xml)
         if os.path.exists('last_xml_location'):
@@ -85,13 +86,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.treeView.setIconSize(QSize(16, 24))
 
     def init_qud_tree_model(self):
-        self.qud_object_model = QStandardItemModel()
         self.treeView.setModel(self.qud_object_model)
         self.qud_object_model.setHorizontalHeaderLabels(HEADER_LABELS)
         header = self.treeView.header()
         header.setSectionResizeMode(QHeaderView.ResizeToContents)
-        self.items_to_expand = []  # filled out during recursion of the Qud object tree
-
         # We only need to add Object to the model, since all other Objects are loaded as children:
         self.qud_object_model.appendRow(self.init_qud_object_children(self.qud_object_root))
         self.expand_default()
@@ -201,9 +199,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     tile_exists_qitem.setText('Yes')
                 else:
                     tile_exists_qitem.setText('No')
-                # API cooldown
-                QThread.sleep(1)
-                app.processEvents()
+                self.app.processEvents()
 
     def upload_selected_templates(self):
         for index in self.currently_selected:

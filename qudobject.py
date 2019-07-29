@@ -760,6 +760,9 @@ class QudObject(NodeMixin):
             val = self.part_MissileWeapon_Skill
         if self.part_Gaslight:
             val = self.part_Gaslight_ChargedSkill
+        # disqualify various things from showing the 'cudgel' skill:
+        if self.inherits_from('Projectile'):
+            val = None
         return val
 
     @property

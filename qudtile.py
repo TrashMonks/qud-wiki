@@ -38,6 +38,7 @@ bad_tile_color = set()
 bad_detail_color = set()
 uses_details = set()
 
+
 class QudTile:
     """Class to load and color a Qud tile."""
     def __init__(self, filename, colorstring, raw_tilecolor, raw_detailcolor, qudname):
