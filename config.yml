@@ -1,5 +1,8 @@
 # Config file for Qud Blueprint Explorer
-Version: 0.3rc1
+App name: Qud Blueprint Explorer
+Wiki name: >-
+  [[Qud Blueprint Explorer|QBE]]
+Version: v0.3a
 
 Interface:
   # Interface options

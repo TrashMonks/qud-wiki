@@ -11,7 +11,7 @@ from config import config
 from qud_explorer_window import Ui_MainWindow
 from qudobject import QudObject
 from qudtile import blank_qtimage
-from wiki_config import site
+from wiki_config import site, wiki_config
 from wikipage import WikiPage
 
 HEADER_LABELS = ['Name', 'Display', 'Article exists', 'Image exists']
@@ -215,30 +215,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def upload_selected_tiles(self):
         for index in self.currently_selected:
-            if index.column() == 0:
-                item = self.qud_object_model.itemFromIndex(index)
-                qud_object = item.data()
-                if qud_object.tile is None:
-                    print(f'{qud_object.name} has no tile, so not uploading.')
-                    continue
-                if qud_object.tile.blacklisted:
-                    print(f'{qud_object.name} had a tile, but bad rendering, so not uploading.')
-                    continue
-                if qud_object.name in config['Templates']['Image overrides']:
-                    filename = config['Templates']['Image overrides'][qud_object.name]
-                else:
-                    filename = qud_object.image
-                descr = f'Automatically rendered by [[Qud Blueprint Explorer]] {config["Version"]}.'
-                comm = f'automatically rendered by [[Qud Blueprint Explorer]] {config["Version"]}'
-                result = site.upload(qud_object.tile.get_big_bytesio(),
-                                     filename=filename,
-                                     description=descr,
-                                     comment=comm
-                                     )
-                print(result)
+            if index.column() != 0:
+                continue
+            item = self.qud_object_model.itemFromIndex(index)
+            qud_object = item.data()
+            if qud_object.tile is None:
+                print(f'{qud_object.name} has no tile, so not uploading.')
+                continue
+            if qud_object.tile.blacklisted:
+                print(f'{qud_object.name} had a tile, but bad rendering, so not uploading.')
+                continue
+            if qud_object.name in config['Templates']['Image overrides']:
+                filename = config['Templates']['Image overrides'][qud_object.name]
+            else:
+                filename = qud_object.image
+            descr = f'Rendered by {wiki_config["operator"]} using {config["Wiki name"]} {config["Version"]}.'
+            result = site.upload(qud_object.tile.get_big_bytesio(),
+                                 filename=filename,
+                                 description=descr,
+                                 comment=descr
+                                 )
+            print(result)
 
 
 app = QApplication(sys.argv)
-app.setApplicationName("Qud Blueprint Explorer")
+app.setApplicationName(config['App name'])
 main_window = MainWindow(app)
 app.exec_()
