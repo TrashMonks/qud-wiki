@@ -24,16 +24,6 @@ def test_strip_qud_color_codes():
     assert strip_qud_color_codes('&yfloating&G &Yglowsphere') == 'floating glowsphere'
 
 
-def test_yes_no_none():
-    @yes_no_none
-    def f(x):
-        return x
-    assert f('true') == 'yes'
-    assert f('false') == 'no'
-    assert f(True) == 'yes'
-    assert f(False) == 'no'
-
-
 def test_inherits_from():
     obj = qindex['Stopsvaalinn']
     assert obj.inherits_from('BaseShield')

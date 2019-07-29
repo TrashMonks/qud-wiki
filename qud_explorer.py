@@ -1,10 +1,10 @@
 import sys
 import os
 
-from PySide2.QtCore import QSize
+from PySide2.QtCore import QSize, QThread
 from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon, QPixmap
-from PySide2.QtWidgets import QMainWindow, QApplication, QTreeView, QSizePolicy, QAbstractItemView, \
-    QFileDialog, QLabel, QHeaderView
+from PySide2.QtWidgets import QMainWindow, QApplication, QTreeView, QSizePolicy, \
+    QAbstractItemView, QFileDialog, QHeaderView
 
 import qud_object_tree
 from config import config
@@ -13,6 +13,8 @@ from qudobject import QudObject
 from qudtile import blank_qtimage
 from wiki_config import site
 from wikipage import WikiPage
+
+HEADER_LABELS = ['Name', 'Display', 'Article exists', 'Image exists']
 
 
 class QudTreeView(QTreeView):
@@ -52,12 +54,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.expand_all_button.clicked.connect(self.expand_all)
         self.collapse_all_button.clicked.connect(self.collapse_all)
         self.restore_all_button.clicked.connect(self.expand_default)
+        self.check_selected_button.clicked.connect(self.wiki_check_selected)
         self.upload_templates_button.clicked.connect(self.upload_selected_templates)
         self.upload_tiles_button.clicked.connect(self.upload_selected_tiles)
         self.currently_selected = []
         self.show()
 
-    def open_xml(self, filename: None):
+    def open_xml(self, filename=None):
         """Browse for and open ObjectBluePrints.xml."""
         if not filename:
             filename = QFileDialog.getOpenFileName()[0]
@@ -84,7 +87,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def init_qud_tree_model(self):
         self.qud_object_model = QStandardItemModel()
         self.treeView.setModel(self.qud_object_model)
-        self.qud_object_model.setHorizontalHeaderLabels(['Name', 'Display'])
+        self.qud_object_model.setHorizontalHeaderLabels(HEADER_LABELS)
         header = self.treeView.header()
         header.setSectionResizeMode(QHeaderView.ResizeToContents)
         self.items_to_expand = []  # filled out during recursion of the Qud object tree
@@ -95,13 +98,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def init_qud_object_children(self, qud_object: QudObject):
         """Recursive function to translate hierarchy from the Qud object AnyTree model to the
-        Qt StandardItemModel model."""
+        Qt StandardItemModel model.
+
+        Returns a list, which will be the list of column entries for the row."""
         item = QStandardItem(qud_object.name)
-        if qud_object.is_specified('tag_BaseObject'):
-            item.setSelectable(False)
         display_name = QStandardItem(qud_object.displayname)
-        display_name.setSelectable(False)
-        display_name.setSizeHint(QSize(0, 25))
+        # display_name.setSelectable(False)
+        display_name.setSizeHint(QSize(250, 25))
         if qud_object.tile is None:
             display_name.setIcon(QIcon(QPixmap.fromImage(blank_qtimage)))
         elif qud_object.tile.blacklisted:
@@ -114,7 +117,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 item.appendRow(self.init_qud_object_children(child))
         if qud_object.name in config['Interface']['Initial expansion targets']:
             self.items_to_expand.append(item)
-        return [item, display_name]
+        wiki_article_exists = QStandardItem('')
+        image_exists = QStandardItem('')
+        if qud_object.is_specified('tag_BaseObject'):
+            for _ in item, display_name, wiki_article_exists, image_exists:
+                _.setSelectable(False)
+        return [item, display_name, wiki_article_exists, image_exists]
 
     def recursive_expand(self, item: QStandardItem):
         index = self.qud_object_model.indexFromItem(item)
@@ -131,7 +139,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if index.column() == 0:
                 item = self.qud_object_model.itemFromIndex(index)
                 qud_object = item.data()
-                text += qud_object.wikify()
+                text += qud_object.wikify() + '\n'
                 self.statusbar.showMessage(qud_object.ui_inheritance_path())
                 if qud_object.tile is not None and not qud_object.tile.blacklisted:
                     self.tile_label.setPixmap(QPixmap.fromImage(qud_object.tile.get_big_qtimage()))
@@ -162,14 +170,52 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 item = self.qud_object_model.itemFromIndex(selected[0]).data()
                 self.recursive_expand(self.qud_object_model.itemFromIndex(selected[0]))
 
+    def wiki_check_selected(self):
+        # first, blank the cells for ones already checked
+        for num, index in enumerate(self.currently_selected):
+            if index.column() == 0:
+                wiki_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 2])
+                tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 3])
+                wiki_exists_qitem.setText('')
+                tile_exists_qitem.setText('')
+        # now, do the actual checking and update the cells with 'yes' or 'no'
+        for num, index in enumerate(self.currently_selected):
+            if index.column() == 0:
+                qitem = self.qud_object_model.itemFromIndex(index)
+                wiki_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+2])
+                tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+3])
+                qud_object = qitem.data()
+                # Check wiki page first:
+                page = WikiPage(qud_object)
+                if page.blacklisted:
+                    wiki_exists_qitem.setText('-')
+                    tile_exists_qitem.setText('-')
+                    continue
+                if page.exists():
+                    wiki_exists_qitem.setText('Yes')
+                else:
+                    wiki_exists_qitem.setText('No')
+                # Now check whether tile image exists:
+                tile_file = site.images[qud_object.image]
+                if tile_file.exists:
+                    tile_exists_qitem.setText('Yes')
+                else:
+                    tile_exists_qitem.setText('No')
+                # API cooldown
+                QThread.sleep(1)
+                app.processEvents()
+
     def upload_selected_templates(self):
         for index in self.currently_selected:
             if index.column() == 0:
                 item = self.qud_object_model.itemFromIndex(index)
                 qud_object = item.data()
                 page = WikiPage(qud_object)
-                print(f'Page {page} exists:', page.exists())
-                page.upload_template()
+                if page.blacklisted:
+                    print(f'{qud_object.name} is not suitable due to its name or displayname.')
+                else:
+                    print(f'Page {page} exists:', page.exists())
+                    page.upload_template()
 
     def upload_selected_tiles(self):
         for index in self.currently_selected:
@@ -186,10 +232,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     filename = config['Templates']['Image overrides'][qud_object.name]
                 else:
                     filename = qud_object.image
-                print(site.upload(qud_object.tile.get_big_bytesio(),
-                            filename=filename,
-                            description='Automatically rendered by [[Qud Blueprint Explorer]].',
-                            comment='automatically rendered by Qud Blueprint Explorer'))
+                descr = f'Automatically rendered by [[Qud Blueprint Explorer]] {config["Version"]}.'
+                comm = f'automatically rendered by [[Qud Blueprint Explorer]] {config["Version"]}'
+                result = site.upload(qud_object.tile.get_big_bytesio(),
+                                     filename=filename,
+                                     description=descr,
+                                     comment=comm
+                                     )
+                print(result)
 
 
 app = QApplication(sys.argv)

@@ -512,7 +512,15 @@ class QudObject(NodeMixin):
     @property
     def empsensitive(self):
         """Returns yes if the object is empensitive. Can be found in multiple parts."""
-        if self.part_EquipStatBoost_IsEMPSensitive == 'true' or self.part_BootSequence_IsEMPSensitive == 'true' or self.part_NavigationBonus_IsEMPSensitive == 'true' or self.part_SaveModifier_IsEMPSensitive == 'true' or self.part_LiquidFueledPowerPlant_IsEMPSensitive == 'true' or self.part_LiquidProducer_IsEMPSensitive == 'true' or self.part_TemperatureAdjuster_IsEMPSensitive == 'true':
+        parts = ['part_EquipStatBoost_IsEMPSensitive',
+                 'part_BootSequence_IsEMPSensitive',
+                 'part_NavigationBonus_IsEMPSensitive',
+                 'part_SaveModifier_IsEMPSensitive',
+                 'part_LiquidFueledPowerPlant_IsEMPSensitive',
+                 'part_LiquidProducer_IsEMPSensitive',
+                 'part_TemperatureAdjuster_IsEMPSensitive',
+                 ]
+        if any(getattr(self, part) == 'true' for part in parts):
             return 'yes'
 
     @property

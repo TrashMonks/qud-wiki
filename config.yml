@@ -1,4 +1,5 @@
 # Config file for Qud Blueprint Explorer
+Version: 0.3rc1
 
 Interface:
   # Interface options
@@ -14,7 +15,7 @@ Templates:
     # (title comes first, but is not listed here)
     [image, pv, maxpv, vibro, pvpowered, damage, unpowereddamage, hp, av, dv, ma, tohit, ammo,
      accuracy, shots, maxammo, maxvol, liquidgen, liquidtype, maxcharge, chargeperdram, chargeused,
-     weight, commerce, complexity, tier, bits, canbuild, candisassemble, skill, colorstr, renderstr,
+     weight, commerce, complexity, tier, bits, canbuild, candisassemble, empsensitive, skill, colorstr, renderstr,
      id, bookid, lightradius, hunger, thirst, healing, butcheredinto, harvestedinto, preservedinto,
      preservedquantity, cookeffect, ismeat, isplant, isfungus, exoticfood, corpse, corpsechance, twohanded, metal, lightprojectile, reflect, cursed, extra, strength,
      agility, toughness, intelligence, willpower, ego, acid, electric, cold, heat, poison,

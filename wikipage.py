@@ -5,8 +5,8 @@ from wiki_config import site, wiki_config
 
 TEMPLATE_RE = ''
 
-CREATED_SUMMARY = 'automatically created by Qud Blueprint Explorer'
-EDITED_SUMMARY = 'automatically edited by Qud Blueprint Explorer'
+CREATED_SUMMARY = f'automatically created by [[Qud Blueprint Explorer]] {config["Version"]}'
+EDITED_SUMMARY = f'automatically updated by [[Qud Blueprint Explorer]] {config["Version"]}'
 
 
 class WikiPage:
@@ -18,9 +18,15 @@ class WikiPage:
         else:
             article_name = qud_object.displayname
         # capitalize first character
-        self.article_name = article_name[0].upper() + article_name[1:]
-        self.template_text = qud_object.wikify()
-        self.page = site.pages[article_name]
+        self.blacklisted = False  # whether we will refuse all wiki work for this item
+        if '[' in article_name or len(article_name) == 0:
+            # mostly base categories that aren't listed as such, or objects that aren't meant
+            # to be rendered (no display name)
+            self.blacklisted = True
+        else:
+            self.article_name = article_name[0].upper() + article_name[1:]
+            self.template_text = qud_object.wikify()
+            self.page = site.pages[article_name]
 
     def exists(self):
         """Whether this page exists already."""

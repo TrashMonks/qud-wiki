@@ -76,6 +76,13 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="check_selected_button">
+            <property name="text">
+             <string>Check wiki for selected articles and images</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="upload_templates_button">
             <property name="text">
              <string>Upload selected templates</string>

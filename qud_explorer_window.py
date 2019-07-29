@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'qud_explorer_window.ui',
 # licensing of 'qud_explorer_window.ui' applies.
 #
-# Created: Sat Jul 27 13:05:44 2019
+# Created: Sun Jul 28 20:13:19 2019
 #      by: pyside2-uic  running on PySide2 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -51,6 +51,9 @@ class Ui_MainWindow(object):
         self.restore_all_button = QtWidgets.QPushButton(self.centralwidget)
         self.restore_all_button.setObjectName("restore_all_button")
         self.horizontalLayout_2.addWidget(self.restore_all_button)
+        self.check_selected_button = QtWidgets.QPushButton(self.centralwidget)
+        self.check_selected_button.setObjectName("check_selected_button")
+        self.horizontalLayout_2.addWidget(self.check_selected_button)
         self.upload_templates_button = QtWidgets.QPushButton(self.centralwidget)
         self.upload_templates_button.setObjectName("upload_templates_button")
         self.horizontalLayout_2.addWidget(self.upload_templates_button)
@@ -90,6 +93,7 @@ class Ui_MainWindow(object):
         self.expand_all_button.setText(QtWidgets.QApplication.translate("MainWindow", "Expand all", None, -1))
         self.collapse_all_button.setText(QtWidgets.QApplication.translate("MainWindow", "Collapse all", None, -1))
         self.restore_all_button.setText(QtWidgets.QApplication.translate("MainWindow", "Default expansion", None, -1))
+        self.check_selected_button.setText(QtWidgets.QApplication.translate("MainWindow", "Check wiki for selected articles and images", None, -1))
         self.upload_templates_button.setText(QtWidgets.QApplication.translate("MainWindow", "Upload selected templates", None, -1))
         self.upload_tiles_button.setText(QtWidgets.QApplication.translate("MainWindow", "Upload selected tiles", None, -1))
         self.menuFile.setTitle(QtWidgets.QApplication.translate("MainWindow", "File", None, -1))
