@@ -22,16 +22,33 @@ Templates:
      id, bookid, lightradius, hunger, thirst, healing, butcheredinto, harvestedinto, preservedinto,
      preservedquantity, cookeffect, ismeat, isplant, isfungus, exoticfood, corpse, corpsechance, twohanded, metal, lightprojectile, reflect, cursed, extra, strength,
      agility, toughness, intelligence, willpower, ego, acid, electric, cold, heat, poison,
-     reputationbonus, wornon, usesslots, desc]
+     reputationbonus, wornon, usesslots, desc, eatdesc]
   Image overrides:
     # Manually specify the image name to be shown for an object ID:
     Asphodel: Earl_asphodel.png
+    PoisonBreatherGlandPaste: tartbeard gland paste.png
+    ElderPoisonBreatherGlandPaste: concentrated tartbeard gland paste.png
+    ElderSleepBreatherGlandPaste: dreambeard gland paste.png
+    StunBreatherGlandPaste: sleetbeard gland paste.png
+    ElderStunBreatherGlandPaste: concentrated sleetbeard gland paste.png
+    Bear Jerky: barkbiter jerky.png
+    Croc Jerky: boar jerky.png
+    Frog Jerky: beetle jerky.png
+    Crab Jerky: beetle jerky.png
+    Worm Jerky: barkbiter jerky.png
+    Goat Jerky: boar jerky.png
+    Scorpiock Jerky: beetle jerky.png
+    Lignin: canned haveitall.png
+    Fire Ant Gaster Paste:  concentrated flamebeard gland paste.png
+    Voider Gland Paste: concentrated mazebeard gland paste.png
 
 Wiki:
   Article overrides:
     # Manually specify the article title to be used for an object ID:
     # Example:
     ClockworkBeetle: Clockwork Beetle
+    Torch: Torch
+
   Categories:
     # Each wiki category is followed by a list of nodes in the inheritance tree whose child objects
     # should be in that category. Objects may also be explicitly specified.
@@ -64,9 +81,9 @@ Wiki:
     Thrown Weapons: [BaseThrownWeapon]
     Trinkets: [Trinket]
     Food: [Food]
+    Preserved Food: [Preservable]
     Tools: [Tool]
     Tonics: [Tonic]
-    Corpses: [Corpse]
     Trade Goods: [Copper Nugget, Silver Nugget, Gold Nugget, Gemstone, Bronze Ingot, BoxOfCrayons,
                   Polyhedral Rings, Silver Rondure, Blood-stained neck-ring]
     Plants: [Plant]
