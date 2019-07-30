@@ -590,9 +590,12 @@ class QudObject(NodeMixin):
         if self.name in IMAGE_OVERRIDES:
             return IMAGE_OVERRIDES[self.name]
         else:
-            tile = self.displayname
-            tile = re.sub(r"[^a-zA-Z\d ]", '', tile)
-            tile = tile.casefold() + '.png'
+            if self.part_Render_Tile is not None:
+                tile = self.displayname
+                tile = re.sub(r"[^a-zA-Z\d ]", '', tile)
+                tile = tile.casefold() + '.png'
+            else:
+                tile = 'none'
             return tile
 
     @property
