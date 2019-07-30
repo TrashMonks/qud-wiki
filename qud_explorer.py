@@ -56,6 +56,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.collapse_all_button.clicked.connect(self.collapse_all)
         self.restore_all_button.clicked.connect(self.expand_default)
         self.check_selected_button.clicked.connect(self.wiki_check_selected)
+        self.compare_selected_button.clicked.connect(self.wiki_compare_selected)
         self.upload_templates_button.clicked.connect(self.upload_selected_templates)
         self.upload_tiles_button.clicked.connect(self.upload_selected_tiles)
         self.currently_selected = []
@@ -73,6 +74,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowTitle("Qud Blueprint Explorer - " + filename)
 
     def init_qud_tree_view(self):
+        """Do some configuration for the QudTreeView."""
         size_policy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         size_policy.setHorizontalStretch(1)
         size_policy.setVerticalStretch(0)
@@ -86,6 +88,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.treeView.setIconSize(QSize(16, 24))
 
     def init_qud_tree_model(self):
+        """Initialize the Qud object model tree by setting up the root object."""
         self.treeView.setModel(self.qud_object_model)
         self.qud_object_model.setHorizontalHeaderLabels(HEADER_LABELS)
         header = self.treeView.header()
@@ -123,6 +126,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return [item, display_name, wiki_article_exists, image_exists]
 
     def recursive_expand(self, item: QStandardItem):
+        """Expand the currently selected item in the QudTreeView and all its children."""
         index = self.qud_object_model.indexFromItem(item)
         self.treeView.expand(index)
         if item.parent() is not None:
@@ -148,17 +152,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.plainTextEdit.setPlainText(text)
 
     def collapse_all(self):
+        """Fully collapse all levels of the QudTreeView."""
         self.treeView.collapseAll()
 
     def expand_all(self):
+        """Fully expand all levels of the QudTreeView."""
         self.treeView.expandAll()
 
     def expand_default(self):
+        """Expand the QudTreeView to the levels configured in config.yml."""
         self.collapse_all()
         for item in self.items_to_expand:
             self.recursive_expand(item)
 
     def search_changed(self):
+        """Called when the text in the search box has changed."""
         if self.search_line_edit.text() != '':
             self.treeView.scrollToTop()  # keyboardSearch is bad
             self.treeView.clearSelection()  # keyboardSearch is bad
@@ -169,6 +177,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.recursive_expand(self.qud_object_model.itemFromIndex(selected[0]))
 
     def wiki_check_selected(self):
+        """Check the wiki for the existence of the article and image for selected objects, and
+        update the columns for those states."""
         # first, blank the cells for ones already checked
         for num, index in enumerate(self.currently_selected):
             if index.column() == 0:
@@ -194,14 +204,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 else:
                     wiki_exists_qitem.setText('No')
                 # Now check whether tile image exists:
-                tile_file = site.images[qud_object.image]
-                if tile_file.exists:
+                uploaded_tile_file = site.images[qud_object.image]
+                if uploaded_tile_file.exists:
                     tile_exists_qitem.setText('Yes')
                 else:
                     tile_exists_qitem.setText('No')
                 self.app.processEvents()
 
+    def wiki_compare_selected(self):
+        """Compare the generated templates for the selected objects to the version on the wiki."""
+
+
     def upload_selected_templates(self):
+        """Upload the generated templates for the selected objects to the wiki."""
         for index in self.currently_selected:
             if index.column() == 0:
                 item = self.qud_object_model.itemFromIndex(index)
@@ -209,11 +224,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 page = WikiPage(qud_object)
                 if page.blacklisted:
                     print(f'{qud_object.name} is not suitable due to its name or displayname.')
+                elif page.exists():
+                    print(f'Page {page} already exists, updating not supported yet.')
+                    continue
                 else:
-                    print(f'Page {page} exists:', page.exists())
                     page.upload_template()
 
     def upload_selected_tiles(self):
+        """Upload the generated tiles for the selected objects to the wiki."""
         for index in self.currently_selected:
             if index.column() != 0:
                 continue
@@ -224,6 +242,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 continue
             if qud_object.tile.blacklisted:
                 print(f'{qud_object.name} had a tile, but bad rendering, so not uploading.')
+                continue
+            uploaded_tile_file = site.images[qud_object.image]
+            if uploaded_tile_file.exists:
+                print(f'Image {qud_object.image} already exists, updating not supported yet.')
                 continue
             if qud_object.name in config['Templates']['Image overrides']:
                 filename = config['Templates']['Image overrides'][qud_object.name]

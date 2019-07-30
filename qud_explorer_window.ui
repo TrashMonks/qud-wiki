@@ -83,6 +83,13 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="compare_selected_button">
+            <property name="text">
+             <string>Compare selected to wiki</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="upload_templates_button">
             <property name="text">
              <string>Upload selected templates</string>

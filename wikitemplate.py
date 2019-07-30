@@ -42,7 +42,11 @@ class WikiTemplate:
     def from_text(cls, template_type: str, text: str):
         """Construct a Template from a wiki text, rather than directly from attribs.
 
-        Attribute:value pairs must be given one per line, starting with |"""
+        Attribute:value pairs must be given one per line, starting with |
+
+        If this is given a wiki page with more than one template in it, will only operate on
+        the first one."""
+
         text = text.strip()
         if not text.startswith('{{'):
             raise ValueError('Given text template does not start with \'{{\'')
@@ -59,7 +63,11 @@ class WikiTemplate:
             attribs[attrib] = value
         return cls(template_type, attribs)
 
-    def to_text(self) -> str:
+    def __eq__(self, other) -> bool:
+        """Compare this Template to another Template by checking their attribute dictionaries."""
+        return self.template_type == other.template_type and self.attribs == other.attribs
+
+    def __str__(self) -> str:
         """Return a string representation of self in the Caves of Qud wiki item template format."""
         if self.template_type == 'Corpse':
             intro_string = '{{!}}-\n'
@@ -80,7 +88,3 @@ class WikiTemplate:
                     output += f"| {stat} = {self.attribs[stat]}\n"
         output += "}}\n"
         return output
-
-    def __eq__(self, other) -> bool:
-        """Compare this Template to another Template by checking their attribute dictionaries."""
-        return self.template_type == other.template_type and self.attribs == other.attribs

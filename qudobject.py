@@ -216,9 +216,10 @@ class QudObject(NodeMixin):
         return seek
 
     def wiki_template(self):
+        """Return the fully wikified template representing this object and add a category."""
         template_type = self.wiki_template_type()
         template = WikiTemplate.from_qud_object(template_type, self)
-        text = template.to_text()
+        text = str(template)
         category = self.wiki_category()
         if category:
             text += "[[Category:" + category + "]]\n"
@@ -243,6 +244,7 @@ class QudObject(NodeMixin):
         return val
 
     def wiki_category(self):
+        """Determine what configured wiki category this object belongs in."""
         cat = None
         for config_cat, names in config['Wiki']['Categories'].items():
             for name in names:
