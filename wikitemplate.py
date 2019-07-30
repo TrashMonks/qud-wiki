@@ -61,11 +61,23 @@ class WikiTemplate:
 
     def to_text(self) -> str:
         """Return a string representation of self in the Caves of Qud wiki item template format."""
-        output = '{{' + f'{self.template_type}'
-        output += "| title = {{Qud text|" + self.attribs['title'] + "}}\n"
+        if self.template_type == 'Corpse':
+            intro_string = '{{!}}-\n'
+            before_title = ''
+            after_title = ''
+        else: 
+            intro_string = ''
+            before_title = "{{Qud text|"
+            after_title = "}}"
+        output = intro_string + '{{' + f'{self.template_type}\n'
+        output += "| title = " + before_title + self.attribs['title'] + after_title + "\n"
         for stat in self.attribs:
-            if stat != self.attribs['title']:
-                output += f"| {stat} = {self.attribs[stat]}\n"
+            if self.attribs[stat] != self.attribs['title']:
+                if self.template_type == 'Corpse':
+                    if stat not in ['hunger','colorstr','renderstr','image']:
+                        output += f"| {stat} = {self.attribs[stat]}\n"
+                else:
+                    output += f"| {stat} = {self.attribs[stat]}\n"
         output += "}}\n"
         return output
 
