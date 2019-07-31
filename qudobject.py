@@ -641,19 +641,19 @@ class QudObject(NodeMixin):
     @property
     def isfungus(self):
         """If the food item contains fungus."""
-        if self.part_Mushroom is not None:
+        if self.tag_Mushroom is not None:
             return 'yes'
 
     @property
     def ismeat(self):
         """If the food item contains meat."""
-        if self.part_Meat is not None:
+        if self.tag_Meat is not None:
             return 'yes'
 
     @property
     def isplant(self):
         """If the food item contains plants."""
-        if self.part_Plant is not None:
+        if self.tag_Plant is not None:
             return 'yes'
 
     @property
