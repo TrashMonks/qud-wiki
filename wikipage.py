@@ -14,7 +14,7 @@ EDITED_SUMMARY = f'Updated by {wiki_config["operator"]} using {config["Wiki name
 # 1st matching group: everything before template
 # 2nd matching group: template
 # 3rd matching group: everything after template
-TEMPLATE_RE = r"(.*)(^{{(?:Item|Character|Food|Corpse).*^}}$\s\[\[Category:\w+\]\]$)(.*)"
+TEMPLATE_RE = r"(.*)(^{{(?:Item|Character|Food|Corpse).*^}}$\s\[\[Category:[ \w]+\]\]$)(.*)"
 
 
 class WikiPage:
@@ -43,6 +43,9 @@ class WikiPage:
             # complex case: have to get text indices corresponding to beginning of pre-template,
             # and end of post-template
             match = re.match(TEMPLATE_RE, self.page.text(), re.MULTILINE | re.DOTALL)
+            if match is None:
+                raise ValueError('Article exists, but existing format not recognized.'
+                                 'Try a manual edit first.')
             start = match.start(2)
             end = match.end(2)
             pre_template_text = self.page.text()[:start]
