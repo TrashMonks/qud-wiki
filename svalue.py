@@ -22,6 +22,7 @@ class sValue:
         self.t_parsed = svalue
         self.low = 0
         self.high = 0
+        self.svalstring = self.t_parsed.replace(',','+')
         for part in self.t_parsed.split(','):
             modified = False
             if '+' in part:
@@ -63,7 +64,7 @@ class sValue:
         if len(self) == 1:
             return str(self.low)
         else:
-            return str(self.low) + " - " + str(self.high)
-
+            #return str(self.low) + " - " + str(self.high)
+            return str(self.svalstring)
     def __repr__(self):
         return "sValue " + self.svalue

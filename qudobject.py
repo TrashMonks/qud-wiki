@@ -447,7 +447,7 @@ class QudObject(NodeMixin):
     @property
     def corpse(self):
         """What corpse a character drops."""
-        return self.part_Corpse_CorpseBlueprint
+        return "{{ID to name|" + self.part_Corpse_CorpseBlueprint + "|Corpses}}"
 
     @property
     def corpsechance(self):
@@ -563,9 +563,21 @@ class QudObject(NodeMixin):
         """Any other features that do not have an associated variable."""
         # TODO: add more
         extra = None
-        if self.property_Role:
-            extra = self.property_Role_Value
         return extra
+
+    @property
+    def faction(self):
+        """what factions are this creature loyal to"""
+        # <part Name="Brain" Wanders="false" Factions="Joppa-100,Barathrumites-100" />
+        ret = None
+        if self.part_Brain_Factions:
+            ret = ''
+            for part in self.part_Brain_Factions.split(','):
+                if '-' in part:
+                    # has format like `Joppa-100,Barathrumites-100`
+                    faction, value = part.split('-')
+                    ret += f'{{{{creature faction|{{{{ID to name|{faction}|Factions}}}}|{value}}}}}'
+        return ret
 
     @property
     def gender(self):
@@ -718,6 +730,12 @@ class QudObject(NodeMixin):
         return self.part_PreservableItem_Number
 
     @property
+    def pronouns(self):
+        """returns the pronounset of a creature, if they have any."""
+        if self.tag_PronounSet_Value is not None and self.inherits_from('Creature'):
+            return self.tag_PronounSet_Value
+
+    @property
     def pv(self):
         """The base PV, which is by default 4 if not set. Optional."""
         # TODO: does this have meaning for other than MeleeWeapons?
@@ -771,13 +789,18 @@ class QudObject(NodeMixin):
                 if ':' in part:
                     # has format like `Fungi:200,Consortium:-200`
                     faction, value = part.split(':')
-                    ret += f'{{{{reputation bonus|{faction}|{value}}}}}'
+                    ret += f'{{{{reputation bonus|{{{{ID to name|{faction}|Factions}}}}|{value}}}}}'
                 else:
                     # has format like `Antelopes,Goatfolk` and Value `100`
                     # or is a single faction, like `Apes` and Value `-100`
                     value = self.part_AddsRep_Value
-                    ret += f'{{{{reputation bonus|{part}|{value}}}}}'
+                    ret += f'{{{{reputation bonus|{{{{ID to name|{part}|Factions}}}}|{value}}}}}'
         return ret
+
+    @property
+    def role(self):
+        """returns the role of the creature."""
+        return self.property_Role_Value
 
     @property
     def shots(self):

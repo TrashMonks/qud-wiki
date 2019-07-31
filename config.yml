@@ -9,38 +9,23 @@ Interface:
   Initial expansion targets:
     # These object category IDs will be expanded when the tree is initialized:
     [Food, MeleeWeapon, MissileWeapon, Armor, Shield, Token, LightSource, Tool, Tonic, Trinket,
-     Energy Cell, Security Card, Barathrumite, SapientMutatedFlower]
+     Energy Cell, Barathrumite, SapientMutatedFlower]
 
 Templates:
   # Options controlling the generation of wiki infobox templates
   Fields:
     # The fields that (if applicable) will be generated for each item, in this order:
     # (title comes first, but is not listed here)
-    [title, image, pv, maxpv, vibro, pvpowered, damage, unpowereddamage, hp, av, dv, ma, tohit, ammo,
+    [title, image, pv, maxpv, vibro, pvpowered, damage, unpowereddamage, lv, hp, av, dv, ma, tohit, ammo,
      accuracy, shots, maxammo, maxvol, liquidgen, liquidtype, maxcharge, chargeperdram, chargeused,
      weight, commerce, complexity, tier, bits, canbuild, candisassemble, empsensitive, skill, colorstr, renderstr,
      id, bookid, lightradius, hunger, thirst, healing, butcheredinto, harvestedinto, preservedinto,
-     preservedquantity, cookeffect, ismeat, isplant, isfungus, exoticfood, corpse, corpsechance, twohanded, metal, lightprojectile, reflect, cursed, extra, strength,
+     preservedquantity, cookeffect, ismeat, isplant, isfungus, exoticfood, corpse, corpsechance, twohanded, metal, lightprojectile, reflect, cursed, role, extra, strength,
      agility, toughness, intelligence, willpower, ego, acid, electric, cold, heat, poison,
-     reputationbonus, wornon, usesslots, desc, eatdesc]
+     reputationbonus, faction, wornon, usesslots, gender, pronouns, desc, eatdesc]
   Image overrides:
     # Manually specify the image name to be shown for an object ID:
     Asphodel: Earl_asphodel.png
-    PoisonBreatherGlandPaste: tartbeard gland paste.png
-    ElderPoisonBreatherGlandPaste: concentrated tartbeard gland paste.png
-    ElderSleepBreatherGlandPaste: dreambeard gland paste.png
-    StunBreatherGlandPaste: sleetbeard gland paste.png
-    ElderStunBreatherGlandPaste: concentrated sleetbeard gland paste.png
-    Bear Jerky: barkbiter jerky.png
-    Croc Jerky: boar jerky.png
-    Frog Jerky: beetle jerky.png
-    Crab Jerky: beetle jerky.png
-    Worm Jerky: barkbiter jerky.png
-    Goat Jerky: boar jerky.png
-    Scorpiock Jerky: beetle jerky.png
-    Lignin: canned haveitall.png
-    Fire Ant Gaster Paste:  concentrated flamebeard gland paste.png
-    Voider Gland Paste: concentrated mazebeard gland paste.png
 
 Wiki:
   Article overrides:
