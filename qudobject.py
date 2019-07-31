@@ -242,7 +242,7 @@ class QudObject(NodeMixin):
         text += "}}\n"
         category = self.wiki_category()
         if category:
-            text += "[[Category:" + category + "]]\n"
+            text += "[[Category:" + category + "]]"
         return text
 
     def wiki_template_type(self) -> str:

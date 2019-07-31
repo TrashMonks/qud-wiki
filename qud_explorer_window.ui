@@ -78,28 +78,21 @@
           <item>
            <widget class="QPushButton" name="check_selected_button">
             <property name="text">
-             <string>Check wiki for selected articles and images</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="compare_selected_button">
-            <property name="text">
-             <string>Compare selected to wiki</string>
+             <string>🔁 Scan wiki for selected</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="upload_templates_button">
             <property name="text">
-             <string>Upload selected templates</string>
+             <string>⬆ Upload selected templates</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="upload_tiles_button">
             <property name="text">
-             <string>Upload selected tiles</string>
+             <string>⬆ Upload selected tiles</string>
             </property>
            </widget>
           </item>

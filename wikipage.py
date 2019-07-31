@@ -48,7 +48,8 @@ class WikiPage:
             pre_template_text = self.page.text()[:start]
             post_template_text = self.page.text()[end:]
             new_text = pre_template_text + self.template_text + post_template_text
-            self.page.save(text=new_text, summary=EDITED_SUMMARY)
+            result = self.page.save(text=new_text, summary=EDITED_SUMMARY)
         else:
             # simple case, creating an article
-            self.page.save(text=self.template_text, summary=CREATED_SUMMARY)
+            result = self.page.save(text=self.template_text, summary=CREATED_SUMMARY)
+        print(result)

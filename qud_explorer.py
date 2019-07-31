@@ -56,7 +56,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.collapse_all_button.clicked.connect(self.collapse_all)
         self.restore_all_button.clicked.connect(self.expand_default)
         self.check_selected_button.clicked.connect(self.wiki_check_selected)
-        self.compare_selected_button.clicked.connect(self.wiki_compare_selected)
         self.upload_templates_button.clicked.connect(self.upload_selected_templates)
         self.upload_tiles_button.clicked.connect(self.upload_selected_tiles)
         self.currently_selected = []
@@ -192,6 +191,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if index.column() == 0:
                 qitem = self.qud_object_model.itemFromIndex(index)
                 wiki_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+2])
+                wiki_matches_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 3])
                 tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+4])
                 qud_object = qitem.data()
                 # Check wiki article first:
@@ -201,29 +201,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     tile_exists_qitem.setText('-')
                     continue
                 if article.page.exists:
-                    wiki_exists_qitem.setText('Yes')
+                    wiki_exists_qitem.setText('✅')
+                    # does the template match the article?
+                    if qud_object.wiki_template().strip() in article.page.text():
+                        wiki_matches_qitem.setText('✅')
+                    else:
+                        wiki_matches_qitem.setText('❌')
                 else:
-                    wiki_exists_qitem.setText('No')
+                    wiki_exists_qitem.setText('❌')
+                    wiki_matches_qitem.setText('-')
                 # Now check whether tile image exists:
                 uploaded_tile_file = site.images[qud_object.image]
                 if uploaded_tile_file.exists:
-                    tile_exists_qitem.setText('Yes')
+                    tile_exists_qitem.setText('✅')
                 else:
-                    tile_exists_qitem.setText('No')
+                    tile_exists_qitem.setText('❌')
                 self.app.processEvents()
-
-    def wiki_compare_selected(self):
-        """Compare the generated templates for the selected objects to the version on the wiki."""
-        for num, index in enumerate(self.currently_selected):
-            if index.column() == 0:
-                item = self.qud_object_model.itemFromIndex(index)
-                wiki_matches_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 3])
-                qud_object = item.data()
-                article = WikiPage(qud_object)
-                if qud_object.wiki_template().strip() in article.page.text():
-                    wiki_matches_qitem.setText('Yes')
-                else:
-                    wiki_matches_qitem.setText('No')
 
     def upload_selected_templates(self):
         """Upload the generated templates for the selected objects to the wiki."""
@@ -251,7 +244,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 print(f'{qud_object.name} had a tile, but bad rendering, so not uploading.')
                 continue
             uploaded_tile_file = site.images[qud_object.image]
-            if uploaded_tile_file.page.exists:
+            if uploaded_tile_file.exists:
                 print(f'Image {qud_object.image} already exists, updating not supported yet.')
                 continue
             if qud_object.name in config['Templates']['Image overrides']:
