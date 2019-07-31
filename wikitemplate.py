@@ -12,7 +12,11 @@ class WikiTemplate:
     """Generic class to represent a Caves of Qud wiki template.
 
     Methods:
+        __init__: create from attribs dictionary
+        from_qud_object: alternate constructor, construct from QudObject
+        from_text: alternate constructor, construct from Wiki page
         __eq__: allow comparing template to another
+        __str__: output in full Wiki template format
     """
     def __init__(self, template_type: str, attribs: dict):
         self.template_type = template_type  # Item, Character, etc.
@@ -60,6 +64,9 @@ class WikiTemplate:
                 attrib = attrib[1:]
             attrib = attrib.strip()
             value = value.strip()
+            if attrib == 'title' and value.startswith('{{Qud text|'):
+                # clean up incoming titles from wiki
+                value = value[11:-2]
             attribs[attrib] = value
         return cls(template_type, attribs)
 

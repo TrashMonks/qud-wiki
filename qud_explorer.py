@@ -13,8 +13,9 @@ from qudobject import QudObject
 from qudtile import blank_qtimage
 from wiki_config import site, wiki_config
 from wikipage import WikiPage
+from wikitemplate import WikiTemplate
 
-HEADER_LABELS = ['Name', 'Display', 'Article exists', 'Image exists']
+HEADER_LABELS = ['Name', 'Display', 'Article exists', 'Article matches', 'Image exists']
 
 
 class QudTreeView(QTreeView):
@@ -119,11 +120,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if qud_object.name in config['Interface']['Initial expansion targets']:
             self.items_to_expand.append(item)
         wiki_article_exists = QStandardItem('')
+        wiki_article_matches = QStandardItem('')
         image_exists = QStandardItem('')
         if qud_object.is_specified('tag_BaseObject'):
-            for _ in item, display_name, wiki_article_exists, image_exists:
+            for _ in item, display_name, wiki_article_exists, wiki_article_matches, image_exists:
                 _.setSelectable(False)
-        return [item, display_name, wiki_article_exists, image_exists]
+        return [item, display_name, wiki_article_exists, wiki_article_matches, image_exists]
 
     def recursive_expand(self, item: QStandardItem):
         """Expand the currently selected item in the QudTreeView and all its children."""
@@ -183,7 +185,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for num, index in enumerate(self.currently_selected):
             if index.column() == 0:
                 wiki_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 2])
-                tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 3])
+                tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 4])
                 wiki_exists_qitem.setText('')
                 tile_exists_qitem.setText('')
         # now, do the actual checking and update the cells with 'yes' or 'no'
@@ -191,7 +193,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if index.column() == 0:
                 qitem = self.qud_object_model.itemFromIndex(index)
                 wiki_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+2])
-                tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+3])
+                tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+4])
                 qud_object = qitem.data()
                 # Check wiki page first:
                 page = WikiPage(qud_object)
@@ -213,7 +215,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def wiki_compare_selected(self):
         """Compare the generated templates for the selected objects to the version on the wiki."""
-
+        for num, index in enumerate(self.currently_selected):
+            if index.column() == 0:
+                item = self.qud_object_model.itemFromIndex(index)
+                wiki_matches_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 3])
+                qud_object = item.data()
+                page = WikiPage(qud_object)
+                try:
+                    wiki_template_text, template_type, category = page.infobox()
+                except ValueError:
+                    # raised if no matching template found
+                    wiki_matches_qitem.setText('No')
+                    continue
+                ingame_template = WikiTemplate.from_qud_object(qud_object.wiki_template_type(),
+                                                               qud_object)
+                wiki_template = WikiTemplate.from_text(template_type, wiki_template_text)
+                if ingame_template == wiki_template:
+                    wiki_matches_qitem.setText('Yes')
+                else:
+                    wiki_matches_qitem.setText('No')
 
     def upload_selected_templates(self):
         """Upload the generated templates for the selected objects to the wiki."""
@@ -224,9 +244,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 page = WikiPage(qud_object)
                 if page.blacklisted:
                     print(f'{qud_object.name} is not suitable due to its name or displayname.')
-                elif page.exists():
-                    print(f'Page {page} already exists, updating not supported yet.')
-                    continue
                 else:
                     page.upload_template()
 
@@ -255,6 +272,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             result = site.upload(qud_object.tile.get_big_bytesio(),
                                  filename=filename,
                                  description=descr,
+                                 ignore=True,  # upload even if same file exists under diff. name
                                  comment=descr
                                  )
             print(result)
