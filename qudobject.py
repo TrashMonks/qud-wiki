@@ -447,7 +447,8 @@ class QudObject(NodeMixin):
     @property
     def corpse(self):
         """What corpse a character drops."""
-        return "{{ID to name|" + self.part_Corpse_CorpseBlueprint + "|Corpses}}"
+        if self.part_Corpse_CorpseBlueprint is not None:
+            return "{{ID to name|" + self.part_Corpse_CorpseBlueprint + "|Corpses}}"
 
     @property
     def corpsechance(self):
