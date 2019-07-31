@@ -13,7 +13,6 @@ from qudobject import QudObject
 from qudtile import blank_qtimage
 from wiki_config import site, wiki_config
 from wikipage import WikiPage
-from wikitemplate import WikiTemplate
 
 HEADER_LABELS = ['Name', 'Display', 'Article exists', 'Article matches', 'Image exists']
 
@@ -195,13 +194,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 wiki_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+2])
                 tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+4])
                 qud_object = qitem.data()
-                # Check wiki page first:
-                page = WikiPage(qud_object)
-                if page.blacklisted:
+                # Check wiki article first:
+                article = WikiPage(qud_object)
+                if article.blacklisted:
                     wiki_exists_qitem.setText('-')
                     tile_exists_qitem.setText('-')
                     continue
-                if page.exists():
+                if article.page.exists:
                     wiki_exists_qitem.setText('Yes')
                 else:
                     wiki_exists_qitem.setText('No')
@@ -220,17 +219,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 item = self.qud_object_model.itemFromIndex(index)
                 wiki_matches_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 3])
                 qud_object = item.data()
-                page = WikiPage(qud_object)
-                try:
-                    wiki_template_text, template_type, category = page.infobox()
-                except ValueError:
-                    # raised if no matching template found
-                    wiki_matches_qitem.setText('No')
-                    continue
-                ingame_template = WikiTemplate.from_qud_object(qud_object.wiki_template_type(),
-                                                               qud_object)
-                wiki_template = WikiTemplate.from_text(template_type, wiki_template_text)
-                if ingame_template == wiki_template:
+                article = WikiPage(qud_object)
+                if qud_object.wiki_template().strip() in article.page.text():
                     wiki_matches_qitem.setText('Yes')
                 else:
                     wiki_matches_qitem.setText('No')
@@ -261,7 +251,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 print(f'{qud_object.name} had a tile, but bad rendering, so not uploading.')
                 continue
             uploaded_tile_file = site.images[qud_object.image]
-            if uploaded_tile_file.exists:
+            if uploaded_tile_file.page.exists:
                 print(f'Image {qud_object.image} already exists, updating not supported yet.')
                 continue
             if qud_object.name in config['Templates']['Image overrides']:

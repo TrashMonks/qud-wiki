@@ -11,7 +11,6 @@ from config import config
 from helpers import cp437_to_unicode
 from qudtile import QudTile
 from svalue import sValue
-from wikitemplate import WikiTemplate
 
 IMAGE_OVERRIDES = config['Templates']['Image overrides']
 
@@ -217,9 +216,30 @@ class QudObject(NodeMixin):
 
     def wiki_template(self):
         """Return the fully wikified template representing this object and add a category."""
-        template_type = self.wiki_template_type()
-        template = WikiTemplate.from_qud_object(template_type, self)
-        text = str(template)
+        fields = config['Templates']['Fields']
+        template = self.wiki_template_type()
+        if template == 'Corpse':
+            intro_string = '{{!}}-\n'
+            before_title = ''
+            after_title = ''
+        else:
+            intro_string = ''
+            before_title = "{{Qud text|"
+            after_title = "}}"
+        text = intro_string + '{{' + f'{template}\n'
+        text += "| title = " + before_title + self.title + after_title + "\n"
+        for field in fields:
+            if field == 'title':
+                continue
+            if template == 'Corpse' and field in ['hunger', 'colorstr', 'renderstr', 'image']:
+                continue
+            else:
+                attrib = getattr(self, field)
+                if attrib is not None:
+                    if field == 'renderstr':
+                        attrib = attrib.replace('}', '&#125;')
+                    text += f"| {field} = {attrib}\n"
+        text += "}}\n"
         category = self.wiki_category()
         if category:
             text += "[[Category:" + category + "]]\n"
