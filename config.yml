@@ -20,12 +20,13 @@ Templates:
      accuracy, shots, maxammo, maxvol, liquidgen, liquidtype, maxcharge, chargeperdram, chargeused,
      weight, commerce, complexity, tier, bits, canbuild, candisassemble, empsensitive, skill, colorstr, renderstr,
      id, bookid, lightradius, hunger, thirst, healing, butcheredinto, harvestedinto, preservedinto,
-     preservedquantity, cookeffect, ismeat, isplant, isfungus, exoticfood, corpse, corpsechance, twohanded, metal, lightprojectile, reflect, cursed, role, extra, strength,
+     preservedquantity, cookeffect, ismeat, isplant, isfungus, exoticfood, illoneat, corpse, corpsechance, twohanded, metal, lightprojectile, reflect, cursed, role, extra, strength,
      agility, toughness, intelligence, willpower, ego, acid, electric, cold, heat, poison,
      reputationbonus, faction, wornon, usesslots, gender, pronouns, desc, eatdesc]
   Image overrides:
     # Manually specify the image name to be shown for an object ID:
     Asphodel: Earl_asphodel.png
+    Lulihart, Hindren Pariah: Lulihart.png
 
 Wiki:
   Article overrides:

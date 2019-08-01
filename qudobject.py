@@ -620,6 +620,13 @@ class QudObject(NodeMixin):
         return self.name
 
     @property
+    def illoneat(self):
+        """if eating this makes you sick."""
+        if not self.inherits_from('Corpse'):
+            if self.part_Food_IllOnEat == 'true':
+                return 'yes'
+
+    @property
     def image(self):
         """The image. If the item has no associated sprite, return None."""
         if self.name in IMAGE_OVERRIDES:
@@ -890,7 +897,8 @@ class QudObject(NodeMixin):
     @property
     def weight(self):
         """The weight of the object."""
-        return self.part_Physics_Weight
+        if not self.inherits_from('Creature'):
+           return self.part_Physics_Weight
 
     @property
     def willpower(self):
