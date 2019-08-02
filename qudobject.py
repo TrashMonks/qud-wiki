@@ -289,9 +289,11 @@ class QudObject(NodeMixin):
                 val = str(sValue(getattr(self, f'stat_{attr}_sValue'), level=int(self.lv)))
             elif getattr(self, f'stat_{attr}_Value'):
                 val = getattr(self, f'stat_{attr}_Value')
-        boost = getattr(self, f'stat_{attr}_Boost')
-        if boost:
-            val += f' (+{boost} boost)'
+            boost = getattr(self, f'stat_{attr}_Boost')
+            if boost:
+                val += f'+{boost}'
+        elif self.inherits_from('Armor'):
+            val = getattr(self, f'part_Armor_{attr}')
         return val
 
     def resistance(self, element):
