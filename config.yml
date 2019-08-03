@@ -61,6 +61,7 @@ Wiki:
     Masks: [BaseMask]
     Facial Jewlery: [BaseFaceJewelry]
     Armlets: [BaseArmlet]
+    Armor: [BaseArmor]
     Boots: [BaseBoot]
     Gloves: [BaseGlove]
     Cloaks: [BaseCloak]
