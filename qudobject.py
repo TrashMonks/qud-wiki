@@ -373,7 +373,8 @@ class QudObject(NodeMixin):
     @property
     def butcheredinto(self):
         """What a corpse item can be butchered into."""
-        return self.part_Butcherable_OnSuccess
+        if self.part_Butcherable_OnSuccess is not None:
+            return "{{ID to name|" + self.part_Butcherable_OnSuccess + "}}"
 
     @property
     def canbuild(self):
