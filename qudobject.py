@@ -485,6 +485,8 @@ class QudObject(NodeMixin):
             val = self.part_MeleeWeapon_BaseDamage
         if self.part_Gaslight:
             val = self.part_Gaslight_ChargedDamage
+        if self.is_specified('part_ThrownWeapon'):
+            val = self.part_ThrownWeapon_Damage
         return val
 
     @property
@@ -749,14 +751,17 @@ class QudObject(NodeMixin):
     @property
     def maxpv(self):
         """The max strength bonus + base PV."""
-        try:
-            maxpv = int(self.pv)
-        except TypeError:
-            return None  # borrow from the PV validity detection
+        if self.is_specified('part_ThrownWeapon'):
+            return self.part_ThrownWeapon_Penetration
         else:
-            if self.part_MeleeWeapon_MaxStrengthBonus:
-                maxpv += int(self.part_MeleeWeapon_MaxStrengthBonus)
-            return str(maxpv)
+            try:
+                maxpv = int(self.pv)
+            except TypeError:
+                return None  # borrow from the PV validity detection
+            else:
+                if self.part_MeleeWeapon_MaxStrengthBonus:
+                    maxpv += int(self.part_MeleeWeapon_MaxStrengthBonus)
+                return str(maxpv)
 
     @property
     def metal(self):

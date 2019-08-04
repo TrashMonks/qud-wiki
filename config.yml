@@ -116,6 +116,7 @@ Wiki:
       -Plant Turret,
       -PaintTest,
       /CosmeticObject
+      /Relief
     ]
 
   Categories:
@@ -153,8 +154,11 @@ Wiki:
     Light Sources: [Glowsphere, Floating Glowsphere, Quantum Mote, Torch, Luminous Mote,
                     Kindleflame, Symbiotic Firefly]
     Energy cells: [Energy Cell]
-    Thrown Weapons: [BaseThrownWeapon]
+    Liquid Fueled Energy Cells: [Liquid Fueled Energy Cell]
+    Thrown Weapons: [BaseThrownWeapon,Geomagnetic Disc, ThrowingAxe, CastNet, SmallBoulder, MediumBoulder, LargeBoulder]
     Trinkets: [Trinket]
+    Recoilers: [BaseRecoiler]
+    Applicators: [Fixit Spray, Spraybottle, Metamorphic Polygel, Desalination Pellet,Bandage, Spray-a-Brain]
     Food: [Food]
     Books: [Book]
     Preserved Food: [Preservable]
@@ -165,7 +169,9 @@ Wiki:
                   Polyhedral Rings, Silver Rondure, Blood-stained neck-ring]
     Plants: [Plant]
     Creatures: [Creature]
+    Merchants: [BaseMerchant]
     Unique Characters: [Phinae Hoshaiah, Barathrumite, Argyve, ElderBob, Mehmet, Warden Ualraig,
                  Warden Esthers, Eskhind, Meyehind, Liihart, Isahind, Neelahind, Keh, Kesehind,
                  Angohind, Lulihart, AgateSeveranceStar, Mayor Nuntu, Oboroqoru, Asphodel, Yurl,
                  Euclid]
+    Quest Items: [Scrapped Waydroid,Scratch Data Disk, Stamped Data Disk, Argyve's Data Disk, Argyve's Data Disk Encoded, ClimberBlueprints, Dormant Waydroid, BarathrumKey]
