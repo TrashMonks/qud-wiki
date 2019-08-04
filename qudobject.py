@@ -498,6 +498,12 @@ class QudObject(NodeMixin):
             return ""
 
     @property
+    def destroyonunequip(self):
+        """If the object is destroyed on unequip."""
+        if self.part_DestroyOnUnequip is not None:
+            return 'yes'
+
+    @property
     def displayname(self):
         """The display name of the object, with color codes removed. Used in UI and wiki."""
         dname = ""
@@ -666,6 +672,15 @@ class QudObject(NodeMixin):
     def intelligence(self):
         """The intelligence the mutation affects, or the intelligence of the creature."""
         return self.attribute_helper('Intelligence')
+
+    @property
+    def inventory(self):
+        ret = None
+        if self.inventoryobject is not None:
+            ret = ""
+            for obj in self.inventoryobject:
+                ret += "{{inventory|{{ID to name|" + obj + "}}}}"
+        return ret
 
     @property
     def isfungus(self):
@@ -840,6 +855,16 @@ class QudObject(NodeMixin):
     def role(self):
         """returns the role of the creature."""
         return self.property_Role_Value
+    @property
+    def savemodifier(self):
+        """Returns save modifier type"""
+        return self.part_SaveModifier_Vs
+
+    @property
+    def savemodifieramt(self):
+        """returns amount of the save modifer."""
+        if self.part_SaveModifier_Vs is not None:
+            return self.part_SaveModifier_Amount
 
     @property
     def shots(self):
