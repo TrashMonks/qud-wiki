@@ -731,6 +731,15 @@ class QudObject(NodeMixin):
             return 'yes'
 
     @property
+    def movespeed(self):
+        """returns movespeed bonus, if an item"""
+        if self.inherits_from('Item'):
+            if self.part_MoveCostMultiplier is not None:
+                temp = ""
+                if int(self.part_MoveCostMultiplier_Amount) < 0:
+                    temp = "+"
+                return temp + str(int(self.part_MoveCostMultiplier_Amount)*-1)
+    @property
     def preservedinto(self):
         """When preserved, what a preservable item produces."""
         return self.part_PreservableItem_Result
