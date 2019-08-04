@@ -27,14 +27,96 @@ Templates:
     # Manually specify the image name to be shown for an object ID:
     Asphodel: Earl_asphodel.png
     Lulihart, Hindren Pariah: Lulihart.png
+    Across1: across moghrayi.png
+    Across2: across moghrayi.png
+    Across3: across moghrayi.png
 
 
 Wiki:
+  # See also wiki login configuration in wiki.yml.
   Article overrides:
     # Manually specify the article title to be used for an object ID:
     # Example:
     ClockworkBeetle: Clockwork Beetle
     Torch: Torch
+    MerchantAdvertisement: Advertisement
+
+  Article black+whitelist categories:
+    # Categories, or individual articles, to include or exclude from consideration for
+    # wiki operations (can still generate templates for them, just not scan or upload).
+    # For things that really shouldn't get wiki articles, like data buckets.
+    # Later lines override earlier ones, so to include, for example, only Hindren in the wiki,
+    # you could blacklist Object then whitelist BaseHindren.
+    # BaseObjects are already restricted from wiki action, since they can't be selected.
+    # Objects with no DisplayName or with [ in their DisplayName are already restricted.
+    #
+    # Lines starting with * whitelist a category.
+    #   "      "      "   / blacklist a category.
+    #   "      "      "   + whitelist a single object
+    #   "      "      "   - blacklist a single object.
+    [
+      /DataBucket,
+      -Starch,
+      -Lignin,
+      -Clue_YuckwheatChaff,
+      -Clue_SeveredTongue,
+      /GenericLimb,
+      /PlantLimb,
+      /FungusLimb,
+      /Corpse,
+      +Albino Ape Pelt,
+      +Albino Ape Heart,
+      +Black Puma Haunch,
+      -ExileCorpse,  # extraneous
+      -JoppaCorpse,  # extraneous
+      +Ogre Ape Heart,
+      -Bones,
+      +Crystal of Eve,
+      +Arsplice Seed,
+      /RobotLimb,
+      /TemporaryProjectile,
+      -Clue_SplinteredWeaponHaft,
+      -Clue_BloodyArrow,
+      -MjoFemur,
+      -MjoLeg,
+      -Flail,
+      -Chain,
+      -TestSword,
+      -CacheFlamethrower,
+      /NaturalMissileWeapon,
+      -Carapace,
+      /Quills,
+      -Wings,
+      -Stinger,
+      -Ghostly Flames,
+      -Icy Vapor,
+      -Horticulturalist Bio-Scanning Bracelet,
+      -Child of the Deep Structural Scanning Bracelet,
+      /BaseBeadBracelet,
+      +Bracelet1,  # just including one bracelet from BaseBeadBracelet
+      -Fork-Horned Helmet 4,  # was an experimental item
+      -Clue_DiscardedBracer,
+      -Clue_WornBracer,
+      -Scaled Helmet,
+      -Gesticulators,
+      -TestShockGlove,
+      -Clue_BloodyPatchOfFur,
+      -Clue_LeatherScraps,
+      /NaturalWeapon,
+      -BrokenSnailmotherEgg,
+      -SnailmotherEgg,
+      -DummyTinkerScreenObject,
+      -hologram of Shekhinah,
+      -Brazier,
+      -Tall Brazier,
+      /Vessel,
+      -RandomFactionDeed,
+      /BaseCookbook,
+      /RandomBook,
+      -Plant Turret,
+      -PaintTest,
+      /CosmeticObject
+    ]
 
   Categories:
     # Each wiki category is followed by a list of nodes in the inheritance tree whose child objects
@@ -60,7 +142,7 @@ Wiki:
     Helmets: [BaseHelmet]
     Hats: [BaseHat]
     Masks: [BaseMask]
-    Facial Jewlery: [BaseFaceJewelry]
+    Facial Jewelry: [BaseFaceJewelry]
     Armlets: [BaseArmlet]
     Armor: [BaseArmor]
     Shields: [BaseShield]
@@ -68,6 +150,8 @@ Wiki:
     Gloves: [BaseGlove]
     Cloaks: [BaseCloak]
     Tokens: [Token]
+    Light Sources: [Glowsphere, Floating Glowsphere, Quantum Mote, Torch, Luminous Mote,
+                    Kindleflame, Symbiotic Firefly]
     Energy cells: [Energy Cell]
     Thrown Weapons: [BaseThrownWeapon]
     Trinkets: [Trinket]

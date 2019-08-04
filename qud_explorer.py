@@ -1,7 +1,7 @@
 import sys
 import os
 
-from PySide2.QtCore import QSize, QThread
+from PySide2.QtCore import QSize
 from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon, QPixmap
 from PySide2.QtWidgets import QMainWindow, QApplication, QTreeView, QSizePolicy, \
     QAbstractItemView, QFileDialog, QHeaderView
@@ -183,8 +183,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for num, index in enumerate(self.currently_selected):
             if index.column() == 0:
                 wiki_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 2])
+                wiki_matches_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 3])
                 tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 4])
                 wiki_exists_qitem.setText('')
+                wiki_matches_qitem.setText('')
                 tile_exists_qitem.setText('')
         # now, do the actual checking and update the cells with 'yes' or 'no'
         for num, index in enumerate(self.currently_selected):
@@ -195,11 +197,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+4])
                 qud_object = qitem.data()
                 # Check wiki article first:
-                article = WikiPage(qud_object)
-                if article.blacklisted:
+                if not qud_object.is_wiki_eligible:
                     wiki_exists_qitem.setText('-')
                     tile_exists_qitem.setText('-')
                     continue
+                article = WikiPage(qud_object)
                 if article.page.exists:
                     wiki_exists_qitem.setText('✅')
                     # does the template match the article?
@@ -224,11 +226,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if index.column() == 0:
                 item = self.qud_object_model.itemFromIndex(index)
                 qud_object = item.data()
-                page = WikiPage(qud_object)
-                if page.blacklisted:
+                if not qud_object.is_wiki_eligible():
                     print(f'{qud_object.name} is not suitable due to its name or displayname.')
                 else:
-                    page.upload_template()
+                    try:
+                        page = WikiPage(qud_object)
+                        page.upload_template()
+                    except ValueError as e:
+                        # page exists but format not recognized
+                        print("Not uploading")
 
     def upload_selected_tiles(self):
         """Upload the generated tiles for the selected objects to the wiki."""

@@ -272,6 +272,25 @@ class QudObject(NodeMixin):
                     cat = config_cat
         return cat
 
+    def is_wiki_eligible(self) -> bool:
+        if self.displayname == '' or '[' in self.displayname:
+            return False
+        eligible = True  # equal to initial +Object in config.yml
+        for entry in config['Wiki']['Article black+whitelist categories']:
+            if entry.startswith('*') and self.inherits_from(entry[1:]):
+                print(f'{self.name} is included by inheriting from {entry}')
+                eligible = True
+            elif entry.startswith('/') and self.inherits_from(entry[1:]):
+                print(f'{self.name} is excluded by inheriting from {entry}')
+                eligible = False
+            elif entry.startswith('+') and self.name == entry[1:]:
+                print(f'{self.name} is explicitly included')
+                eligible = True
+            elif entry.startswith('-') and self.name == entry[1:]:
+                print(f'{self.name} is explicitly excluded')
+                eligible = False
+        return eligible
+
     def __str__(self):
         return self.name + ' ' + str(self.attributes)
 
@@ -925,4 +944,6 @@ class QudObject(NodeMixin):
             wornon = self.part_Shield_WornOn
         if self.part_Armor_WornOn:
             wornon = self.part_Armor_WornOn
+        if self.name == 'Hooks':
+            wornon = 'Feet'  # manual fix
         return wornon
