@@ -303,7 +303,7 @@ Wiki:
       +Snapjaw Warlord,
       -Snapjaw Packlord,
       -Wof,
-      -Tabula Rasa,
+      -Tabula Rasa,  # needs hand-edited article
       -Desert Raider,
       -Six Day Choraler,
       -Mechanimist Preacher 2,
@@ -322,8 +322,7 @@ Wiki:
       -LoudSixDayZealot,
       -AppleMerchant,  # conflicts with AppleFarmer
       -StiltChef,
-      /BaseBaboon,
-      +Baboon,
+      -BaseBaboon,
       -Baboon Hero 1,
       -BetaPlant,
       -Plant Turret,
