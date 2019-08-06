@@ -273,21 +273,23 @@ class QudObject(NodeMixin):
         return cat
 
     def is_wiki_eligible(self) -> bool:
+        if self.name == 'Argyve\'s Data Disk Encoded':
+            return True  # special case because of '['
         if self.displayname == '' or '[' in self.displayname:
             return False
         eligible = True  # equal to initial +Object in config.yml
         for entry in config['Wiki']['Article black+whitelist categories']:
             if entry.startswith('*') and self.inherits_from(entry[1:]):
-                print(f'{self.name} is included by inheriting from {entry}')
+                # print(f'{self.name} is included by inheriting from {entry[1:]}')
                 eligible = True
             elif entry.startswith('/') and self.inherits_from(entry[1:]):
-                print(f'{self.name} is excluded by inheriting from {entry}')
+                # print(f'{self.name} is excluded by inheriting from {entry[1:]}')
                 eligible = False
             elif entry.startswith('+') and self.name == entry[1:]:
-                print(f'{self.name} is explicitly included')
+                # print(f'{self.name} is explicitly included')
                 eligible = True
             elif entry.startswith('-') and self.name == entry[1:]:
-                print(f'{self.name} is explicitly excluded')
+                # print(f'{self.name} is explicitly excluded')
                 eligible = False
         return eligible
 
@@ -509,7 +511,7 @@ class QudObject(NodeMixin):
     def displayname(self):
         """The display name of the object, with color codes removed. Used in UI and wiki."""
         dname = ""
-        if self.is_specified('part_Render_DisplayName'):
+        if self.part_Render_DisplayName is not None:
             dname = self.part_Render_DisplayName
             dname = strip_qud_color_codes(dname)
         return dname

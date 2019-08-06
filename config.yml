@@ -16,11 +16,13 @@ Templates:
   Fields:
     # The fields that (if applicable) will be generated for each item, in this order:
     # (title comes first, but is not listed here)
-    [title, image, pv, maxpv, vibro, pvpowered, damage, unpowereddamage, lv, hp, av, dv, ma, tohit, ammo,
-     accuracy, shots, maxammo, maxvol, liquidgen, liquidtype, maxcharge, chargeperdram, chargeused,
-     weight, commerce, complexity, tier, bits, canbuild, candisassemble, empsensitive, skill, colorstr, renderstr,
-     id, bookid, lightradius, hunger, thirst, healing, butcheredinto, harvestedinto, preservedinto,
-     preservedquantity, cookeffect, ismeat, isplant, isfungus, exoticfood, illoneat, corpse, corpsechance, twohanded, metal, lightprojectile, reflect, movespeed, cursed, role, destroyonunequip, savemodifier, savemodifieramt, extra, strength,
+    [title, image, pv, maxpv, vibro, pvpowered, damage, unpowereddamage, lv, hp, av, dv, ma, tohit,
+     ammo, accuracy, shots, maxammo, maxvol, liquidgen, liquidtype, maxcharge, chargeperdram,
+     chargeused, weight, commerce, complexity, tier, bits, canbuild, candisassemble, empsensitive,
+     skill, colorstr, renderstr, id, bookid, lightradius, hunger, thirst, healing, butcheredinto,
+     harvestedinto, preservedinto, preservedquantity, cookeffect, ismeat, isplant, isfungus,
+     exoticfood, illoneat, corpse, corpsechance, twohanded, metal, lightprojectile, reflect,
+     movespeed, cursed, role, destroyonunequip, savemodifier, savemodifieramt, extra, strength,
      agility, toughness, intelligence, willpower, ego, acid, electric, cold, heat, poison,
      reputationbonus, faction, wornon, usesslots, gender, pronouns, desc, eatdesc]
   Image overrides:
@@ -30,16 +32,35 @@ Templates:
     Across1: across moghrayi.png
     Across2: across moghrayi.png
     Across3: across moghrayi.png
-
+    Lyngbaskr: Lyngbaskr.png
+    Porphyryptus: Porphyryptus.png
+    either: either.png
+    or: or.png
+    Ebenshabat: Ebenshabat.png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
   Article overrides:
     # Manually specify the article title to be used for an object ID:
     # Example:
+    MasterworkCarbine: Scoped masterwork carbine
     ClockworkBeetle: Clockwork Beetle
     Torch: Torch
     MerchantAdvertisement: Advertisement
+    Argyve's Data Disk: Argyve's data disk
+    SingleSkillsoft1: Skillsoft (low SP)
+    SingleSkillsoft2: Skillsoft (medium SP)
+    Schemasoft2: Schemasoft (low-tier)
+    SingleSkillsoft3: Skillsoft (high SP)
+    TreeSkillsoft: Skillsoft (whole skill tree)
+    Schemasoft3: Schemasoft (mid-tier)
+    Schemasoft4: Schemasoft (high-tier)
+    BethesdaBaetyl: Baetyl (Bethesda Susa)
+    Lyngbaskr: Lyngbaskr
+    Porphyryptus: Porphyryptus
+    either: either
+    or: or
+    Ebenshabat: Ebenshabat
 
   Article black+whitelist categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -50,7 +71,7 @@ Wiki:
     # BaseObjects are already restricted from wiki action, since they can't be selected.
     # Objects with no DisplayName or with [ in their DisplayName are already restricted.
     #
-    # Lines starting with * whitelist a category.
+    # Lines starting with * whitelist a category.  (* line needs to be wrapped with "" due to YAML)
     #   "      "      "   / blacklist a category.
     #   "      "      "   + whitelist a single object
     #   "      "      "   - blacklist a single object.
@@ -58,8 +79,6 @@ Wiki:
       /DataBucket,
       -Starch,
       -Lignin,
-      -Clue_YuckwheatChaff,
-      -Clue_SeveredTongue,
       /GenericLimb,
       /PlantLimb,
       /FungusLimb,
@@ -75,13 +94,16 @@ Wiki:
       +Arsplice Seed,
       /RobotLimb,
       /TemporaryProjectile,
-      -Clue_SplinteredWeaponHaft,
-      -Clue_BloodyArrow,
       -MjoFemur,
       -MjoLeg,
+      /Dagger,
+      +Dagger,
+      /Dagger3,
+      +Dagger3,
       -Flail,
       -Chain,
       -TestSword,
+      -CritPistol,
       -CacheFlamethrower,
       /NaturalMissileWeapon,
       -Carapace,
@@ -95,13 +117,9 @@ Wiki:
       /BaseBeadBracelet,
       +Bracelet1,  # just including one bracelet from BaseBeadBracelet
       -Fork-Horned Helmet 4,  # was an experimental item
-      -Clue_DiscardedBracer,
-      -Clue_WornBracer,
       -Scaled Helmet,
       -Gesticulators,
       -TestShockGlove,
-      -Clue_BloodyPatchOfFur,
-      -Clue_LeatherScraps,
       /NaturalWeapon,
       -BrokenSnailmotherEgg,
       -SnailmotherEgg,
@@ -113,10 +131,208 @@ Wiki:
       -RandomFactionDeed,
       /BaseCookbook,
       /RandomBook,
+      /Waterskin,
+      +Waterskin,
+      +Clue_BulgingWaterskin,
+      /Canteen,
+      +Canteen,
+      /Phial,
+      +Phial,  # same
+      -Blank Recoiler,
+      /Random Figurine,
+      -Jewel-Encrusted Item,
+      -Wire Strand 1,
+      -Wire Strand 3,
+      -Wire Strand 10,
+      -Wire Strand 20,
+      -Wire Strand 50,
+      -Grit Gate Dormant Waydroid,
+      -Drained Chem Cell,
+      -Full Combustion Cell,
+      -Klanq Garbage,
+      /Marble Dais,
+      -SingleSkillsoft2,
+      /BaseCyberneticsCreditWedge,
+      +CyberneticsCreditWedge,  # needs explanatory article for types
+      -Village Hologram 2,
+      -MetalWallWithPipes,
+      -MainframeWall,
+      -LowSandstoneWall,
+      -AgateWall,
+      -TopazWall,
+      -JasperWall,
+      -AmethystWall,
+      -SapphireWall,
+      -EmeraldWall,
+      -PeridotWall,
+      -BasaltWithPipes,
+      /Marble,
+      +Marble,
+      /Fulcrete,
+      +Fulcrete,
+      -GodcapMushroomFlesh,
+      -GodcapMushroomFlesh2,
+      -MushroomFlesh,
+      -MushroomFlesh2,
+      /GlassWall,
+      +GlassWall,
+      /CryochamberWall,
+      +CryochamberWall,
+      -CryochamberWallBroken,
+      /CryochamberPlaque,
+      +CryochamberPlaque,
+      -GritGateBroadcastPowerStation,
+      -GritGateFusionPowerStation,
+      -GritGateFusionPumpingStation,
+      -GritGateHydraulicIrrigator,
+      /GritGateForceProjector,
+      /Wormhole,
+      +Wormhole,
+      /Door,
+      +Security Door,
+      +Autodoor,
+      -Woodfloor,
+      -Grit Gate Sleek Table,
+      -JoppaTable,
+      -NuntuTable,
+      -GunsmithTable,
+      -Grit Gate Table,
+      -Barathrum Table,
+      -Klanq Table,
+      -GritGatePowerLine,
+      -GritGateHeavyPowerLine,
+      -GritGateGlassHydraulicPipe,
+      -GritGateChair,
+      -GritGateCanvasFoldingChair,
+      -GritGateMedicalChair,
+      -GritGateWorkChair,
+      -GritGateChairBear,
+      -GritGateHyperbioticChair,
+      -GritGateBed,
+      -GritGateMedicalBed,
+      -GritGateHyperbioticBed,
+      /Oven,
+      +Oven,
+      -Preserved Food Basket,
+      /Bookshelf,
+      +Bookshelf,
+      /Random Statue,
+      /Chest,
+      +Chest,
+      +WedgeChest1,  # needs explanatory article for 5 types
+      +MedLocker,
+      "*Weapon Rack",
+      +CyberneticsRack,
+      +Clue_VillageStores,
+      /Tombstone,
+      +Tombstone,
+      /Sign,
+      /SultanShrine,  # needs explanatory article
+      /Switch,
+      +Switch,
+      /Alchemist Table,
+      +Alchemist Table,
+      -Powered Orrery,
+      /Relief,  # needs art article combining tiles
+      -StairsDownBarathrumsStudy,
+      -GritGateMainframeRoomCommPanel,
+      -PoisonGas80,
+      -StableCryoGas,
+      /AcidGas,
+      +AcidGas,
+      /StunGas,
+      +StunGas,
+      /SleepGas,
+      +SleepGas,
+      /ConfusionGas,
+      +ConfusionGas,
+      /NormalityGas,
+      +NormalityGas,
+      -FungalSporeGasLuminous,
+      -FungalSporeGasPuff,
+      -FungalSporeGasWax,
+      -FungalSporeGasMumbles,
+      -Space-Time Rift,
+      # Plants
+      -Godsbrush,
+      -LiquidLichen,
+      -LiquidLichen Minor,
+      -FungusPuffer,
+      -Shimscale Mangrove Tree_blue,
+      -Dogthorn Tree2,
+      -Fracti2,
+      -Fracti3,
+      -Starapple Farm Tree,
+      -Swarmshade Tree_blue,
+      -Tanglewood Tree_blue,
+      -Spotted Shagspook 2,
+      # Creatures
+      /Ray Cat,
+      +Ray Cat,
+      +Ctesiphus,
+      -Farm Goat,
+      -Goatfolk Hero 1,
+      -Farm Beetlebum,
+      -Farm Giant Beetle,
+      -PackTester,
+      -Farm Eyeless Crab,
+      -Eyeless King Crab Hero,
+      -Farm GiantAmoeba,
+      -RedrockGirshling,
+      -Phase Spider Coward,
+      -Farm Electric Snail,
+      -Farm Leech,
+      # Robots
+      -Sleeping Chromeling,
+      -Sleeping Plated Chromeling,
+      -Chrome Idol Hero 1,
+      -Chrome Idol Hero Crazed,
+      /GritGateChainLaserEmplacement,
+      -Sleeping Waydroid,
+      # Humanoids
+      -Uplifted Knight Commander,
+      -Missile Cannibal,
+      /DromadTrader,
+      +DromadTrader1,  # needs explanatory article of 8 varieties
+      -RedrockZealot,
+      -Snapjaw Dodger,
+      -Snapjaw Rocketeer,
+      -Snapjaw Laser,
+      -InjectorSnapper,
+      /Snapjaw Warlord,
+      +Snapjaw Warlord,
+      -Snapjaw Packlord,
+      -Wof,
+      -Tabula Rasa,
+      -Desert Raider,
+      -Six Day Choraler,
+      -Mechanimist Preacher 2,
+      -Mechanimist Preacher 3,
+      -Mechanimist Preacher 4,
+      # NPCs
+      /BaseArconaut,
+      +Arconaut,
+      /Barathrumite_FactionMemberMale,
+      +Barathrumite_FactionMemberMale,
+      -OthoCopy,
+      -MafeoCopy,
+      /BaseWatervineFarmer,
+      +WatervineFarmer,
+      -StiltPigFarmer,
+      -LoudSixDayZealot,
+      -AppleMerchant,  # conflicts with AppleFarmer
+      -StiltChef,
+      /BaseBaboon,
+      +Baboon,
+      -Baboon Hero 1,
+      -BetaPlant,
       -Plant Turret,
       -PaintTest,
-      /CosmeticObject
-      /Relief
+      # CosmeticObjects
+      /CosmeticObject,
+      -RealityStabilizationField,
+      /Water,
+      /Terrain
     ]
 
   Categories:
@@ -155,10 +371,12 @@ Wiki:
                     Kindleflame, Symbiotic Firefly]
     Energy cells: [Energy Cell]
     Liquid Fueled Energy Cells: [Liquid Fueled Energy Cell]
-    Thrown Weapons: [BaseThrownWeapon,Geomagnetic Disc, ThrowingAxe, CastNet, SmallBoulder, MediumBoulder, LargeBoulder]
+    Thrown Weapons: [BaseThrownWeapon,Geomagnetic Disc, ThrowingAxe, CastNet, SmallBoulder,
+                     MediumBoulder, LargeBoulder]
     Trinkets: [Trinket]
     Recoilers: [BaseRecoiler]
-    Applicators: [Fixit Spray, Spraybottle, Metamorphic Polygel, Desalination Pellet,Bandage, Spray-a-Brain]
+    Applicators: [Fixit Spray, Spraybottle, Metamorphic Polygel, Desalination Pellet, Bandage,
+                  Spray-a-Brain]
     Food: [Food]
     Books: [Book]
     Preserved Food: [Preservable]
@@ -170,8 +388,16 @@ Wiki:
     Plants: [Plant]
     Creatures: [Creature]
     Merchants: [BaseMerchant]
-    Unique Characters: [Phinae Hoshaiah, Barathrumite, Argyve, ElderBob, Mehmet, Warden Ualraig,
+    Unique Characters: [Phinae Hoshaiah, Argyve, ElderBob, Mehmet, Warden Ualraig,
                  Warden Esthers, Eskhind, Meyehind, Liihart, Isahind, Neelahind, Keh, Kesehind,
                  Angohind, Lulihart, AgateSeveranceStar, Mayor Nuntu, Oboroqoru, Asphodel, Yurl,
-                 Euclid]
-    Quest Items: [Scrapped Waydroid,Scratch Data Disk, Stamped Data Disk, Argyve's Data Disk, Argyve's Data Disk Encoded, ClimberBlueprints, Dormant Waydroid, BarathrumKey]
+                 Euclid, Warden Indrix, Mamon, Svenlainard, Otho, Q Girl, Barathrum, Sparafucile,
+                 Jacobo, Dardi, Hortensa, Iseppa, Neek, Mafeo, Aloysius, High Priest Eschelstadt,
+                 Troll King 1, Troll King 2, Troll King 3, Doru, Rodanis Y, Shem -1,
+                 GolgothaSlog, Ctesiphus]
+    Quest Items: [Scrapped Waydroid, Scratch Data Disk, Stamped Data Disk, Argyve's Data Disk,
+                  Argyve's Data Disk Encoded, ClimberBlueprints, Dormant Waydroid, BarathrumKey,
+                  Clue_YuckwheatChaff, Clue_SeveredTongue, Clue_SplinteredWeaponHaft,
+                  Clue_BloodyArrow, Clue_DiscardedBracer, Clue_WornBracer, Clue_BloodyPatchOfFur,
+                  Clue_LeatherScraps, Clue_CopperNugget, Clue_BulgingWaterskin, Clue_VillageStores,
+                  Gnawed Watervine, Clue_BloodyWatervine]

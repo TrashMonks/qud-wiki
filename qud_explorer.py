@@ -120,7 +120,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         wiki_article_exists = QStandardItem('')
         wiki_article_matches = QStandardItem('')
         image_exists = QStandardItem('')
-        if qud_object.is_specified('tag_BaseObject'):
+        if qud_object.is_specified('tag_BaseObject') or not qud_object.is_wiki_eligible():
             for _ in item, display_name, wiki_article_exists, wiki_article_matches, image_exists:
                 _.setSelectable(False)
         return [item, display_name, wiki_article_exists, wiki_article_matches, image_exists]
@@ -199,6 +199,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 # Check wiki article first:
                 if not qud_object.is_wiki_eligible:
                     wiki_exists_qitem.setText('-')
+                    wiki_matches_qitem.setText('-')
                     tile_exists_qitem.setText('-')
                     continue
                 article = WikiPage(qud_object)
