@@ -61,6 +61,7 @@ Wiki:
     either: either
     or: or
     Ebenshabat: Ebenshabat
+    OasisGlowpad: oddly-hued glowpad
 
   Article black+whitelist categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -304,7 +305,9 @@ Wiki:
       -Snapjaw Packlord,
       -Wof,
       -Tabula Rasa,  # needs hand-edited article
-      -Desert Raider,
+      /BaseIssachari,
+      +Desert Raider,
+      +Desert Raider Rifleman,
       -Six Day Choraler,
       -Mechanimist Preacher 2,
       -Mechanimist Preacher 3,
@@ -370,7 +373,7 @@ Wiki:
                     Kindleflame, Symbiotic Firefly]
     Energy cells: [Energy Cell]
     Liquid Fueled Energy Cells: [Liquid Fueled Energy Cell]
-    Thrown Weapons: [BaseThrownWeapon,Geomagnetic Disc, ThrowingAxe, CastNet, SmallBoulder,
+    Thrown Weapons: [BaseThrownWeapon, Geomagnetic Disc, ThrowingAxe, CastNet, SmallBoulder,
                      MediumBoulder, LargeBoulder]
     Trinkets: [Trinket]
     Recoilers: [BaseRecoiler]
@@ -393,7 +396,7 @@ Wiki:
                  Euclid, Warden Indrix, Mamon, Svenlainard, Otho, Q Girl, Barathrum, Sparafucile,
                  Jacobo, Dardi, Hortensa, Iseppa, Neek, Mafeo, Aloysius, High Priest Eschelstadt,
                  Troll King 1, Troll King 2, Troll King 3, Doru, Rodanis Y, Shem -1,
-                 GolgothaSlog, Ctesiphus]
+                 GolgothaSlog, Ctesiphus,OasisGlowpad]
     Quest Items: [Scrapped Waydroid, Scratch Data Disk, Stamped Data Disk, Argyve's Data Disk,
                   Argyve's Data Disk Encoded, ClimberBlueprints, Dormant Waydroid, BarathrumKey,
                   Clue_YuckwheatChaff, Clue_SeveredTongue, Clue_SplinteredWeaponHaft,

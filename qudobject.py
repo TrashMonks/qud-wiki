@@ -785,7 +785,8 @@ class QudObject(NodeMixin):
     @property
     def preservedinto(self):
         """When preserved, what a preservable item produces."""
-        return self.part_PreservableItem_Result
+        if self.part_PreservableItem_result is not None:
+            return "{{ID to name|" +self.part_PreservableItem_Result + "|Food}}"
 
     @property
     def preservedquantity(self):
@@ -852,12 +853,12 @@ class QudObject(NodeMixin):
                 if ':' in part:
                     # has format like `Fungi:200,Consortium:-200`
                     faction, value = part.split(':')
-                    ret += f'{{{{reputation bonus|{{{{ID to name|{faction}|Factions}}}}|{value}}}}}'
+                    ret += f'{{{{reputation bonus|{{{{ID to name|{faction}}}}}|{value}}}}}'
                 else:
                     # has format like `Antelopes,Goatfolk` and Value `100`
                     # or is a single faction, like `Apes` and Value `-100`
                     value = self.part_AddsRep_Value
-                    ret += f'{{{{reputation bonus|{{{{ID to name|{part}|Factions}}}}|{value}}}}}'
+                    ret += f'{{{{reputation bonus|{{{{ID to name|{part}}}}}|{value}}}}}'
         return ret
 
     @property
