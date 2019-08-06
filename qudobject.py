@@ -275,6 +275,8 @@ class QudObject(NodeMixin):
     def is_wiki_eligible(self) -> bool:
         if self.name == 'Argyve\'s Data Disk Encoded':
             return True  # special case because of '['
+        if self.is_specified('tag_BaseObject'):
+            return False
         if self.displayname == '' or '[' in self.displayname:
             return False
         eligible = True  # equal to initial +Object in config.yml

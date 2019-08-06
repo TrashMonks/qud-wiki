@@ -120,7 +120,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         wiki_article_exists = QStandardItem('')
         wiki_article_matches = QStandardItem('')
         image_exists = QStandardItem('')
-        if qud_object.is_specified('tag_BaseObject') or not qud_object.is_wiki_eligible():
+        if not qud_object.is_wiki_eligible():
             for _ in item, display_name, wiki_article_exists, wiki_article_matches, image_exists:
                 _.setSelectable(False)
         return [item, display_name, wiki_article_exists, wiki_article_matches, image_exists]
