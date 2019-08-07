@@ -37,6 +37,9 @@ Templates:
     either: either.png
     or: or.png
     Ebenshabat: Ebenshabat.png
+    Shem -1: shem-1.png
+    High Priest Eschelstadt: eschelstadt ii.png
+    Phinae Hoshaiah: phinae hoshaiah.png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -44,7 +47,7 @@ Wiki:
     # Manually specify the article title to be used for an object ID:
     # Example:
     MasterworkCarbine: Scoped masterwork carbine
-    ClockworkBeetle: Clockwork Beetle
+    ClockworkBeetle: Clockwork beetle
     Torch: Torch
     MerchantAdvertisement: Advertisement
     Argyve's Data Disk: Argyve's data disk
@@ -62,6 +65,7 @@ Wiki:
     or: or
     Ebenshabat: Ebenshabat
     OasisGlowpad: oddly-hued glowpad
+    Molting Basilisk: Molting basilisk
 
   Article black+whitelist categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -283,6 +287,7 @@ Wiki:
       -Phase Spider Coward,
       -Farm Electric Snail,
       -Farm Leech,
+      -TestDummy,
       # Robots
       -Sleeping Chromeling,
       -Sleeping Plated Chromeling,
@@ -312,6 +317,9 @@ Wiki:
       -Mechanimist Preacher 2,
       -Mechanimist Preacher 3,
       -Mechanimist Preacher 4,
+      -TestPax,
+      -TestShopper,
+      -TestPilgrim,
       # NPCs
       /BaseArconaut,
       +Arconaut,
@@ -376,6 +384,7 @@ Wiki:
     Thrown Weapons: [BaseThrownWeapon, Geomagnetic Disc, ThrowingAxe, CastNet, SmallBoulder,
                      MediumBoulder, LargeBoulder]
     Trinkets: [Trinket]
+    Scrap: [Scrap]
     Recoilers: [BaseRecoiler]
     Applicators: [Fixit Spray, Spraybottle, Metamorphic Polygel, Desalination Pellet, Bandage,
                   Spray-a-Brain]
@@ -389,6 +398,24 @@ Wiki:
                   Polyhedral Rings, Silver Rondure, Blood-stained neck-ring]
     Plants: [Plant]
     Creatures: [Creature]
+    Dogs: [BaseDog]
+    Robots: [BaseRobot] #any creatures that are in the Robots faction will be categorized with [[Robots (Faction)]]
+    Bears: [BaseBear]
+    Snapjaws: [BaseSnapjaw]
+    Humanoids: [BaseHumanoid]
+    Issachari: [BaseIssachari]
+    Cragmensch: [Cragmensch]
+    Naphtaali: [BaseNaphtaali]
+    Insects: [BaseInsect]
+    Mechanimists: [BaseMechanimist]
+    Reptiles: [BaseReptile]
+    Tortoises: [BaseTortoise]
+    Frogs: [Ice frog,Bloated Pearlfrog]
+    Fish: [BaseFish]
+    Spiders: [BaseSpider]
+    Worms: [BaseWorm]
+    Snails: [BaseSnail]
+    Slugs: [BaseSlug]
     Merchants: [BaseMerchant]
     Unique Characters: [Phinae Hoshaiah, Argyve, ElderBob, Mehmet, Warden Ualraig,
                  Warden Esthers, Eskhind, Meyehind, Liihart, Isahind, Neelahind, Keh, Kesehind,
