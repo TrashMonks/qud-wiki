@@ -4,7 +4,7 @@ import os
 from PySide2.QtCore import QSize
 from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon, QPixmap
 from PySide2.QtWidgets import QMainWindow, QApplication, QTreeView, QSizePolicy, \
-    QAbstractItemView, QFileDialog, QHeaderView
+    QAbstractItemView, QFileDialog, QHeaderView, QMenu
 
 import qud_object_tree
 from config import config
@@ -22,6 +22,17 @@ class QudTreeView(QTreeView):
         """selection_handler: a function in the parent window to pass selected indices to"""
         self.selection_handler = selection_handler
         super().__init__(*args, **kwargs)
+        size_policy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        size_policy.setHorizontalStretch(1)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
+        self.setSizePolicy(size_policy)
+        self.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.setObjectName("treeView")
+        self.setIndentation(10)
+        self.setIconSize(QSize(16, 24))
+        self.menu = QMenu()
 
     def selectionChanged(self, selected, deselected):
         """Custom override to handle all forms of selection (keyboard, mouse)"""
@@ -45,7 +56,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.qud_object_model = QStandardItemModel()
         self.items_to_expand = []  # filled out during recursion of the Qud object tree
         self.treeView = QudTreeView(self.tree_selection_handler, self.tree_target_widget)
-        self.init_qud_tree_view()
+        self.verticalLayout.addWidget(self.treeView)
         self.search_line_edit.textChanged.connect(self.search_changed)
         self.actionOpen_ObjectBlueprints_xml.triggered.connect(self.open_xml)
         if os.path.exists('last_xml_location'):
@@ -71,20 +82,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         with open('last_xml_location', 'w') as f:
             f.write(filename)
         self.setWindowTitle("Qud Blueprint Explorer - " + filename)
-
-    def init_qud_tree_view(self):
-        """Do some configuration for the QudTreeView."""
-        size_policy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        size_policy.setHorizontalStretch(1)
-        size_policy.setVerticalStretch(0)
-        size_policy.setHeightForWidth(self.treeView.sizePolicy().hasHeightForWidth())
-        self.treeView.setSizePolicy(size_policy)
-        self.treeView.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.treeView.setSelectionMode(QAbstractItemView.ExtendedSelection)
-        self.treeView.setObjectName("treeView")
-        self.verticalLayout.addWidget(self.treeView)
-        self.treeView.setIndentation(10)
-        self.treeView.setIconSize(QSize(16, 24))
 
     def init_qud_tree_model(self):
         """Initialize the Qud object model tree by setting up the root object."""
@@ -268,7 +265,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             print(result)
 
 
-app = QApplication(sys.argv)
-app.setApplicationName(config['App name'])
-main_window = MainWindow(app)
-app.exec_()
+qbe_app = QApplication(sys.argv)
+qbe_app.setApplicationName(config['App name'])
+main_window = MainWindow(qbe_app)
+qbe_app.exec_()

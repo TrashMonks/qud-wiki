@@ -37,8 +37,7 @@ class QudObject(NodeMixin):
     """Represents a Caves of Qud object blueprint with attribute inheritance.
 
     Parameters:
-        blueprint: an XML Element to parse into dictionaries
-        qindex: a dictionary to stash our Name:self mapping, for use later"""
+        blueprint: an XML Element to parse into dictionaries"""
 
     def __init__(self, blueprint: Element):
         self.name = blueprint.get('Name')
@@ -50,6 +49,7 @@ class QudObject(NodeMixin):
         else:
             self.parent = None
         self.attributes = {}
+        self.all_attributes = {}
         for element in blueprint:
             if 'Name' not in element.attrib and element.tag != 'inventoryobject':
                 # probably something we don't need
@@ -211,7 +211,7 @@ class QudObject(NodeMixin):
         """
         if attr.startswith('_'):  # guard against NodeMixIn housekeeping
             raise AttributeError
-        if attr == 'attributes':  # guard against uninvited recursion
+        if attr == 'attributes' or attr == 'all_attributes':  # guard against uninvited recursion
             raise AttributeError
         path = attr.split('_')
         try:
@@ -792,11 +792,12 @@ class QudObject(NodeMixin):
                 if int(self.part_MoveCostMultiplier_Amount) < 0:
                     temp = "+"
                 return temp + str(int(self.part_MoveCostMultiplier_Amount)*-1)
+
     @property
     def preservedinto(self):
         """When preserved, what a preservable item produces."""
         if self.part_PreservableItem_Result is not None:
-            return "{{ID to name|" +self.part_PreservableItem_Result + "}}"
+            return "{{ID to name|" + self.part_PreservableItem_Result + "}}"
 
     @property
     def preservedquantity(self):
@@ -875,6 +876,7 @@ class QudObject(NodeMixin):
     def role(self):
         """returns the role of the creature."""
         return self.property_Role_Value
+
     @property
     def savemodifier(self):
         """Returns save modifier type"""
@@ -925,7 +927,7 @@ class QudObject(NodeMixin):
         """The display name of the item."""
         val = self.name
         if self.builder_GoatfolkHero1_ForceName:
-            val = escape_ampersands(self.builder_GoatfolkHero1_ForceName) #for Mamon
+            val = escape_ampersands(self.builder_GoatfolkHero1_ForceName)  # for Mamon
         elif self.part_Render_DisplayName:
             val = escape_ampersands(self.part_Render_DisplayName)
         return val
@@ -976,7 +978,7 @@ class QudObject(NodeMixin):
     def weight(self):
         """The weight of the object."""
         if not self.inherits_from('Creature'):
-           return self.part_Physics_Weight
+            return self.part_Physics_Weight
 
     @property
     def willpower(self):

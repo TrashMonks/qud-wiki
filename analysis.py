@@ -1,4 +1,4 @@
-# Various analyses made possible by the Qud object tree and tile rendering system.
+"""Various analyses made possible by the Qud object tree and tile rendering system."""
 import string
 
 import anytree
@@ -6,6 +6,9 @@ import anytree
 import qud_object_tree
 import qudobject
 import qudtile
+
+FILE = 'C:/Steam/steamapps/common/Caves of Qud/CoQ_Data/StreamingAssets/Base/ObjectBlueprints.xml'
+
 
 def get_bad_tiles():
     print(qudobject.qindex)
@@ -32,16 +35,15 @@ def get_bugged_eat_messages():
                 print(f'{qud_object.name:40} {qud_object.eatdesc}')
 
 
-def get_wiki_nonwiki():
-    # for name, qud_object in qudobject.qindex.items():
-    #     print(f'{name:60}{qud_object.displayname:40}{"yes" if qud_object.is_wiki_eligible() else "no"}')
-    for pre, fill, obj in anytree.render.RenderTree(qudobject.qindex['Object'], style=anytree.render.ContRoundStyle):
+def print_wiki_nonwiki():
+    for pre, fill, obj in anytree.render.RenderTree(qudobject.qindex['Object'],
+                                                    style=anytree.render.ContRoundStyle):
         print(pre, '✅' if obj.is_wiki_eligible() else '❌', obj.displayname, f'({obj.name})')
 
-qud_object_tree.load('C:/Steam/steamapps/common/Caves of Qud/CoQ_Data/StreamingAssets/Base/ObjectBlueprints.xml')
 
-print()
+qud_object_tree.load(FILE)
+
 # get_bad_tiles()
 # print(get_wiki_eligible())
 # get_bugged_eat_messages()
-get_wiki_nonwiki()
+print_wiki_nonwiki()
