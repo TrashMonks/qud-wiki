@@ -785,7 +785,7 @@ class QudObject(NodeMixin):
     @property
     def preservedinto(self):
         """When preserved, what a preservable item produces."""
-        if self.part_PreservableItem_result is not None:
+        if self.part_PreservableItem_Result is not None:
             return "{{ID to name|" +self.part_PreservableItem_Result + "}}"
 
     @property
