@@ -621,7 +621,7 @@ class QudObject(NodeMixin):
                 if '-' in part:
                     # has format like `Joppa-100,Barathrumites-100`
                     faction, value = part.split('-')
-                    ret += f'{{{{creature faction|{{{{ID to name|{faction}}}}}|{value}}}}}'
+                    ret += f'{{{{creature faction|{{{{FactionID to name|{faction}}}}}|{value}}}}}'
         return ret
 
     @property
@@ -864,12 +864,12 @@ class QudObject(NodeMixin):
                 if ':' in part:
                     # has format like `Fungi:200,Consortium:-200`
                     faction, value = part.split(':')
-                    ret += f'{{{{reputation bonus|{{{{ID to name|{faction}}}}}|{value}}}}}'
+                    ret += f'{{{{reputation bonus|{{{{FactionID to name|{faction}}}}}|{value}}}}}'
                 else:
                     # has format like `Antelopes,Goatfolk` and Value `100`
                     # or is a single faction, like `Apes` and Value `-100`
                     value = self.part_AddsRep_Value
-                    ret += f'{{{{reputation bonus|{{{{ID to name|{part}}}}}|{value}}}}}'
+                    ret += f'{{{{reputation bonus|{{{{FactionID to name|{part}}}}}|{value}}}}}'
         return ret
 
     @property
