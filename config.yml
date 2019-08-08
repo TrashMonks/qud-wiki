@@ -40,6 +40,8 @@ Templates:
     Shem -1: shem-1.png
     High Priest Eschelstadt: eschelstadt ii.png
     Phinae Hoshaiah: phinae hoshaiah.png
+    Mamon: Mamon souldrinker.png
+    Svenlainard: svenlainard.png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -66,6 +68,8 @@ Wiki:
     Ebenshabat: Ebenshabat
     OasisGlowpad: oddly-hued glowpad
     Molting Basilisk: Molting basilisk
+    Warden Indrix: Warden Indrix
+    Svenlainard: Svenlainard
 
   Article black+whitelist categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -301,6 +305,7 @@ Wiki:
       /DromadTrader,
       +DromadTrader1,  # needs explanatory article of 8 varieties
       -RedrockZealot,
+      -JoppaZealot
       -Snapjaw Dodger,
       -Snapjaw Rocketeer,
       -Snapjaw Laser,
@@ -409,6 +414,8 @@ Wiki:
     Insects: [BaseInsect]
     Mechanimists: [BaseMechanimist]
     Reptiles: [BaseReptile]
+    Goatfolk: [Goatfolk]
+    Oozes: [BaseOoze]
     Tortoises: [BaseTortoise]
     Frogs: [Ice frog,Bloated Pearlfrog]
     Fish: [BaseFish]

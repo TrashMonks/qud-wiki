@@ -474,7 +474,7 @@ class QudObject(NodeMixin):
     def corpse(self):
         """What corpse a character drops."""
         if self.part_Corpse_CorpseBlueprint is not None and int(self.part_Corpse_CorpseChance) > 0:
-            return "{{ID to name|" + self.part_Corpse_CorpseBlueprint + "|Corpses}}"
+            return "{{ID to name|" + self.part_Corpse_CorpseBlueprint + "}}"
 
     @property
     def corpsechance(self):
@@ -611,7 +611,7 @@ class QudObject(NodeMixin):
                 if '-' in part:
                     # has format like `Joppa-100,Barathrumites-100`
                     faction, value = part.split('-')
-                    ret += f'{{{{creature faction|{{{{ID to name|{faction}|Factions}}}}|{value}}}}}'
+                    ret += f'{{{{creature faction|{{{{ID to name|{faction}}}}}|{value}}}}}'
         return ret
 
     @property
@@ -786,7 +786,7 @@ class QudObject(NodeMixin):
     def preservedinto(self):
         """When preserved, what a preservable item produces."""
         if self.part_PreservableItem_result is not None:
-            return "{{ID to name|" +self.part_PreservableItem_Result + "|Food}}"
+            return "{{ID to name|" +self.part_PreservableItem_Result + "}}"
 
     @property
     def preservedquantity(self):
@@ -914,7 +914,9 @@ class QudObject(NodeMixin):
     def title(self):
         """The display name of the item."""
         val = self.name
-        if self.part_Render_DisplayName:
+        if self.builder_GoatfolkHero1_ForceName:
+            val = escape_ampersands(self.builder_GoatfolkHero1_ForceName) #for Mamon
+        elif self.part_Render_DisplayName:
             val = escape_ampersands(self.part_Render_DisplayName)
         return val
 
