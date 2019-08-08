@@ -62,7 +62,17 @@ class QudObject(NodeMixin):
             elif 'Blueprint' in element.attrib:
                 # for tag: inventoryobject
                 element_name = element.attrib.pop('Blueprint')
-            self.attributes[element.tag][element_name] = element.attrib
+            if element_name in self.attributes[element.tag] and \
+                    isinstance(self.attributes[element.tag][element_name], dict):
+                # for rare cases like:
+                # <part Name="Brain" Hostile="false" Wanders="false" Factions="Prey-100" />
+                # followed by:
+                # <part Name="Brain" Hostile="false" />
+                # - we don't want to overwrite the former with the latter, so update instead
+                self.attributes[element.tag][element_name].update(element.attrib)
+            else:
+                # normal case: just assign the attributes dictionary to this <tag>-Name combo
+                self.attributes[element.tag][element_name] = element.attrib
         self.all_attributes, self.inherited = self.resolve_inheritance()
         self.tile = self.render_tile()
 
