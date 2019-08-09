@@ -80,7 +80,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.check_selected_button.clicked.connect(self.wiki_check_selected)
         self.upload_templates_button.clicked.connect(self.upload_selected_templates)
         self.upload_tiles_button.clicked.connect(self.upload_selected_tiles)
+        self.save_tile_button.clicked.connect(self.save_selected_tile)
+        self.save_tile_button.setDisabled(True)
         self.currently_selected = []
+        self.currently_selected_for_tile = None
         self.show()
 
     def open_xml(self, filename=None):
@@ -157,10 +160,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.statusbar.showMessage(qud_object.ui_inheritance_path())
                 if qud_object.tile is not None and not qud_object.tile.blacklisted:
                     self.tile_label.setPixmap(QPixmap.fromImage(qud_object.tile.get_big_qtimage()))
+                    self.currently_selected_for_tile = qud_object
+                    self.save_tile_button.setDisabled(False)
                 else:
                     self.tile_label.clear()
+                    self.currently_selected_for_tile = None
+                    self.save_tile_button.setDisabled(True)
         if len(indices) == 0:
             self.tile_label.clear()
+            self.currently_selected_for_tile = None
+            self.save_tile_button.setDisabled(True)
         self.plainTextEdit.setPlainText(text)
 
     def collapse_all(self):
@@ -278,6 +287,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                  comment=descr
                                  )
             print(result)
+
+    def save_selected_tile(self):
+        filename = QFileDialog.getSaveFileName()[0]
+        self.currently_selected_for_tile.tile.get_big_image().save(filename, format='png')
 
 
 qbe_app = QApplication(sys.argv)

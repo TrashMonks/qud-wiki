@@ -23,20 +23,31 @@
          <widget class="QPlainTextEdit" name="plainTextEdit"/>
         </item>
         <item>
-         <widget class="QLabel" name="tile_label">
-          <property name="minimumSize">
-           <size>
-            <width>160</width>
-            <height>240</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color: rgb(15, 59, 58);</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QLabel" name="tile_label">
+            <property name="minimumSize">
+             <size>
+              <width>160</width>
+              <height>240</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(15, 59, 58);</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="save_tile_button">
+            <property name="text">
+             <string>Save tile...</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>

@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'qud_explorer_window.ui',
 # licensing of 'qud_explorer_window.ui' applies.
 #
-# Created: Tue Jul 30 23:43:53 2019
+# Created: Thu Aug  8 22:39:20 2019
 #      by: pyside2-uic  running on PySide2 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -25,12 +25,18 @@ class Ui_MainWindow(object):
         self.plainTextEdit = QtWidgets.QPlainTextEdit(self.centralwidget)
         self.plainTextEdit.setObjectName("plainTextEdit")
         self.horizontalLayout.addWidget(self.plainTextEdit)
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.tile_label = QtWidgets.QLabel(self.centralwidget)
         self.tile_label.setMinimumSize(QtCore.QSize(160, 240))
         self.tile_label.setStyleSheet("background-color: rgb(15, 59, 58);")
         self.tile_label.setText("")
         self.tile_label.setObjectName("tile_label")
-        self.horizontalLayout.addWidget(self.tile_label)
+        self.verticalLayout_4.addWidget(self.tile_label)
+        self.save_tile_button = QtWidgets.QPushButton(self.centralwidget)
+        self.save_tile_button.setObjectName("save_tile_button")
+        self.verticalLayout_4.addWidget(self.save_tile_button)
+        self.horizontalLayout.addLayout(self.verticalLayout_4)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
         self.verticalLayout_3.setObjectName("verticalLayout_3")
@@ -89,6 +95,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "Qud Blueprint Explorer", None, -1))
+        self.save_tile_button.setText(QtWidgets.QApplication.translate("MainWindow", "Save tile...", None, -1))
         self.search_label.setText(QtWidgets.QApplication.translate("MainWindow", "Search:", None, -1))
         self.expand_all_button.setText(QtWidgets.QApplication.translate("MainWindow", "Expand all", None, -1))
         self.collapse_all_button.setText(QtWidgets.QApplication.translate("MainWindow", "Collapse all", None, -1))
