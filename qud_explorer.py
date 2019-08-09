@@ -1,10 +1,10 @@
 import sys
 import os
 
-from PySide2.QtCore import QSize
+from PySide2.QtCore import QSize, Qt
 from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon, QPixmap
 from PySide2.QtWidgets import QMainWindow, QApplication, QTreeView, QSizePolicy, \
-    QAbstractItemView, QFileDialog, QHeaderView, QMenu
+    QAbstractItemView, QFileDialog, QHeaderView, QMenu, QAction
 
 import qud_object_tree
 from config import config
@@ -32,7 +32,18 @@ class QudTreeView(QTreeView):
         self.setObjectName("treeView")
         self.setIndentation(10)
         self.setIconSize(QSize(16, 24))
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.menu = QMenu()
+        self.testAction = QAction('Expand all', self.menu)
+        self.menu.addAction(self.testAction)
+        self.customContextMenuRequested.connect(self.on_context_menu)
+
+    def on_context_menu(self, point):
+        print(point)
+        self.menu.exec_(self.mapToGlobal(point))
+
+    def dothing(self):
+        print('test')
 
     def selectionChanged(self, selected, deselected):
         """Custom override to handle all forms of selection (keyboard, mouse)"""

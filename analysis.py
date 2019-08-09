@@ -2,10 +2,12 @@
 import string
 
 import anytree
+import mwclient
 
 import qud_object_tree
 import qudobject
 import qudtile
+import wikipage
 
 FILE = 'C:/Steam/steamapps/common/Caves of Qud/CoQ_Data/StreamingAssets/Base/ObjectBlueprints.xml'
 
@@ -41,9 +43,24 @@ def print_wiki_nonwiki():
         print(pre, '✅' if obj.is_wiki_eligible() else '❌', obj.displayname, f'({obj.name})')
 
 
+def get_wikified_nonwiki():
+    """Check the wiki for any articles that aren't supposed to exist."""
+    for name, qud_object in qudobject.qindex.items():
+        if not qud_object.is_wiki_eligible():
+            try:
+                page = wikipage.WikiPage(qud_object)
+                if page.page.exists:
+                    print(name, page.page.exists, page.page)
+            except IndexError:
+                pass
+            except mwclient.errors.InvalidPageTitle:
+                pass
+
+
 qud_object_tree.load(FILE)
 
 # get_bad_tiles()
 # print(get_wiki_eligible())
 # get_bugged_eat_messages()
-print_wiki_nonwiki()
+# print_wiki_nonwiki()
+# get_wikified_nonwiki()

@@ -70,6 +70,7 @@ Wiki:
     Molting Basilisk: Molting basilisk
     Warden Indrix: Warden Indrix
     Svenlainard: Svenlainard
+    AppleMerchant: apple farmer (merchant)
 
   Article black+whitelist categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -92,6 +93,12 @@ Wiki:
       /PlantLimb,
       /FungusLimb,
       /Corpse,
+      +Human Corpse,
+      +Charred Corpse,
+      +Mangled Corpse,
+      +Ancient Corpse,
+      +Fresh Corpse,
+      +Moldering Corpse,
       +Albino Ape Pelt,
       +Albino Ape Heart,
       +Black Puma Haunch,
@@ -137,6 +144,12 @@ Wiki:
       -Brazier,
       -Tall Brazier,
       /Vessel,
+      +Vase,
+      +Bottle,
+      +Pitcher,
+      +Ewer,
+      +Jug,
+      +Long Jug,
       -RandomFactionDeed,
       /BaseCookbook,
       /RandomBook,
@@ -160,31 +173,24 @@ Wiki:
       -Full Combustion Cell,
       -Klanq Garbage,
       /Marble Dais,
-      -SingleSkillsoft2,
       /BaseCyberneticsCreditWedge,
       +CyberneticsCreditWedge,  # needs explanatory article for types
       -Village Hologram 2,
       -MetalWallWithPipes,
       -MainframeWall,
       -LowSandstoneWall,
-      -AgateWall,
-      -TopazWall,
-      -JasperWall,
-      -AmethystWall,
-      -SapphireWall,
-      -EmeraldWall,
-      -PeridotWall,
       -BasaltWithPipes,
       /Marble,
       +Marble,
+      +SixDayStiltPillarWall1,
       /Fulcrete,
       +Fulcrete,
-      -GodcapMushroomFlesh,
       -GodcapMushroomFlesh2,
       -MushroomFlesh,
       -MushroomFlesh2,
       /GlassWall,
       +GlassWall,
+      -Walltrap,
       /CryochamberWall,
       +CryochamberWall,
       -CryochamberWallBroken,
@@ -226,8 +232,9 @@ Wiki:
       /Bookshelf,
       +Bookshelf,
       /Random Statue,
-      /Chest,
+      /Chest,  # needs a lot of explanation in an article!
       +Chest,
+      +FossilizedRemains,
       +WedgeChest1,  # needs explanatory article for 5 types
       +MedLocker,
       "*Weapon Rack",
@@ -235,7 +242,8 @@ Wiki:
       +Clue_VillageStores,
       /Tombstone,
       +Tombstone,
-      /Sign,
+      /Sign,  # needs article with all the sign tiles in it
+      +AppleSign1,
       /SultanShrine,  # needs explanatory article
       /Switch,
       +Switch,
@@ -290,6 +298,11 @@ Wiki:
       -RedrockGirshling,
       -Phase Spider Coward,
       -Farm Electric Snail,
+      -Lyngbaskr,
+      -Porphyryptus,
+      -either,
+      -or,
+      -Ebenshabat,
       -Farm Leech,
       -TestDummy,
       # Robots
@@ -304,20 +317,24 @@ Wiki:
       -Missile Cannibal,
       /DromadTrader,
       +DromadTrader1,  # needs explanatory article of 8 varieties
+      +Doru,  # Tam
+      -Glow-Wight Hero of Agolgut 1,
+      -Glow-Wight Hero of Bethsaida 1,
       -RedrockZealot,
-      -JoppaZealot
+      -JoppaZealot,
+      -Snapjaw,
       -Snapjaw Dodger,
       -Snapjaw Rocketeer,
       -Snapjaw Laser,
       -InjectorSnapper,
+      -CyberSnapper,
       /Snapjaw Warlord,
       +Snapjaw Warlord,
       -Snapjaw Packlord,
       -Wof,
       -Tabula Rasa,  # needs hand-edited article
-      /BaseIssachari,
-      +Desert Raider,
-      +Desert Raider Rifleman,
+      -BaseIssachari,
+      -Mechanimist Pilgrim Still,
       -Six Day Choraler,
       -Mechanimist Preacher 2,
       -Mechanimist Preacher 3,
@@ -336,8 +353,8 @@ Wiki:
       +WatervineFarmer,
       -StiltPigFarmer,
       -LoudSixDayZealot,
-      -AppleMerchant,  # conflicts with AppleFarmer
       -StiltChef,
+      -Village Crier,
       -BaseBaboon,
       -Baboon Hero 1,
       -BetaPlant,
@@ -345,9 +362,9 @@ Wiki:
       -PaintTest,
       # CosmeticObjects
       /CosmeticObject,
-      -RealityStabilizationField,
       /Water,
-      /Terrain
+      /Terrain,
+      +Clue_Putrescence
     ]
 
   Categories:
