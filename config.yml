@@ -61,16 +61,14 @@ Wiki:
     Schemasoft3: Schemasoft (mid-tier)
     Schemasoft4: Schemasoft (high-tier)
     BethesdaBaetyl: Baetyl (Bethesda Susa)
-    Lyngbaskr: Lyngbaskr
-    Porphyryptus: Porphyryptus
-    either: either
-    or: or
-    Ebenshabat: Ebenshabat
     OasisGlowpad: oddly-hued glowpad
     Molting Basilisk: Molting basilisk
     Warden Indrix: Warden Indrix
     Svenlainard: Svenlainard
     AppleMerchant: apple farmer (merchant)
+    DoorSwitch: control switch (door)
+    ElevatorSwitch: control switch (elevator)
+    TempleSwitch: control switch (temple)
 
   Article black+whitelist categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -159,7 +157,7 @@ Wiki:
       /Canteen,
       +Canteen,
       /Phial,
-      +Phial,  # same
+      +Phial,
       -Blank Recoiler,
       /Random Figurine,
       -Jewel-Encrusted Item,
@@ -201,9 +199,15 @@ Wiki:
       -GritGateFusionPumpingStation,
       -GritGateHydraulicIrrigator,
       /GritGateForceProjector,
+      -Torchpost,  # covered by Sconce, 'torch sconce'
+      -Unlit Torchpost,  # ditto
+      -Techlight2,  # covered by Techlight1, 'arc sconce'
+      -Techlight3,  # ditto
+      -Candelabra,  # covered by Half Candelabra, 'candelabra'
       /Wormhole,
       +Wormhole,
       /Door,
+      +Gate,
       +Security Door,
       +Autodoor,
       -Woodfloor,
@@ -234,8 +238,9 @@ Wiki:
       /Random Statue,
       /Chest,  # needs a lot of explanation in an article!
       +Chest,
-      +FossilizedRemains,
       +WedgeChest1,  # needs explanatory article for 5 types
+      +FossilizedRemains,
+      +RustLocker,
       +MedLocker,
       "*Weapon Rack",
       +CyberneticsRack,
@@ -245,11 +250,10 @@ Wiki:
       /Sign,  # needs article with all the sign tiles in it
       +AppleSign1,
       /SultanShrine,  # needs explanatory article
-      /Switch,
-      +Switch,
+      -Switch,  # Switch itself is a BaseObject but not labeled as such
+      -DisabledSwitch,  # cover in ElevatorSwitch article
       /Alchemist Table,
       +Alchemist Table,
-      -Powered Orrery,
       /Relief,  # needs art article combining tiles
       -StairsDownBarathrumsStudy,
       -GritGateMainframeRoomCommPanel,

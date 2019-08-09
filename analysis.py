@@ -51,8 +51,6 @@ def get_wikified_nonwiki():
                 page = wikipage.WikiPage(qud_object)
                 if page.page.exists:
                     print(name, page.page.exists, page.page)
-            except IndexError:
-                pass
             except mwclient.errors.InvalidPageTitle:
                 pass
 

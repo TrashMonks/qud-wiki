@@ -14,7 +14,7 @@ from qudtile import blank_qtimage
 from wiki_config import site, wiki_config
 from wikipage import WikiPage
 
-HEADER_LABELS = ['Name', 'Display', 'Article exists', 'Article matches', 'Image exists']
+HEADER_LABELS = ['Name', 'Display', 'Override', 'Article exists', 'Article matches', 'Image exists']
 
 
 class QudTreeView(QTreeView):
@@ -110,6 +110,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         Returns a list, which will be the list of column entries for the row."""
         item = QStandardItem(qud_object.name)
+        item.setData(qud_object)
         display_name = QStandardItem(qud_object.displayname)
         # display_name.setSelectable(False)
         display_name.setSizeHint(QSize(250, 25))
@@ -119,19 +120,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             display_name.setIcon(QIcon(QPixmap.fromImage(blank_qtimage)))
         else:
             display_name.setIcon(QIcon(QPixmap.fromImage(qud_object.tile.qtimage)))
-        item.setData(qud_object)
-        if not qud_object.is_leaf:
-            for child in qud_object.children:
-                item.appendRow(self.init_qud_object_children(child))
-        if qud_object.name in config['Interface']['Initial expansion targets']:
-            self.items_to_expand.append(item)
+        override_name = QStandardItem('')
+        if qud_object.name in config['Wiki']['Article overrides']:
+            override_name.setText(config['Wiki']['Article overrides'][qud_object.name])
         wiki_article_exists = QStandardItem('')
         wiki_article_matches = QStandardItem('')
         image_exists = QStandardItem('')
         if not qud_object.is_wiki_eligible():
-            for _ in item, display_name, wiki_article_exists, wiki_article_matches, image_exists:
+            for _ in item, display_name, override_name, wiki_article_exists, wiki_article_matches, image_exists:
                 _.setSelectable(False)
-        return [item, display_name, wiki_article_exists, wiki_article_matches, image_exists]
+        if qud_object.name in config['Interface']['Initial expansion targets']:
+            self.items_to_expand.append(item)
+        # recurse through children before returning self
+        if not qud_object.is_leaf:
+            for child in qud_object.children:
+                item.appendRow(self.init_qud_object_children(child))
+        return [item, display_name, override_name, wiki_article_exists, wiki_article_matches, image_exists]
 
     def recursive_expand(self, item: QStandardItem):
         """Expand the currently selected item in the QudTreeView and all its children."""
@@ -190,9 +194,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # first, blank the cells for ones already checked
         for num, index in enumerate(self.currently_selected):
             if index.column() == 0:
-                wiki_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 2])
-                wiki_matches_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 3])
-                tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 4])
+                wiki_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+3])
+                wiki_matches_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+4])
+                tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+5])
                 wiki_exists_qitem.setText('')
                 wiki_matches_qitem.setText('')
                 tile_exists_qitem.setText('')
@@ -200,9 +204,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for num, index in enumerate(self.currently_selected):
             if index.column() == 0:
                 qitem = self.qud_object_model.itemFromIndex(index)
-                wiki_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+2])
-                wiki_matches_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 3])
-                tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+4])
+                wiki_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+3])
+                wiki_matches_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+4])
+                tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+5])
                 qud_object = qitem.data()
                 # Check wiki article first:
                 if not qud_object.is_wiki_eligible:
