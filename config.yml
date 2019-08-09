@@ -28,7 +28,7 @@ Templates:
   Image overrides:
     # Manually specify the image name to be shown for an object ID:
     Asphodel: Earl_asphodel.png
-    Lulihart, Hindren Pariah: Lulihart.png
+    Lulihart: Lulihart.png
     Across1: across moghrayi.png
     Across2: across moghrayi.png
     Across3: across moghrayi.png
@@ -42,6 +42,8 @@ Templates:
     Phinae Hoshaiah: phinae hoshaiah.png
     Mamon: Mamon souldrinker.png
     Svenlainard: svenlainard.png
+    Warden Indrix: Warden indrix.png
+   
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -71,6 +73,7 @@ Wiki:
     Warden Indrix: Warden Indrix
     Svenlainard: Svenlainard
     AppleMerchant: apple farmer (merchant)
+    Doru: Tam
 
   Article black+whitelist categories:
     # Categories, or individual articles, to include or exclude from consideration for
