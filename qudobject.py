@@ -508,7 +508,9 @@ class QudObject(NodeMixin):
         """The short description of the object, with color codes included (ampersands escaped)."""
         if self.part_Description_Short == 'A hideous specimen.':
             return None  # hide items with no description of their own
-        if self.part_Description_Short:
+        if self.intproperty_GenotypeBasedDescription is not None:
+            return escape_ampersands("[True kin]\n" + self.property_TrueManDescription_Value + "\n[Mutant]\n" + self.property_MutantDescription_Value)
+        elif self.part_Description_Short:
             return escape_ampersands(self.part_Description_Short)
         else:
             return ""
