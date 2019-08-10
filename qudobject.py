@@ -444,6 +444,8 @@ class QudObject(NodeMixin):
             charge = self.part_Gaslight_ChargeUse
         if self.part_MechanicalWings:
             charge = self.part_MechanicalWings_ChargeUse
+        if self.part_GeomagneticDisk:
+            charge = self.part_GeomagneticDisk_ChargeUse
         return charge
 
     @property
@@ -500,7 +502,10 @@ class QudObject(NodeMixin):
         if self.part_Gaslight:
             val = self.part_Gaslight_ChargedDamage
         if self.is_specified('part_ThrownWeapon'):
-            val = self.part_ThrownWeapon_Damage
+            if self.is_specified('part_GeomagneticDisk'):
+                val = self.part_GeomagneticDisk_Damage
+            else:
+                val = self.part_ThrownWeapon_Damage
         return val
 
     @property
@@ -971,7 +976,12 @@ class QudObject(NodeMixin):
     @property
     def vibro(self):
         """Whether this is a vibro weapon."""
-        if self.inherits_from('NaturalWeapon') or self.inherits_from('MeleeWeapon'):
+        if self.is_specified('part_ThrownWeapon'):
+            if self.part_ThrownWeapon_Penetration is None:
+                return 'yes'
+            else: 
+                return 'no'
+        elif self.inherits_from('NaturalWeapon') or self.inherits_from('MeleeWeapon'):
             if self.part_VibroWeapon:
                 return 'yes'
             return 'no'
