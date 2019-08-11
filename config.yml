@@ -8,7 +8,7 @@ Interface:
   # Interface options
   Initial expansion targets:
     # These object category IDs will be expanded when the tree is initialized:
-    [Food, MeleeWeapon, MissileWeapon, Armor, Shield, Token, LightSource, Tool, Tonic, Trinket,
+    [MeleeWeapon, MissileWeapon, Armor, Shield, Tool, Tonic, Trinket,
      Energy Cell, Barathrumite, SapientMutatedFlower]
 
 Templates:
@@ -140,6 +140,7 @@ Wiki:
       /NaturalWeapon,
       -BrokenSnailmotherEgg,
       -SnailmotherEgg,
+      -FungalInfection,
       -DummyTinkerScreenObject,
       -hologram of Shekhinah,
       -Brazier,
