@@ -99,7 +99,7 @@ class QudTile:
                     else:
                         tricolor_image_cache.add(self.qudname)
                         self.blacklisted = True
-                        print(f"No tile will be generated for {self.qudname} because of color {px}")
+                        # print(f"No tile will be generated for {self.qudname} because of color {px}")
 
     def get_big_image(self):
         """Draw the 160x240 image for the wiki."""

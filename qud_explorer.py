@@ -1,5 +1,6 @@
-import sys
+import io
 import os
+import sys
 
 from PySide2.QtCore import QSize, Qt
 from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon, QPixmap
@@ -14,7 +15,8 @@ from qudtile import blank_qtimage
 from wiki_config import site, wiki_config
 from wikipage import WikiPage
 
-HEADER_LABELS = ['Name', 'Display', 'Override', 'Article exists', 'Article matches', 'Image exists']
+HEADER_LABELS = ['Name', 'Display', 'Override', 'Article exists', 'Article matches', 'Image exists',
+                 'Image matches']
 
 
 class QudTreeView(QTreeView):
@@ -129,6 +131,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         wiki_article_exists = QStandardItem('')
         wiki_article_matches = QStandardItem('')
         image_exists = QStandardItem('')
+        image_matches = QStandardItem('')
         if not qud_object.is_wiki_eligible():
             for _ in item, display_name, override_name, wiki_article_exists, wiki_article_matches, image_exists:
                 _.setSelectable(False)
@@ -138,7 +141,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if not qud_object.is_leaf:
             for child in qud_object.children:
                 item.appendRow(self.init_qud_object_children(child))
-        return [item, display_name, override_name, wiki_article_exists, wiki_article_matches, image_exists]
+        return [item, display_name, override_name, wiki_article_exists, wiki_article_matches, image_exists, image_matches]
 
     def recursive_expand(self, item: QStandardItem):
         """Expand the currently selected item in the QudTreeView and all its children."""
@@ -206,9 +209,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 wiki_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+3])
                 wiki_matches_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+4])
                 tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+5])
+                tile_matches_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+6])
                 wiki_exists_qitem.setText('')
                 wiki_matches_qitem.setText('')
                 tile_exists_qitem.setText('')
+                tile_matches_qitem.setText('')
         # now, do the actual checking and update the cells with 'yes' or 'no'
         for num, index in enumerate(self.currently_selected):
             if index.column() == 0:
@@ -216,12 +221,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 wiki_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+3])
                 wiki_matches_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+4])
                 tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+5])
+                tile_matches_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 6])
                 qud_object = qitem.data()
                 # Check wiki article first:
                 if not qud_object.is_wiki_eligible:
                     wiki_exists_qitem.setText('-')
                     wiki_matches_qitem.setText('-')
                     tile_exists_qitem.setText('-')
+                    tile_matches_qitem.setText('-')
                     continue
                 article = WikiPage(qud_object)
                 if article.page.exists:
@@ -238,8 +245,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 uploaded_tile_file = site.images[qud_object.image]
                 if uploaded_tile_file.exists:
                     tile_exists_qitem.setText('✅')
+                    # It exists, but does it match?
+                    wiki_file = uploaded_tile_file.download()
+                    gen_bytesio = qud_object.tile.get_big_bytesio()
+                    gen_bytesio.seek(0)
+                    gen_file = gen_bytesio.read()
+                    if wiki_file == gen_file:
+                        tile_matches_qitem.setText('✅')
+                    else:
+                        tile_matches_qitem.setText('❌')
                 else:
                     tile_exists_qitem.setText('❌')
+                    tile_matches_qitem.setText('-')
                 self.app.processEvents()
 
     def upload_selected_templates(self):
