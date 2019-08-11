@@ -116,3 +116,9 @@ class QudTile:
         png_b = io.BytesIO()
         self.get_big_image().save(png_b, format='png')
         return png_b
+
+    def get_big_bytes(self):
+        """Return the bytes representation of big self in PNG format."""
+        bytesio = self.get_big_bytesio()
+        bytesio.seek(0)
+        return bytesio.read()

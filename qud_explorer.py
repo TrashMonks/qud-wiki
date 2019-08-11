@@ -5,7 +5,7 @@ import sys
 from PySide2.QtCore import QSize, Qt
 from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon, QPixmap
 from PySide2.QtWidgets import QMainWindow, QApplication, QTreeView, QSizePolicy, \
-    QAbstractItemView, QFileDialog, QHeaderView, QMenu, QAction
+    QAbstractItemView, QFileDialog, QHeaderView, QMenu, QAction, QMessageBox
 
 import qud_object_tree
 from config import config
@@ -242,15 +242,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     wiki_exists_qitem.setText('❌')
                     wiki_matches_qitem.setText('-')
                 # Now check whether tile image exists:
-                uploaded_tile_file = site.images[qud_object.image]
-                if uploaded_tile_file.exists:
+                wiki_tile_file = site.images[qud_object.image]
+                if wiki_tile_file.exists:
                     tile_exists_qitem.setText('✅')
                     # It exists, but does it match?
-                    wiki_file = uploaded_tile_file.download()
-                    gen_bytesio = qud_object.tile.get_big_bytesio()
-                    gen_bytesio.seek(0)
-                    gen_file = gen_bytesio.read()
-                    if wiki_file == gen_file:
+                    if wiki_tile_file.download() == qud_object.tile.get_big_bytes():
                         tile_matches_qitem.setText('✅')
                     else:
                         tile_matches_qitem.setText('❌')
@@ -288,10 +284,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if qud_object.tile.blacklisted:
                 print(f'{qud_object.name} had a tile, but bad rendering, so not uploading.')
                 continue
-            uploaded_tile_file = site.images[qud_object.image]
-            if uploaded_tile_file.exists:
-                print(f'Image {qud_object.image} already exists, updating not supported yet.')
-                continue
+            wiki_tile_file = site.images[qud_object.image]
+            if wiki_tile_file.exists:
+                if wiki_tile_file.download() == qud_object.tile.get_big_bytes():
+                    print(f'Image {qud_object.image} already exists and matches our version.')
+                    continue
+                else:
+                    box = QMessageBox()
+                    box.setText(f'Image for {qud_object.displayname} ({qud_object.image}) already'
+                                f' exists but is different from the auto-generated version.')
+                    box.setInformativeText(f'Please check the wiki version. Do you really want to'
+                                           f' overwrite it?')
+                    box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+                    if box.exec_() == QMessageBox.No:
+                        continue
+            # if we get this far, we are uploading or replacing the wiki file
             if qud_object.name in config['Templates']['Image overrides']:
                 filename = config['Templates']['Image overrides'][qud_object.name]
             else:
