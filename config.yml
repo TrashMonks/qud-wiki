@@ -283,6 +283,7 @@ Wiki:
       -LiquidLichen,
       -LiquidLichen Minor,
       -FungusPuffer,
+      -Rubber Tree,
       -Shimscale Mangrove Tree_blue,
       -Dogthorn Tree2,
       -Fracti2,
@@ -428,6 +429,7 @@ Wiki:
                   Polyhedral Rings, Silver Rondure, Blood-stained neck-ring]
     Plants: [Plant]
     Creatures: [Creature]
+    Fungus: [Fungus, BaseFungus, MutatedFungus]
     Dogs: [BaseDog]
     Robots: [BaseRobot] #any creatures that are in the Robots faction will be categorized with [[Robots (Faction)]]
     Bears: [BaseBear]

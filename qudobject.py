@@ -264,7 +264,7 @@ class QudObject(NodeMixin):
                        'Arsplice Seed',
                        'Albino Ape Heart',
                        'Ogre Ape Heart')
-        if self.inherits_from('Creature'):
+        if self.inherits_from('Creature') or self.inherits_from('BasePlant') or self.inherits_from('BaseFungus'):
             val = "Character"
         elif self.inherits_from('Food'):
             val = "Food"
