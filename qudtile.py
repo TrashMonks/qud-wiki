@@ -33,7 +33,6 @@ blank_image = Image.new('RGBA', (16, 24), color=(0, 0, 0, 0))
 blank_qtimage = ImageQt.ImageQt(blank_image)
 # index keys are like "creatures/caste_flipped_22.bmp" as in XML
 image_cache = {}
-tricolor_image_cache = set()
 bad_tile_color = set()
 bad_detail_color = set()
 uses_details = set()
@@ -83,7 +82,6 @@ class QudTile:
         self.qtimage = ImageQt.ImageQt(self.image)
 
     def _color_image(self):
-        intermediate_color = [0, 0, 0, 255]
         for y in range(self.image.height):
             for x in range(self.image.width):
                 px = self.image.getpixel((x, y))
@@ -93,24 +91,19 @@ class QudTile:
                     self.image.putpixel((x, y), self.detailcolor)
                     uses_details.add(self.qudname)
                 elif px[3] == 0:
-                    pass  # fully transparent
+                    # fully transparent
+                    pass
                 else:
-                    if self.qudname in tricolor_image_cache:
-                        self.image.putpixel((x,y), tuple((intermediate_color[0],intermediate_color[1],intermediate_color[2],255)))
-                    else:
-                        tricolor_image_cache.add(self.qudname)
-                        #self.blacklisted = True
-                        detailpercent= px[0]/255 #get opacity from R channel of tricolor
-                        if self.qudname in bad_detail_color:
-                            tempdetail = QUD_VIRIDIAN
-                        else:
-                            tempdetail = self.detailcolor
+                    # custom tinted image: uses R channel of special color from tile
+                    final = []
+                    detailpercent = px[0] / 255  # get opacity from R channel of tricolor
+                    detail = QUD_VIRIDIAN if self.qudname in bad_detail_color else self.detailcolor
+                    for tile, det in zip(self.tilecolor, detail):
+                        minimum = min(tile, det)
+                        final.append(int(abs((tile - det) * detailpercent + minimum)))
+                    final.append(255)  # transparency
+                    self.image.putpixel((x, y), tuple(final))
 
-                        for i in range(0,3):
-                            intermediate_color[i] = int(abs((self.tilecolor[i]-tempdetail[i])*detailpercent+min(tempdetail[i],self.tilecolor[i])))
-                        else:
-                            self.image.putpixel((x,y), tuple((intermediate_color[0],intermediate_color[1],intermediate_color[2],255)))
-                            #print(f"Intermediate color for {self.qudname} is now set to {intermediate_color}")
     def get_big_image(self):
         """Draw the 160x240 image for the wiki."""
         return self.image.resize((160, 240))
