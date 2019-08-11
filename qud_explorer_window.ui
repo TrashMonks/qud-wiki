@@ -20,7 +20,20 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QPlainTextEdit" name="plainTextEdit"/>
+         <widget class="QPlainTextEdit" name="plainTextEdit">
+          <property name="font">
+           <font>
+            <family>Courier New</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="undoRedoEnabled">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -86,27 +99,6 @@
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QPushButton" name="check_selected_button">
-            <property name="text">
-             <string>🔁 Scan wiki for selected</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="upload_templates_button">
-            <property name="text">
-             <string>⬆ Upload selected templates</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="upload_tiles_button">
-            <property name="text">
-             <string>⬆ Upload selected tiles</string>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
         <item alignment="Qt::AlignBottom">
@@ -134,7 +126,25 @@
     <addaction name="actionOpen_ObjectBlueprints_xml"/>
     <addaction name="actionExit"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View type</string>
+    </property>
+    <addaction name="actionWiki_template"/>
+    <addaction name="actionAttributes"/>
+    <addaction name="actionAll_attributes"/>
+   </widget>
+   <widget class="QMenu" name="menuWiki">
+    <property name="title">
+     <string>Wiki</string>
+    </property>
+    <addaction name="actionScan_wiki"/>
+    <addaction name="actionUpload_templates"/>
+    <addaction name="actionUpload_tiles"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuView"/>
+   <addaction name="menuWiki"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen_ObjectBlueprints_xml">
@@ -145,6 +155,48 @@
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionWiki_template">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Wiki template</string>
+   </property>
+  </action>
+  <action name="actionAttributes">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Attributes</string>
+   </property>
+  </action>
+  <action name="actionAll_attributes">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>All attributes</string>
+   </property>
+  </action>
+  <action name="actionScan_wiki">
+   <property name="text">
+    <string>Scan wiki for selected objects</string>
+   </property>
+  </action>
+  <action name="actionUpload_templates">
+   <property name="text">
+    <string>Upload templates for selected objects</string>
+   </property>
+  </action>
+  <action name="actionUpload_tiles">
+   <property name="text">
+    <string>Upload tiles for selected objects</string>
    </property>
   </action>
  </widget>

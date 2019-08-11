@@ -1,6 +1,7 @@
 import io
 import os
 import sys
+from pprint import pformat
 
 from PySide2.QtCore import QSize, Qt
 from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon, QPixmap
@@ -66,12 +67,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)  # lay out the inherited UI as in the graphical designer
         icon = QIcon("book.png")
         self.setWindowIcon(icon)
+        self.view_type = 'wiki'
         self.qud_object_model = QStandardItemModel()
         self.items_to_expand = []  # filled out during recursion of the Qud object tree
         self.treeView = QudTreeView(self.tree_selection_handler, self.tree_target_widget)
         self.verticalLayout.addWidget(self.treeView)
         self.search_line_edit.textChanged.connect(self.search_changed)
+        # File menu:
         self.actionOpen_ObjectBlueprints_xml.triggered.connect(self.open_xml)
+        # View type menu:
+        self.actionWiki_template.triggered.connect(self.setview_wiki)
+        self.actionAttributes.triggered.connect(self.setview_attr)
+        self.actionAll_attributes.triggered.connect(self.setview_allattr)
+        # Wiki menu:
+        self.actionScan_wiki.triggered.connect(self.wiki_check_selected)
+        self.actionUpload_templates.triggered.connect(self.upload_selected_templates)
+        self.actionUpload_tiles.triggered.connect(self.upload_selected_tiles)
         if os.path.exists('last_xml_location'):
             with open('last_xml_location') as f:
                 filename = f.read()
@@ -79,9 +90,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.expand_all_button.clicked.connect(self.expand_all)
         self.collapse_all_button.clicked.connect(self.collapse_all)
         self.restore_all_button.clicked.connect(self.expand_default)
-        self.check_selected_button.clicked.connect(self.wiki_check_selected)
-        self.upload_templates_button.clicked.connect(self.upload_selected_templates)
-        self.upload_tiles_button.clicked.connect(self.upload_selected_tiles)
         self.save_tile_button.clicked.connect(self.save_selected_tile)
         self.save_tile_button.setDisabled(True)
         self.currently_selected = []
@@ -159,7 +167,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if index.column() == 0:
                 item = self.qud_object_model.itemFromIndex(index)
                 qud_object = item.data()
-                text += qud_object.wiki_template() + '\n'
+                if self.view_type == 'wiki':
+                    text += qud_object.wiki_template() + '\n'
+                elif self.view_type == 'attr':
+                    text += pformat(qud_object.attributes, width=120)
+                elif self.view_type == 'all_attr':
+                    text += pformat(qud_object.all_attributes, width=120)
                 self.statusbar.showMessage(qud_object.ui_inheritance_path())
                 if qud_object.tile is not None and not qud_object.tile.blacklisted:
                     self.tile_label.setPixmap(QPixmap.fromImage(qud_object.tile.get_big_qtimage()))
@@ -315,6 +328,39 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def save_selected_tile(self):
         filename = QFileDialog.getSaveFileName()[0]
         self.currently_selected_for_tile.tile.get_big_image().save(filename, format='png')
+
+    def setview_wiki(self):
+        if self.view_type == 'wiki':
+            return
+        else:
+            self.view_type = 'wiki'
+            self.actionWiki_template.setChecked(True)
+            self.actionAttributes.setChecked(False)
+            self.actionAll_attributes.setChecked(False)
+            selected = self.treeView.selectedIndexes()
+            self.tree_selection_handler(selected)
+
+    def setview_attr(self):
+        if self.view_type == 'attr':
+            return
+        else:
+            self.view_type = 'attr'
+            self.actionWiki_template.setChecked(False)
+            self.actionAttributes.setChecked(True)
+            self.actionAll_attributes.setChecked(False)
+            selected = self.treeView.selectedIndexes()
+            self.tree_selection_handler(selected)
+
+    def setview_allattr(self):
+        if self.view_type == 'all_attr':
+            return
+        else:
+            self.view_type = 'all_attr'
+            self.actionWiki_template.setChecked(False)
+            self.actionAttributes.setChecked(False)
+            self.actionAll_attributes.setChecked(True)
+            selected = self.treeView.selectedIndexes()
+            self.tree_selection_handler(selected)
 
 
 qbe_app = QApplication(sys.argv)
