@@ -73,13 +73,15 @@ Wiki:
     DoorSwitch: control switch (door)
     ElevatorSwitch: control switch (elevator)
     TempleSwitch: control switch (temple)
+    Albino ape fist: fist (albino ape)
     Barkbiter_Bite: bite (barkbiter)
     Barkbiter_Claw: claw (barkbiter)
     Bat_Bite: bite (bat)
     Bear_Bite: bite (bear)
     Bear_Claw: bite (bear)
+    Beetlebum_Mandibles: massive mandibles (beetlebum)
     Boar_Gore: bite (boar)
-    Canniibal Bite: bite (cannibal)
+    Cannibal Bite: bite (cannibal)
     Juicing Cannibal Bite: bite (juicing cannibal)
     Juicing Cannibal Fist: fist (juicing cannibal)
     Cat Claw: claw (cat)
@@ -94,7 +96,7 @@ Wiki:
     Snailmother Bite: bite (snailmother)
     Ickslug Bite: bite (ickslug)
     Electrofuge_Bite: bite (electrofuge)
-    Dawnglider_bite: bite (dawnglider)
+    Dawnglider_Bite: bite (dawnglider)
     Fire_Snout_Bite: bitie (fire snout)
     Gnu Hoof: hoof (gnu)
     Humor_Pseudopod: giant pseudopod (humor)
@@ -107,6 +109,38 @@ Wiki:
     Girshling_Claw: claw (girshling)
     Girshworm_Crush: crushing bands (girshworm)
     Glowfish_Bite: bite (glowfish)
+    Glowpad_Burn: bite (glowpad)
+    Chameleon_Bite: bite (chameleon)
+    Mimic_Bite: bite (mimic)
+    Ice frog bite: bite (ice frog)
+    Qudzu_Frond: frond (qudzu)
+    Irritable Palm Frond: frond (irritable palm)
+    Honeyskunk_Bite: bite (honeyskunk)
+    Salamander_Bite: bite (salamander)
+    Leech_Bite: bite (leech)
+    Bloated_Leech_Bite: bite (bloated leech)
+    Phase Spider Bite: bite (phase spider)
+    Molting Basilisk Bite: stony bite (molting basilisk)
+    quillipede quills: quills (quillipede)
+    Saltwurm_Crush: crushing bands (salt kraken)
+    Scorpiock_Claws: claws (scorpiock)
+    Scorpiock_Bite: bite (scorpiock)
+    SegmentedMirthworm_Bite: bite (segmented mirthworm)
+    Snapjaw_bite: bite (snapjaw)
+    Slumberling Claw: claw (slumberling)
+    Slug_Bite: bite (slug)
+    Juice_Sape_Bite: bite (juice sap)
+    Breather_Claw: claw (breather)
+    Pearlfrog_Bite: bite (pearlfrog)
+    Belcher_Bite: bite (belcher)
+    GreaterVoider_bite: bite (greater voider)
+    Mirror_Bug_Bite: bite (mirror bug)
+    Sap_Bite: bite (stat sap)
+    MemoryEater_Bite: bite (memory eater)
+    Astral_Tabby_Claw: claw (astral tabby)
+    Astral_Tabby_Bite: bite (astral tabby)
+    Gamma Moth Bite: bite (gamma moth)
+    SewageEel_Bite: bite (sewage eel)
 
   Article black+whitelist categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -166,6 +200,7 @@ Wiki:
       -Icy Vapor,
       -Horticulturalist Bio-Scanning Bracelet,
       -Child of the Deep Structural Scanning Bracelet,
+      -Wof_Bite,
       /BaseBeadBracelet,
       +Bracelet1,  # just including one bracelet from BaseBeadBracelet
       -Fork-Horned Helmet 4,  # was an experimental item
