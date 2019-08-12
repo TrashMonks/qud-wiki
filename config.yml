@@ -24,7 +24,7 @@ Templates:
      exoticfood, illoneat, corpse, corpsechance, twohanded, metal, lightprojectile, reflect,
      movespeed, cursed, role, destroyonunequip, savemodifier, savemodifieramt, extra, strength,
      agility, toughness, intelligence, willpower, ego, acid, electric, cold, heat, poison,
-     reputationbonus, faction, wornon, usesslots, gender, pronouns, desc, eatdesc]
+     reputationbonus, faction, wornon, usesslots, gender, pronouns, inventory, mutations, desc, eatdesc]
   Image overrides:
     # Manually specify the image name to be shown for an object ID:
     Asphodel: Earl_asphodel.png
@@ -43,6 +43,7 @@ Templates:
     Mamon: Mamon souldrinker.png
     Svenlainard: svenlainard.png
     Warden Indrix: Warden indrix.png
+    Molting Basilisk: Molting basilisk.png
    
 
 Wiki:

@@ -702,7 +702,10 @@ class QudObject(NodeMixin):
         if self.inventoryobject is not None:
             ret = ""
             for obj in self.inventoryobject:
-                ret += "{{inventory|{{ID to name|" + obj + "}}}}"
+                if 'Number' in self.inventoryobject[obj]:
+                    ret += f"{{{{inventory|{{{{ID to name|{obj}}}}}|{self.inventoryobject[obj]['Number']}}}}}"
+                else:
+                    ret += f"{{{{inventory|{{{{ID to name|{obj}}}}}|1}}}}"
         return ret
 
     @property
@@ -799,6 +802,19 @@ class QudObject(NodeMixin):
                 if int(self.part_MoveCostMultiplier_Amount) < 0:
                     temp = "+"
                 return temp + str(int(self.part_MoveCostMultiplier_Amount)*-1)
+
+    @property
+    def mutations(self):
+        """The mutations the creature has along with their level"""
+        ret = None
+        if self.mutation is not None:
+            ret = ""
+            for obj in self.mutation:
+                if 'Level' in self.mutation[obj]:
+                    ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}}}}}|{self.mutation[obj]['Level']}}}}}"
+                else:
+                    ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}}}}}|0}}}}"
+        return ret
 
     @property
     def preservedinto(self):
@@ -914,6 +930,17 @@ class QudObject(NodeMixin):
         if self.inherits_from('Projectile'):
             val = None
         return val
+
+    @property
+    def skills(self):
+        """Unrelated to skill above, this is the skills that certain creatures have."""
+        ret = None
+        if self.skill is not None:
+            print(str(self)+' has a skill!')
+            ret = ""
+            for obj in self.skill:
+                ret += f"{{{{inventory|{{{{SkillID to name|{obj}}}}}}}}}"
+        return ret
 
     @property
     def strength(self):
