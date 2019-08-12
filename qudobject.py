@@ -626,6 +626,8 @@ class QudObject(NodeMixin):
             ret = ''
             for part in self.part_Brain_Factions.split(','):
                 if '-' in part:
+                    if ret is not '':
+                        ret += "</br>"
                     # has format like `Joppa-100,Barathrumites-100`
                     faction, value = part.split('-')
                     ret += f'{{{{creature faction|{{{{FactionID to name|{faction}}}}}|{value}}}}}'
@@ -810,6 +812,8 @@ class QudObject(NodeMixin):
         if self.mutation is not None:
             ret = ""
             for obj in self.mutation:
+                if ret is not "":
+                    ret +=" </br>"
                 if 'Level' in self.mutation[obj]:
                     ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}}}}}|{self.mutation[obj]['Level']}}}}}"
                 else:
@@ -886,11 +890,15 @@ class QudObject(NodeMixin):
             for part in self.part_AddsRep_Faction.split(','):
                 if ':' in part:
                     # has format like `Fungi:200,Consortium:-200`
+                    if ret is not "":
+                        ret +=" </br>"
                     faction, value = part.split(':')
                     ret += f'{{{{reputation bonus|{{{{FactionID to name|{faction}}}}}|{value}}}}}'
                 else:
                     # has format like `Antelopes,Goatfolk` and Value `100`
                     # or is a single faction, like `Apes` and Value `-100`
+                    if ret is not "":
+                        ret +=" </br>"
                     value = self.part_AddsRep_Value
                     ret += f'{{{{reputation bonus|{{{{FactionID to name|{part}}}}}|{value}}}}}'
         return ret
@@ -921,11 +929,11 @@ class QudObject(NodeMixin):
         """The skill tree required for use."""
         val = None
         if self.inherits_from('MeleeWeapon') or self.is_specified('part_MeleeWeapon'):
-            val = self.part_MeleeWeapon_Skill
+            val = "{{SkillID to name|"+self.part_MeleeWeapon_Skill+"}}"
         if self.inherits_from('MissileWeapon'):
-            val = self.part_MissileWeapon_Skill
+            val = "{{SkillID to name|"+self.part_MissileWeapon_Skill+"}}"
         if self.part_Gaslight:
-            val = self.part_Gaslight_ChargedSkill
+            val = "{{SkillID to name|"+self.part_Gaslight_ChargedSkill+"}}"
         # disqualify various things from showing the 'cudgel' skill:
         if self.inherits_from('Projectile'):
             val = None
@@ -939,6 +947,8 @@ class QudObject(NodeMixin):
             print(str(self)+' has a skill!')
             ret = ""
             for obj in self.skill:
+                if ret is not "":
+                    ret +=" </br>"
                 ret += f"{{{{inventory|{{{{SkillID to name|{obj}}}}}}}}}"
         return ret
 

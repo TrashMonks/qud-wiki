@@ -73,6 +73,40 @@ Wiki:
     DoorSwitch: control switch (door)
     ElevatorSwitch: control switch (elevator)
     TempleSwitch: control switch (temple)
+    Barkbiter_Bite: bite (barkbiter)
+    Barkbiter_Claw: claw (barkbiter)
+    Bat_Bite: bite (bat)
+    Bear_Bite: bite (bear)
+    Bear_Claw: bite (bear)
+    Boar_Gore: bite (boar)
+    Canniibal Bite: bite (cannibal)
+    Juicing Cannibal Bite: bite (juicing cannibal)
+    Juicing Cannibal Fist: fist (juicing cannibal)
+    Cat Claw: claw (cat)
+    Cat Bite: bite (cat)
+    Chromeling_Bite: bite (chromeling)
+    PlatedChromeling_Bite: bite (plated chromeling)
+    Chute Crab Claw: crab claw (chute crab)
+    Cloneling_Scalpel: scalpel (cloneling)
+    Croc_Bite: bite (croc)
+    Dog_Bite: bite (dog)
+    BigDog_Bite: bite (big dog)
+    Snailmother Bite: bite (snailmother)
+    Ickslug Bite: bite (ickslug)
+    Electrofuge_Bite: bite (electrofuge)
+    Dawnglider_bite: bite (dawnglider)
+    Fire_Snout_Bite: bitie (fire snout)
+    Gnu Hoof: hoof (gnu)
+    Humor_Pseudopod: giant pseudopod (humor)
+    Gyrohumor_Pseudopod: giant pseudopod (Gyrohumor)
+    GiantBeetle_Bite: bite (giant beetle)
+    ClockworkBeetle_Bite: bite (clockwork beetle)
+    GiantCentipede_Bite: bite (giant centipede)
+    Dragonfly_Bite: bite (dragonfly)
+    Girshfly_Mandibles: mandibles (girshfly)
+    Girshling_Claw: claw (girshling)
+    Girshworm_Crush: crushing bands (girshworm)
+    Glowfish_Bite: bite (glowfish)
 
   Article black+whitelist categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -138,7 +172,6 @@ Wiki:
       -Scaled Helmet,
       -Gesticulators,
       -TestShockGlove,
-      /NaturalWeapon,
       -BrokenSnailmotherEgg,
       -SnailmotherEgg,
       -FungalInfection,
