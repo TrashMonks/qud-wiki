@@ -378,9 +378,10 @@ class QudObject(NodeMixin):
             av = self.part_Armor_AV
         if self.part_Shield_AV:  # the AV of a shield
             av = self.part_Shield_AV
-        if self.stat_AV_Value and self.inherits_from('Creature'):
+        if self.inherits_from('Creature'):
             # the AV of creatures and stationary objects
             av = int(self.stat_AV_Value)  # first, creature's intrinsic AV
+            print (str(av))
             if self.inventoryobject:
                 # might be wearing armor
                 for name in list(self.inventoryobject.keys()):
@@ -390,7 +391,10 @@ class QudObject(NodeMixin):
                     item = qindex[name]
                     if item.av:
                         av += int(item.av)
-        return str(av) if av else None
+        if av is not None:
+            return str(av)
+        else:
+            return None
 
     @property
     def bits(self):
@@ -544,35 +548,34 @@ class QudObject(NodeMixin):
         if self.inherits_from('Shield'):
             # same here
             dv = self.part_Shield_DV
-        elif self.inherits_from('Creature') and self.stat_DV_Value:
-            dv = self.stat_DV_Value  # sometimes explicitly given instead of to be calculated
         elif self.inherits_from('Creature'):
+            dv = 6 + int(self.stat_DV_Value) #AG modifier logic is broken for the time being
             # the 'DV' here is the actual DV of the creature or NPC, after:
             # skills, agility modifier (which may be a range determined by
             # dice rolls, and which changes DV by 1 for every 2 points of agility
             # over/under 16), and any equipment that is guaranteed to be worn
-            dv = 6  # base DV of all Creatures
-            if self.skill_Acrobatics_Dodge:
+            #dv = 6 + int(self.stat_DV_Value) # base DV of all Creatures
+            #if self.skill_Acrobatics_Dodge:
                 # the 'Spry' skill
-                dv += 2
-            if self.skill_Acrobatics_Tumble:
+            #    dv += 2
+            #if self.skill_Acrobatics_Tumble:
                 # the 'Tumble' skill
-                dv += 1
-            ag = self.agility
-            if ag:
-                if '-' in ag:
+            #    dv += 1
+            #ag = self.agility
+            #if ag:
+            #    if '-' in ag:
                     # a range, e.g. '18 - 20'
-                    lower, upper = ag.split('-')
-                    dvlower = dv + (int(lower) - 16) // 2
-                    dvupper = dv + (int(upper) - 16) // 2
-                    if dvlower == dvupper:
-                        dv = dvlower
-                    else:
+            #        lower, upper = ag.split('-')
+            #        dvlower = dv + (int(lower) - 16) // 2
+            #        dvupper = dv + (int(upper) - 16) // 2
+            #        if dvlower == dvupper:
+            #            dv = dvlower
+            #        else:
                         # agility was a range so DV may be a range as well
-                        dv = str(dvlower) + ' - ' + str(dvupper)
-                else:
+            #            dv = str(dvlower) + ' - ' + str(dvupper)
+            #    else:
                     # an integer, not a range
-                    dv += (int(ag) - 16) // 2
+            #        dv += (int(ag) - 16) // 2
         return str(dv) if dv else None
 
     @property
@@ -925,7 +928,7 @@ class QudObject(NodeMixin):
         return self.part_MissileWeapon_ShotsPerAction
 
     @property
-    def skill(self):
+    def weaponskill(self):
         """The skill tree required for use."""
         val = None
         if self.inherits_from('MeleeWeapon') or self.is_specified('part_MeleeWeapon'):
@@ -944,7 +947,6 @@ class QudObject(NodeMixin):
         """Unrelated to skill above, this is the skills that certain creatures have."""
         ret = None
         if self.skill is not None:
-            print(str(self)+' has a skill!')
             ret = ""
             for obj in self.skill:
                 if ret is not "":
