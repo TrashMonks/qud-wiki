@@ -510,6 +510,23 @@ class QudObject(NodeMixin):
                 val = self.part_GeomagneticDisk_Damage
             else:
                 val = self.part_ThrownWeapon_Damage
+        if self.is_specified('part_MissileWeapon'):
+            if self.part_BioAmmoLoader_ProjectileObject is not None:
+                item = qindex[self.part_BioAmmoLoader_ProjectileObject]
+                if item.part_Projectile:
+                    val = item.part_Projectile_BaseDamage
+            elif self.part_MagazineAmmoLoader_ProjectileObject is not None and self.part_MagazineAmmoLoader_ProjectileObject is not '': #Bows don't specify ProjectileObjects
+                item = qindex[self.part_MagazineAmmoLoader_ProjectileObject]
+                if item.part_Projectile:
+                    val = item.part_Projectile_BaseDamage
+            elif self.part_EnergyAmmoLoader_ProjectileObject is not None:
+                item = qindex[self.part_EnergyAmmoLoader_ProjectileObject]
+                if item.part_Projectile:
+                    val = item.part_Projectile_BaseDamage
+            elif self.part_LiquidAmmoLoader_ProjectileObject is not None:
+                item = qindex[self.part_LiquidAmmoLoader_ProjectileObject]
+                if item.part_Projectile:
+                    val = item.part_Projectile_BaseDamage
         return val
 
     @property
@@ -851,7 +868,27 @@ class QudObject(NodeMixin):
                 pv += int(self.part_Gaslight_ChargedPenetrationBonus)
             elif self.part_MeleeWeapon_PenBonus:
                 pv += int(self.part_MeleeWeapon_PenBonus)
-        if pv:
+        if self.is_specified('part_MissileWeapon'):
+            if self.part_BioAmmoLoader_ProjectileObject is not None:
+                item = qindex[self.part_BioAmmoLoader_ProjectileObject]
+                if item.part_Projectile:
+                    pv = item.part_Projectile_BasePenetration
+            elif self.part_MagazineAmmoLoader_ProjectileObject is not None and self.part_MagazineAmmoLoader_ProjectileObject is not '': #Bows don't specify ProjectileObjects
+                item = qindex[self.part_MagazineAmmoLoader_ProjectileObject]
+                if item.part_Projectile:
+                    pv = item.part_Projectile_BasePenetration
+            elif self.part_EnergyAmmoLoader_ProjectileObject is not None:
+                item = qindex[self.part_EnergyAmmoLoader_ProjectileObject]
+                if item.part_Projectile:
+                    pv = item.part_Projectile_BasePenetration
+            elif self.part_LiquidAmmoLoader_ProjectileObject is not None:
+                item = qindex[self.part_LiquidAmmoLoader_ProjectileObject]
+                if item.part_Projectile:
+                    pv = item.part_Projectile_BasePenetration
+            
+            if pv is not None:
+                pv = int(pv) + 4
+        if pv is not None:
             return str(pv)
 
     @property
