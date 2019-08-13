@@ -479,7 +479,7 @@ Wiki:
     Tokens: [Token]
     Light Sources: [Glowsphere, Floating Glowsphere, Quantum Mote, Torch, Luminous Mote,
                     Kindleflame, Symbiotic Firefly]
-    Energy cells: [Energy Cell]
+    Energy Cells: [Energy Cell]
     Liquid Fueled Energy Cells: [Liquid Fueled Energy Cell]
     Thrown Weapons: [BaseThrownWeapon, Geomagnetic Disc, ThrowingAxe, CastNet, SmallBoulder,
                      MediumBoulder, LargeBoulder]
