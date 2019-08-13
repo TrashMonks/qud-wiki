@@ -987,7 +987,7 @@ class QudObject(NodeMixin):
             for obj in self.skill:
                 if ret is not "":
                     ret +=" </br>"
-                ret += f"{{{{inventory|{{{{SkillID to name|{obj}}}}}}}}}"
+                ret += f"{{{{SkillID to name|{obj}}}}}"
         return ret
 
     @property
