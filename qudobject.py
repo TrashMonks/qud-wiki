@@ -381,7 +381,6 @@ class QudObject(NodeMixin):
         if self.inherits_from('Creature'):
             # the AV of creatures and stationary objects
             av = int(self.stat_AV_Value)  # first, creature's intrinsic AV
-            print (str(av))
             if self.inventoryobject:
                 # might be wearing armor
                 for name in list(self.inventoryobject.keys()):
