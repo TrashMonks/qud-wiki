@@ -723,7 +723,9 @@ class QudObject(NodeMixin):
         if self.inventoryobject is not None:
             ret = ""
             for obj in self.inventoryobject:
-                if 'Number' in self.inventoryobject[obj]:
+                if obj[0] in '*#@': #Ignores stuff like *Junk 1
+                    continue
+                elif 'Number' in self.inventoryobject[obj]:
                     ret += f"{{{{inventory|{{{{ID to name|{obj}}}}}|{self.inventoryobject[obj]['Number']}}}}}"
                 else:
                     ret += f"{{{{inventory|{{{{ID to name|{obj}}}}}|1}}}}"

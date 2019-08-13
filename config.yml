@@ -450,6 +450,7 @@ Wiki:
     # should be in that category. Objects may also be explicitly specified.
     # Order matters since later, more specific entries can override earlier, more general ones.
     Items: [Item]
+    Gases: [Gas]
     Weapons: [MeleeWeapon, MissileWeapon]
     Melee Weapons: [MeleeWeapon]
     Ammo: [Projectile]
