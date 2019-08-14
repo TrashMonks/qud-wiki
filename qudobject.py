@@ -461,6 +461,8 @@ class QudObject(NodeMixin):
         """The Qud color code associated with the RenderString."""
         if self.part_Render_ColorString:
             return escape_ampersands(self.part_Render_ColorString)
+        if self.part_Gas_ColorString:
+            return escape_ampersands(self.part_Gas_ColorString)
 
     @property
     def commerce(self):
@@ -905,12 +907,12 @@ class QudObject(NodeMixin):
 
     @property
     def renderstr(self):
-        """What the item looks like with tiles mode off.
-
-        Including <nowiki> to get around some rendering bugs with characters like } """
+        """What the item looks like with tiles mode off."""
         if self.part_Render_RenderString and len(self.part_Render_RenderString) > 1:
             # some RenderStrings are given as CP437 character codes in base 10
             return cp437_to_unicode(int(self.part_Render_RenderString))
+        elif self.part_Gas is not None:
+            return '▓'
         else:
             if self.part_Render_RenderString is not None:
                 if self.part_Render_RenderString == '}':

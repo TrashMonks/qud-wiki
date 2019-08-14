@@ -44,6 +44,7 @@ Templates:
     Svenlainard: svenlainard.png
     Warden Indrix: Warden indrix.png
     Molting Basilisk: Molting basilisk.png
+    Sleek Table: sleek table.png
    
 
 Wiki:
@@ -333,6 +334,7 @@ Wiki:
       -StableCryoGas,
       /AcidGas,
       +AcidGas,
+      -Steam
       /StunGas,
       +StunGas,
       /SleepGas,
@@ -496,14 +498,22 @@ Wiki:
     Water Containers: [WaterContainer]
     Trade Goods: [Copper Nugget, Silver Nugget, Gold Nugget, Gemstone, Bronze Ingot, BoxOfCrayons,
                   Polyhedral Rings, Silver Rondure, Blood-stained neck-ring]
+    Security Cards: [Security Card]
+    Furniture: [Furniture]
+    Statues: [Statue]
     Plants: [Plant]
     Creatures: [Creature]
+    Animals: [Animal]
+    Humanoids: [BaseHumanoid]
     Fungus: [Fungus, BaseFungus, MutatedFungus]
     Dogs: [BaseDog]
+    Cats: [BaseCat]
     Robots: [BaseRobot] #any creatures that are in the Robots faction will be categorized with [[Robots (Faction)]]
     Bears: [BaseBear]
+    Crabs: [BaseCrab]
     Snapjaws: [BaseSnapjaw]
-    Humanoids: [BaseHumanoid]
+    Apes: [BaseApe]
+    Baboons: [BaseBaboon]
     Issachari: [BaseIssachari]
     Cragmensch: [Cragmensch]
     Naphtaali: [BaseNaphtaali]
@@ -516,6 +526,7 @@ Wiki:
     Frogs: [Ice frog,Bloated Pearlfrog]
     Fish: [BaseFish]
     Spiders: [BaseSpider]
+    Nests: [BaseNest]
     Worms: [BaseWorm]
     Snails: [BaseSnail]
     Slugs: [BaseSlug]
