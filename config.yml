@@ -191,7 +191,6 @@ Wiki:
       -TestSword,
       -CritPistol,
       -CacheFlamethrower,
-      /NaturalMissileWeapon,
       -Carapace,
       /Quills,
       -Wings,
@@ -459,7 +458,7 @@ Wiki:
     Axes: [BaseAxe]
     Long Blades: [BaseLongBlade]
     Missle Weapons: [MissileWeapon]
-    Natural Weapons: [NaturalWeapon]
+    Natural Weapons: [NaturalWeapon, NaturalMissileWeapon]
     Firearms: [BaseFirearm]
     Pistols: [BasePistol]
     Rifles: [BaseRifle]
@@ -520,6 +519,7 @@ Wiki:
     Worms: [BaseWorm]
     Snails: [BaseSnail]
     Slugs: [BaseSlug]
+    Cybernetics: [BaseCybernetics2Equipment_1point,BaseCybernetics2Equipment_2point,BaseCybernetics2Equipment_3point,BaseCybernetics2Equipment_4point]
     Merchants: [BaseMerchant]
     Unique Characters: [Phinae Hoshaiah, Argyve, ElderBob, Mehmet, Warden Ualraig,
                  Warden Esthers, Eskhind, Meyehind, Liihart, Isahind, Neelahind, Keh, Kesehind,
