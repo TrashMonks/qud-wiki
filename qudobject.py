@@ -264,7 +264,7 @@ class QudObject(NodeMixin):
                        'Arsplice Seed',
                        'Albino Ape Heart',
                        'Ogre Ape Heart')
-        if self.inherits_from('Creature') or self.inherits_from('BasePlant') or self.inherits_from('BaseFungus'):
+        if self.inherits_from('Creature') or self.inherits_from('BasePlant') or self.inherits_from('BaseFungus') or self.inherits_from('Baetyl'):
             val = "Character"
         elif self.inherits_from('Food'):
             val = "Food"
@@ -449,6 +449,10 @@ class QudObject(NodeMixin):
             charge = self.part_MechanicalWings_ChargeUse
         if self.part_GeomagneticDisk:
             charge = self.part_GeomagneticDisk_ChargeUse
+        if self.part_ProgrammableRecoiler:
+            charge = self.part_ProgrammableRecoiler_ChargeUse
+        if self.part_Teleporter:
+            charge = self.part_Teleporter_ChargeUse
         return charge
 
     @property
