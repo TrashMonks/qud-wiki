@@ -542,7 +542,10 @@ class QudObject(NodeMixin):
         if self.intproperty_GenotypeBasedDescription is not None:
             return escape_ampersands("[True kin]\n" + self.property_TrueManDescription_Value + "\n[Mutant]\n" + self.property_MutantDescription_Value)
         elif self.part_Description_Short:
-            return escape_ampersands(self.part_Description_Short)
+            if self.part_Description_Mark:
+                return escape_ampersands(self.part_Description_Short + "\n\n"+ self.part_Description_Mark)
+            else:
+                return escape_ampersands(self.part_Description_Short)
         else:
             return ""
 
@@ -978,7 +981,8 @@ class QudObject(NodeMixin):
         if self.inherits_from('MeleeWeapon') or self.is_specified('part_MeleeWeapon'):
             val = "{{SkillID to name|"+self.part_MeleeWeapon_Skill+"}}"
         if self.inherits_from('MissileWeapon'):
-            val = "{{SkillID to name|"+self.part_MissileWeapon_Skill+"}}"
+            if self.part_MissileWeapon_Skill is not None:
+                val = "{{SkillID to name|"+self.part_MissileWeapon_Skill+"}}"
         if self.part_Gaslight:
             val = "{{SkillID to name|"+self.part_Gaslight_ChargedSkill+"}}"
         # disqualify various things from showing the 'cudgel' skill:
@@ -1020,6 +1024,11 @@ class QudObject(NodeMixin):
             val = escape_ampersands(self.builder_GoatfolkHero1_ForceName)  # for Mamon
         elif self.part_Render_DisplayName:
             val = escape_ampersands(self.part_Render_DisplayName)
+
+        if self.part_ModMasterwork is not None:
+            val = "&amp;Ymasterwork&amp;y " + val #if mods are guaranteed, will prepend them before the name
+        if self.part_ModScoped is not None:
+            val = "&amp;yscoped " + val
         return val
 
     @property

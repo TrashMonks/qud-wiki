@@ -497,7 +497,7 @@ Wiki:
     Preserved Food: [Preservable]
     Tools: [Tool]
     Tonics: [Tonic]
-    Water Containers: [WaterContainer]
+    Water Containers: [WaterContainer, Vessel]
     Trade Goods: [Copper Nugget, Silver Nugget, Gold Nugget, Gemstone, Bronze Ingot, BoxOfCrayons,
                   Polyhedral Rings, Silver Rondure, Blood-stained neck-ring]
     Security Cards: [Security Card]
