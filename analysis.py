@@ -43,7 +43,7 @@ def print_wiki_nonwiki():
         print(pre, '✅' if obj.is_wiki_eligible() else '❌', obj.displayname, f'({obj.name})')
 
 
-def get_wikified_nonwiki():
+def print_wikified_nonwiki():
     """Check the wiki for any articles that aren't supposed to exist."""
     for name, qud_object in qindex.items():
         if not qud_object.is_wiki_eligible():
@@ -53,6 +53,10 @@ def get_wikified_nonwiki():
                     print(name, page.page.exists, page.page)
             except mwclient.errors.InvalidPageTitle:
                 pass
+
+
+def print_value_weight_ratio():
+    """Calculate the value/weight ratio for all items in wiki table format."""
 
 
 qud_object_tree.load(FILE)

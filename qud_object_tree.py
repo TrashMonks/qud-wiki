@@ -3,6 +3,7 @@
 For on-demand access to individual Qud objects by name, use the `qindex` from qudobject.py."""
 
 import re
+import time
 
 from xml.etree import ElementTree as et
 
@@ -11,15 +12,20 @@ from qudobject import QudObject, qindex
 
 def load(path):
     """Load ObjectBlueprints.xml from the specified filepath and return a reference to the root."""
-    print("Repairing invalid XML characters...")
+    print("Repairing invalid XML characters... ", end='')
+    start = time.time()
     # Do some repair of invalid XML:
-    # First, delete some invalid characters
-    pat_invalid = re.compile("(&#15;)|(&#11;)")
+    # First, replace some invalid control characters intended for CP437 with their Unicode equiv
     with open(path, 'r', encoding='utf-8') as f:
         contents = f.read()
-    contents = re.sub(pat_invalid, '', contents)
+    ch_re = re.compile("&#11;")
+    contents = re.sub(ch_re, '♂', contents)
+    ch_re = re.compile("&#15;")
+    contents = re.sub(ch_re, '☼', contents)
+    print(f"done in {time.time() - start:.2f} seconds")
 
-    print("Repairing invalid XML line breaks...")
+    print("Repairing invalid XML line breaks... ", end='')
+    start = time.time()
     # Second, replace line breaks inside attributes with proper XML line breaks
     # ^\s*<[^!][^>]*\n[^>]*>
     pat_linebreaks = r"^\s*<[^!][^>]*\n.*?>"
@@ -33,6 +39,7 @@ def load(path):
     # Uncomment to have a diff-able file to double check XML repairs.
     # with open('test_output.xml', 'w', encoding='utf-8') as f:
     #     f.write(contents)
+    print(f"done in {time.time() - start:.2f} seconds")
 
     raw = et.fromstring(contents)
 
