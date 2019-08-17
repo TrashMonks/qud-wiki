@@ -670,7 +670,8 @@ class QudObject(NodeMixin):
     @property
     def harvestedinto(self):
         """What an item produces when harvested."""
-        return self.part_Harvestable_OnSuccess
+        if self.part_Harvestable_OnSuccess is not None:
+            return "{{ID to name|" + self.part_Harvestable_OnSuccess + "}}"
 
     @property
     def healing(self):

@@ -54,6 +54,7 @@ Wiki:
     # Example:
     MasterworkCarbine: Scoped masterwork carbine
     ClockworkBeetle: Clockwork beetle
+    Wraith-Knight Templar: Wraith-Knight Templar
     Torch: Torch
     MerchantAdvertisement: Advertisement
     Argyve's Data Disk: Argyve's data disk
@@ -81,6 +82,7 @@ Wiki:
     Bear_Bite: bite (bear)
     Bear_Claw: bite (bear)
     Beetlebum_Mandibles: massive mandibles (beetlebum)
+    Giant_Ant_Bite: mandibles (giant ant)
     Boar_Gore: bite (boar)
     Cannibal Bite: bite (cannibal)
     Juicing Cannibal Bite: bite (juicing cannibal)
@@ -124,13 +126,16 @@ Wiki:
     Molting Basilisk Bite: stony bite (molting basilisk)
     quillipede quills: quills (quillipede)
     Saltwurm_Crush: crushing bands (salt kraken)
+    WaveformWorm_Crush: crushing bands (waveform worm)
+    SeedsproutWorm_Crush: crushing bands (seedsprout worm)
+    Slog Bands: crushing bands (Slog)
     Scorpiock_Claws: claws (scorpiock)
     Scorpiock_Bite: bite (scorpiock)
     SegmentedMirthworm_Bite: bite (segmented mirthworm)
-    Snapjaw_bite: bite (snapjaw)
+    Snapjaw_Bite: bite (snapjaw)
     Slumberling Claw: claw (slumberling)
     Slug_Bite: bite (slug)
-    Juice_Sape_Bite: bite (juice sap)
+    Juice_Sap_Bite: bite (juice sap)
     Breather_Claw: claw (breather)
     Pearlfrog_Bite: bite (pearlfrog)
     Belcher_Bite: bite (belcher)
@@ -142,6 +147,16 @@ Wiki:
     Astral_Tabby_Bite: bite (astral tabby)
     Gamma Moth Bite: bite (gamma moth)
     SewageEel_Bite: bite (sewage eel)
+    Baboon_Bite: vicious bite (baboon)
+    Vicious_Baboon_Bite: vicious bite (vicious baboon)
+    Voider_Bite: fangs (voider)
+    CaveSpider_Bite: fangs (cave spider)
+    Boosterbot_Claw: helpful hand (boosterbot)
+    Ogre ape fist: ape fist (ogre ape)
+    Cragmensch Fist: hoary fist (cragmensch)
+    Knollworm_Beak: crab-crushing beak (knollworm)
+    Slugsnout Tusks: tusks (slugsnout)
+    Spark_Tick_Arc: electric arc (spark tick)
 
   Article black+whitelist categories:
     # Categories, or individual articles, to include or exclude from consideration for
