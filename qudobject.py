@@ -8,7 +8,7 @@ from xml.etree.ElementTree import Element
 from anytree import NodeMixin
 
 from config import config
-from helpers import cp437_to_unicode
+from helpers import cp437_to_unicode, roll_average
 from qudtile import QudTile
 from svalue import sValue
 
@@ -574,33 +574,50 @@ class QudObject(NodeMixin):
             # same here
             dv = self.part_Shield_DV
         elif self.inherits_from('Creature'):
-            dv = 6 + int(self.stat_DV_Value) #AG modifier logic is broken for the time being
             # the 'DV' here is the actual DV of the creature or NPC, after:
+            # base of 6 plus any explicit DV bonus,
             # skills, agility modifier (which may be a range determined by
             # dice rolls, and which changes DV by 1 for every 2 points of agility
             # over/under 16), and any equipment that is guaranteed to be worn
-            #dv = 6 + int(self.stat_DV_Value) # base DV of all Creatures
-            #if self.skill_Acrobatics_Dodge:
-                # the 'Spry' skill
-            #    dv += 2
-            #if self.skill_Acrobatics_Tumble:
-                # the 'Tumble' skill
-            #    dv += 1
-            #ag = self.agility
-            #if ag:
-            #    if '-' in ag:
-                    # a range, e.g. '18 - 20'
-            #        lower, upper = ag.split('-')
-            #        dvlower = dv + (int(lower) - 16) // 2
-            #        dvupper = dv + (int(upper) - 16) // 2
-            #        if dvlower == dvupper:
-            #            dv = dvlower
-            #        else:
-                        # agility was a range so DV may be a range as well
-            #            dv = str(dvlower) + ' - ' + str(dvupper)
-            #    else:
-                    # an integer, not a range
-            #        dv += (int(ag) - 16) // 2
+            dv = 6
+            if self.stat_DV_Value:
+                dv += int(self.stat_DV_Value)
+            if self.skill_Acrobatics_Dodge:  # the 'Spry' skill
+                dv += 2
+            if self.skill_Acrobatics_Tumble:  # the 'Tumble' skill
+                dv += 1
+            ag_str = self.agility
+            if '+' in ag_str:
+                # agility was an sValue-format specifier, e.g. '18+1d4+1d3' (after light processing)
+                ag = 0
+                for part in ag_str.split('+'):
+                    if 'd' not in part:
+                        ag += int(part)
+                    else:
+                        ag += roll_average(part)
+            else:
+                ag = int(ag_str)  # agility was given as an integer
+            if self.role == 'Minion':  # lose 20% to all stats
+                ag = int(ag * 0.8)
+            # 1 point bonus to DV for every 2 points of agility over 16
+            dv += ((int(ag) - 16) // 2)
+            # does this creature have armor with DV modifiers?
+            if self.inventoryobject:
+                for name in list(self.inventoryobject.keys()):
+                    if name[0] in '*#@':
+                        # special values like '*Junk 1'
+                        continue
+                    item = qindex[name]
+                    if item.dv:
+                        print(dv)
+                        dv += int(item.dv)
+                        print(dv, item.name, item.dv)
+            # does this creature have mutations that affect DV?
+            if self.mutation:
+                for mutation, info in self.mutation.items():
+                    if mutation == 'Carapace':
+                        lvl = int(info['Level']) + 1
+                        dv -= (7 - (lvl // 2))
         return str(dv) if dv else None
 
     @property

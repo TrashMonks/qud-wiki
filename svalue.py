@@ -64,7 +64,8 @@ class sValue:
         if len(self) == 1:
             return str(self.low)
         else:
-            #return str(self.low) + " - " + str(self.high)
+            # return str(self.low) + " - " + str(self.high)
             return str(self.svalstring)
+
     def __repr__(self):
         return "sValue " + self.svalue

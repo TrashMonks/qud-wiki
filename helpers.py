@@ -26,3 +26,12 @@ def cp437_to_unicode(val: int):
         # control character - must be loaded from table
         glyph = cp437_conv[val]
     return glyph
+
+
+def roll_average(val: str):
+    """Return the average of a 'xdy' format dice roll, as a floored integer."""
+    if 'd' not in val:
+        raise ValueError("roll_average called with non-xdy format")
+    num, sides = val.split('d')
+    one_die_avg = (int(sides) + 1) / 2
+    return int(one_die_avg * int(num))
