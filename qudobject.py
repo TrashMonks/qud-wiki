@@ -471,7 +471,7 @@ class QudObject(NodeMixin):
     @property
     def commerce(self):
         """The value of the object."""
-        if self.inherits_from('Item'):
+        if self.inherits_from('Item') or self.inherits_from('BaseThrownWeapon'):
             return self.part_Commerce_Value
 
     @property
