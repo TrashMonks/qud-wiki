@@ -860,12 +860,15 @@ class QudObject(NodeMixin):
         if self.mutation is not None:
             ret = ""
             for obj in self.mutation:
+                constructor = ""
+                if 'GasObject' in self.mutation[obj]:
+                    constructor = f"{self.mutation[obj]['GasObject']}"
                 if ret is not "":
                     ret +=" </br>"
                 if 'Level' in self.mutation[obj]:
-                    ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}}}}}|{self.mutation[obj]['Level']}}}}}"
+                    ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}{constructor}}}}}|{self.mutation[obj]['Level']}}}}}"
                 else:
-                    ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}}}}}|0}}}}"
+                    ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}{constructor}}}}}|0}}}}"
         return ret
 
     @property

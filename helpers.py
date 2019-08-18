@@ -30,8 +30,14 @@ def cp437_to_unicode(val: int):
 
 def roll_average(val: str):
     """Return the average of a 'xdy' format dice roll, as a floored integer."""
+    bonus = 0
     if 'd' not in val:
         raise ValueError("roll_average called with non-xdy format")
     num, sides = val.split('d')
-    one_die_avg = (int(sides) + 1) / 2
-    return int(one_die_avg * int(num))
+    if '-' not in sides:
+        one_die_avg = (int(sides) + 1) / 2
+    else:
+        side, bonus = sides.split('-')
+        one_die_avg = (int(side) + 1) / 2 - int(bonus)
+
+    return int(one_die_avg * (int(num) - int(bonus)))
