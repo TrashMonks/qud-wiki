@@ -1006,6 +1006,8 @@ class QudObject(NodeMixin):
         # disqualify various things from showing the 'cudgel' skill:
         if self.inherits_from('Projectile'):
             val = None
+        if self.inherits_from('Shield'):
+            val = "Shield"
         return val
 
     @property
