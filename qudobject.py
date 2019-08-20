@@ -866,7 +866,18 @@ class QudObject(NodeMixin):
                 if ret is not "":
                     ret +=" </br>"
                 if 'Level' in self.mutation[obj]:
-                    ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}{constructor}}}}}|{self.mutation[obj]['Level']}}}}}"
+                    ego_str = self.attribute_helper('Ego')
+                    if '+' in ego_str:
+                        # ego was an sValue-format specifier, e.g. '18+1d4+1d3' (after light processing)
+                        ego = 0
+                        for part in ego_str.split('+'):
+                            if 'd' not in part:
+                                ego += int(part)
+                            else:
+                                ego += roll_average(part)
+                    else:
+                        ego = int(ego_str)
+                    ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}{constructor}}}}}|{self.mutation[obj]['Level']}|{ego}}}}}"
                 else:
                     ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}{constructor}}}}}|0}}}}"
         return ret
