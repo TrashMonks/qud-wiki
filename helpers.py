@@ -38,6 +38,6 @@ def roll_average(val: str):
         one_die_avg = (int(sides) + 1) / 2
     else:
         side, bonus = sides.split('-')
-        one_die_avg = (int(side) + 1) / 2 - int(bonus)
+        one_die_avg = (int(side) + 1) / 2
 
-    return int(one_die_avg * (int(num) - int(bonus)))
+    return int(one_die_avg) * int(num) - int(bonus))
