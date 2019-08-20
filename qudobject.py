@@ -866,7 +866,7 @@ class QudObject(NodeMixin):
                 if ret is not "":
                     ret +=" </br>"
                 if 'Level' in self.mutation[obj]:
-                    ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}{constructor}}}}}|{self.mutation[obj]['Level']}}}}}"
+                    ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}{constructor}}}}}|{self.mutation[obj]['Level']}|{self.attribute_helper('Ego')}}}}}"
                 else:
                     ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}{constructor}}}}}|0}}}}"
         return ret
