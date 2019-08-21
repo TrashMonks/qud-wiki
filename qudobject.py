@@ -589,7 +589,7 @@ class QudObject(NodeMixin):
             ag_str = self.agility
             if '+' in ag_str:
                 # agility was an sValue-format specifier, e.g. '18+1d4+1d3' (after light processing)
-                ag = DiceBag(ag_str).mean()
+                ag = DiceBag(ag_str).average()
             else:
                 ag = int(ag_str)  # agility was given as an integer
             if self.role == 'Minion':  # lose 20% to all stats
@@ -864,7 +864,7 @@ class QudObject(NodeMixin):
                     ego_str = self.attribute_helper('Ego')
                     if '+' in ego_str:
                         # ego was an sValue-format specifier, e.g. '18+1d4+1d3' (after light processing)
-                        ego = DiceBag(ego_str).mean()
+                        ego = DiceBag(ego_str).average()
                     else:
                         ego = int(ego_str)
                     ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}{constructor}}}}}|{self.mutation[obj]['Level']}|{ego}}}}}"
