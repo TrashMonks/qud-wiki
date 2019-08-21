@@ -29,15 +29,15 @@ def cp437_to_unicode(val: int):
 
 
 def roll_average(val: str):
-    """Return the average of a 'xdy' format dice roll, as a floored integer."""
+    """Return the average of a 'xdy' or 'xdy-z' format dice roll, as a floored integer."""
     bonus = 0
     if 'd' not in val:
-        raise ValueError("roll_average called with non-xdy format")
+        raise ValueError("roll_average called with unsupported format (not xdy or xdy-z)")
     num, sides = val.split('d')
     if '-' not in sides:
-        one_die_avg = (int(sides) + 1) / 2
+        one_die_avg = (float(sides) + 1.0) / 2.0
     else:
         side, bonus = sides.split('-')
-        one_die_avg = (int(side) + 1) / 2
+        one_die_avg = (float(side) + 1.0) / 2.0
 
-    return int(one_die_avg) * int(num) - int(bonus)
+    return int(one_die_avg * float(num)) - int(bonus)
