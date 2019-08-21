@@ -1,10 +1,10 @@
 """Pytest file for functions in helpers.py"""
 
-from helpers import roll_average
+from helpers import DiceBag
 
 
 def test_roll_average():
     """Tests for the roll_average function."""
-    assert roll_average('3d2-1') == 3
-    assert roll_average('7+1d3+3d2-1+1') == 13
-    assert roll_average('3d2+3d2') == 9
+    assert DiceBag('3d2-1').mean() == 3
+    assert DiceBag('7+1d3+3d2-1+1').mean() == 13
+    assert DiceBag('3d2+3d2').mean() == 9

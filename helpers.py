@@ -1,5 +1,7 @@
 """Helper functions for Qud Blueprint Explorer"""
 
+import re
+
 CP437_MAP_FILE = 'IBMGRAPH.TXT'
 
 cp437_conv = {}
@@ -28,16 +30,84 @@ def cp437_to_unicode(val: int):
     return glyph
 
 
-def roll_average(val: str):
-    """Return the average of a 'xdy' or 'xdy-z' format dice roll, as a floored integer."""
-    bonus = 0
-    if 'd' not in val:
-        raise ValueError("roll_average called with unsupported format (not xdy or xdy-z)")
-    num, sides = val.split('d')
-    if '-' not in sides:
-        one_die_avg = (float(sides) + 1.0) / 2.0
-    else:
-        side, bonus = sides.split('-')
-        one_die_avg = (float(side) + 1.0) / 2.0
+class DiceBag:
+    """Loads a dice string and provides methods to roll or analyze that string.
 
-    return int(one_die_avg * float(num)) - int(bonus)
+    Parameters:
+        dice_string: a dice string, such as '1d4', '3d6+1-2d2', or '17'."""
+
+    class Die:
+        """Represents a single segment of a larger dice string. Numeric values are converted to dice rolls for simplicity - for example, '7' becomes '7d1'.
+
+        Parameters:
+            quantity: the number of times to roll the die (i.e. '2' if the die string is '2d6')
+            size: the number of sides on the die (i.e. '6' if the die string is '2d6')
+        """
+        def __init__(self, quantity, size):
+            self.quantity = quantity
+            self.size = size
+    
+    # static regex patterns:
+    pattern_valid_dice = re.compile(r'[\d\sd+-]+') # valid dice string must contain only 0-9, +, -, d, or spaces
+    pattern_dice_segment = re.compile(r'[+-]?[^+-]+') # any dice string segment, generally delimited by + or - (examples: 1d6, +3d2, -4)
+    pattern_die_roll = re.compile(r'^([+-]?\d+)d(\d+)$') # a dice string segment that includes 'd' and represents a die roll (examples: 2d3, -1d2)
+    pattern_die_bonus = re.compile(r'^([+-]?\d+)$') # a dice string segment that represents a numeric bonus or malus (examples: +3, -1)
+
+    def __init__(self, dice_string: str):
+        if self.pattern_valid_dice.match(dice_string) is None:
+            raise ValueError(f"Invalid string for DiceBag ({dice_string}) - dice string must contain only 0-9, +, -, d, or spaces")
+        self.dice_bag = []
+        dice_string = "".join(dice_string.split()) # strip all whitespace from dice_string
+        diceIter = self.pattern_dice_segment.finditer(dice_string)
+        for die in diceIter:
+            m = self.pattern_die_roll.match(die.group(0))
+            if m:
+                self.dice_bag.append(DiceBag.Die(float(m.group(1)), float(m.group(2))))
+            else:
+                m = self.pattern_die_bonus.match(die.group(0))
+                if m:
+                    self.dice_bag.append(DiceBag.Die(float(m.group(1)), 1.0))
+                else:
+                    raise ValueError(f"DiceBag created with segment of unsupported format: {die}")
+
+    def mean(self):
+        """Returns the average (mean) value that is rolled from this dice string, rounded down to the nearest integer."""
+        val = 0.0
+        for die in self.dice_bag:
+            val += die.quantity * (1.0 + die.size) / 2.0
+        return int(val)
+    
+    def minimum(self):
+        """Returns the minimum value that can be rolled from this dice string."""
+        val = 0.0
+        for die in self.dice_bag:
+            if die.quantity >= 0:
+                val += die.quantity * 1
+            else:
+                val += die.quantity * die.size
+        return int(val)
+
+    def maximum(self):
+        """Returns the maximum value that can be rolled from this dice string."""
+        val = 0.0
+        for die in self.dice_bag:
+            if die.quantity >= 0:
+                val += die.quantity * die.size
+            else:
+                val += die.quantity * 1
+        return int(val)
+    
+    def shake(self):
+        """Simulates a random roll for this dice string."""
+        from random import randrange
+        val = 0
+        for die in self.dice_bag:
+            q = int(die.quantity)
+            s = int(die.size)
+            if q > 0:
+                for i in range(q):
+                    val += randrange(s) + 1
+            elif q < 0:
+                for i in range(abs(q)):
+                    val -= randrange(s) + 1
+        return val
