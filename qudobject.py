@@ -847,6 +847,8 @@ class QudObject(NodeMixin):
                 if int(self.part_MoveCostMultiplier_Amount) < 0:
                     temp = "+"
                 return temp + str(int(self.part_MoveCostMultiplier_Amount)*-1)
+        elif self.inherits_from('Creature'):
+            return self.stat_MoveSpeed_Value
 
     @property
     def mutations(self):
@@ -928,6 +930,12 @@ class QudObject(NodeMixin):
         """Whether the object's PV changes when it is powered."""
         if self.vibro == 'yes' or self.part_Gaslight:
             return 'yes'
+
+    @property
+    def quickness(self):
+        """returns quickness if a creature"""
+        if self.inherits_from('Creature'):
+            return self.stat_Speed_Value
 
     @property
     def reflect(self):

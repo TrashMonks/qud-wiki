@@ -22,7 +22,7 @@ Templates:
      weaponskill, colorstr, renderstr, id, bookid, lightradius, hunger, thirst, healing, butcheredinto,
      harvestedinto, preservedinto, preservedquantity, cookeffect, ismeat, isplant, isfungus,
      exoticfood, illoneat, corpse, corpsechance, twohanded, metal, lightprojectile, reflect,
-     movespeed, cursed, role, destroyonunequip, savemodifier, savemodifieramt, extra, strength,
+     quickness, movespeed, cursed, role, destroyonunequip, savemodifier, savemodifieramt, extra, strength,
      agility, toughness, intelligence, willpower, ego, acid, electric, cold, heat, poison,
      reputationbonus, faction, wornon, usesslots, gender, pronouns, inventory, skills, mutations, desc, eatdesc]
   Image overrides:
