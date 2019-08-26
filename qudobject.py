@@ -1038,7 +1038,15 @@ class QudObject(NodeMixin):
     def strength(self):
         """The strength the mutation affects, or the strength of the creature."""
         return self.attribute_helper('Strength')
+    @property
+    def swarmbonus(self):
+        return self.part_Swarmer_ExtraBonus
 
+    @property
+    def isswarmer(self):
+        if self.inherits_from('Creature'):
+            return ('yes' if self.is_specified('part_Swarmer') else 'no')
+            
     @property
     def thirst(self):
         """How much thirst it slakes."""

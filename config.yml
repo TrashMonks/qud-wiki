@@ -22,7 +22,7 @@ Templates:
      weaponskill, colorstr, renderstr, id, bookid, lightradius, hunger, thirst, healing, butcheredinto,
      harvestedinto, preservedinto, preservedquantity, cookeffect, ismeat, isplant, isfungus,
      exoticfood, illoneat, corpse, corpsechance, twohanded, metal, lightprojectile, reflect,
-     quickness, movespeed, cursed, role, destroyonunequip, savemodifier, savemodifieramt, extra, strength,
+     quickness, movespeed, cursed, role, destroyonunequip, savemodifier, savemodifieramt, isswarmer, swarmbonus, extra, strength,
      agility, toughness, intelligence, willpower, ego, acid, electric, cold, heat, poison,
      reputationbonus, faction, wornon, usesslots, gender, pronouns, inventory, skills, mutations, desc, eatdesc]
   Image overrides:
@@ -405,7 +405,6 @@ Wiki:
       -Farm Leech,
       -TestDummy,
       -ProsperousHindrenTrader,
-      -TinkerTurret,
       # Robots
       -Sleeping Chromeling,
       -Sleeping Plated Chromeling,
@@ -413,6 +412,8 @@ Wiki:
       -Chrome Idol Hero Crazed,
       /GritGateChainLaserEmplacement,
       -Sleeping Waydroid,
+      -Village Robot,
+      -TinkerTurret,
       # Humanoids
       -Uplifted Knight Commander,
       -Missile Cannibal,
