@@ -22,9 +22,9 @@ Templates:
      weaponskill, colorstr, renderstr, id, bookid, lightradius, hunger, thirst, healing, butcheredinto,
      harvestedinto, preservedinto, preservedquantity, cookeffect, ismeat, isplant, isfungus,
      exoticfood, illoneat, oneat, corpse, corpsechance, twohanded, metal, lightprojectile, reflect,
-     quickness, movespeed, cursed, role, destroyonunequip, savemodifier, savemodifieramt, isswarmer, swarmbonus, extra, inheritingfrom, dynamictable, strength,
+     quickness, movespeed, cursed, role, destroyonunequip, savemodifier, savemodifieramt, isswarmer, swarmbonus, aquatic, extra, inheritingfrom, dynamictable, strength,
      agility, toughness, intelligence, willpower, ego, acid, electric, cold, heat, poison,
-     reputationbonus, faction, wornon, usesslots, gender, pronouns, inventory, skills, mutations, desc, eatdesc]
+     reputationbonus, faction, wornon, usesslots, demeanor, gender, pronouns, inventory, skills, mutations, desc, eatdesc]
   Image overrides:
     # Manually specify the image name to be shown for an object ID:
     Asphodel: Earl_asphodel.png
@@ -45,6 +45,7 @@ Templates:
     Warden Indrix: Warden indrix.png
     Molting Basilisk: Molting basilisk.png
     Sleek Table: sleek table.png
+    Crazed Goatfolk Shaman 1: goatfolk shaman crazed.png
    
 
 Wiki:
@@ -325,8 +326,10 @@ Wiki:
       /Oven,
       +Oven,
       -Preserved Food Basket,
+      -Cage,
       /Bookshelf,
       +Bookshelf,
+      /MerchantBookshelf,
       /Random Statue,
       /Chest,  # needs a lot of explanation in an article!
       +Chest,

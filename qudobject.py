@@ -371,6 +371,14 @@ class QudObject(NodeMixin):
         return texts.get(ammo)
 
     @property
+    def aquatic(self):
+        """If the creature requires to be submerged in water."""
+        if self.inherits_from('Creature'):
+            if self.part_Brain_Aquatic is not None:
+                return "yes" if self.part_Brain_Aquatic == "true" else "no"
+
+
+    @property
     def av(self):
         """The AV that an item provides, or the AV that a creature has."""
         av = None
@@ -533,6 +541,15 @@ class QudObject(NodeMixin):
                 if item.part_Projectile:
                     val = item.part_Projectile_BaseDamage
         return val
+
+    @property
+    def demeanor(self):
+        """returns the demeanor of the creature"""
+        if self.inherits_from('Creature') or self.inherits_from('ActivePlant'):
+            if self.part_Brain_Calm is not None:
+                return "docile" if self.part_Brain_Calm =="True" else "neutral"
+            if self.part_Brain_Hostile is not None:
+                return "aggressive" if self.part_Brain_Hostile == "True" else "neutral"
 
     @property
     def desc(self):
