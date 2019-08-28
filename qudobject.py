@@ -477,7 +477,7 @@ class QudObject(NodeMixin):
     @property
     def cookeffect(self):
         """The possible cooking effects of an item"""
-        return self.part_PreparedCookingIngredient_type
+        return "{{CookEffect ID to name|" + self.part_PreparedCookingIngredient_type + "}}" if (self.part_PreparedCookingIngredient_type is not None) else None
 
     @property
     def complexity(self):
@@ -616,6 +616,18 @@ class QudObject(NodeMixin):
         return str(dv) if dv else None
 
     @property
+    def dynamictable(self):
+        ret = None
+        for key in self.tag.keys():
+            if key.startswith('DynamicObjectsTable'):
+                if ret is None:
+                    ret = ""
+                elif ret is not "":
+                    ret +=" </br>" 
+                ret += "{{Dynamic object|" + re.split(":",key)[1] + "}}"
+        return ret
+
+    @property
     def eatdesc(self):
         """The text when you eat this item."""
         return self.part_Food_Message
@@ -733,6 +745,11 @@ class QudObject(NodeMixin):
             else:
                 tile = 'none'
             return tile
+
+    @property
+    def inheritingfrom(self):
+        return self.parent.name
+
 
     @property
     def intelligence(self):
@@ -872,6 +889,18 @@ class QudObject(NodeMixin):
                     ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}{constructor}}}}}|{self.mutation[obj]['Level']}|{ego}}}}}"
                 else:
                     ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}{constructor}}}}}|0}}}}"
+        return ret
+
+    @property
+    def oneat(self):
+        ret = None
+        for key in self.part.keys():
+            if key.endswith('OnEat'):
+                if ret is None:
+                    ret = ""
+                elif ret is not "":
+                    ret +=" </br>" 
+                ret += "{{OnEat ID to name|" +  key + "}}"
         return ret
 
     @property
@@ -1069,6 +1098,10 @@ class QudObject(NodeMixin):
             val = "&amp;Ymasterwork&amp;y " + val #if mods are guaranteed, will prepend them before the name
         if self.part_ModScoped is not None:
             val = "&amp;yscoped " + val
+        if self.part_ModHeatSeeking is not None:
+            val = "&amp;yhoming " + val
+        if self.part_ModRazored is not None:
+            val = "&amp;Yserra&amp;Rt&amp;Yed&amp;y " + val
         return val
 
     @property
