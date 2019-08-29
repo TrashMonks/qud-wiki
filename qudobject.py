@@ -317,7 +317,7 @@ class QudObject(NodeMixin):
     def attribute_helper(self, attr: str):
         """Helper for retrieving attributes (Strength, etc.)"""
         val = None
-        if self.inherits_from('Creature'):
+        if self.inherits_from('Creature') or self.inherits_from('ActivePlant'):
             if getattr(self, f'stat_{attr}_sValue'):
                 val = str(sValue(getattr(self, f'stat_{attr}_sValue'), level=int(self.lv)))
             elif getattr(self, f'stat_{attr}_Value'):
@@ -640,11 +640,14 @@ class QudObject(NodeMixin):
         else:
             for key in self.tag.keys():
                 if key.startswith('DynamicObjectsTable'):
+                    if "Value" in self.tag[key]:
+                        if self.tag[key]['Value'] == "{{{remove}}}":
+                            continue
                     if ret is None:
                         ret = ""
                     elif ret is not "":
                         ret +=" </br>" 
-                    ret += "{{Dynamic object|" + re.split(":",key)[1] + "}}"
+                    ret += "{{Dynamic object|" + re.split(":",key,1)[1] + "|" + self.name+ "}}"
         return ret
 
     @property
@@ -900,6 +903,7 @@ class QudObject(NodeMixin):
                 if ret is not "":
                     ret +=" </br>"
                 if 'Level' in self.mutation[obj]:
+
                     ego_str = self.attribute_helper('Ego')
                     if '+' in ego_str:
                         # ego was an sValue-format specifier, e.g. '18+1d4+1d3' (after light processing)
