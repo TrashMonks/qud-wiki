@@ -635,13 +635,16 @@ class QudObject(NodeMixin):
     @property
     def dynamictable(self):
         ret = None
-        for key in self.tag.keys():
-            if key.startswith('DynamicObjectsTable'):
-                if ret is None:
-                    ret = ""
-                elif ret is not "":
-                    ret +=" </br>" 
-                ret += "{{Dynamic object|" + re.split(":",key)[1] + "}}"
+        if self.tag_ExcludeFromDynamicEncounters is not None:
+            return ret
+        else:
+            for key in self.tag.keys():
+                if key.startswith('DynamicObjectsTable'):
+                    if ret is None:
+                        ret = ""
+                    elif ret is not "":
+                        ret +=" </br>" 
+                    ret += "{{Dynamic object|" + re.split(":",key)[1] + "}}"
         return ret
 
     @property
