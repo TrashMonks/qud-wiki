@@ -485,7 +485,17 @@ class QudObject(NodeMixin):
     @property
     def cookeffect(self):
         """The possible cooking effects of an item"""
-        return "{{CookEffect ID to name|" + self.part_PreparedCookingIngredient_type + "}}" if (self.part_PreparedCookingIngredient_type is not None) else None
+        ret = None
+        if self.part_PreparedCookingIngredient_type is not None:
+            ret = ""
+            if "," in self.part_PreparedCookingIngredient_type:
+                for val in self.part_PreparedCookingIngredient_type.split(","):
+                    if ret is not "":
+                        ret += ","
+                    ret += "{{CookEffect ID to name|" + val + "}}"
+            else:
+                ret = "{{CookEffect ID to name|" + self.part_PreparedCookingIngredient_type + "}}"
+        return ret
 
     @property
     def complexity(self):
@@ -547,9 +557,9 @@ class QudObject(NodeMixin):
         """returns the demeanor of the creature"""
         if self.inherits_from('Creature') or self.inherits_from('ActivePlant'):
             if self.part_Brain_Calm is not None:
-                return "docile" if self.part_Brain_Calm =="True" else "neutral"
+                return "docile" if self.part_Brain_Calm =="True" or self.part_Brain_Calm =="true" else "neutral"
             if self.part_Brain_Hostile is not None:
-                return "aggressive" if self.part_Brain_Hostile == "True" else "neutral"
+                return "aggressive" if self.part_Brain_Hostile == "True" or self.part_Brain_Hostile == "true"  else "neutral"
 
     @property
     def desc(self):
