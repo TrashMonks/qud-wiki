@@ -567,7 +567,7 @@ class QudObject(NodeMixin):
         if self.part_Description_Short == 'A hideous specimen.':
             return None  # hide items with no description of their own
         if self.intproperty_GenotypeBasedDescription is not None:
-            return escape_ampersands("[True kin]\n" + self.property_TrueManDescription_Value + "\n[Mutant]\n" + self.property_MutantDescription_Value)
+            return escape_ampersands("[True kin]\n" + self.property_TrueManDescription_Value + "\n\n[Mutant]\n" + self.property_MutantDescription_Value)
         elif self.part_Description_Short:
             if self.part_Description_Mark:
                 return escape_ampersands(self.part_Description_Short + "\n\n"+ self.part_Description_Mark)
@@ -934,7 +934,10 @@ class QudObject(NodeMixin):
                     ret = ""
                 elif ret is not "":
                     ret +=" </br>" 
-                ret += "{{OnEat ID to name|" +  key + "}}"
+                if "Class" in self.part[key]:
+                    ret += "{{OnEat ID to name|" +  key + self.part[key]['Class'] + self.part[key]['Level'] +"}}"
+                else:
+                    ret += "{{OnEat ID to name|" +  key + "}}"
         return ret
 
     @property
