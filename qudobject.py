@@ -668,7 +668,8 @@ class QudObject(NodeMixin):
     @property
     def ego(self):
         """The ego the mutation effects, or the ego of the creature."""
-        return self.attribute_helper('Ego')
+        val = self.attribute_helper('Ego')
+        return val + "+3d1" if self.name=="Wraith-Knight Templar" else val
 
     @property
     def electric(self):
@@ -1128,6 +1129,8 @@ class QudObject(NodeMixin):
         val = self.name
         if self.builder_GoatfolkHero1_ForceName:
             val = escape_ampersands(self.builder_GoatfolkHero1_ForceName)  # for Mamon
+        elif self.name == "Wraith-Knight Templar":
+            val = "&amp;MWraith-Knight Templar of the Binary Honorum" #override for Wraith Knights
         elif self.part_Render_DisplayName:
             val = escape_ampersands(self.part_Render_DisplayName)
 
