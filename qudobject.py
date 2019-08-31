@@ -1149,6 +1149,8 @@ class QudObject(NodeMixin):
         """The bonus or penalty to hit."""
         if self.inherits_from('Armor'):
             return self.part_Armor_ToHit
+        if self.inherits_from('Weapon'):
+            return self.part_MeleeWeapon_HitBonus
 
     @property
     def toughness(self):
