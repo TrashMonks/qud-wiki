@@ -36,14 +36,20 @@ class QudTreeView(QTreeView):
         self.setIndentation(10)
         self.setIconSize(QSize(16, 24))
         self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.menu = QMenu()
-        self.testAction = QAction('Expand all', self.menu)
-        self.menu.addAction(self.testAction)
+        self.tree_menu = QMenu()
+        self.context_action_expand = QAction('Expand all', self.tree_menu)
+        self.tree_menu.addAction(self.context_action_expand)
+        self.context_action_scan = QAction('Scan wiki for selected objects', self.tree_menu)
+        self.tree_menu.addAction(self.context_action_scan)
+        self.context_action_upload_page = QAction('Upload templates for selected objects', self.tree_menu)
+        self.tree_menu.addAction(self.context_action_upload_page)
+        self.context_action_upload_tile = QAction('Upload tiles for selected objects', self.tree_menu)
+        self.tree_menu.addAction(self.context_action_upload_tile)
         self.customContextMenuRequested.connect(self.on_context_menu)
 
     def on_context_menu(self, point):
         print(point)
-        self.menu.exec_(self.mapToGlobal(point))
+        self.tree_menu.exec_(self.mapToGlobal(point))
 
     def dothing(self):
         print('test')
@@ -79,6 +85,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionWiki_template.triggered.connect(self.setview_wiki)
         self.actionAttributes.triggered.connect(self.setview_attr)
         self.actionAll_attributes.triggered.connect(self.setview_allattr)
+        # TreeView context menu:
+        self.treeView.context_action_expand.triggered.connect(self.expand_all)
+        self.treeView.context_action_scan.triggered.connect(self.wiki_check_selected)
+        self.treeView.context_action_upload_page.triggered.connect(self.upload_selected_templates)
+        self.treeView.context_action_upload_tile.triggered.connect(self.upload_selected_tiles)
         # Wiki menu:
         self.actionScan_wiki.triggered.connect(self.wiki_check_selected)
         self.actionUpload_templates.triggered.connect(self.upload_selected_templates)
@@ -290,6 +301,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         uploadError = True
                     if not uploadError:
                         self.qud_object_model.itemFromIndex(self.currently_selected[num+4]).setText('✅')
+                        self.app.processEvents()
         QApplication.restoreOverrideCursor()
 
 
@@ -335,6 +347,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                  )
             if result.get('result', None) == 'Success':
                 self.qud_object_model.itemFromIndex(self.currently_selected[num+6]).setText('✅')
+                self.app.processEvents()
             print(result)
         QApplication.restoreOverrideCursor()
 
