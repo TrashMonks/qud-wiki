@@ -16,7 +16,7 @@ Templates:
   Fields:
     # The fields that (if applicable) will be generated for each item, in this order:
     # (title comes first, but is not listed here)
-    [title, image, pv, maxpv, vibro, pvpowered, damage, unpowereddamage, lv, hp, av, dv, ma, tohit,
+    [title, image, pv, maxpv, vibro, pvpowered, damage, unpowereddamage, elementaldamage, elementaltype, lv, hp, av, dv, ma, tohit,
      ammo, accuracy, shots, maxammo, maxvol, liquidgen, liquidtype, maxcharge, chargeperdram,
      chargeused, weight, commerce, complexity, tier, bits, canbuild, candisassemble, empsensitive,
      weaponskill, colorstr, renderstr, id, bookid, lightradius, hunger, thirst, healing, butcheredinto,
@@ -24,7 +24,7 @@ Templates:
      exoticfood, illoneat, oneat, corpse, corpsechance, twohanded, metal, lightprojectile, reflect,
      quickness, movespeed, cursed, role, destroyonunequip, savemodifier, savemodifieramt, isswarmer, swarmbonus, aquatic, extra, inheritingfrom, dynamictable, strength,
      agility, toughness, intelligence, willpower, ego, acid, electric, cold, heat, poison,
-     reputationbonus, faction, wornon, usesslots, demeanor, gender, pronouns, inventory, skills, mutations, desc, eatdesc]
+     reputationbonus, faction, wornon, usesslots, demeanor, gender, pronouns, inventory, skills, mutations, mods, desc, eatdesc]
   Image overrides:
     # Manually specify the image name to be shown for an object ID:
     Asphodel: Earl_asphodel.png

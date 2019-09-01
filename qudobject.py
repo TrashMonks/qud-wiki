@@ -264,7 +264,7 @@ class QudObject(NodeMixin):
                        'Arsplice Seed',
                        'Albino Ape Heart',
                        'Ogre Ape Heart')
-        if self.inherits_from('Creature') or self.inherits_from('BasePlant') or self.inherits_from('BaseFungus') or self.inherits_from('Baetyl'):
+        if self.inherits_from('Creature') or self.inherits_from('BasePlant') or self.inherits_from('BaseFungus') or self.inherits_from('Baetyl') or self.inherits_from('Wall'):
             val = "Character"
         elif self.inherits_from('Food'):
             val = "Food"
@@ -677,6 +677,14 @@ class QudObject(NodeMixin):
         return self.resistance('Electric')
 
     @property
+    def elementaldamage(self):
+        return self.part_MeleeWeapon_ElementalDamage
+
+    @property
+    def elementaltype(self):
+        return self.part_MeleeWeapon_Element
+
+    @property
     def empsensitive(self):
         """Returns yes if the object is empensitive. Can be found in multiple parts."""
         parts = ['part_EquipStatBoost_IsEMPSensitive',
@@ -888,6 +896,30 @@ class QudObject(NodeMixin):
         """Whether the object is made out of metal."""
         if self.part_Metal is not None:
             return 'yes'
+
+    @property
+    def mods(self):
+        ret = None
+        if self.part_AddMod_Mods is not None:
+            ret = ""
+            i = 0
+            tierarray=self.part_AddMod_Tiers.split(",")
+            for mod in self.part_AddMod_Mods.split(","):
+                if ret is not "":
+                    ret +=" </br>" 
+                ret +="{{ModID to name|" + mod + "|" + tierarray[i] + "}}"
+                i = i+1
+        for key in self.part.keys():
+            if key.startswith('Mod'):
+                if ret is None:
+                    ret = ""
+                elif ret is not "":
+                    ret +=" </br>" 
+                if 'Tier' in self.part[key]:
+                    ret += "{{ModID to name|" + key + "|" + self.part[key]['Tier'] + "}}"
+                else:
+                    ret += "{{ModID to name|" + key + "}}"
+        return ret
 
     @property
     def movespeed(self):
@@ -1149,7 +1181,7 @@ class QudObject(NodeMixin):
         """The bonus or penalty to hit."""
         if self.inherits_from('Armor'):
             return self.part_Armor_ToHit
-        if self.inherits_from('Weapon'):
+        if self.is_specified('part_MeleeWeapon'):
             return self.part_MeleeWeapon_HitBonus
 
     @property
