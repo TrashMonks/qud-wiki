@@ -270,23 +270,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def upload_selected_templates(self):
         """Upload the generated templates for the selected objects to the wiki."""
-        for index in self.currently_selected:
+        for num, index in enumerate(self.currently_selected):
             if index.column() == 0:
                 item = self.qud_object_model.itemFromIndex(index)
                 qud_object = item.data()
                 if not qud_object.is_wiki_eligible():
                     print(f'{qud_object.name} is not suitable due to its name or displayname.')
                 else:
+                    uploadError = False
                     try:
                         page = WikiPage(qud_object)
                         page.upload_template()
                     except ValueError as e:
                         # page exists but format not recognized
                         print("Not uploading")
+                        uploadError = True
+                    if not uploadError:
+                        self.qud_object_model.itemFromIndex(self.currently_selected[num+4]).setText('✅')
+
 
     def upload_selected_tiles(self):
         """Upload the generated tiles for the selected objects to the wiki."""
-        for index in self.currently_selected:
+        for num, index in enumerate(self.currently_selected):
             if index.column() != 0:
                 continue
             item = self.qud_object_model.itemFromIndex(index)
@@ -323,6 +328,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                  ignore=True,  # upload even if same file exists under diff. name
                                  comment=descr
                                  )
+            if result.get('result', None) == 'Success':
+                self.qud_object_model.itemFromIndex(self.currently_selected[num+6]).setText('✅')
             print(result)
 
     def save_selected_tile(self):
