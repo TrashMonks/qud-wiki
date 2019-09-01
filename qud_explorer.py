@@ -216,6 +216,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def wiki_check_selected(self):
         """Check the wiki for the existence of the article and image for selected objects, and
         update the columns for those states."""
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         # first, blank the cells for ones already checked
         for num, index in enumerate(self.currently_selected):
             if index.column() == 0:
@@ -267,9 +268,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     tile_exists_qitem.setText('❌')
                     tile_matches_qitem.setText('-')
                 self.app.processEvents()
+        QApplication.restoreOverrideCursor()
 
     def upload_selected_templates(self):
         """Upload the generated templates for the selected objects to the wiki."""
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         for num, index in enumerate(self.currently_selected):
             if index.column() == 0:
                 item = self.qud_object_model.itemFromIndex(index)
@@ -287,10 +290,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         uploadError = True
                     if not uploadError:
                         self.qud_object_model.itemFromIndex(self.currently_selected[num+4]).setText('✅')
+        QApplication.restoreOverrideCursor()
 
 
     def upload_selected_tiles(self):
         """Upload the generated tiles for the selected objects to the wiki."""
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         for num, index in enumerate(self.currently_selected):
             if index.column() != 0:
                 continue
@@ -331,6 +336,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if result.get('result', None) == 'Success':
                 self.qud_object_model.itemFromIndex(self.currently_selected[num+6]).setText('✅')
             print(result)
+        QApplication.restoreOverrideCursor()
 
     def save_selected_tile(self):
         filename = QFileDialog.getSaveFileName()[0]
