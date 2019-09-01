@@ -18,7 +18,7 @@ Templates:
     # (title comes first, but is not listed here)
     [title, image, pv, maxpv, vibro, pvpowered, damage, unpowereddamage, elementaldamage, elementaltype, lv, hp, av, dv, ma, tohit,
      ammo, accuracy, shots, maxammo, maxvol, liquidgen, liquidtype, maxcharge, chargeperdram,
-     chargeused, weight, commerce, complexity, tier, bits, canbuild, candisassemble, empsensitive,
+     chargeused, chargefunction, weight, commerce, complexity, tier, bits, canbuild, candisassemble, empsensitive,
      weaponskill, colorstr, renderstr, id, bookid, lightradius, hunger, thirst, healing, butcheredinto,
      harvestedinto, preservedinto, preservedquantity, cookeffect, ismeat, isplant, isfungus,
      exoticfood, illoneat, oneat, corpse, corpsechance, twohanded, metal, lightprojectile, reflect,
