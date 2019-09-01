@@ -467,7 +467,7 @@ class QudObject(NodeMixin):
     def chargefunction(self):
         """The features or functions that the charge is used for."""
         # intended to provide clarity for items like Prayer Rod, where charge only affects one of it's features (stun) not the other (elemental damage)
-        funcList = ""
+        funcList = None
         if self.part_StunOnHit:
             funcList = ("Stun effect")
         if self.part_EnergyAmmoLoader or self.part_Gaslight:
