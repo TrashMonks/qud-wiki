@@ -464,6 +464,25 @@ class QudObject(NodeMixin):
         return charge
 
     @property
+    def chargefunction(self):
+        """The features or functions that the charge is used for."""
+        # intended to provide clarity for items like Prayer Rod, where charge only affects one of it's features (stun) not the other (elemental damage)
+        funcList = ""
+        if self.part_StunOnHit:
+            funcList = ("Stun effect")
+        if self.part_EnergyAmmoLoader or self.part_Gaslight:
+            funcList = ("Weapon power") if (not funcList) else (funcList + ", weapon power")
+        if self.part_VibroWeapon:
+            funcList = ("Adaptive penetration") if (not funcList) else (funcList + ", adaptive penetration")
+        if self.part_MechanicalWings:
+            funcList = ("Flight") if (not funcList) else (funcList + ", flight")
+        if self.part_GeomagneticDisk:
+            funcList = ("Disc effect") if (not funcList) else (funcList + ", disc effect")
+        if self.part_ProgrammableRecoiler or self.part_Teleporter:
+            funcList = ("Teleportation") if (not funcList) else (funcList + ", teleportation")
+        return funcList
+
+    @property
     def cold(self):
         """The elemental resistance/weakness the equipment or NPC has."""
         return self.resistance('Cold')
