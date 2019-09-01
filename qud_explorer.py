@@ -264,7 +264,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if article.page.exists:
                     wiki_exists_qitem.setText('✅')
                     # does the template match the article?
-                    if qud_object.wiki_template().strip() in article.page.text():
+                    if qud_object.wiki_template().strip() in article.page.text().strip():
                         wiki_matches_qitem.setText('✅')
                     else:
                         wiki_matches_qitem.setText('❌')
