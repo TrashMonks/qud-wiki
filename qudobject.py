@@ -881,7 +881,24 @@ class QudObject(NodeMixin):
 
     @property
     def ma(self):
-        return self.stat_MA_Value
+        ma = None
+        if self.inherits_from('Creature'):
+            # MA starts at base 4
+            ma = 4 
+            # Add MA stat value if specified
+            if self.stat_MA_Value:
+                ma += int(self.stat_MA_Value)
+            #calc willpower modifier and add it to MA
+            wp = self.willpower
+            if '+' in wp:
+                wp = DiceBag(wp).average()
+            else:
+                wp = int(wp)
+            if self.role == 'Minion':  #lose 20% to all stats
+                wp = int(wp * 0.8)
+            wp_bonus = (wp - 16) // 2
+            ma += wp_bonus
+        return ma
 
     @property
     def maxammo(self):
