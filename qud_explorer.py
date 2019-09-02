@@ -299,7 +299,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     uploadError = False
                     try:
                         page = WikiPage(qud_object)
-                        page.upload_template()
+                        if page.upload_template() != 'Success':
+                            uploadError = True
                     except ValueError as e:
                         # page exists but format not recognized
                         print("Not uploading")

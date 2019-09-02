@@ -51,3 +51,4 @@ class WikiPage:
             # simple case, creating an article
             result = self.page.save(text=self.template_text, summary=CREATED_SUMMARY)
         print(result)
+        return result['result']
