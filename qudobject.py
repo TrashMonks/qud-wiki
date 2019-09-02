@@ -586,17 +586,21 @@ class QudObject(NodeMixin):
     @property
     def desc(self):
         """The short description of the object, with color codes included (ampersands escaped)."""
+        desc = None
         if self.part_Description_Short == 'A hideous specimen.':
-            return None  # hide items with no description of their own
-        if self.intproperty_GenotypeBasedDescription is not None:
-            return escape_ampersands("[True kin]\n" + self.property_TrueManDescription_Value + "\n\n[Mutant]\n" + self.property_MutantDescription_Value)
+            pass  # hide items with no description
+        elif self.intproperty_GenotypeBasedDescription is not None:
+            desc = "[True kin]\n" + self.property_TrueManDescription_Value + "\n\n[Mutant]\n" + self.property_MutantDescription_Value
         elif self.part_Description_Short:
             if self.part_Description_Mark:
-                return escape_ampersands(self.part_Description_Short + "\n\n"+ self.part_Description_Mark)
+                desc = self.part_Description_Short + "\n\n"+ self.part_Description_Mark
             else:
-                return escape_ampersands(self.part_Description_Short)
+                desc = self.part_Description_Short
         else:
-            return ""
+            desc = ""
+        desc = escape_ampersands(desc)
+        desc = desc.replace('\r\n', '\n')  # currently, only the description for Bear
+        return desc
 
     @property
     def destroyonunequip(self):
