@@ -1,6 +1,8 @@
 import io
 import os
 import sys
+import re
+import difflib
 from pprint import pformat
 
 from PySide2.QtCore import QSize, Qt
@@ -45,6 +47,8 @@ class QudTreeView(QTreeView):
         self.tree_menu.addAction(self.context_action_upload_page)
         self.context_action_upload_tile = QAction('Upload tiles for selected objects', self.tree_menu)
         self.tree_menu.addAction(self.context_action_upload_tile)
+        self.context_action_diff = QAction('Diff template against wiki', self.tree_menu)
+        self.tree_menu.addAction(self.context_action_diff)
         self.customContextMenuRequested.connect(self.on_context_menu)
 
     def on_context_menu(self, point):
@@ -90,6 +94,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.treeView.context_action_scan.triggered.connect(self.wiki_check_selected)
         self.treeView.context_action_upload_page.triggered.connect(self.upload_selected_templates)
         self.treeView.context_action_upload_tile.triggered.connect(self.upload_selected_tiles)
+        self.treeView.context_action_diff.triggered.connect(self.show_simple_diff)
         # Wiki menu:
         self.actionScan_wiki.triggered.connect(self.wiki_check_selected)
         self.actionUpload_templates.triggered.connect(self.upload_selected_templates)
@@ -259,7 +264,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if article.page.exists:
                     wiki_exists_qitem.setText('✅')
                     # does the template match the article?
-                    if qud_object.wiki_template().strip() in article.page.text():
+                    if qud_object.wiki_template().strip() in article.page.text().strip():
                         wiki_matches_qitem.setText('✅')
                     else:
                         wiki_matches_qitem.setText('❌')
@@ -354,6 +359,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def save_selected_tile(self):
         filename = QFileDialog.getSaveFileName()[0]
         self.currently_selected_for_tile.tile.get_big_image().save(filename, format='png')
+
+    def show_simple_diff(self):
+        qud_object = self.currently_selected_for_tile
+        if not qud_object.is_wiki_eligible:
+            return
+        article = WikiPage(qud_object)
+        if not article.page.exists:
+            return
+        txt = qud_object.wiki_template().strip()
+        wiki_txt = article.page.text().strip()
+        qbe_pattern = re.compile(r'^({{.+?^}}$\s*\[\[Category:[^\]]+\]\])\s*?$', re.MULTILINE | re.DOTALL)
+        msgBox = QMessageBox()
+        msgBox.setTextFormat(Qt.RichText)
+        if txt in wiki_txt:
+            msgBox.setText("No template differences detected.")
+        else:
+            m = qbe_pattern.match(txt)
+            m_wiki = qbe_pattern.match(wiki_txt)
+            if m is None:
+                msgBox.setText("Unable to compare because the QBE template is not formatted as expected.")
+            elif m_wiki is None:
+                msgBox.setText("Unable to compare because the wiki template is not formatted as expected.")
+            else:
+                lines = m.group(1).splitlines();
+                wiki_lines = m_wiki.group(1).splitlines();
+                diff_lines = ''
+                for line in difflib.unified_diff(wiki_lines, lines, "wiki", "QBE", lineterm=""):
+                    diff_lines += '\n' + line
+                msgBox.setText("Unified Diff of the QBE template and the currently published wiki template:\n<pre>" + diff_lines + "</pre>")
+        msgBox.exec();
 
     def setview_wiki(self):
         if self.view_type == 'wiki':
