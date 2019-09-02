@@ -555,7 +555,7 @@ class QudObject(NodeMixin):
                 val = self.part_GeomagneticDisk_Damage
             else:
                 val = self.part_ThrownWeapon_Damage
-        if self.is_specified('part_MissileWeapon'):
+        if self.part_MissileWeapon is not None:
             if self.part_BioAmmoLoader_ProjectileObject is not None:
                 item = qindex[self.part_BioAmmoLoader_ProjectileObject]
                 if item.part_Projectile:
@@ -1032,7 +1032,6 @@ class QudObject(NodeMixin):
     @property
     def pv(self):
         """The base PV, which is by default 4 if not set. Optional."""
-        # TODO: does this have meaning for other than MeleeWeapons?
         pv = None
         if self.inherits_from('MeleeWeapon') or self.is_specified('part_MeleeWeapon'):
             pv = 4
@@ -1040,7 +1039,7 @@ class QudObject(NodeMixin):
                 pv += int(self.part_Gaslight_ChargedPenetrationBonus)
             elif self.part_MeleeWeapon_PenBonus:
                 pv += int(self.part_MeleeWeapon_PenBonus)
-        if self.is_specified('part_MissileWeapon'):
+        if self.part_MissileWeapon is not None:
             if self.part_BioAmmoLoader_ProjectileObject is not None:
                 item = qindex[self.part_BioAmmoLoader_ProjectileObject]
                 if item.part_Projectile:
