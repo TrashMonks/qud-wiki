@@ -79,11 +79,14 @@ class QudObject(NodeMixin):
     def render_tile(self):
         tile = None
         if self.part_Render_Tile and not self.tag_BaseObject:
-            tile = QudTile(self.part_Render_Tile,
-                           self.part_Render_ColorString,
-                           self.part_Render_TileColor,
-                           self.part_Render_DetailColor,
-                           self.name)
+            if self.is_specified('part_HologramMaterial') or self.is_specified('part_HologramWallMaterial') or self.is_specified('part_HologramMaterialPrimary'):
+                tile = QudTile(self.part_Render_Tile, '&B', '&B', 'b', self.name)
+            else:
+                tile = QudTile(self.part_Render_Tile,
+                               self.part_Render_ColorString,
+                               self.part_Render_TileColor,
+                               self.part_Render_DetailColor,
+                               self.name)
         return tile
 
     def resolve_inheritance(self):
