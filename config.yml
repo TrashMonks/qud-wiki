@@ -489,7 +489,7 @@ Wiki:
     Melee Weapons: [MeleeWeapon]
     Ammo: [Projectile]
     Cudgels: [BaseCudgel, Prayer Rod, Stun Rod, Nanopneumatic Jackhammer]
-    Daggers: [BaseDagger, Vibro Dagger, Gaslight Dagger]
+    Short Blades: [BaseDagger, Vibro Dagger, Gaslight Dagger]
     Axes: [BaseAxe]
     Long Blades: [BaseLongBlade, SalthopperMandible, Gaslight Sword]
     Missle Weapons: [MissileWeapon]
