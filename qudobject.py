@@ -1123,6 +1123,11 @@ class QudObject(NodeMixin):
         return self.part_MissileWeapon_ShotsPerAction
 
     @property
+    def spectacles(self):
+        """If the item corrects vision."""
+        return 'yes' if self.part_Spectacles is not None else None
+
+    @property
     def weaponskill(self):
         """The skill tree required for use."""
         val = None
