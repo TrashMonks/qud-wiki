@@ -923,7 +923,7 @@ class QudObject(NodeMixin):
     def maxpv(self):
         """The max strength bonus + base PV."""
         if self.is_specified('part_ThrownWeapon'):
-            return self.part_ThrownWeapon_Penetration
+            return self.part_ThrownWeapon_Penetration if self.part_ThrownWeapon_Penetration is not None else 1
         else:
             try:
                 maxpv = int(self.pv)
@@ -1263,7 +1263,7 @@ class QudObject(NodeMixin):
     def vibro(self):
         """Whether this is a vibro weapon."""
         if self.is_specified('part_ThrownWeapon'):
-            if self.part_ThrownWeapon_Penetration is None:
+            if self.is_specified('part_GeomagneticDisk'):
                 return 'yes'
             else: 
                 return 'no'
