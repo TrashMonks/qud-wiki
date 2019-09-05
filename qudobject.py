@@ -239,7 +239,7 @@ class QudObject(NodeMixin):
         for field in fields:
             if field == 'title':
                 continue
-            if template == 'Corpse' and field in ['hunger', 'colorstr', 'renderstr', 'image']:
+            if template == 'Corpse' and field in ['hunger', 'image']:
                 continue
             else:
                 attrib = getattr(self, field)
@@ -416,7 +416,7 @@ class QudObject(NodeMixin):
     def butcheredinto(self):
         """What a corpse item can be butchered into."""
         if self.part_Butcherable_OnSuccess is not None:
-            return "{{ID to name|" + self.part_Butcherable_OnSuccess + "}}"
+            return "{{Corpse pop table|population=" + self.name +"|object={{ID to name|" + self.part_Butcherable_OnSuccess + "}}|id="+ self.part_Butcherable_OnSuccess +"}}"
 
     @property
     def canbuild(self):
