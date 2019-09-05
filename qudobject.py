@@ -231,14 +231,9 @@ class QudObject(NodeMixin):
         """Return the fully wikified template representing this object and add a category."""
         fields = config['Templates']['Fields']
         template = self.wiki_template_type()
-        if template == 'Corpse':
-            intro_string = '{{!}}-\n'
-            before_title = ''
-            after_title = ''
-        else:
-            intro_string = ''
-            before_title = "{{Qud text|"
-            after_title = "}}"
+        intro_string = ''
+        before_title = "{{Qud text|"
+        after_title = "}}"
         text = intro_string + '{{' + f'{template}\n'
         text += "| title = " + before_title + self.title + after_title + "\n"
         for field in fields:
