@@ -48,7 +48,7 @@ def load(path):
     for element in raw:
         if element.tag != 'object':
             continue
-        newobj = QudObject(element)
+        QudObject(element)  # registers itself in qindex
 
     # import into other modules for access to the root of the Qud object hierarchy
     qud_object_root = qindex['Object']

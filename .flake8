@@ -1,0 +1,5 @@
+[flake8]
+max-line-length=100
+ignore=P102,B311,W503,E226,S311,W504,F821
+exclude=__pycache__, venv, .venv, tests, qud_explorer_window.py
+import-order-style=pycharm

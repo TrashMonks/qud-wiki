@@ -1,4 +1,3 @@
-import os
 import yaml
 
 from mwclient import Site

@@ -1,4 +1,3 @@
-import io
 import os
 import sys
 import re
@@ -43,9 +42,11 @@ class QudTreeView(QTreeView):
         self.tree_menu.addAction(self.context_action_expand)
         self.context_action_scan = QAction('Scan wiki for selected objects', self.tree_menu)
         self.tree_menu.addAction(self.context_action_scan)
-        self.context_action_upload_page = QAction('Upload templates for selected objects', self.tree_menu)
+        self.context_action_upload_page = QAction('Upload templates for selected objects',
+                                                  self.tree_menu)
         self.tree_menu.addAction(self.context_action_upload_page)
-        self.context_action_upload_tile = QAction('Upload tiles for selected objects', self.tree_menu)
+        self.context_action_upload_tile = QAction('Upload tiles for selected objects',
+                                                  self.tree_menu)
         self.tree_menu.addAction(self.context_action_upload_tile)
         self.context_action_diff = QAction('Diff template against wiki', self.tree_menu)
         self.tree_menu.addAction(self.context_action_diff)
@@ -54,9 +55,6 @@ class QudTreeView(QTreeView):
     def on_context_menu(self, point):
         print(point)
         self.tree_menu.exec_(self.mapToGlobal(point))
-
-    def dothing(self):
-        print('test')
 
     def selectionChanged(self, selected, deselected):
         """Custom override to handle all forms of selection (keyboard, mouse)"""
@@ -109,7 +107,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.save_tile_button.clicked.connect(self.save_selected_tile)
         self.save_tile_button.setDisabled(True)
         self.currently_selected = []
-        self.currently_selected_for_tile = None
+        self.top_selected = None  # used when multiple items may be selected but we only want one
         self.show()
 
     def open_xml(self, filename=None):
@@ -138,10 +136,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Qt StandardItemModel model.
 
         Returns a list, which will be the list of column entries for the row."""
+        row = []
+        # first column: displays the object ID and holds a reference to the actual qud_object
         item = QStandardItem(qud_object.name)
         item.setData(qud_object)
+        row.append(item)
+        # second column: the ingame display name
         display_name = QStandardItem(qud_object.displayname)
-        # display_name.setSelectable(False)
         display_name.setSizeHint(QSize(250, 25))
         if qud_object.tile is None:
             display_name.setIcon(QIcon(QPixmap.fromImage(blank_qtimage)))
@@ -149,15 +150,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             display_name.setIcon(QIcon(QPixmap.fromImage(blank_qtimage)))
         else:
             display_name.setIcon(QIcon(QPixmap.fromImage(qud_object.tile.qtimage)))
+        row.append(display_name)
+        # third column: what the name of the wiki article will be (usually same as second column)
         override_name = QStandardItem('')
         if qud_object.name in config['Wiki']['Article overrides']:
             override_name.setText(config['Wiki']['Article overrides'][qud_object.name])
+        row.append(override_name)
+        # fourth column: indicator for whether the wiki article exists (after scanning)
         wiki_article_exists = QStandardItem('')
+        row.append(wiki_article_exists)
+        # fifth column: indicator for whether the wiki article matches our generated template
         wiki_article_matches = QStandardItem('')
+        row.append(wiki_article_matches)
+        # sixth column: indicator for whether the tile image exists on the wiki (after scanning)
         image_exists = QStandardItem('')
+        row.append(image_exists)
+        # seventh column: indicator for whether the tile image on the wiki matches generated tile
         image_matches = QStandardItem('')
+        row.append(image_matches)
+
         if not qud_object.is_wiki_eligible():
-            for _ in item, display_name, override_name, wiki_article_exists, wiki_article_matches, image_exists:
+            for _ in row:
                 _.setSelectable(False)
         if qud_object.name in config['Interface']['Initial expansion targets']:
             self.items_to_expand.append(item)
@@ -165,7 +178,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if not qud_object.is_leaf:
             for child in qud_object.children:
                 item.appendRow(self.init_qud_object_children(child))
-        return [item, display_name, override_name, wiki_article_exists, wiki_article_matches, image_exists, image_matches]
+        return row
 
     def recursive_expand(self, item: QStandardItem):
         """Expand the currently selected item in the QudTreeView and all its children."""
@@ -192,15 +205,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.statusbar.showMessage(qud_object.ui_inheritance_path())
                 if qud_object.tile is not None and not qud_object.tile.blacklisted:
                     self.tile_label.setPixmap(QPixmap.fromImage(qud_object.tile.get_big_qtimage()))
-                    self.currently_selected_for_tile = qud_object
+                    self.top_selected = qud_object
                     self.save_tile_button.setDisabled(False)
                 else:
                     self.tile_label.clear()
-                    self.currently_selected_for_tile = None
+                    self.top_selected = None
                     self.save_tile_button.setDisabled(True)
         if len(indices) == 0:
             self.tile_label.clear()
-            self.currently_selected_for_tile = None
+            self.top_selected = None
             self.save_tile_button.setDisabled(True)
         self.plainTextEdit.setPlainText(text)
 
@@ -220,69 +233,58 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def search_changed(self):
         """Called when the text in the search box has changed."""
+        # TODO: replace keyboardSearch with custom search and filter display to match
         if self.search_line_edit.text() != '':
             self.treeView.scrollToTop()  # keyboardSearch is bad
             self.treeView.clearSelection()  # keyboardSearch is bad
             self.treeView.keyboardSearch(self.search_line_edit.text())
-            selected = self.treeView.selectedIndexes()
-            if len(selected) > 0:
-                item = self.qud_object_model.itemFromIndex(selected[0]).data()
-                self.recursive_expand(self.qud_object_model.itemFromIndex(selected[0]))
 
     def wiki_check_selected(self):
         """Check the wiki for the existence of the article and image for selected objects, and
         update the columns for those states."""
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        # first, blank the cells for ones already checked
-        for num, index in enumerate(self.currently_selected):
-            if index.column() == 0:
-                wiki_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+3])
-                wiki_matches_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+4])
-                tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+5])
-                tile_matches_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+6])
-                wiki_exists_qitem.setText('')
-                wiki_matches_qitem.setText('')
-                tile_exists_qitem.setText('')
-                tile_matches_qitem.setText('')
-        # now, do the actual checking and update the cells with 'yes' or 'no'
         for num, index in enumerate(self.currently_selected):
             if index.column() == 0:
                 qitem = self.qud_object_model.itemFromIndex(index)
-                wiki_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+3])
-                wiki_matches_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+4])
-                tile_exists_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num+5])
-                tile_matches_qitem = self.qud_object_model.itemFromIndex(self.currently_selected[num + 6])
+                wiki_exists = self.qud_object_model.itemFromIndex(self.currently_selected[num+3])
+                wiki_matches = self.qud_object_model.itemFromIndex(self.currently_selected[num+4])
+                tile_exists = self.qud_object_model.itemFromIndex(self.currently_selected[num+5])
+                tile_matches = self.qud_object_model.itemFromIndex(self.currently_selected[num+6])
+                # first, blank the cells
+                for _ in wiki_exists, wiki_matches, tile_exists, tile_matches:
+                    _.setText('')
+                # now, do the actual checking and update the cells with 'yes' or 'no'
                 qud_object = qitem.data()
                 # Check wiki article first:
                 if not qud_object.is_wiki_eligible:
-                    wiki_exists_qitem.setText('-')
-                    wiki_matches_qitem.setText('-')
-                    tile_exists_qitem.setText('-')
-                    tile_matches_qitem.setText('-')
+                    wiki_exists.setText('-')
+                    wiki_matches.setText('-')
+                    tile_exists.setText('-')
+                    tile_matches.setText('-')
                     continue
                 article = WikiPage(qud_object)
                 if article.page.exists:
-                    wiki_exists_qitem.setText('✅')
+                    wiki_exists.setText('✅')
                     # does the template match the article?
                     if qud_object.wiki_template().strip() in article.page.text().strip():
-                        wiki_matches_qitem.setText('✅')
+                        wiki_matches.setText('✅')
                     else:
-                        wiki_matches_qitem.setText('❌')
+                        wiki_matches.setText('❌')
                 else:
-                    wiki_exists_qitem.setText('❌')
-                    wiki_matches_qitem.setText('-')
+                    wiki_exists.setText('❌')
+                    wiki_matches.setText('-')
                 # Now check whether tile image exists:
                 wiki_tile_file = site.images[qud_object.image]
                 if wiki_tile_file.exists:
-                    tile_exists_qitem.setText('✅')
+                    tile_exists.setText('✅')
                     # It exists, but does it match?
                     if wiki_tile_file.download() == qud_object.tile.get_big_bytes():
-                        tile_matches_qitem.setText('✅')
+                        tile_matches.setText('✅')
                     else:
-                        tile_matches_qitem.setText('❌')
+                        tile_matches.setText('❌')
                 else:
-                    tile_exists_qitem.setText('❌')
-                    tile_matches_qitem.setText('-')
+                    tile_exists.setText('❌')
+                    tile_matches.setText('-')
                 self.app.processEvents()
         QApplication.restoreOverrideCursor()
 
@@ -294,22 +296,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 item = self.qud_object_model.itemFromIndex(index)
                 qud_object = item.data()
                 if not qud_object.is_wiki_eligible():
-                    print(f'{qud_object.name} is not suitable due to its name or displayname.')
+                    print(f'{qud_object.name} is disincluded from the wiki by blacklist or type.')
                 else:
-                    uploadError = False
+                    upload_error = False
                     try:
                         page = WikiPage(qud_object)
                         if page.upload_template() != 'Success':
-                            uploadError = True
-                    except ValueError as e:
-                        # page exists but format not recognized
-                        print("Not uploading")
-                        uploadError = True
-                    if not uploadError:
-                        self.qud_object_model.itemFromIndex(self.currently_selected[num+4]).setText('✅')
+                            upload_error = True
+                    except ValueError:
+                        print("Not uploading: page exists but format not recognized")
+                        upload_error = True
+                    if not upload_error:
+                        wiki_matches = self.currently_selected[num+4]
+                        self.qud_object_model.itemFromIndex(wiki_matches).setText('✅')
                         self.app.processEvents()
         QApplication.restoreOverrideCursor()
-
 
     def upload_selected_tiles(self):
         """Upload the generated tiles for the selected objects to the wiki."""
@@ -344,7 +345,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 filename = config['Templates']['Image overrides'][qud_object.name]
             else:
                 filename = qud_object.image
-            descr = f'Rendered by {wiki_config["operator"]} using {config["Wiki name"]} {config["Version"]}.'
+            descr = f'Rendered by {wiki_config["operator"]} using'\
+                    ' {config["Wiki name"]} {config["Version"]}.'
             result = site.upload(qud_object.tile.get_big_bytesio(),
                                  filename=filename,
                                  description=descr,
@@ -359,37 +361,41 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_selected_tile(self):
         filename = QFileDialog.getSaveFileName()[0]
-        self.currently_selected_for_tile.tile.get_big_image().save(filename, format='png')
+        self.top_selected.tile.get_big_image().save(filename, format='png')
 
     def show_simple_diff(self):
-        qud_object = self.currently_selected_for_tile
-        if not qud_object.is_wiki_eligible:
+        qud_object = self.top_selected
+        if not qud_object.is_wiki_eligible():
             return
         article = WikiPage(qud_object)
         if not article.page.exists:
             return
         txt = qud_object.wiki_template().strip()
         wiki_txt = article.page.text().strip()
-        qbe_pattern = re.compile(r'^({{.+?^}}$\s*\[\[Category:[^\]]+\]\])\s*?$', re.MULTILINE | re.DOTALL)
-        msgBox = QMessageBox()
-        msgBox.setTextFormat(Qt.RichText)
+        qbe_pattern = re.compile(r'^({{.+?^}}$\s*\[\[Category:[^\]]+\]\])\s*?$',
+                                 re.MULTILINE | re.DOTALL)
+        msg_box = QMessageBox()
+        msg_box.setTextFormat(Qt.RichText)
         if txt in wiki_txt:
-            msgBox.setText("No template differences detected.")
+            msg_box.setText("No template differences detected.")
         else:
             m = qbe_pattern.match(txt)
             m_wiki = qbe_pattern.match(wiki_txt)
             if m is None:
-                msgBox.setText("Unable to compare because the QBE template is not formatted as expected.")
+                msg_box.setText('Unable to compare because the QBE template'
+                                ' is not formatted as expected.')
             elif m_wiki is None:
-                msgBox.setText("Unable to compare because the wiki template is not formatted as expected.")
+                msg_box.setText('Unable to compare because the wiki template'
+                                ' is not formatted as expected.')
             else:
-                lines = m.group(1).splitlines();
-                wiki_lines = m_wiki.group(1).splitlines();
+                lines = m.group(1).splitlines()
+                wiki_lines = m_wiki.group(1).splitlines()
                 diff_lines = ''
                 for line in difflib.unified_diff(wiki_lines, lines, "wiki", "QBE", lineterm=""):
                     diff_lines += '\n' + line
-                msgBox.setText("Unified Diff of the QBE template and the currently published wiki template:\n<pre>" + diff_lines + "</pre>")
-        msgBox.exec();
+                msg_box.setText(f'Unified diff of the QBE template and the currently published'
+                                f' wiki template:\n<pre>{diff_lines}</pre>')
+        msg_box.exec()
 
     def setview_wiki(self):
         if self.view_type == 'wiki':

@@ -2,18 +2,18 @@
 
 import os
 
-import qud_object_tree  # to build the qindex in qudobject.py
-from qudobject import *  # what we are actually testing
+import qud_object_tree  # build the object tree
+from qudobject import qindex, escape_ampersands, strip_qud_color_codes
 
 # fallback location
-TEST_XML_LOC = "C:/Steam/SteamApps/common/Caves of Qud/CoQ_Data/StreamingAssets/Base/ObjectBlueprints.xml"
+FILE = "C:/Steam/SteamApps/common/Caves of Qud/CoQ_Data/StreamingAssets/Base/ObjectBlueprints.xml"
 
 if os.path.exists('last_xml_location'):
     with open('last_xml_location') as f:
         filename = f.read()
     qud_object_tree.load(filename)
 else:
-    qud_object_tree.load(TEST_XML_LOC)
+    qud_object_tree.load(FILE)
 
 
 def test_escape_ampersands():
@@ -48,3 +48,10 @@ def test_properties():
     assert obj.hp == '500'
     assert obj.av == '11'  # natural 8 + clay pot
     # assert obj.dv == '12'  # base 6 plus (28 - 16) / 2
+
+
+def test_render_wiki_templates():
+    """Test rendering the wiki template for each object."""
+    for name, obj in qindex.items():
+        if obj.is_wiki_eligible():
+            obj.wiki_template()

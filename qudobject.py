@@ -79,9 +79,12 @@ class QudObject(NodeMixin):
     def render_tile(self):
         tile = None
         if self.part_Render_Tile and not self.tag_BaseObject:
-            if self.is_specified('part_HologramMaterial') or self.is_specified('part_HologramWallMaterial') or self.is_specified('part_HologramMaterialPrimary'):
+            holo_parts = ['part_HologramMaterial',
+                          'part_HologramWallMaterial',
+                          'part_HologramMaterialPrimary']
+            if any(self.is_specified(part) for part in holo_parts):  # holographic rendering
                 tile = QudTile(self.part_Render_Tile, '&B', '&B', 'b', self.name)
-            else:
+            else:  # normal rendering
                 tile = QudTile(self.part_Render_Tile,
                                self.part_Render_ColorString,
                                self.part_Render_TileColor,
@@ -162,20 +165,6 @@ class QudObject(NodeMixin):
             return False
         return True
 
-    def parse_multi_sValue(self, svalue: str):
-        """Derive an integer from an sValue comma-separated format stat string for self.
-
-        Example:
-            "16,1d3,(t-1)d2" becomes 17 by this process:
-            16 is the base
-            1d3 is taken as average (2)
-            t is calculated as (Level // 5 + 1) or 2
-            2d2 is taken as average (3)
-
-        """
-        base, roll, final = svalue.split(',')
-        t = int(self.lv) // 5 + 1
-
     def __getattr__(self, attr):
         """Implemented to get explicit or inherited tags from the Qud object tree.
 
@@ -185,7 +174,8 @@ class QudObject(NodeMixin):
         Example: given the following Qud object in the XML source file:
           <object Name="Bandage" Inherits="Item">
             <part Name="Examiner" Complexity="0"></part>
-            <part Name="Render" Tile="Items/sw_hit.bmp" DetailColor="R" DisplayName="&amp;ybandage" ColorString="&amp;y" RenderString="012" RenderLayer="5"></part>
+            <part Name="Render" Tile="Items/sw_hit.bmp" DetailColor="R" DisplayName="&amp;ybandage"
+            ColorString="&amp;y" RenderString="012" RenderLayer="5"></part>
             <part Name="Physics" Category="Meds" Weight="0"></part>
             <part Name="Description" Short="A roll of gauze, suited to staunch bleeding."></part>
             <part Name="Commerce" Value="1"></part>
@@ -262,7 +252,8 @@ class QudObject(NodeMixin):
                        'Arsplice Seed',
                        'Albino Ape Heart',
                        'Ogre Ape Heart')
-        if self.inherits_from('Creature') or self.inherits_from('BasePlant') or self.inherits_from('BaseFungus') or self.inherits_from('Baetyl') or self.inherits_from('Wall'):
+        characters = ['Creature', 'BasePlant', 'BaseFungus', 'Baetyl', 'Wall']
+        if any(self.inherits_from(character) for character in characters):
             val = "Character"
         elif self.inherits_from('Food'):
             val = "Food"
@@ -375,7 +366,6 @@ class QudObject(NodeMixin):
             if self.part_Brain_Aquatic is not None:
                 return "yes" if self.part_Brain_Aquatic == "true" else "no"
 
-
     @property
     def av(self):
         """The AV that an item provides, or the AV that a creature has."""
@@ -416,7 +406,8 @@ class QudObject(NodeMixin):
     def butcheredinto(self):
         """What a corpse item can be butchered into."""
         if self.part_Butcherable_OnSuccess is not None:
-            return "{{Corpse pop table|population=" + self.name +"|object={{ID to name|" + self.part_Butcherable_OnSuccess + "}}|id="+ self.part_Butcherable_OnSuccess +"}}"
+            return f"{{{{Corpse pop table|population={self.name}|object={{{{ID to name|"\
+                   f"{self.part_Butcherable_OnSuccess}}}}}|id={self.part_Butcherable_OnSuccess}}}}}"
 
     @property
     def canbuild(self):
@@ -464,21 +455,22 @@ class QudObject(NodeMixin):
     @property
     def chargefunction(self):
         """The features or functions that the charge is used for."""
-        # intended to provide clarity for items like Prayer Rod, where charge only affects one of it's features (stun) not the other (elemental damage)
-        funcList = None
+        # intended to provide clarity for items like Prayer Rod, where charge only affects one of
+        # its features (stun) and not the other (elemental damage)
+        funcs = None
         if self.part_StunOnHit:
-            funcList = ("Stun effect")
+            funcs = "Stun effect"
         if self.part_EnergyAmmoLoader or self.part_Gaslight:
-            funcList = ("Weapon power") if (not funcList) else (funcList + ", weapon power")
+            funcs = "Weapon power" if not funcs else funcs + ", weapon power"
         if self.part_VibroWeapon:
-            funcList = ("Adaptive penetration") if (not funcList) else (funcList + ", adaptive penetration")
+            funcs = "Adaptive penetration" if not funcs else funcs + ", adaptive penetration"
         if self.part_MechanicalWings:
-            funcList = ("Flight") if (not funcList) else (funcList + ", flight")
+            funcs = "Flight" if not funcs else funcs + ", flight"
         if self.part_GeomagneticDisk:
-            funcList = ("Disc effect") if (not funcList) else (funcList + ", disc effect")
+            funcs = "Disc effect" if not funcs else funcs + ", disc effect"
         if self.part_ProgrammableRecoiler or self.part_Teleporter:
-            funcList = ("Teleportation") if (not funcList) else (funcList + ", teleportation")
-        return funcList
+            funcs = "Teleportation" if not funcs else funcs + ", teleportation"
+        return funcs
 
     @property
     def cold(self):
@@ -507,7 +499,7 @@ class QudObject(NodeMixin):
             ret = ""
             if "," in self.part_PreparedCookingIngredient_type:
                 for val in self.part_PreparedCookingIngredient_type.split(","):
-                    if ret is not "":
+                    if ret != "":
                         ret += ","
                     ret += "{{CookEffect ID to name|" + val + "}}"
             else:
@@ -551,22 +543,17 @@ class QudObject(NodeMixin):
             else:
                 val = self.part_ThrownWeapon_Damage
         if self.part_MissileWeapon is not None:
-            if self.part_BioAmmoLoader_ProjectileObject is not None:
-                item = qindex[self.part_BioAmmoLoader_ProjectileObject]
-                if item.part_Projectile:
-                    val = item.part_Projectile_BaseDamage
-            elif self.part_MagazineAmmoLoader_ProjectileObject is not None and self.part_MagazineAmmoLoader_ProjectileObject is not '': #Bows don't specify ProjectileObjects
-                item = qindex[self.part_MagazineAmmoLoader_ProjectileObject]
-                if item.part_Projectile:
-                    val = item.part_Projectile_BaseDamage
-            elif self.part_EnergyAmmoLoader_ProjectileObject is not None:
-                item = qindex[self.part_EnergyAmmoLoader_ProjectileObject]
-                if item.part_Projectile:
-                    val = item.part_Projectile_BaseDamage
-            elif self.part_LiquidAmmoLoader_ProjectileObject is not None:
-                item = qindex[self.part_LiquidAmmoLoader_ProjectileObject]
-                if item.part_Projectile:
-                    val = item.part_Projectile_BaseDamage
+            parts = ['part_BioAmmoLoader_ProjectileObject',
+                     # Bows don't specify ProjectileObjects:
+                     'part_MagazineAmmoLoader_ProjectileObject',
+                     'part_EnergyAmmoLoader_ProjectileObject',
+                     'part_LiquidAmmoLoader_ProjectileObject']
+            for part in parts:
+                attr = getattr(self, part)
+                if attr is not None and attr != '':
+                    item = qindex[attr]
+                    if item.part_Projectile:
+                        val = item.part_Projectile_BaseDamage
         return val
 
     @property
@@ -574,9 +561,9 @@ class QudObject(NodeMixin):
         """returns the demeanor of the creature"""
         if self.inherits_from('Creature') or self.inherits_from('ActivePlant'):
             if self.part_Brain_Calm is not None:
-                return "docile" if self.part_Brain_Calm =="True" or self.part_Brain_Calm =="true" else "neutral"
+                return "docile" if self.part_Brain_Calm.lower() == "true" else "neutral"
             if self.part_Brain_Hostile is not None:
-                return "aggressive" if self.part_Brain_Hostile == "True" or self.part_Brain_Hostile == "true"  else "neutral"
+                return "aggressive" if self.part_Brain_Hostile.lower() == "true" else "neutral"
 
     @property
     def desc(self):
@@ -585,16 +572,16 @@ class QudObject(NodeMixin):
         if self.part_Description_Short == 'A hideous specimen.':
             pass  # hide items with no description
         elif self.intproperty_GenotypeBasedDescription is not None:
-            desc = "[True kin]\n" + self.property_TrueManDescription_Value + "\n\n[Mutant]\n" + self.property_MutantDescription_Value
+            desc = f"[True kin]\n{self.property_TrueManDescription_Value}\n\n"\
+                   f"[Mutant]\n{self.property_MutantDescription_Value}"
         elif self.part_Description_Short:
             if self.part_Description_Mark:
-                desc = self.part_Description_Short + "\n\n"+ self.part_Description_Mark
+                desc = self.part_Description_Short + "\n\n" + self.part_Description_Mark
             else:
                 desc = self.part_Description_Short
-        else:
-            desc = ""
-        desc = escape_ampersands(desc)
-        desc = desc.replace('\r\n', '\n')  # currently, only the description for Bear
+        if desc is not None:
+            desc = escape_ampersands(desc)
+            desc = desc.replace('\r\n', '\n')  # currently, only the description for Bear
         return desc
 
     @property
@@ -652,9 +639,7 @@ class QudObject(NodeMixin):
                         continue
                     item = qindex[name]
                     if item.dv:
-                        print(dv)
                         dv += int(item.dv)
-                        print(dv, item.name, item.dv)
             # does this creature have mutations that affect DV?
             if self.mutation:
                 for mutation, info in self.mutation.items():
@@ -676,9 +661,9 @@ class QudObject(NodeMixin):
                             continue
                     if ret is None:
                         ret = ""
-                    elif ret is not "":
-                        ret +=" </br>" 
-                    ret += "{{Dynamic object|" + re.split(":",key,1)[1] + "|" + self.name+ "}}"
+                    elif ret != "":
+                        ret += " </br>"
+                    ret += "{{Dynamic object|" + re.split(":", key, 1)[1] + "|" + self.name + "}}"
         return ret
 
     @property
@@ -690,7 +675,7 @@ class QudObject(NodeMixin):
     def ego(self):
         """The ego the mutation effects, or the ego of the creature."""
         val = self.attribute_helper('Ego')
-        return val + "+3d1" if self.name=="Wraith-Knight Templar" else val
+        return val + "+3d1" if self.name == "Wraith-Knight Templar" else val
 
     @property
     def electric(self):
@@ -741,7 +726,7 @@ class QudObject(NodeMixin):
             ret = ''
             for part in self.part_Brain_Factions.split(','):
                 if '-' in part:
-                    if ret is not '':
+                    if ret != '':
                         ret += "</br>"
                     # has format like `Joppa-100,Barathrumites-100`
                     faction, value = part.split('-')
@@ -813,7 +798,6 @@ class QudObject(NodeMixin):
     def inheritingfrom(self):
         return self.parent.name
 
-
     @property
     def intelligence(self):
         """The intelligence the mutation affects, or the intelligence of the creature."""
@@ -825,10 +809,11 @@ class QudObject(NodeMixin):
         if self.inventoryobject is not None:
             ret = ""
             for obj in self.inventoryobject:
-                if obj[0] in '*#@': #Ignores stuff like *Junk 1
+                if obj[0] in '*#@':  # Ignores stuff like *Junk 1
                     continue
                 elif 'Number' in self.inventoryobject[obj]:
-                    ret += f"{{{{inventory|{{{{ID to name|{obj}}}}}|{self.inventoryobject[obj]['Number']}}}}}"
+                    ret += f"{{{{inventory|"\
+                           f"{{{{ID to name|{obj}}}}}|{self.inventoryobject[obj]['Number']}}}}}"
                 else:
                     ret += f"{{{{inventory|{{{{ID to name|{obj}}}}}|1}}}}"
         return ret
@@ -883,17 +868,17 @@ class QudObject(NodeMixin):
         ma = None
         if self.inherits_from('Creature'):
             # MA starts at base 4
-            ma = 4 
+            ma = 4
             # Add MA stat value if specified
             if self.stat_MA_Value:
                 ma += int(self.stat_MA_Value)
-            #calc willpower modifier and add it to MA
+            # calc willpower modifier and add it to MA
             wp = self.willpower
             if '+' in wp:
                 wp = DiceBag(wp).average()
             else:
                 wp = int(wp)
-            if self.role == 'Minion':  #lose 20% to all stats
+            if self.role == 'Minion':  # lose 20% to all stats
                 wp = int(wp * 0.8)
             wp_bonus = (wp - 16) // 2
             ma += wp_bonus
@@ -918,7 +903,10 @@ class QudObject(NodeMixin):
     def maxpv(self):
         """The max strength bonus + base PV."""
         if self.is_specified('part_ThrownWeapon'):
-            return self.part_ThrownWeapon_Penetration if self.part_ThrownWeapon_Penetration is not None else 1
+            if self.part_ThrownWeapon_Penetration is not None:
+                return self.part_ThrownWeapon_Penetration
+            else:
+                return '1'
         else:
             try:
                 maxpv = int(self.pv)
@@ -941,18 +929,18 @@ class QudObject(NodeMixin):
         if self.part_AddMod_Mods is not None:
             ret = ""
             i = 0
-            tierarray=self.part_AddMod_Tiers.split(",")
+            tierarray = self.part_AddMod_Tiers.split(",")
             for mod in self.part_AddMod_Mods.split(","):
-                if ret is not "":
-                    ret +=" </br>" 
-                ret +="{{ModID to name|" + mod + "|" + tierarray[i] + "}}"
+                if ret != "":
+                    ret += " </br>"
+                ret += "{{ModID to name|" + mod + "|" + tierarray[i] + "}}"
                 i = i+1
         for key in self.part.keys():
             if key.startswith('Mod'):
                 if ret is None:
                     ret = ""
-                elif ret is not "":
-                    ret +=" </br>" 
+                elif ret != "":
+                    ret += " </br>"
                 if 'Tier' in self.part[key]:
                     ret += "{{ModID to name|" + key + "|" + self.part[key]['Tier'] + "}}"
                 else:
@@ -981,19 +969,23 @@ class QudObject(NodeMixin):
                 constructor = ""
                 if 'GasObject' in self.mutation[obj]:
                     constructor = f"{self.mutation[obj]['GasObject']}"
-                if ret is not "":
-                    ret +=" </br>"
+                if ret != "":
+                    ret += " </br>"
                 if 'Level' in self.mutation[obj]:
 
                     ego_str = self.attribute_helper('Ego')
                     if '+' in ego_str:
-                        # ego was an sValue-format specifier, e.g. '18+1d4+1d3' (after light processing)
+                        # ego was an sValue-format specifier,
+                        # e.g. '18+1d4+1d3' (after light processing)
                         ego = DiceBag(ego_str).average()
                     else:
                         ego = int(ego_str)
-                    ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}{constructor}}}}}|{self.mutation[obj]['Level']}|{ego}}}}}"
+                    ret += f"{{{{creature mutation|"\
+                           f"{{{{MutationID to name|{obj}{constructor}}}}}|"\
+                           f"{self.mutation[obj]['Level']}|{ego}}}}}"
                 else:
-                    ret += f"{{{{creature mutation|{{{{MutationID to name|{obj}{constructor}}}}}|0}}}}"
+                    ret += f"{{{{creature mutation|"\
+                           f"{{{{MutationID to name|{obj}{constructor}}}}}|0}}}}"
         return ret
 
     @property
@@ -1003,19 +995,20 @@ class QudObject(NodeMixin):
             if key.endswith('OnEat'):
                 if ret is None:
                     ret = ""
-                elif ret is not "":
-                    ret +=" </br>" 
+                elif ret != "":
+                    ret += " </br>"
                 if "Class" in self.part[key]:
-                    ret += "{{OnEat ID to name|" +  key + self.part[key]['Class'] + self.part[key]['Level'] +"}}"
+                    ret += f"{{{{OnEat ID to name|"\
+                           f"{key}{self.part[key]['Class']}{self.part[key]['Level']}}}}}"
                 else:
-                    ret += "{{OnEat ID to name|" +  key + "}}"
+                    ret += f"{{{{OnEat ID to name|{key}}}}}"
         return ret
 
     @property
     def preservedinto(self):
         """When preserved, what a preservable item produces."""
         if self.part_PreservableItem_Result is not None:
-            return "{{ID to name|" + self.part_PreservableItem_Result + "}}"
+            return f"{{{{ID to name|{self.part_PreservableItem_Result}}}}}"
 
     @property
     def preservedquantity(self):
@@ -1039,24 +1032,19 @@ class QudObject(NodeMixin):
             elif self.part_MeleeWeapon_PenBonus:
                 pv += int(self.part_MeleeWeapon_PenBonus)
         if self.part_MissileWeapon is not None:
-            if self.part_BioAmmoLoader_ProjectileObject is not None:
-                item = qindex[self.part_BioAmmoLoader_ProjectileObject]
-                if item.part_Projectile:
-                    pv = item.part_Projectile_BasePenetration
-            elif self.part_MagazineAmmoLoader_ProjectileObject is not None and self.part_MagazineAmmoLoader_ProjectileObject is not '': #Bows don't specify ProjectileObjects
-                item = qindex[self.part_MagazineAmmoLoader_ProjectileObject]
-                if item.part_Projectile:
-                    pv = item.part_Projectile_BasePenetration
-            elif self.part_EnergyAmmoLoader_ProjectileObject is not None:
-                item = qindex[self.part_EnergyAmmoLoader_ProjectileObject]
-                if item.part_Projectile:
-                    pv = item.part_Projectile_BasePenetration
-            elif self.part_LiquidAmmoLoader_ProjectileObject is not None:
-                item = qindex[self.part_LiquidAmmoLoader_ProjectileObject]
-                if item.part_Projectile:
-                    pv = item.part_Projectile_BasePenetration
-            
+            parts = ['part_BioAmmoLoader_ProjectileObject',
+                     # Bows don't specify ProjectileObjects:
+                     'part_MagazineAmmoLoader_ProjectileObject',
+                     'part_EnergyAmmoLoader_ProjectileObject',
+                     'part_LiquidAmmoLoader_ProjectileObject']
+            for part in parts:
+                attr = getattr(self, part)
+                if attr is not None and attr != '':
+                    item = qindex[attr]
+                    if item.part_Projectile:
+                        pv = item.part_Projectile_BasePenetration
             if pv is not None:
+                # add base PV
                 pv = int(pv) + 4
         if pv is not None:
             return str(pv)
@@ -1106,15 +1094,15 @@ class QudObject(NodeMixin):
             for part in self.part_AddsRep_Faction.split(','):
                 if ':' in part:
                     # has format like `Fungi:200,Consortium:-200`
-                    if ret is not "":
-                        ret +=" </br>"
+                    if ret != "":
+                        ret += " </br>"
                     faction, value = part.split(':')
                     ret += f'{{{{reputation bonus|{{{{FactionID to name|{faction}}}}}|{value}}}}}'
                 else:
                     # has format like `Antelopes,Goatfolk` and Value `100`
                     # or is a single faction, like `Apes` and Value `-100`
-                    if ret is not "":
-                        ret +=" </br>"
+                    if ret != "":
+                        ret += " </br>"
                     value = self.part_AddsRep_Value
                     ret += f'{{{{reputation bonus|{{{{FactionID to name|{part}}}}}|{value}}}}}'
         return ret
@@ -1170,8 +1158,8 @@ class QudObject(NodeMixin):
         if self.skill is not None:
             ret = ""
             for obj in self.skill:
-                if ret is not "":
-                    ret +=" </br>"
+                if ret != "":
+                    ret += " </br>"
                 ret += f"{{{{SkillID to name|{obj}}}}}"
         return ret
 
@@ -1179,6 +1167,7 @@ class QudObject(NodeMixin):
     def strength(self):
         """The strength the mutation affects, or the strength of the creature."""
         return self.attribute_helper('Strength')
+
     @property
     def swarmbonus(self):
         return self.part_Swarmer_ExtraBonus
@@ -1187,7 +1176,7 @@ class QudObject(NodeMixin):
     def isswarmer(self):
         if self.inherits_from('Creature'):
             return ('yes' if self.is_specified('part_Swarmer') else 'no')
-            
+
     @property
     def thirst(self):
         """How much thirst it slakes."""
@@ -1204,12 +1193,13 @@ class QudObject(NodeMixin):
         if self.builder_GoatfolkHero1_ForceName:
             val = escape_ampersands(self.builder_GoatfolkHero1_ForceName)  # for Mamon
         elif self.name == "Wraith-Knight Templar":
-            val = "&amp;MWraith-Knight Templar of the Binary Honorum" #override for Wraith Knights
+            val = "&amp;MWraith-Knight Templar of the Binary Honorum"  # override for Wraith Knights
         elif self.part_Render_DisplayName:
             val = escape_ampersands(self.part_Render_DisplayName)
 
         if self.part_ModMasterwork is not None:
-            val = "&amp;Ymasterwork&amp;y " + val #if mods are guaranteed, will prepend them before the name
+            # if mods are guaranteed, will prepend them before the name
+            val = "&amp;Ymasterwork&amp;y " + val
         if self.part_ModScoped is not None:
             val = "&amp;yscoped " + val
         if self.part_ModHeatSeeking is not None:
@@ -1260,7 +1250,7 @@ class QudObject(NodeMixin):
         if self.is_specified('part_ThrownWeapon'):
             if self.is_specified('part_GeomagneticDisk'):
                 return 'yes'
-            else: 
+            else:
                 return 'no'
         elif self.inherits_from('NaturalWeapon') or self.inherits_from('MeleeWeapon'):
             if self.part_VibroWeapon:

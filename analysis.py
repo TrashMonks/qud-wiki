@@ -9,6 +9,7 @@ import qudtile
 import wikipage
 from qudobject import qindex
 
+# This script is not part of the main application, so set your XML location here
 FILE = 'C:/Steam/steamapps/common/Caves of Qud/CoQ_Data/StreamingAssets/Base/ObjectBlueprints.xml'
 
 
@@ -59,11 +60,22 @@ def print_value_weight_ratio():
     """Calculate the value/weight ratio for all items in wiki table format."""
 
 
+def print_swarmer_creatures():
+    """Print a list of creatures with the Swarmer part."""
+    for name, qud_object in qindex.items():
+        if qud_object.part_Swarmer is not None:
+            if qud_object.is_wiki_eligible():
+                print(f'{name:30} {qud_object.displayname}')
+
+
+def print_empty_descriptions():
+    for name, qud_object in qindex.items():
+        if qud_object.is_wiki_eligible():
+            if qud_object.desc is None or qud_object.desc == "":
+                print(name, qud_object.desc)
+
+
 qud_object_tree.load(FILE)
 
-# get_bad_tiles()
-# print(get_wiki_eligible())
-# get_bugged_eat_messages()
-# print_wiki_nonwiki()
-# get_wikified_nonwiki()
-breakpoint()
+# Run any analyses here:
+print_empty_descriptions()

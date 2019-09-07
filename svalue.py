@@ -22,7 +22,7 @@ class sValue:
         self.t_parsed = svalue
         self.low = 0
         self.high = 0
-        self.svalstring = self.t_parsed.replace(',','+')
+        self.svalstring = self.t_parsed.replace(',', '+')
         for part in self.t_parsed.split(','):
             modified = False
             if '+' in part:
@@ -31,7 +31,7 @@ class sValue:
             elif '-' in part:
                 part, modifier = part.split('-')
                 modified = True
-            if not 'd' in part:
+            if 'd' not in part:
                 self.low += int(part)
                 self.high += int(part)
             else:

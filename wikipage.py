@@ -5,8 +5,10 @@ import re
 from config import config
 from wiki_config import site, wiki_config
 
-CREATED_SUMMARY = f'Created by {wiki_config["operator"]} using {config["Wiki name"]} {config["Version"]}'
-EDITED_SUMMARY = f'Updated by {wiki_config["operator"]} using {config["Wiki name"]} {config["Version"]}'
+CREATED_SUMMARY = f'Created by {wiki_config["operator"]}'\
+                  f' using {config["Wiki name"]} {config["Version"]}'
+EDITED_SUMMARY = f'Updated by {wiki_config["operator"]}'\
+                 f' using {config["Wiki name"]} {config["Version"]}'
 # Link to work on or update regex:
 # https://regex101.com/r/suH7vR/1
 # 1st matching group: everything before template
@@ -35,11 +37,11 @@ class WikiPage:
     def upload_template(self):
         """Write the template for our object into the article and save it."""
         if self.page.exists:
-            # complex case: have to get text indices corresponding to beginning of pre-template,
-            # and end of post-template
+            # complex case: have to get indices corresponding to beginning and end of the
+            # existing template
             match = re.match(TEMPLATE_RE, self.page.text(), re.MULTILINE | re.DOTALL)
             if match is None:
-                raise ValueError('Article exists, but existing format not recognized.'
+                raise ValueError('Article exists, but existing format not recognized. '
                                  'Try a manual edit first.')
             start = match.start(2)
             end = match.end(2)
@@ -48,7 +50,7 @@ class WikiPage:
             new_text = pre_template_text + self.template_text + post_template_text
             result = self.page.save(text=new_text, summary=EDITED_SUMMARY)
         else:
-            # simple case, creating an article
+            # simple case: creating an article
             result = self.page.save(text=self.template_text, summary=CREATED_SUMMARY)
         print(result)
         return result['result']
