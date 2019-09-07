@@ -146,8 +146,6 @@ class QudObject(NodeMixin):
             return True
         if self.is_root:
             return False
-        if self.parent.name == name:
-            return True
         return self.parent.inherits_from(name)
 
     def is_specified(self, attr):
@@ -1175,7 +1173,7 @@ class QudObject(NodeMixin):
     @property
     def isswarmer(self):
         if self.inherits_from('Creature'):
-            return ('yes' if self.is_specified('part_Swarmer') else 'no')
+            return 'yes' if self.is_specified('part_Swarmer') else 'no'
 
     @property
     def thirst(self):
