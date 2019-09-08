@@ -448,6 +448,8 @@ class QudObject(NodeMixin):
             charge = self.part_ProgrammableRecoiler_ChargeUse
         if self.part_Teleporter:
             charge = self.part_Teleporter_ChargeUse
+        if self.part_LatchesOn:
+            charge = self.part_LatchesOn_ChargeUse
         return charge
 
     @property
@@ -578,6 +580,8 @@ class QudObject(NodeMixin):
             else:
                 desc = self.part_Description_Short
         if desc is not None:
+            if self.part_BonusPostfix is not None:
+                desc += "\n\n" + self.part_BonusPostfix_Postfix
             desc = escape_ampersands(desc)
             desc = desc.replace('\r\n', '\n')  # currently, only the description for Bear
         return desc
