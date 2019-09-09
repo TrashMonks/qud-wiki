@@ -19,6 +19,8 @@ from wikipage import WikiPage
 
 HEADER_LABELS = ['Name', 'Display', 'Override', 'Article exists', 'Article matches', 'Image exists',
                  'Image matches']
+# TEMPLATE_RE copied from wikipage.py except that start/end patterns converted to non-capturing (?:)
+TEMPLATE_RE = r"(?:.*?)(^{{(?:Item|Character|Food|Corpse).*^}}$\s\[\[Category:[ \w]+\]\]$)(?:.*)"
 
 
 class QudTreeView(QTreeView):
@@ -298,18 +300,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if not qud_object.is_wiki_eligible():
                     print(f'{qud_object.name} is disincluded from the wiki by blacklist or type.')
                 else:
-                    upload_error = False
+                    upload_processed = False
                     try:
                         page = WikiPage(qud_object)
-                        if page.upload_template() != 'Success':
-                            upload_error = True
+                        if page.upload_template() == 'Success':
+                            wiki_matches = self.currently_selected[num+4]
+                            self.qud_object_model.itemFromIndex(wiki_matches).setText('✅')
+                            self.app.processEvents()
+                            upload_processed = True
                     except ValueError:
                         print("Not uploading: page exists but format not recognized")
-                        upload_error = True
-                    if not upload_error:
-                        wiki_matches = self.currently_selected[num+4]
-                        self.qud_object_model.itemFromIndex(wiki_matches).setText('✅')
-                        self.app.processEvents()
+                        upload_processed = True
+                    finally:
+                        if not upload_processed:  # unhandled exception during upload
+                            QApplication.restoreOverrideCursor()
         QApplication.restoreOverrideCursor()
 
     def upload_selected_tiles(self):
@@ -347,16 +351,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 filename = qud_object.image
             descr = f'Rendered by {wiki_config["operator"]} using'\
                     ' {config["Wiki name"]} {config["Version"]}.'
-            result = site.upload(qud_object.tile.get_big_bytesio(),
-                                 filename=filename,
-                                 description=descr,
-                                 ignore=True,  # upload even if same file exists under diff. name
-                                 comment=descr
-                                 )
-            if result.get('result', None) == 'Success':
-                self.qud_object_model.itemFromIndex(self.currently_selected[num+6]).setText('✅')
-                self.app.processEvents()
-            print(result)
+            upload_processed = False
+            try:
+                result = site.upload(qud_object.tile.get_big_bytesio(),
+                                     filename=filename,
+                                     description=descr,
+                                     ignore=True,  # upload even if same file exists under diff name
+                                     comment=descr
+                                     )
+                if result.get('result', None) == 'Success':
+                    self.qud_object_model.itemFromIndex(self.currently_selected[num+6]).setText('✅')
+                    self.app.processEvents()
+                print(result)
+                upload_processed = True
+            finally:
+                if not upload_processed:  # unhandled exception during upload
+                    QApplication.restoreOverrideCursor()
         QApplication.restoreOverrideCursor()
 
     def save_selected_tile(self):
@@ -372,7 +382,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
         txt = qud_object.wiki_template().strip()
         wiki_txt = article.page.text().strip()
-        qbe_pattern = re.compile(r'^({{.+?^}}$\s*\[\[Category:[^\]]+\]\])\s*?$',
+        qbe_pattern = re.compile(TEMPLATE_RE,
                                  re.MULTILINE | re.DOTALL)
         msg_box = QMessageBox()
         msg_box.setTextFormat(Qt.RichText)
