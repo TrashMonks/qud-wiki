@@ -22,7 +22,7 @@ Templates:
      weaponskill, colorstr, renderstr, id, bookid, lightradius, hunger, thirst, healing, butcheredinto,
      harvestedinto, preservedinto, preservedquantity, cookeffect, ismeat, isplant, isfungus,
      exoticfood, illoneat, oneat, corpse, corpsechance, twohanded, metal, lightprojectile, reflect,
-     quickness, movespeed, cursed, role, destroyonunequip, savemodifier, savemodifieramt, spectacles, isswarmer, swarmbonus, aquatic, extra, inheritingfrom, dynamictable, strength,
+     quickness, movespeed, cursed, role, destroyonunequip, savemodifier, savemodifieramt, spectacles, carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic, extra, inheritingfrom, dynamictable, strength,
      agility, toughness, intelligence, willpower, ego, acid, electric, cold, heat, poison,
      reputationbonus, faction, wornon, usesslots, demeanor, gender, pronouns, inventory, skills, mutations, mods, desc, eatdesc]
   Image overrides:

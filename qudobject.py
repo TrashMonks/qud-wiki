@@ -451,6 +451,11 @@ class QudObject(NodeMixin):
             return 'no'  # # it's interesting if an item can't be disassembled but can be built
 
     @property
+    def carrybonus(self):
+        """The carry bonus"""
+        return self.part_Armor_CarryBonus
+
+    @property
     def chargeperdram(self):
         """How much charge is available per dram (for liquid cells)."""
         return self.part_LiquidFueledEnergyCell_ChargePerDram
@@ -761,6 +766,14 @@ class QudObject(NodeMixin):
                     faction, value = part.split('-')
                     ret += f'{{{{creature faction|{{{{FactionID to name|{faction}}}}}|{value}}}}}'
         return ret
+
+    @property
+    def flyover(self):
+        if self.inherits_from('Wall') or self.inherits_from('Furniture'):
+            if self.is_specified('tag_Flyover'):
+                return 'yes'
+            else:
+                return 'no'
 
     @property
     def gender(self):
@@ -1156,6 +1169,14 @@ class QudObject(NodeMixin):
     def shots(self):
         """How many shots are fired in one round."""
         return self.part_MissileWeapon_ShotsPerAction
+
+    @property
+    def solid(self):
+        if self.is_specified('part_Physics_Solid'):
+            if self.part_Physics_Solid == 'true' or self.part_Physics_Solid == 'True':
+                return 'yes'
+            else:
+                return 'no'
 
     @property
     def spectacles(self):
