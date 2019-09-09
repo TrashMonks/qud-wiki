@@ -468,9 +468,9 @@ class QudObject(NodeMixin):
             charge = self.part_StunOnHit_ChargeUse
         if self.part_EnergyAmmoLoader:
             charge = self.part_EnergyAmmoLoader_ChargeUse
-        if self.part_VibroWeapon:
+        if self.part_VibroWeapon and int(self.part_VibroWeapon_ChargeUse) > 0:
             charge = self.part_VibroWeapon_ChargeUse
-        if self.part_Gaslight:
+        if self.part_Gaslight and int(self.part_Gaslight_ChargeUse) > 0:
             charge = self.part_Gaslight_ChargeUse
         if self.part_MechanicalWings:
             charge = self.part_MechanicalWings_ChargeUse
@@ -483,7 +483,7 @@ class QudObject(NodeMixin):
         if self.part_LatchesOn:
             charge = self.part_LatchesOn_ChargeUse
         return charge
-
+    
     @property
     def chargefunction(self):
         """The features or functions that the charge is used for."""
@@ -494,7 +494,7 @@ class QudObject(NodeMixin):
             funcs = "Stun effect"
         if self.part_EnergyAmmoLoader or self.part_Gaslight:
             funcs = "Weapon power" if not funcs else funcs + ", weapon power"
-        if self.part_VibroWeapon:
+        if self.part_VibroWeapon and int(self.part_VibroWeapon_ChargeUse) > 0:
             funcs = "Adaptive penetration" if not funcs else funcs + ", adaptive penetration"
         if self.part_MechanicalWings:
             funcs = "Flight" if not funcs else funcs + ", flight"
@@ -1112,7 +1112,8 @@ class QudObject(NodeMixin):
     @property
     def pvpowered(self):
         """Whether the object's PV changes when it is powered."""
-        if self.vibro == 'yes' or self.part_Gaslight:
+        if ((self.vibro == 'yes' and int(self.part_VibroWeapon_ChargeUse) > 0) or
+                (self.part_Gaslight and int(self.part_Gaslight_ChargeUse) > 0)):
             return 'yes'
 
     @property
