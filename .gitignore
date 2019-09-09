@@ -105,4 +105,11 @@ venv.bak/
 
 
 # Project-specific ignores
+.idea/
+Textures/
 wiki.yml
+CavesofQudTileModdingToolkit.zip
+last_xml_location
+notes.txt
+ptychomancer_notes.txt
+screenshot.png

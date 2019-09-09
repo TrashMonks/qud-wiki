@@ -22,7 +22,7 @@ QUD_COLORS = {'r': (166, 74, 46),  # dark red
               'K': (21, 83, 82),  # dark grey
               'o': (241, 95, 34),
               'O': (233, 159, 16),
-              'transparent': (0,0,0,0),
+              'transparent': (0, 0, 0, 0),
               }
 
 TILE_COLOR = (0, 0, 0, 255)
@@ -41,7 +41,8 @@ uses_details = set()
 
 class QudTile:
     """Class to load and color a Qud tile."""
-    def __init__(self, filename, colorstring, raw_tilecolor, raw_detailcolor, qudname, raw_transparent = "transparent"):
+    def __init__(self, filename, colorstring, raw_tilecolor, raw_detailcolor, qudname,
+                 raw_transparent="transparent"):
         self.blacklisted = False  # set True if problems with tile generation encountered
         self.filename = filename
         self.raw_tilecolor = raw_tilecolor
@@ -55,7 +56,7 @@ class QudTile:
                 raw_transparent = colorstring.split('^')[1]
 
         if raw_tilecolor is None:
-            self.tilecolor = QUD_COLORS['y'] # render in white
+            self.tilecolor = QUD_COLORS['y']  # render in white
             self.transparentcolor = QUD_COLORS[raw_transparent]
         else:
             if '^' in raw_tilecolor:

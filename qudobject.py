@@ -82,44 +82,47 @@ class QudObject(NodeMixin):
             holo_parts = ['part_HologramMaterial',
                           'part_HologramWallMaterial',
                           'part_HologramMaterialPrimary']
-            if any(self.is_specified(part) for part in holo_parts):  # holographic rendering
-                tile_colorstr='&B'
-                tile_tilecolor='&B^b'
-                tile_detailcolor='b'
-                tile_transparentcolor='transparent'
+            if any(self.is_specified(part) for part in holo_parts):
+                # special handling for holograms
+                color = '&B'
+                tilecolor = '&B^b'
+                detail = 'b'
+                trans = 'transparent'
             elif self.is_specified('part_AnimatedMaterialStasisfield'):
-                tile_colorstr='&C^M'
-                tile_tilecolor='&C^M'
-                tile_detailcolor='M'
-                tile_transparentcolor='M'
+                color = '&C^M'
+                tilecolor = '&C^M'
+                detail = 'M'
+                trans = 'M'
             else:
-                tile_colorstr=self.part_Render_ColorString
-                tile_tilecolor=self.part_Render_TileColor
-                tile_detailcolor=self.part_Render_DetailColor if self.part_Render_DetailColor else "transparent"
-                tile_transparentcolor='transparent'
+                color = self.part_Render_ColorString
+                tilecolor = self.part_Render_TileColor
+                _ = self.part_Render_DetailColor
+                detail = _ if _ else 'transparent'
+                trans = 'transparent'
 
             if self.is_specified('tag_PaintedWall') and self.tag_PaintedWall_Value != "*delete":
-                if tile_detailcolor is None and '^' in tile_colorstr:
-                    tile_transparentcolor = tile_colorstr.split('^',1)[1]
-                tile = QudTile((self.tag_PaintedWallAtlas_Value if self.tag_PaintedWallAtlas_Value else 'Tiles/') + self.tag_PaintedWall_Value + '-00000000' + (self.tag_PaintedWallExtension_Value if self.tag_PaintedWallExtension_Value  and self.name != 'Dirt' else '.bmp'),
-                               tile_colorstr,
-                               tile_tilecolor,
-                               tile_detailcolor,
-                               self.name,tile_transparentcolor)
+                # special handling for painted walls
+                if detail is None and '^' in color:
+                    trans = color.split('^', 1)[1]
+                _ = self.tag_PaintedWallAtlas_Value
+                tileloc = _ if _ else 'Tiles/'
+                _ = self.tag_PaintedWallExtension_Value
+                tileext = _ if _ and self.name != 'Dirt' else '.bmp'
+                tile = QudTile(tileloc + self.tag_PaintedWall_Value + '-00000000' + tileext,
+                               color, tilecolor, detail, self.name, raw_transparent=trans)
             elif self.is_specified('tag_PaintedFence') and self.tag_PaintedFence_Value != "*delete":
-                if tile_detailcolor is None and '^' in tile_colorstr:
-                    tile_transparentcolor = tile_colorstr.split('^',1)[1]
-                tile = QudTile((self.tag_PaintedFenceAtlas_Value if self.tag_PaintedFenceAtlas_Value else 'Tiles/') + self.tag_PaintedFence_Value + "_" + (self.tag_PaintedFenceExtension_Value if self.tag_PaintedFenceExtension_Value else '.bmp'),
-                               tile_colorstr,
-                               tile_tilecolor,
-                               tile_detailcolor,
-                               self.name, tile_transparentcolor)
-            else:  # normal rendering
-                tile = QudTile(self.part_Render_Tile,
-                               tile_colorstr,
-                               tile_tilecolor,
-                               tile_detailcolor,
-                               self.name)
+                # special handling for painted fences
+                if detail is None and '^' in color:
+                    trans = color.split('^', 1)[1]
+                _ = self.tag_PaintedFenceAtlas_Value
+                tileloc = _ if _ else 'Tiles/'
+                _ = self.tag_PaintedFenceExtension_Value
+                tileext = _ if _ else '.bmp'
+                tile = QudTile(tileloc + self.tag_PaintedFence_Value + "_" + tileext,
+                               color, tilecolor, detail, self.name, raw_transparent=trans)
+            else:
+                # normal rendering
+                tile = QudTile(self.part_Render_Tile, color, tilecolor, detail, self.name)
         return tile
 
     def resolve_inheritance(self):
@@ -149,7 +152,6 @@ class QudObject(NodeMixin):
                 for attr in inherited[tag][name]:
                     if attr not in all_attributes[tag][name]:
                         # parent has this attribute but we don't
-                        # print(tag, name, attr, "didn't exist in exists in", self.name)
                         if inherited[tag][name][attr] == '*noinherit':
                             # this attribute shows that its name should not be inherited
                             del all_attributes[tag][name]
@@ -157,7 +159,6 @@ class QudObject(NodeMixin):
                             all_attributes[tag][name][attr] = inherited[tag][name][attr]
                     else:
                         # we already had this defined for us - don't overwrite
-                        # print(tag, name, attr, "already exists in", self.name)
                         pass
         return all_attributes, inherited
 
@@ -309,16 +310,12 @@ class QudObject(NodeMixin):
         eligible = True  # equal to initial +Object in config.yml
         for entry in config['Wiki']['Article black+whitelist categories']:
             if entry.startswith('*') and self.inherits_from(entry[1:]):
-                # print(f'{self.name} is included by inheriting from {entry[1:]}')
                 eligible = True
             elif entry.startswith('/') and self.inherits_from(entry[1:]):
-                # print(f'{self.name} is excluded by inheriting from {entry[1:]}')
                 eligible = False
             elif entry.startswith('+') and self.name == entry[1:]:
-                # print(f'{self.name} is explicitly included')
                 eligible = True
             elif entry.startswith('-') and self.name == entry[1:]:
-                # print(f'{self.name} is explicitly excluded')
                 eligible = False
         return eligible
 
