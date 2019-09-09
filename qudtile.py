@@ -22,7 +22,7 @@ QUD_COLORS = {'r': (166, 74, 46),  # dark red
               'K': (21, 83, 82),  # dark grey
               'o': (241, 95, 34),
               'O': (233, 159, 16),
-              'transparent': (0, 0, 0, 0),
+              'transparent': (15, 64, 63, 0),
               }
 
 TILE_COLOR = (0, 0, 0, 255)
