@@ -108,7 +108,7 @@ Wiki:
     Ickslug Bite: bite (ickslug)
     Electrofuge_Bite: bite (electrofuge)
     Dawnglider_Bite: bite (dawnglider)
-    Fire_Snout_Bite: bitie (fire snout)
+    Fire_Snout_Bite: bite (fire snout)
     Gnu Hoof: hoof (gnu)
     Humor_Pseudopod: giant pseudopod (humor)
     Gyrohumor_Pseudopod: giant pseudopod (Gyrohumor)
@@ -562,7 +562,7 @@ Wiki:
     Weeps: [LiquidLichen]
     Dogs: [BaseDog]
     Cats: [BaseCat]
-    Robots: [BaseRobot] #any creatures that are in the Robots faction will be categorized with [[Robots (Faction)]]
+    Robots: [BaseRobot]  # any creatures that are in the Robots faction will be categorized with [[Robots (Faction)]]
     Bears: [BaseBear]
     Crabs: [BaseCrab]
     Snapjaws: [BaseSnapjaw]
@@ -578,14 +578,14 @@ Wiki:
     Goatfolk: [Goatfolk]
     Oozes: [BaseOoze]
     Tortoises: [BaseTortoise]
-    Frogs: [Ice frog,Bloated Pearlfrog]
+    Frogs: [Ice frog, Bloated Pearlfrog]
     Fish: [BaseFish]
     Spiders: [BaseSpider]
     Nests: [BaseNest]
     Worms: [BaseWorm]
     Snails: [BaseSnail]
     Slugs: [BaseSlug]
-    Cybernetics: [BaseCybernetics2Equipment_1point,BaseCybernetics2Equipment_2point,BaseCybernetics2Equipment_3point,BaseCybernetics2Equipment_4point]
+    Cybernetics: [BaseCybernetics2Equipment_1point, BaseCybernetics2Equipment_2point, BaseCybernetics2Equipment_3point, BaseCybernetics2Equipment_4point]
     Merchants: [BaseMerchant]
     Unique Characters: [Phinae Hoshaiah, Argyve, ElderBob, Mehmet, Warden Ualraig,
                  Warden Esthers, Eskhind, Meyehind, Liihart, Isahind, Neelahind, Keh, Kesehind,
@@ -593,7 +593,7 @@ Wiki:
                  Euclid, Warden Indrix, Mamon, Svenlainard, Otho, Q Girl, Barathrum, Sparafucile,
                  Jacobo, Dardi, Hortensa, Iseppa, Neek, Mafeo, Aloysius, High Priest Eschelstadt,
                  Troll King 1, Troll King 2, Troll King 3, Doru, Rodanis Y, Shem -1,
-                 GolgothaSlog, Ctesiphus,OasisGlowpad]
+                 GolgothaSlog, Ctesiphus, OasisGlowpad]
     Quest Items: [Scrapped Waydroid, Scratch Data Disk, Stamped Data Disk, Argyve's Data Disk,
                   Argyve's Data Disk Encoded, ClimberBlueprints, Dormant Waydroid, BarathrumKey,
                   Clue_YuckwheatChaff, Clue_SeveredTongue, Clue_SplinteredWeaponHaft,
