@@ -399,7 +399,7 @@ class QudObject(NodeMixin):
             av = self.part_Armor_AV
         if self.part_Shield_AV:  # the AV of a shield
             av = self.part_Shield_AV
-        if self.inherits_from('Creature'):
+        if self.inherits_from('Creature') or self.inherits_from('Wall'):
             # the AV of creatures and stationary objects
             av = int(self.stat_AV_Value)  # first, creature's intrinsic AV
             if self.inventoryobject:
@@ -642,44 +642,51 @@ class QudObject(NodeMixin):
         if self.inherits_from('Shield'):
             # same here
             dv = self.part_Shield_DV
+        elif self.inherits_from('Wall'):
+            dv = -10
         elif self.inherits_from('Creature'):
             # the 'DV' here is the actual DV of the creature or NPC, after:
             # base of 6 plus any explicit DV bonus,
             # skills, agility modifier (which may be a range determined by
             # dice rolls, and which changes DV by 1 for every 2 points of agility
             # over/under 16), and any equipment that is guaranteed to be worn
-            dv = 6
-            if self.stat_DV_Value:
-                dv += int(self.stat_DV_Value)
-            if self.skill_Acrobatics_Dodge:  # the 'Spry' skill
-                dv += 2
-            if self.skill_Acrobatics_Tumble:  # the 'Tumble' skill
-                dv += 1
-            ag_str = self.agility
-            if '+' in ag_str:
-                # agility was an sValue-format specifier, e.g. '18+1d4+1d3' (after light processing)
-                ag = DiceBag(ag_str).average()
+            if self.is_specified('part_Brain_Mobile') and (self.part_Brain_Mobile == 'false' or
+                                                           self.part_Brain_Mobile == 'False'):
+                dv = -10
             else:
-                ag = int(ag_str)  # agility was given as an integer
-            if self.role == 'Minion':  # lose 20% to all stats
-                ag = int(ag * 0.8)
-            # 1 point bonus to DV for every 2 points of agility over 16
-            dv += ((int(ag) - 16) // 2)
-            # does this creature have armor with DV modifiers?
-            if self.inventoryobject:
-                for name in list(self.inventoryobject.keys()):
-                    if name[0] in '*#@':
-                        # special values like '*Junk 1'
-                        continue
-                    item = qindex[name]
-                    if item.dv:
-                        dv += int(item.dv)
-            # does this creature have mutations that affect DV?
-            if self.mutation:
-                for mutation, info in self.mutation.items():
-                    if mutation == 'Carapace':
-                        lvl = int(info['Level']) + 1
-                        dv -= (7 - (lvl // 2))
+                dv = 6
+                if self.stat_DV_Value:
+                    dv += int(self.stat_DV_Value)
+                if self.skill_Acrobatics_Dodge:  # the 'Spry' skill
+                    dv += 2
+                if self.skill_Acrobatics_Tumble:  # the 'Tumble' skill
+                    dv += 1
+                ag_str = self.agility
+                if '+' in ag_str:
+                    # agility was an sValue-format specifier, e.g.
+                    # '18+1d4+1d3' (after light processing)
+                    ag = DiceBag(ag_str).average()
+                else:
+                    ag = int(ag_str)  # agility was given as an integer
+                if self.role == 'Minion':  # lose 20% to all stats
+                    ag = int(ag * 0.8)
+                # 1 point bonus to DV for every 2 points of agility over 16
+                dv += ((int(ag) - 16) // 2)
+                # does this creature have armor with DV modifiers?
+                if self.inventoryobject:
+                    for name in list(self.inventoryobject.keys()):
+                        if name[0] in '*#@':
+                            # special values like '*Junk 1'
+                            continue
+                        item = qindex[name]
+                        if item.dv:
+                            dv += int(item.dv)
+                # does this creature have mutations that affect DV?
+                if self.mutation:
+                    for mutation, info in self.mutation.items():
+                        if mutation == 'Carapace':
+                            lvl = int(info['Level']) + 1
+                            dv -= (7 - (lvl // 2))
         return str(dv) if dv else None
 
     @property
@@ -799,7 +806,7 @@ class QudObject(NodeMixin):
 
     @property
     def hp(self):
-        if self.inherits_from('Creature'):
+        if self.inherits_from('Creature') or self.inherits_from('Wall'):
             if self.stat_Hitpoints_sValue:
                 return self.stat_Hitpoints_sValue
             elif self.stat_Hitpoints_Value:
@@ -908,7 +915,9 @@ class QudObject(NodeMixin):
     @property
     def ma(self):
         ma = None
-        if self.inherits_from('Creature'):
+        if self.inherits_from('Wall'):
+            return 0
+        elif self.inherits_from('Creature'):
             # MA starts at base 4
             ma = 4
             # Add MA stat value if specified
