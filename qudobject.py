@@ -1202,6 +1202,12 @@ class QudObject(NodeMixin):
         return 'yes' if self.part_Spectacles is not None else None
 
     @property
+    def uniquechara(self):
+        if self.inherits_from('Creature') or self.inherits_from('ActivePlant'):
+            if self.name in config['Wiki']['Categories']['Unique Characters']:
+                return 'yes'
+
+    @property
     def weaponskill(self):
         """The skill tree required for use."""
         val = None
