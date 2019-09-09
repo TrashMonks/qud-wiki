@@ -754,9 +754,15 @@ class QudObject(NodeMixin):
     @property
     def extra(self):
         """Any other features that do not have an associated variable."""
-        # TODO: add more
-        extra = None
-        return extra
+        extrafields = config['Templates']['ExtraFields']
+        text = ''
+        for field in extrafields:
+            attrib = getattr(self, field)
+            if attrib is not None:
+                if text != '':
+                    text += '| '
+                text += f"{field} = {attrib} "
+        return (('{{Extra info|' + text + '}}') if (text != '') else None)
 
     @property
     def faction(self):
@@ -1001,14 +1007,17 @@ class QudObject(NodeMixin):
     @property
     def movespeed(self):
         """returns movespeed bonus, if an item"""
+        if self.inherits_from('Creature'):
+            return self.stat_MoveSpeed_Value
+
+    @property
+    def movespeedbonus(self):
         if self.inherits_from('Item'):
             if self.part_MoveCostMultiplier is not None:
                 temp = ""
                 if int(self.part_MoveCostMultiplier_Amount) < 0:
                     temp = "+"
                 return temp + str(int(self.part_MoveCostMultiplier_Amount)*-1)
-        elif self.inherits_from('Creature'):
-            return self.stat_MoveSpeed_Value
 
     @property
     def mutations(self):

@@ -18,13 +18,16 @@ Templates:
     # (title comes first, but is not listed here)
     [title, image, pv, maxpv, vibro, pvpowered, damage, unpowereddamage, elementaldamage, elementaltype, lv, hp, av, dv, ma, tohit,
      ammo, accuracy, shots, maxammo, maxvol, liquidgen, liquidtype, maxcharge, chargeperdram,
-     chargeused, chargefunction, weight, commerce, complexity, tier, bits, canbuild, candisassemble, empsensitive,
+     chargeused, chargefunction, weight, commerce, complexity, tier, bits, canbuild, candisassemble, 
      weaponskill, colorstr, renderstr, id, bookid, lightradius, hunger, thirst, healing, butcheredinto,
      harvestedinto, preservedinto, preservedquantity, cookeffect, ismeat, isplant, isfungus,
-     exoticfood, illoneat, oneat, corpse, corpsechance, twohanded, metal, lightprojectile, reflect,
-     quickness, movespeed, cursed, role, destroyonunequip, savemodifier, savemodifieramt, spectacles, carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic, extra, inheritingfrom, dynamictable, strength,
+     exoticfood, illoneat, oneat, corpse, corpsechance, role, extra, inheritingfrom, dynamictable, quickness, movespeed, strength,
      agility, toughness, intelligence, willpower, ego, acid, electric, cold, heat, poison,
      reputationbonus, faction, wornon, usesslots, demeanor, gender, pronouns, inventory, skills, mutations, mods, desc, eatdesc]
+  ExtraFields:
+    #Fields for the extra info template
+    [empsensitive, twohanded, metal, lightprojectile, reflect, movespeedbonus, cursed, destroyonunequip, savemodifier, savemodifieramt, 
+     spectacles, carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic]
   Image overrides:
     # Manually specify the image name to be shown for an object ID:
     Asphodel: Earl_asphodel.png
