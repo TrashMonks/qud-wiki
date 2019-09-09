@@ -22,6 +22,7 @@ QUD_COLORS = {'r': (166, 74, 46),  # dark red
               'K': (21, 83, 82),  # dark grey
               'o': (241, 95, 34),
               'O': (233, 159, 16),
+              'transparent': (0,0,0,0),
               }
 
 TILE_COLOR = (0, 0, 0, 255)
@@ -40,22 +41,30 @@ uses_details = set()
 
 class QudTile:
     """Class to load and color a Qud tile."""
-    def __init__(self, filename, colorstring, raw_tilecolor, raw_detailcolor, qudname):
+    def __init__(self, filename, colorstring, raw_tilecolor, raw_detailcolor, qudname, raw_transparent = "transparent"):
         self.blacklisted = False  # set True if problems with tile generation encountered
         self.filename = filename
         self.raw_tilecolor = raw_tilecolor
         self.raw_detailcolor = raw_detailcolor
         self.qudname = qudname
-        if raw_tilecolor is None:
+
+        if raw_tilecolor is None and colorstring is not None:
             raw_tilecolor = colorstring  # fall back to text mode color
+            if '^' in colorstring:
+                raw_tilecolor = colorstring.split('^')[0]
+                raw_transparent = colorstring.split('^')[1]
+
         if raw_tilecolor is None:
-            self.tilecolor = QUD_COLORS['y']  # render in white
+            self.tilecolor = QUD_COLORS['y'] # render in white
+            self.transparentcolor = QUD_COLORS[raw_transparent]
         else:
             if '^' in raw_tilecolor:
                 # TODO: this seems to be for setting background
                 raw_tilecolor = raw_tilecolor.split('^')[0]
             raw_tilecolor = QUD_COLORS[raw_tilecolor.strip('&')]
             self.tilecolor = raw_tilecolor
+            self.transparentcolor = QUD_COLORS[raw_transparent]
+
         if filename.lower().startswith('assets_content_textures'):
             # repair bad access paths
             filename = filename[24:]
@@ -91,8 +100,7 @@ class QudTile:
                     self.image.putpixel((x, y), self.detailcolor)
                     uses_details.add(self.qudname)
                 elif px[3] == 0:
-                    # fully transparent
-                    pass
+                    self.image.putpixel((x, y), self.transparentcolor)
                 else:
                     # custom tinted image: uses R channel of special color from tile
                     final = []
