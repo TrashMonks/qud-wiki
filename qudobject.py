@@ -83,12 +83,42 @@ class QudObject(NodeMixin):
                           'part_HologramWallMaterial',
                           'part_HologramMaterialPrimary']
             if any(self.is_specified(part) for part in holo_parts):  # holographic rendering
-                tile = QudTile(self.part_Render_Tile, '&B', '&B', 'b', self.name)
+                tile_colorstr='&B'
+                tile_tilecolor='&B^b'
+                tile_detailcolor='b'
+                tile_transparentcolor='transparent'
+            elif self.is_specified('part_AnimatedMaterialStasisfield'):
+                tile_colorstr='&C^M'
+                tile_tilecolor='&C^M'
+                tile_detailcolor='M'
+                tile_transparentcolor='M'
+            else:
+                tile_colorstr=self.part_Render_ColorString
+                tile_tilecolor=self.part_Render_TileColor
+                tile_detailcolor=self.part_Render_DetailColor if self.part_Render_DetailColor else "transparent"
+                tile_transparentcolor='transparent'
+
+            if self.is_specified('tag_PaintedWall') and self.tag_PaintedWall_Value != "*delete":
+                if tile_detailcolor is None and '^' in tile_colorstr:
+                    tile_transparentcolor = tile_colorstr.split('^',1)[1]
+                tile = QudTile((self.tag_PaintedWallAtlas_Value if self.tag_PaintedWallAtlas_Value else 'Tiles/') + self.tag_PaintedWall_Value + '-00000000' + (self.tag_PaintedWallExtension_Value if self.tag_PaintedWallExtension_Value  and self.name != 'Dirt' else '.bmp'),
+                               tile_colorstr,
+                               tile_tilecolor,
+                               tile_detailcolor,
+                               self.name,tile_transparentcolor)
+            elif self.is_specified('tag_PaintedFence') and self.tag_PaintedFence_Value != "*delete":
+                if tile_detailcolor is None and '^' in tile_colorstr:
+                    tile_transparentcolor = tile_colorstr.split('^',1)[1]
+                tile = QudTile((self.tag_PaintedFenceAtlas_Value if self.tag_PaintedFenceAtlas_Value else 'Tiles/') + self.tag_PaintedFence_Value + "_" + (self.tag_PaintedFenceExtension_Value if self.tag_PaintedFenceExtension_Value else '.bmp'),
+                               tile_colorstr,
+                               tile_tilecolor,
+                               tile_detailcolor,
+                               self.name, tile_transparentcolor)
             else:  # normal rendering
                 tile = QudTile(self.part_Render_Tile,
-                               self.part_Render_ColorString,
-                               self.part_Render_TileColor,
-                               self.part_Render_DetailColor,
+                               tile_colorstr,
+                               tile_tilecolor,
+                               tile_detailcolor,
                                self.name)
         return tile
 
