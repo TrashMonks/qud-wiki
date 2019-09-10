@@ -483,7 +483,7 @@ class QudObject(NodeMixin):
         if self.part_LatchesOn:
             charge = self.part_LatchesOn_ChargeUse
         return charge
-    
+
     @property
     def chargefunction(self):
         """The features or functions that the charge is used for."""
@@ -1112,7 +1112,8 @@ class QudObject(NodeMixin):
     @property
     def pvpowered(self):
         """Whether the object's PV changes when it is powered."""
-        if ((self.vibro == 'yes' and (not self.part_VibroWeapon or int(self.part_VibroWeapon_ChargeUse) > 0)) or
+        if ((self.vibro == 'yes' and
+                (not self.part_VibroWeapon or int(self.part_VibroWeapon_ChargeUse) > 0)) or
                 (self.part_Gaslight and int(self.part_Gaslight_ChargeUse) > 0)):
             return 'yes'
 

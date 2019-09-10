@@ -253,7 +253,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if index.column() == 0:
                 if check_total > 1:
                     check_count += 1
-                    self.statusbar.showMessage("comparing selected entries against wiki:  " + str(check_count) + "/" + str(check_total))
+                    self.statusbar.showMessage("comparing selected entries against wiki:  " +
+                                               str(check_count) + "/" + str(check_total))
                 qitem = self.qud_object_model.itemFromIndex(index)
                 wiki_exists = self.qud_object_model.itemFromIndex(self.currently_selected[num+3])
                 wiki_matches = self.qud_object_model.itemFromIndex(self.currently_selected[num+4])
@@ -308,7 +309,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if index.column() == 0:
                 if check_total > 1:
                     check_count += 1
-                    self.statusbar.showMessage("uploading selected templates to wiki:  " + str(check_count) + "/" + str(check_total))
+                    self.statusbar.showMessage("uploading selected templates to wiki:  " +
+                                               str(check_count) + "/" + str(check_total))
                 item = self.qud_object_model.itemFromIndex(index)
                 qud_object = item.data()
                 if not qud_object.is_wiki_eligible():
@@ -343,7 +345,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 continue
             if check_total > 1:
                 check_count += 1
-                self.statusbar.showMessage("uploading selected tiles to wiki:  " + str(check_count) + "/" + str(check_total))
+                self.statusbar.showMessage("uploading selected tiles to wiki:  " +
+                                           str(check_count) + "/" + str(check_total))
             item = self.qud_object_model.itemFromIndex(index)
             qud_object = item.data()
             if qud_object.tile is None:
