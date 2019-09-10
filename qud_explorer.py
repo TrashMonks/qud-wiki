@@ -55,7 +55,7 @@ class QudTreeView(QTreeView):
         self.customContextMenuRequested.connect(self.on_context_menu)
 
     def on_context_menu(self, point):
-        print(point)
+        print(str(point) + "  '" + self.indexAt(point).data() + "'")
         self.tree_menu.exec_(self.mapToGlobal(point))
 
     def selectionChanged(self, selected, deselected):
@@ -240,12 +240,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.treeView.clearSelection()  # keyboardSearch is bad
             self.treeView.keyboardSearch(self.search_line_edit.text())
 
+    def selected_row_count(self):
+        return len(self.currently_selected) // len(HEADER_LABELS)
+
     def wiki_check_selected(self):
         """Check the wiki for the existence of the article and image for selected objects, and
         update the columns for those states."""
         QApplication.setOverrideCursor(Qt.WaitCursor)
+        check_total = self.selected_row_count()
+        check_count = 0
         for num, index in enumerate(self.currently_selected):
             if index.column() == 0:
+                if check_total > 1:
+                    check_count += 1
+                    self.statusbar.showMessage("comparing selected entries against wiki:  " + str(check_count) + "/" + str(check_total))
                 qitem = self.qud_object_model.itemFromIndex(index)
                 wiki_exists = self.qud_object_model.itemFromIndex(self.currently_selected[num+3])
                 wiki_matches = self.qud_object_model.itemFromIndex(self.currently_selected[num+4])
@@ -287,13 +295,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     tile_exists.setText('❌')
                     tile_matches.setText('-')
                 self.app.processEvents()
+        # restore cursor and status bar text:
+        self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
         QApplication.restoreOverrideCursor()
 
     def upload_selected_templates(self):
         """Upload the generated templates for the selected objects to the wiki."""
         QApplication.setOverrideCursor(Qt.WaitCursor)
+        check_total = self.selected_row_count()
+        check_count = 0
         for num, index in enumerate(self.currently_selected):
             if index.column() == 0:
+                if check_total > 1:
+                    check_count += 1
+                    self.statusbar.showMessage("uploading selected templates to wiki:  " + str(check_count) + "/" + str(check_total))
                 item = self.qud_object_model.itemFromIndex(index)
                 qud_object = item.data()
                 if not qud_object.is_wiki_eligible():
@@ -312,15 +327,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         upload_processed = True
                     finally:
                         if not upload_processed:  # unhandled exception during upload
+                            self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
                             QApplication.restoreOverrideCursor()
+        # restore cursor and status bar text:
+        self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
         QApplication.restoreOverrideCursor()
 
     def upload_selected_tiles(self):
         """Upload the generated tiles for the selected objects to the wiki."""
         QApplication.setOverrideCursor(Qt.WaitCursor)
+        check_total = self.selected_row_count()
+        check_count = 0
         for num, index in enumerate(self.currently_selected):
             if index.column() != 0:
                 continue
+            if check_total > 1:
+                check_count += 1
+                self.statusbar.showMessage("uploading selected tiles to wiki:  " + str(check_count) + "/" + str(check_total))
             item = self.qud_object_model.itemFromIndex(index)
             qud_object = item.data()
             if qud_object.tile is None:
@@ -335,6 +358,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     print(f'Image {qud_object.image} already exists and matches our version.')
                     continue
                 else:
+                    QApplication.restoreOverrideCursor()  # restore mouse cursor for dialog
                     box = QMessageBox()
                     box.setText(f'Image for {qud_object.displayname} ({qud_object.image}) already'
                                 f' exists but is different from the auto-generated version.')
@@ -342,7 +366,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                            f' overwrite it?')
                     box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
                     if box.exec_() == QMessageBox.No:
+                        QApplication.setOverrideCursor(Qt.WaitCursor)
                         continue
+                    QApplication.setOverrideCursor(Qt.WaitCursor)
             # if we get this far, we are uploading or replacing the wiki file
             if qud_object.name in config['Templates']['Image overrides']:
                 filename = config['Templates']['Image overrides'][qud_object.name]
@@ -365,7 +391,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 upload_processed = True
             finally:
                 if not upload_processed:  # unhandled exception during upload
+                    self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
                     QApplication.restoreOverrideCursor()
+        # restore cursor and status bar text:
+        self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
         QApplication.restoreOverrideCursor()
 
     def save_selected_tile(self):
