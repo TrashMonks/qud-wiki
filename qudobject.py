@@ -992,6 +992,19 @@ class QudObject(NodeMixin):
             return 'yes'
 
     @property
+    def modcount(self):
+        ret = 0
+        if self.part_AddMod_Mods is not None:
+            ret += len(self.part_AddMod_Mods.split(","))
+        for key in self.part.keys():
+            if key.startswith('Mod'):
+                ret += 1
+        if ret > 0:
+            return ret
+        return None
+
+
+    @property
     def mods(self):
         ret = None
         if self.part_AddMod_Mods is not None:

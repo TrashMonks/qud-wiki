@@ -23,7 +23,8 @@ Templates:
      harvestedinto, preservedinto, preservedquantity, cookeffect, ismeat, isplant, isfungus,
      exoticfood, illoneat, oneat, corpse, corpsechance, role, extra, inheritingfrom, dynamictable, quickness, movespeed, strength,
      agility, toughness, intelligence, willpower, ego, acid, electric, cold, heat, poison,
-     reputationbonus, faction, wornon, usesslots, demeanor, gender, pronouns, inventory, skills, mutations, mods, desc, eatdesc]
+     reputationbonus, faction, wornon, usesslots, demeanor, gender, pronouns, inventory, skills, mutations, modcount,
+     mods, desc, eatdesc]
   ExtraFields:
     #Fields for the extra info template
     [empsensitive, twohanded, metal, lightprojectile, reflect, movespeedbonus, cursed, destroyonunequip, savemodifier, savemodifieramt, 
