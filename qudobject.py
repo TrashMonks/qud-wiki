@@ -96,8 +96,15 @@ class QudObject(NodeMixin):
             else:
                 color = self.part_Render_ColorString
                 tilecolor = self.part_Render_TileColor
-                _ = self.part_Render_DetailColor
-                detail = _ if _ else 'transparent'
+                # default detail color when unspecified is black (0, 0, 0)
+                # which matches the overlay UI inventory rendering
+                # ------------------------------------
+                detail = self.part_Render_DetailColor
+                # below uses logic similar to non-overlay UI where default ('k') is
+                # essentially invisible/transparent against the default background color ('k')
+                # ------------------------------------
+                # _ = self.part_Render_DetailColor
+                # detail = _ if _ else 'transparent'
                 trans = 'transparent'
 
             if self.is_specified('tag_PaintedWall') and self.tag_PaintedWall_Value != "*delete":
@@ -866,11 +873,15 @@ class QudObject(NodeMixin):
             for obj in self.inventoryobject:
                 if obj[0] in '*#@':  # Ignores stuff like *Junk 1
                     continue
-                elif 'Number' in self.inventoryobject[obj]:
-                    ret += f"{{{{inventory|"\
-                           f"{{{{ID to name|{obj}}}}}|{self.inventoryobject[obj]['Number']}}}}}"
-                else:
-                    ret += f"{{{{inventory|{{{{ID to name|{obj}}}}}|1}}}}"
+                equipped = 'no'  # not yet implemented
+                count = 1
+                if 'Number' in self.inventoryobject[obj]:
+                    count = self.inventoryobject[obj]['Number']
+                chance = 100
+                if 'Chance' in self.inventoryobject[obj]:
+                    chance = self.inventoryobject[obj]['Chance']
+                ret += f"{{{{inventory|"\
+                       f"{{{{ID to name|{obj}}}}}|{count}|{equipped}|{chance}}}}}"
         return ret
 
     @property
