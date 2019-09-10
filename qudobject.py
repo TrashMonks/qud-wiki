@@ -1003,18 +1003,22 @@ class QudObject(NodeMixin):
             return ret
         return None
 
-
     @property
     def mods(self):
         ret = None
         if self.part_AddMod_Mods is not None:
             ret = ""
             i = 0
-            tierarray = self.part_AddMod_Tiers.split(",")
+            tierarray = None
+            if self.part_AddMod_Tiers is not None:
+                tierarray = self.part_AddMod_Tiers.split(",")
             for mod in self.part_AddMod_Mods.split(","):
                 if ret != "":
                     ret += " </br>"
-                ret += "{{ModID to name|" + mod + "|" + tierarray[i] + "}}"
+                tier = "1"
+                if tierarray is not None and len(tierarray) > i:
+                    tier = tierarray[i]
+                ret += "{{ModID to name|" + mod + "|" + tier + "}}"
                 i = i+1
         for key in self.part.keys():
             if key.startswith('Mod'):
