@@ -205,7 +205,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 elif self.view_type == 'all_attr':
                     text += pformat(qud_object.all_attributes, width=120)
                 self.statusbar.showMessage(qud_object.ui_inheritance_path())
-                if qud_object.tile is not None and not qud_object.tile.blacklisted:
+                if not qud_object.tile.blacklisted:
                     self.tile_label.setPixmap(QPixmap.fromImage(qud_object.tile.get_big_qtimage()))
                     self.top_selected = qud_object
                     self.save_tile_button.setDisabled(False)
@@ -370,8 +370,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QApplication.restoreOverrideCursor()
 
     def save_selected_tile(self):
-        filename = QFileDialog.getSaveFileName()[0]
-        self.top_selected.tile.get_big_image().save(filename, format='png')
+        if self.top_selected.tile is not None:
+            filename = QFileDialog.getSaveFileName()[0]
+            self.top_selected.tile.get_big_image().save(filename, format='png')
 
     def show_simple_diff(self):
         qud_object = self.top_selected
