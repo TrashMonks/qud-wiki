@@ -205,13 +205,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 elif self.view_type == 'all_attr':
                     text += pformat(qud_object.all_attributes, width=120)
                 self.statusbar.showMessage(qud_object.ui_inheritance_path())
-                if not qud_object.tile.blacklisted:
+                self.top_selected = qud_object
+                if qud_object.tile is not None and not qud_object.tile.blacklisted:
                     self.tile_label.setPixmap(QPixmap.fromImage(qud_object.tile.get_big_qtimage()))
-                    self.top_selected = qud_object
                     self.save_tile_button.setDisabled(False)
                 else:
                     self.tile_label.clear()
-                    self.top_selected = None
                     self.save_tile_button.setDisabled(True)
         if len(indices) == 0:
             self.tile_label.clear()
