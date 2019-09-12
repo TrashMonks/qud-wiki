@@ -14,7 +14,7 @@ EDITED_SUMMARY = f'Updated by {wiki_config["operator"]}'\
 # 1st matching group: everything before template
 # 2nd matching group: template
 # 3rd matching group: everything after template
-TEMPLATE_RE = r"(.*?)(^{{(?:Item|Character|Food|Corpse).*^}}$\s\[\[Category:[ \w]+\]\]$)(.*)"
+TEMPLATE_RE = r"(.*?)(^{{(?:Item|Character|Food|Corpse).*^}}$)(.*)"
 
 
 class WikiPage:

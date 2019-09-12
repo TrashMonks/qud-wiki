@@ -273,10 +273,10 @@ class QudObject(NodeMixin):
                     if field == 'renderstr':
                         attrib = attrib.replace('}', '&#125;')
                     text += f"| {field} = {attrib}\n"
-        text += "}}\n"
         category = self.wiki_category()
         if category:
-            text += "[[Category:" + category + "]]"
+            text += f"| categories = {category}\n"
+        text += "}}\n"
         return text
 
     def wiki_template_type(self) -> str:
@@ -732,11 +732,32 @@ class QudObject(NodeMixin):
 
     @property
     def elementaldamage(self):
-        return self.part_MeleeWeapon_ElementalDamage
+        elestr = None
+        if self.is_specified('part_ModFlaming'):
+            tierstr = self.part_ModFlaming_Tier
+            elestr = str(int(int(tierstr)*0.8)) + '-' + str(int(int(tierstr)*1.2))
+        elif self.is_specified('part_ModFreezing'):
+            tierstr = self.part_ModFreezing_Tier
+            elestr = str(int(int(tierstr)*0.8)) + '-' + str(int(int(tierstr)*1.2))
+        elif self.is_specified('part_ModElectrified'):
+            tierstr = self.part_ModElectrified_Tier
+            elestr = str(int(tierstr)) + '-' + str(int(int(tierstr)*1.5))
+        else:
+            elestr = self.part_MeleeWeapon_ElementalDamage
+        return elestr
 
     @property
     def elementaltype(self):
-        return self.part_MeleeWeapon_Element
+        elestr = None
+        if self.is_specified('part_ModFlaming'):
+            elestr = 'Fire'
+        elif self.is_specified('part_ModFreezing'):
+            elestr = 'Cold'
+        elif self.is_specified('part_ModElectrified'):
+            elestr = 'Electric'
+        else:
+            elestr = self.part_MeleeWeapon_Element
+        return elestr
 
     @property
     def empsensitive(self):
@@ -1310,6 +1331,12 @@ class QudObject(NodeMixin):
             val = "&amp;yhoming " + val
         if self.part_ModRazored is not None:
             val = "&amp;Yserra&amp;Rt&amp;Yed&amp;y " + val
+        if self.part_ModElectrified is not None:
+            val = '&amp;Welectrified&amp;y ' + val
+        if self.part_ModFlaming is not None:
+            val = '&amp;Rflaming&amp;y ' + val
+        if self.part_ModFreezing is not None:
+            val = '&amp;Cfreezing&amp;y ' + val
         return val
 
     @property

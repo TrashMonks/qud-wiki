@@ -20,7 +20,7 @@ from wikipage import WikiPage
 HEADER_LABELS = ['Name', 'Display', 'Override', 'Article exists', 'Article matches', 'Image exists',
                  'Image matches']
 # TEMPLATE_RE copied from wikipage.py except that start/end patterns converted to non-capturing (?:)
-TEMPLATE_RE = r"(?:.*?)(^{{(?:Item|Character|Food|Corpse).*^}}$\s\[\[Category:[ \w]+\]\]$)(?:.*)"
+TEMPLATE_RE = r"(?:.*?)(^{{(?:Item|Character|Food|Corpse).*^}}$)(?:.*)"
 
 
 class QudTreeView(QTreeView):
