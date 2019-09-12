@@ -500,6 +500,7 @@ Wiki:
     Weapons: [MeleeWeapon, MissileWeapon]
     Melee Weapons: [MeleeWeapon]
     Ammo: [Projectile]
+    Arrow: [Wooden Arrow, Steel Arrow, Boomrose Arrow]
     Cudgels: [BaseCudgel, Prayer Rod, Stun Rod, Nanopneumatic Jackhammer, Grandfather Horn,
               Billowing Conch of the Aji]
     Short Blades: [BaseDagger, Vibro Dagger, Gaslight Dagger]
