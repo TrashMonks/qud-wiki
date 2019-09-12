@@ -52,7 +52,32 @@ Templates:
     Crazed Goatfolk Shaman 1: goatfolk shaman crazed.png
     Wraith-Knight Templar: wraith knight templar.png
     HoloMarble: holographic marble wall.png
-   
+  ItemModProperties:
+    # difficulty and complexity changes when a mod is applied to an item
+    # ifcomplex means the change only applies if the item already has complexity > 0
+    # these values live in code, usually in ApplyModification() method of the Mod's .cs file
+    ModCounterweighted: {difficulty: 1, complexity: 1, ifcomplex: True}
+    ModElectrified: {difficulty: 1, complexity: 1, ifcomplex: False}
+    ModEngraved: {difficulty: 0, complexity: 0, ifcomplex: False}
+    ModExtradimensional: {difficulty: 8, complexity: 4, ifcomplex: True}
+    ModFlaming: {difficulty: 1, complexity: 1, ifcomplex: False}
+    ModFreezing: {difficulty: 1, complexity: 1, ifcomplex: False}
+    ModGesticulating: {difficulty: 1, complexity: 1, ifcomplex: False}
+    ModGlassArmor: {difficulty: 0, complexity: 0, ifcomplex: False}
+    ModHeatSeeking: {difficulty: 1, complexity: 1, ifcomplex: True}
+    ModImprovedElectricalGeneration: {difficulty: 0, complexity: 0, ifcomplex: False}
+    ModImprovedTemporalFugue: {difficulty: 0, complexity: 0, ifcomplex: False}
+    ModJewelEncrusted: {difficulty: 0, complexity: 0, ifcomplex: False}
+    ModMasterwork: {difficulty: 1, complexity: 1, ifcomplex: True}
+    ModPainted: {difficulty: 0, complexity: 0, ifcomplex: False}
+    ModPiping: {difficulty: 1, complexity: 0, ifcomplex: False}
+    ModRazored: {difficulty: 1, complexity: 1, ifcomplex: True}
+    ModScoped: {difficulty: 1, complexity: 1, ifcomplex: False}
+    ModSharp: {difficulty: 1, complexity: 1, ifcomplex: True}
+    ModSpringLoaded: {difficulty: 1, complexity: 1, ifcomplex: False}
+    ModSturdy: {difficulty: 0, complexity: 0, ifcomplex: False}
+    ModWired: {difficulty: 1, complexity: 0, ifcomplex: True}
+    
 
 Wiki:
   # See also wiki login configuration in wiki.yml.

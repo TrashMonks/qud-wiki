@@ -548,8 +548,23 @@ class QudObject(NodeMixin):
     @property
     def complexity(self):
         """The tinker examination complexity of the object."""
-        if self.canbuild == 'yes':
-            return self.part_Examiner_Complexity
+        val = int(getattr(self, 'part_Examiner_Complexity', 0))
+        if self.part_AddMod_Mods is not None:
+            modprops = config['Templates']['ItemModProperties']
+            for mod in self.part_AddMod_Mods.split(","):
+                if mod in modprops:
+                    if (modprops[mod]['ifcomplex'] == True) and (val <= 0):
+                        continue  # no change because the item isn't already complex
+                    val += int(modprops[mod]['complexity'])
+        for key in self.part.keys():
+            if key.startswith('Mod'):
+                modprops = config['Templates']['ItemModProperties']
+                if key in modprops:
+                    if (modprops[key]['ifcomplex'] == True) and (val <= 0):
+                        continue  # ditto
+                    val += int(modprops[key]['complexity'])
+        if val > 0 or self.canbuild == 'yes':
+            return val
 
     @property
     def cursed(self):
