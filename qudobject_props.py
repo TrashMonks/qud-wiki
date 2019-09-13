@@ -60,6 +60,29 @@ class QudObjectProps(QudObject):
             val = getattr(self, f'part_Armor_{element}')
         return val
 
+    def projectile_object(self, part_attr: str = ''):
+        """Retrieve the projectile object for a MissileWeapon or Arrow.
+          If part_attr specified, retrieve the specific part attribute
+          value from that projectile object instead.
+
+          Doesn't work for bows because their projectile object varies
+          depending on the type of arrow loaded into them."""
+        if self.part_MissileWeapon is not None or self.is_specified('part_AmmoArrow'):
+            parts = ['part_BioAmmoLoader_ProjectileObject',
+                     'part_AmmoArrow_ProjectileObject',
+                     'part_MagazineAmmoLoader_ProjectileObject',
+                     'part_EnergyAmmoLoader_ProjectileObject',
+                     'part_LiquidAmmoLoader_ProjectileObject']
+            for part in parts:
+                attr = getattr(self, part)
+                if attr is not None and attr != '':
+                    item = qindex[attr]
+                    if part_attr:
+                        return getattr(item, part_attr, None)
+                    else:
+                        return item
+        return None
+
     # PROPERTIES
     # The following properties are implemented to make wiki formatting far simpler.
     # Sorted alphabetically. All return types should be strings.
@@ -296,18 +319,9 @@ class QudObjectProps(QudObject):
                 val = self.part_GeomagneticDisk_Damage
             else:
                 val = self.part_ThrownWeapon_Damage
-        if self.part_MissileWeapon is not None:
-            parts = ['part_BioAmmoLoader_ProjectileObject',
-                     # Bows don't specify ProjectileObjects:
-                     'part_MagazineAmmoLoader_ProjectileObject',
-                     'part_EnergyAmmoLoader_ProjectileObject',
-                     'part_LiquidAmmoLoader_ProjectileObject']
-            for part in parts:
-                attr = getattr(self, part)
-                if attr is not None and attr != '':
-                    item = qindex[attr]
-                    if item.part_Projectile:
-                        val = item.part_Projectile_BaseDamage
+        projectiledamage = self.projectile_object('part_Projectile_BaseDamage')
+        if projectiledamage:
+            val = projectiledamage
         return val
 
     @property
@@ -855,21 +869,9 @@ class QudObjectProps(QudObject):
                 pv += int(self.part_Gaslight_ChargedPenetrationBonus)
             elif self.part_MeleeWeapon_PenBonus:
                 pv += int(self.part_MeleeWeapon_PenBonus)
-        if self.part_MissileWeapon is not None:
-            parts = ['part_BioAmmoLoader_ProjectileObject',
-                     # Bows don't specify ProjectileObjects:
-                     'part_MagazineAmmoLoader_ProjectileObject',
-                     'part_EnergyAmmoLoader_ProjectileObject',
-                     'part_LiquidAmmoLoader_ProjectileObject']
-            for part in parts:
-                attr = getattr(self, part)
-                if attr is not None and attr != '':
-                    item = qindex[attr]
-                    if item.part_Projectile:
-                        pv = item.part_Projectile_BasePenetration
-            if pv is not None:
-                # add base PV
-                pv = int(pv) + 4
+        missilepv = self.projectile_object('part_Projectile_BasePenetration')
+        if missilepv is not None:
+            pv = int(missilepv) + 4  # add base 4 PV
         if pv is not None:
             return str(pv)
 
