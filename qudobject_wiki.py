@@ -90,12 +90,30 @@ class QudObjectWiki(QudObjectProps):
                 eligible = False
         return eligible
 
+    # PROPERTIES
+    # The following properties are implemented to make wiki formatting far simpler.
+    # Sorted alphabetically. All return types should be strings or None.
+
+    @property
+    def ammodamagetypes(self):
+        """Damage attributes associated with the projectile (</br> delimited)."""
+        types = super().ammodamagetypes
+        if types is not None:
+            return '</br>'.join(types)
+
     @property
     def colorstr(self):
         """The Qud color code associated with the RenderString."""
         colorstr = super().colorstr
         if colorstr is not None:
             return escape_ampersands(colorstr)
+
+    @property
+    def cookeffect(self):
+        """The possible cooking effects of an item."""
+        effect = super().cookeffect
+        if effect is not None:
+            return ','.join(f'{{{{CookEffect ID to name|{val}}}}}' for val in effect)
 
     @property
     def desc(self):
@@ -107,15 +125,10 @@ class QudObjectWiki(QudObjectProps):
     @property
     def extra(self):
         """Any other features that do not have an associated variable."""
-        extrafields = config['Templates']['ExtraFields']
-        text = ''
-        for field in extrafields:
-            attrib = getattr(self, field)
-            if attrib is not None:
-                if text != '':
-                    text += '| '
-                text += f"{field} = {attrib} "
-        return ('{{Extra info|' + text + '}}') if (text != '') else None
+        fields = super().extra
+        if fields is not None:
+            text = ' | '.join(f'{field} = {attrib}' for field, attrib in fields)
+            return f'{{{{Extra info|{text}}}}}'
 
     @property
     def faction(self):

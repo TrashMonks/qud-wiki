@@ -30,7 +30,7 @@ Templates:
      reputationbonus, faction, wornon, usesslots, demeanor, gender, pronouns,
      inventory, skills, mutations, modcount, mods, desc]
   ExtraFields:
-    #Fields for the extra info template
+    # Fields for the extra info template
     [empsensitive, twohanded, metal, lightprojectile, reflect, movespeedbonus, cursed, destroyonunequip,
      savemodifier, savemodifieramt, shotcooldown, penetratingammo, omniphaseprojectile,
      spectacles, carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic, uniquechara]

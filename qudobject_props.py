@@ -13,6 +13,7 @@ bit_table = {'G': 'B',
 BIT_TRANS = ''.maketrans(bit_table)
 IMAGE_OVERRIDES = config['Templates']['Image overrides']
 
+
 def strip_qud_color_codes(text: str):
     """Remove Qud color codes like `&Y` from the provided text."""
     return re.sub('&[rRwWcCbBgGmMyYkKoO]', '', text)
@@ -78,8 +79,6 @@ class QudObjectProps(QudObject):
         return None
 
     # PROPERTIES
-    # The following properties are implemented to make wiki formatting far simpler.
-    # Sorted alphabetically. All return types should be strings.
     @property
     def accuracy(self):
         """How accurate the gun is."""
@@ -119,15 +118,10 @@ class QudObjectProps(QudObject):
 
     @property
     def ammodamagetypes(self):
-        """Damage attributes associated with the projectile (</br> delimited)."""
+        """Damage attributes associated with the projectile."""
         attributes = self.projectile_object('part_Projectile_Attributes')
         if attributes is not None:
-            val = ''
-            for attr in attributes.split():
-                if val != '':
-                    val += '</br>'
-                val += attr
-            return val
+            return attributes.split()
 
     @property
     def aquatic(self):
@@ -270,23 +264,18 @@ class QudObjectProps(QudObject):
 
     @property
     def cookeffect(self):
-        """The possible cooking effects of an item"""
-        ret = None
-        if self.part_PreparedCookingIngredient_type is not None:
-            ret = ""
-            if "," in self.part_PreparedCookingIngredient_type:
-                for val in self.part_PreparedCookingIngredient_type.split(","):
-                    if ret != "":
-                        ret += ","
-                    ret += "{{CookEffect ID to name|" + val + "}}"
-            else:
-                ret = "{{CookEffect ID to name|" + self.part_PreparedCookingIngredient_type + "}}"
-        return ret
+        """The possible cooking effects of an item."""
+        ingred_type = self.part_PreparedCookingIngredient_type
+        if ingred_type is not None:
+            return ingred_type.split(',')
 
     @property
     def complexity(self):
         """The complexity of the object, used for psychometry."""
-        val = int(getattr(self, 'part_Examiner_Complexity', 0))
+        if self.part_Examiner_Complexity is None:
+            val = 0
+        else:
+            val = int(self.part_Examiner_Complexity)
         if self.part_AddMod_Mods is not None:
             modprops = config['Templates']['ItemModProperties']
             for mod in self.part_AddMod_Mods.split(","):
@@ -532,15 +521,13 @@ class QudObjectProps(QudObject):
     @property
     def extra(self):
         """Any other features that do not have an associated variable."""
+        fields = []
         extrafields = config['Templates']['ExtraFields']
-        text = ''
         for field in extrafields:
             attrib = getattr(self, field)
             if attrib is not None:
-                if text != '':
-                    text += '| '
-                text += f"{field} = {attrib} "
-        return (('{{Extra info|' + text + '}}') if (text != '') else None)
+                fields.append((field, attrib))
+        return fields if len(fields) > 0 else None
 
     @property
     def faction(self):
