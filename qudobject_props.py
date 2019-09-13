@@ -13,15 +13,9 @@ bit_table = {'G': 'B',
 BIT_TRANS = ''.maketrans(bit_table)
 IMAGE_OVERRIDES = config['Templates']['Image overrides']
 
-
-def escape_ampersands(text: str):
-    """Convert & to &amp; for use in wiki template."""
-    return re.sub('&', '&amp;', text)
-
-
 def strip_qud_color_codes(text: str):
     """Remove Qud color codes like `&Y` from the provided text."""
-    return re.sub('&.', '', text)
+    return re.sub('&[rRwWcCbBgGmMyYkKoO]', '', text)
 
 
 class QudObjectProps(QudObject):
@@ -264,9 +258,9 @@ class QudObjectProps(QudObject):
     def colorstr(self):
         """The Qud color code associated with the RenderString."""
         if self.part_Render_ColorString:
-            return escape_ampersands(self.part_Render_ColorString)
+            return self.part_Render_ColorString
         if self.part_Gas_ColorString:
-            return escape_ampersands(self.part_Gas_ColorString)
+            return self.part_Gas_ColorString
 
     @property
     def commerce(self):
@@ -371,7 +365,6 @@ class QudObjectProps(QudObject):
         if desc is not None:
             if self.part_BonusPostfix is not None:
                 desc += "\n\n" + self.part_BonusPostfix_Postfix
-            desc = escape_ampersands(desc)
             desc = desc.replace('\r\n', '\n')  # currently, only the description for Bear
         return desc
 
@@ -551,18 +544,20 @@ class QudObjectProps(QudObject):
 
     @property
     def faction(self):
-        """what factions are this creature loyal to"""
+        """The factions this creature has loyalty to.
+        Returned as a list of tuples of faction, value like
+        [('Joppa', 100), ('Barathrumites', 100)]"""
         # <part Name="Brain" Wanders="false" Factions="Joppa-100,Barathrumites-100" />
         ret = None
         if self.part_Brain_Factions:
-            ret = ''
+            ret = []
             for part in self.part_Brain_Factions.split(','):
                 if '-' in part:
-                    if ret != '':
-                        ret += "</br>"
                     # has format like `Joppa-100,Barathrumites-100`
                     faction, value = part.split('-')
-                    ret += f'{{{{creature faction|{{{{FactionID to name|{faction}}}}}|{value}}}}}'
+                    ret.append((faction, int(value)))
+                else:
+                    print(f'FIXME: unexpected faction format: {part} in {self.name}')
         return ret
 
     @property
@@ -1097,27 +1092,27 @@ class QudObjectProps(QudObject):
         """The display name of the item."""
         val = self.name
         if self.builder_GoatfolkHero1_ForceName:
-            val = escape_ampersands(self.builder_GoatfolkHero1_ForceName)  # for Mamon
+            val = self.builder_GoatfolkHero1_ForceName  # for Mamon
         elif self.name == "Wraith-Knight Templar":
-            val = "&amp;MWraith-Knight Templar of the Binary Honorum"  # override for Wraith Knights
+            val = "&MWraith-Knight Templar of the Binary Honorum"  # override for Wraith Knights
         elif self.part_Render_DisplayName:
-            val = escape_ampersands(self.part_Render_DisplayName)
+            val = self.part_Render_DisplayName
 
         if self.part_ModMasterwork is not None:
             # if mods are guaranteed, will prepend them before the name
-            val = "&amp;Ymasterwork&amp;y " + val
+            val = "&Ymasterwork&y " + val
         if self.part_ModScoped is not None:
-            val = "&amp;yscoped " + val
+            val = "&yscoped " + val
         if self.part_ModHeatSeeking is not None:
-            val = "&amp;yhoming " + val
+            val = "&yhoming " + val
         if self.part_ModRazored is not None:
-            val = "&amp;Yserra&amp;Rt&amp;Yed&amp;y " + val
+            val = "&Yserra&Rt&Yed&y " + val
         if self.part_ModElectrified is not None:
-            val = '&amp;Welectrified&amp;y ' + val
+            val = '&Welectrified&y ' + val
         if self.part_ModFlaming is not None:
-            val = '&amp;Rflaming&amp;y ' + val
+            val = '&Rflaming&y ' + val
         if self.part_ModFreezing is not None:
-            val = '&amp;Cfreezing&amp;y ' + val
+            val = '&Cfreezing&y ' + val
         return val
 
     @property

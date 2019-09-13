@@ -1,5 +1,12 @@
+import re
+
 from config import config
 from qudobject_props import QudObjectProps
+
+
+def escape_ampersands(text: str):
+    """Convert & to &amp; for use in wiki template."""
+    return re.sub('&', '&amp;', text)
 
 
 class QudObjectWiki(QudObjectProps):
@@ -82,3 +89,56 @@ class QudObjectWiki(QudObjectProps):
             elif entry.startswith('-') and self.name == entry[1:]:
                 eligible = False
         return eligible
+
+    @property
+    def colorstr(self):
+        """The Qud color code associated with the RenderString."""
+        colorstr = super().colorstr
+        if colorstr is not None:
+            return escape_ampersands(colorstr)
+
+    @property
+    def desc(self):
+        """The short description of the object, with color codes included (ampersands escaped)."""
+        desc = super().desc
+        if desc is not None:
+            return escape_ampersands(desc)
+
+    @property
+    def extra(self):
+        """Any other features that do not have an associated variable."""
+        extrafields = config['Templates']['ExtraFields']
+        text = ''
+        for field in extrafields:
+            attrib = getattr(self, field)
+            if attrib is not None:
+                if text != '':
+                    text += '| '
+                text += f"{field} = {attrib} "
+        return ('{{Extra info|' + text + '}}') if (text != '') else None
+
+    @property
+    def faction(self):
+        """The factions this creature has loyalty to, formatted for the wiki."""
+        # <part Name="Brain" Wanders="false" Factions="Joppa-100,Barathrumites-100" />
+        factions = super().faction
+        if factions is not None:
+            ret = ''
+            for faction, value in factions:
+                if ret != '':
+                    ret += '</br>'
+                ret += f'{{{{creature faction|{{{{FactionID to name|{faction}}}}}|{value}}}}}'
+            return ret
+
+    @property
+    def title(self):
+        """The display name of the item, with ampersands escaped."""
+        title = super().title
+        if title is not None:
+            return escape_ampersands(title)
+
+    @property
+    def uniquechara(self):
+        if self.inherits_from('Creature') or self.inherits_from('ActivePlant'):
+            if self.name in config['Wiki']['Categories']['Unique Characters']:
+                return 'yes'
