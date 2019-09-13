@@ -4,6 +4,9 @@ from config import config
 from qudobject_props import QudObjectProps
 
 
+IMAGE_OVERRIDES = config['Templates']['Image overrides']
+
+
 def escape_ampersands(text: str):
     """Convert & to &amp; for use in wiki template."""
     return re.sub('&', '&amp;', text)
@@ -116,6 +119,12 @@ class QudObjectWiki(QudObjectProps):
             return ','.join(f'{{{{CookEffect ID to name|{val}}}}}' for val in effect)
 
     @property
+    def corpse(self):
+        obj = super().corpse
+        if obj is not None:
+            return f'{{{{ID to name|{obj}}}}}'
+
+    @property
     def desc(self):
         """The short description of the object, with color codes included (ampersands escaped)."""
         desc = super().desc
@@ -141,6 +150,41 @@ class QudObjectWiki(QudObjectProps):
                 if ret != '':
                     ret += '</br>'
                 ret += f'{{{{creature faction|{{{{FactionID to name|{faction}}}}}|{value}}}}}'
+            return ret
+
+    @property
+    def gasemitted(self):
+        """The gas emitted by the weapon (typically missile weapon 'pumps')."""
+        gas = super().gasemitted
+        if gas is not None:
+            return f'{{{{ID to name|{gas}}}}}'
+
+    @property
+    def harvestedinto(self):
+        obj = super().harvestedinto
+        if obj is not None:
+            return f'{{{{ID to name|{obj}}}}}'
+
+    @property
+    def image(self):
+        """The image filename. May be specified in our config."""
+        if self.name in IMAGE_OVERRIDES:
+            return IMAGE_OVERRIDES[self.name]
+        else:
+            return super().image
+
+    @property
+    def inventory(self):
+        """The inventory of a character.
+
+        Retrieves a list of tuples of strings (name, count, equipped, chance)
+        and renders to a template."""
+        inv = super().inventory
+        if inv is not None:
+            ret = ''
+            for name, count, equipped, chance in inv:
+                ret += f"{{{{inventory|" \
+                       f"{{{{ID to name|{name}}}}}|{count}|{equipped}|{chance}}}}}"
             return ret
 
     @property

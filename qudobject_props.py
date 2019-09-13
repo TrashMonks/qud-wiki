@@ -11,7 +11,6 @@ bit_table = {'G': 'B',
              'C': 'D',
              'B': 'C'}
 BIT_TRANS = ''.maketrans(bit_table)
-IMAGE_OVERRIDES = config['Templates']['Image overrides']
 
 
 def strip_qud_color_codes(text: str):
@@ -187,11 +186,11 @@ class QudObjectProps(QudObject):
         if self.part_TinkerItem_CanDisassemble == 'true':
             return 'yes'
         elif self.part_TinkerItem_CanBuild == 'true':
-            return 'no'  # # it's interesting if an item can't be disassembled but can be built
+            return 'no'  # it's interesting if an item can't be disassembled but can be built
 
     @property
     def carrybonus(self):
-        """The carry bonus"""
+        """The carry weight bonus."""
         return self.part_Armor_CarryBonus
 
     @property
@@ -203,24 +202,20 @@ class QudObjectProps(QudObject):
     def chargeused(self):
         """How much charge is used per shot."""
         charge = None
-        if self.part_StunOnHit:
-            charge = self.part_StunOnHit_ChargeUse
-        if self.part_EnergyAmmoLoader:
-            charge = self.part_EnergyAmmoLoader_ChargeUse
         if self.part_VibroWeapon and int(self.part_VibroWeapon_ChargeUse) > 0:
             charge = self.part_VibroWeapon_ChargeUse
         if self.part_Gaslight and int(self.part_Gaslight_ChargeUse) > 0:
             charge = self.part_Gaslight_ChargeUse
-        if self.part_MechanicalWings:
-            charge = self.part_MechanicalWings_ChargeUse
-        if self.part_GeomagneticDisk:
-            charge = self.part_GeomagneticDisk_ChargeUse
-        if self.part_ProgrammableRecoiler:
-            charge = self.part_ProgrammableRecoiler_ChargeUse
-        if self.part_Teleporter:
-            charge = self.part_Teleporter_ChargeUse
-        if self.part_LatchesOn:
-            charge = self.part_LatchesOn_ChargeUse
+        parts = ['StunOnHit',
+                 'EnergyAmmoLoader',
+                 'MechanicalWings',
+                 'GeomagneticDisk',
+                 'ProgrammableRecoiler',
+                 'Teleporter',
+                 'LatchesOn']
+        for part in parts:
+            if getattr(self, f'part_{part}'):
+                charge = getattr(self, f'part_{part}_ChargeUse')
         return charge
 
     @property
@@ -263,13 +258,6 @@ class QudObjectProps(QudObject):
             return self.part_Commerce_Value
 
     @property
-    def cookeffect(self):
-        """The possible cooking effects of an item."""
-        ingred_type = self.part_PreparedCookingIngredient_type
-        if ingred_type is not None:
-            return ingred_type.split(',')
-
-    @property
     def complexity(self):
         """The complexity of the object, used for psychometry."""
         if self.part_Examiner_Complexity is None:
@@ -278,7 +266,7 @@ class QudObjectProps(QudObject):
             val = int(self.part_Examiner_Complexity)
         if self.part_AddMod_Mods is not None:
             modprops = config['Templates']['ItemModProperties']
-            for mod in self.part_AddMod_Mods.split(","):
+            for mod in self.part_AddMod_Mods.split(','):
                 if mod in modprops:
                     if (modprops[mod]['ifcomplex'] is True) and (val <= 0):
                         continue  # no change because the item isn't already complex
@@ -294,22 +282,29 @@ class QudObjectProps(QudObject):
             return val
 
     @property
-    def cursed(self):
-        """If the item cannot be removed by normal circumstances."""
-        if self.part_Cursed is not None:
-            return 'yes'
+    def cookeffect(self):
+        """The possible cooking effects of an item."""
+        ingred_type = self.part_PreparedCookingIngredient_type
+        if ingred_type is not None:
+            return ingred_type.split(',')
 
     @property
     def corpse(self):
         """What corpse a character drops."""
         if self.part_Corpse_CorpseBlueprint is not None and int(self.part_Corpse_CorpseChance) > 0:
-            return "{{ID to name|" + self.part_Corpse_CorpseBlueprint + "}}"
+            return self.part_Corpse_CorpseBlueprint
 
     @property
     def corpsechance(self):
         """The chance of a corpse dropping, if corpsechance is >0"""
         if self.part_Corpse_CorpseChance is not None and int(self.part_Corpse_CorpseChance) > 0:
             return self.part_Corpse_CorpseChance
+
+    @property
+    def cursed(self):
+        """If the item cannot be removed by normal circumstances."""
+        if self.part_Cursed is not None:
+            return 'yes'
 
     @property
     def damage(self):
@@ -501,15 +496,15 @@ class QudObjectProps(QudObject):
     @property
     def empsensitive(self):
         """Returns yes if the object is empensitive. Can be found in multiple parts."""
-        parts = ['part_EquipStatBoost_IsEMPSensitive',
-                 'part_BootSequence_IsEMPSensitive',
-                 'part_NavigationBonus_IsEMPSensitive',
-                 'part_SaveModifier_IsEMPSensitive',
-                 'part_LiquidFueledPowerPlant_IsEMPSensitive',
-                 'part_LiquidProducer_IsEMPSensitive',
-                 'part_TemperatureAdjuster_IsEMPSensitive',
+        parts = ['EquipStatBoost',
+                 'BootSequence',
+                 'NavigationBonus',
+                 'SaveModifier',
+                 'LiquidFueledPowerPlant',
+                 'LiquidProducer',
+                 'TemperatureAdjuster',
                  ]
-        if any(getattr(self, part) == 'true' for part in parts):
+        if any(getattr(self, f'part_{part}_IsEMPSensitive') == 'true' for part in parts):
             return 'yes'
 
     @property
@@ -557,10 +552,8 @@ class QudObjectProps(QudObject):
 
     @property
     def gasemitted(self):
-        """The gas emitted by the weapon (typically missile weapon 'pumps')"""
-        gas = self.projectile_object('part_GasOnHit_Blueprint')
-        if gas is not None:
-            return f'{{{{ID to name|{gas}}}}}'
+        """The gas emitted by the weapon (typically missile weapon 'pumps')."""
+        return self.projectile_object('part_GasOnHit_Blueprint')
 
     @property
     def gender(self):
@@ -571,8 +564,7 @@ class QudObjectProps(QudObject):
     @property
     def harvestedinto(self):
         """What an item produces when harvested."""
-        if self.part_Harvestable_OnSuccess is not None:
-            return "{{ID to name|" + self.part_Harvestable_OnSuccess + "}}"
+        return self.part_Harvestable_OnSuccess
 
     @property
     def healing(self):
@@ -604,27 +596,25 @@ class QudObjectProps(QudObject):
 
     @property
     def illoneat(self):
-        """if eating this makes you sick."""
+        """If eating this makes you sick."""
         if not self.inherits_from('Corpse'):
             if self.part_Food_IllOnEat == 'true':
                 return 'yes'
 
     @property
     def image(self):
-        """The image. If the item has no associated sprite, return None."""
-        if self.name in IMAGE_OVERRIDES:
-            return IMAGE_OVERRIDES[self.name]
+        """The image filename."""
+        if self.part_Render_Tile is not None:
+            tile = self.displayname
+            tile = re.sub(r"[^a-zA-Z\d ]", '', tile)
+            tile = tile.casefold() + '.png'
         else:
-            if self.part_Render_Tile is not None:
-                tile = self.displayname
-                tile = re.sub(r"[^a-zA-Z\d ]", '', tile)
-                tile = tile.casefold() + '.png'
-            else:
-                tile = 'none'
-            return tile
+            tile = 'none'
+        return tile
 
     @property
     def inheritingfrom(self):
+        """The ID of the parent object in the Qud object hierarchy."""
         return self.parent.name
 
     @property
@@ -634,22 +624,20 @@ class QudObjectProps(QudObject):
 
     @property
     def inventory(self):
-        ret = None
-        if self.inventoryobject is not None:
-            ret = ""
-            for obj in self.inventoryobject:
-                if obj[0] in '*#@':  # Ignores stuff like *Junk 1
+        """The inventory of a character.
+
+        Returns a list of tuples of strings: (name, count, equipped, chance)."""
+        inv = self.inventoryobject
+        if inv is not None:
+            ret = []
+            for name in inv:
+                if name[0] in '*#@':  # Ignores stuff like '*Junk 1'
                     continue
+                count = inv[name].get('Number', '1')
                 equipped = 'no'  # not yet implemented
-                count = 1
-                if 'Number' in self.inventoryobject[obj]:
-                    count = self.inventoryobject[obj]['Number']
-                chance = 100
-                if 'Chance' in self.inventoryobject[obj]:
-                    chance = self.inventoryobject[obj]['Chance']
-                ret += f"{{{{inventory|"\
-                       f"{{{{ID to name|{obj}}}}}|{count}|{equipped}|{chance}}}}}"
-        return ret
+                chance = inv[name].get('Chance', '100')
+                ret.append((name, count, equipped, chance))
+            return ret
 
     @property
     def isfungus(self):

@@ -29,6 +29,11 @@ def test_cookeffect():
     assert obj.cookeffect == '{{CookEffect ID to name|cold}},{{CookEffect ID to name|fungus}}'
 
 
+def test_corpse():
+    obj = qindex['HindrenVillager']
+    assert obj.corpse == '{{ID to name|Hindren Corpse}}'
+
+
 def test_desc():
     obj = qindex['PhysicalObject']
     assert obj.desc is None
@@ -60,3 +65,21 @@ def test_extra():
     obj = qindex['Solar Condenser']
     assert obj.extra == '{{Extra info|empsensitive = yes | metal = yes | solid = yes |'\
                         ' flyover = no}}'
+
+
+def test_gasemitted():
+    obj = qindex['Defoliant Gas Pump']
+    assert obj.gasemitted == '{{ID to name|DefoliantGas}}'
+
+
+def test_harvestedinto():
+    obj = qindex['Dreadroot']
+    assert obj.harvestedinto == '{{ID to name|Dreadroot Tuber}}'
+
+
+def test_inventory():
+    obj = qindex['HindrenVillager']
+    assert '{{inventory|{{ID to name|LeatherBracer}}|1|no|100}}' in obj.inventory
+    assert '{{inventory|{{ID to name|Sandals}}|2|no|100}}' in obj.inventory
+    assert '{{inventory|{{ID to name|Vinewafer Sheaf}}|2-3|no|100}}' in obj.inventory
+    assert '{{inventory|{{ID to name|Iron Vinereaper}}|1|no|100}}' in obj.inventory
