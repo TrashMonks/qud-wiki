@@ -31,8 +31,8 @@ Templates:
      inventory, skills, mutations, modcount, mods, desc]
   ExtraFields:
     #Fields for the extra info template
-    [empsensitive, twohanded, metal, lightprojectile, reflect, movespeedbonus, cursed,
-     destroyonunequip, savemodifier, savemodifieramt, shotcooldown, penetratingammo,
+    [empsensitive, twohanded, metal, lightprojectile, reflect, movespeedbonus, cursed, destroyonunequip,
+     savemodifier, savemodifieramt, shotcooldown, penetratingammo, omniphaseprojectile,
      spectacles, carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic, uniquechara]
   Image overrides:
     # Manually specify the image name to be shown for an object ID:

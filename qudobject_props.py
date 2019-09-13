@@ -862,6 +862,13 @@ class QudObjectProps(QudObject):
         return ret
 
     @property
+    def omniphaseprojectile(self):
+        projectile = self.projectile_object()
+        if projectile.is_specified('part_OmniphaseProjectile') or\
+           projectile.is_specified('tag_Omniphase'):
+            return 'yes'
+
+    @property
     def oneat(self):
         ret = None
         for key in self.part.keys():
