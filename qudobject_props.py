@@ -104,15 +104,36 @@ class QudObjectProps(QudObject):
     @property
     def ammo(self):
         """What type of ammo is used."""
-        ammo = self.part_MagazineAmmoLoader_AmmoPart
-        texts = {'AmmoSlug': 'lead slug',
-                 'AmmoShotgunShell': 'shotgun shell',
-                 'AmmoGrenade': 'grenade',
-                 'AmmoMissile': 'missile',
-                 'AmmoArrow': 'arrow',
-                 'AmmoDart': 'dart',
-                 }
-        return texts.get(ammo)
+        ammo = None
+        if self.part_MagazineAmmoLoader_AmmoPart:
+            ammotypes = {'AmmoSlug': 'lead slug',
+                         'AmmoShotgunShell': 'shotgun shell',
+                         'AmmoGrenade': 'grenade',
+                         'AmmoMissile': 'missile',
+                         'AmmoArrow': 'arrow',
+                         'AmmoDart': 'dart',
+                         }
+            ammo = ammotypes.get(self.part_MagazineAmmoLoader_AmmoPart)
+        elif self.part_EnergyAmmoLoader_ChargeUse and int(self.part_EnergyAmmoLoader_ChargeUse) > 0:
+            if self.part_EnergyCellSocket and self.part_EnergyCellSocket_SlotType == 'EnergyCell':
+                ammo = 'energy'
+            elif self.part_LiquidFueledPowerPlant:
+                ammo = self.part_LiquidFueledPowerPlant_Liquid
+        elif self.part_LiquidAmmoLoader:
+            ammo = self.part_LiquidAmmoLoader_Liquid
+        return ammo
+
+    @property
+    def ammodamagetypes(self):
+        """Damage attributes associated with the projectile (</br> delimited)."""
+        attributes = self.projectile_object('part_Projectile_Attributes')
+        if attributes is not None:
+            val = ''
+            for attr in attributes.split():
+                if val != '':
+                    val += '</br>'
+                val += attr
+            return val
 
     @property
     def aquatic(self):
@@ -370,6 +391,13 @@ class QudObjectProps(QudObject):
         return dname
 
     @property
+    def dramsperuse(self):
+        """The number of drams of liquid consumed by each shot action."""
+        if self.is_specified('part_LiquidAmmoLoader'):
+            return 1  # LiquidAmmoLoader always uses 1 dram per action
+        # TODO: calculate fractional value for blood-gradient hand vacuum
+
+    @property
     def dv(self):
         dv = None
         if self.inherits_from('Armor'):
@@ -544,6 +572,13 @@ class QudObjectProps(QudObject):
                 return 'yes'
             else:
                 return 'no'
+
+    @property
+    def gasemitted(self):
+        """The gas emitted by the weapon (typically missile weapon 'pumps')"""
+        gas = self.projectile_object('part_GasOnHit_Blueprint')
+        if gas is not None:
+            return f'{{{{ID to name|{gas}}}}}'
 
     @property
     def gender(self):
@@ -843,6 +878,12 @@ class QudObjectProps(QudObject):
         return ret
 
     @property
+    def penetratingammo(self):
+        """If the missile weapon's projectiles pierce through targets."""
+        if self.projectile_object('part_Projectile_PenetrateCreatures') is not None:
+            return 'yes'
+
+    @property
     def preservedinto(self):
         """When preserved, what a preservable item produces."""
         if self.part_PreservableItem_Result is not None:
@@ -952,6 +993,11 @@ class QudObjectProps(QudObject):
             return self.part_SaveModifier_Amount
 
     @property
+    def shotcooldown(self):
+        """Cooldown before weapon can be fired again, typically a dice string."""
+        return self.part_CooldownAmmoLoader_Cooldown
+
+    @property
     def shots(self):
         """How many shots are fired in one round."""
         return self.part_MissileWeapon_ShotsPerAction
@@ -968,6 +1014,24 @@ class QudObjectProps(QudObject):
     def spectacles(self):
         """If the item corrects vision."""
         return 'yes' if self.part_Spectacles is not None else None
+
+    @property
+    def temponenter(self):
+        """Temperature change caused to objects when weapon/projectile passes through cell."""
+        var = self.projectile_object('part_TemperatureOnEntering_Amount')  # projectiles
+        return var or self.part_TemperatureOnEntering_Amount  # melee weapons, etc.
+
+    @property
+    def temponhit(self):
+        """Temperature change caused by weapon/projectile hit."""
+        var = self.projectile_object('part_TemperatureOnHit_Amount')
+        return var or self.part_TemperatureOnHit_Amount
+
+    @property
+    def temponhitmax(self):
+        """Temperature change effect does not occur if target has already reached MaxTemp."""
+        var = self.projectile_object('part_TemperatureOnHit_MaxTemp')
+        return var or self.part_TemperatureOnHit_MaxTemp
 
     @property
     def uniquechara(self):
