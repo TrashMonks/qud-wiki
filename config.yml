@@ -77,7 +77,6 @@ Templates:
     ModSpringLoaded: {difficulty: 1, complexity: 1, ifcomplex: False}
     ModSturdy: {difficulty: 0, complexity: 0, ifcomplex: False}
     ModWired: {difficulty: 1, complexity: 0, ifcomplex: True}
-    
 
 Wiki:
   # See also wiki login configuration in wiki.yml.

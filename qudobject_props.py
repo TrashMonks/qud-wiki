@@ -247,20 +247,20 @@ class QudObjectProps(QudObject):
 
     @property
     def complexity(self):
-        """The tinker examination complexity of the object."""
+        """The complexity of the object, used for psychometry."""
         val = int(getattr(self, 'part_Examiner_Complexity', 0))
         if self.part_AddMod_Mods is not None:
             modprops = config['Templates']['ItemModProperties']
             for mod in self.part_AddMod_Mods.split(","):
                 if mod in modprops:
-                    if modprops[mod]['ifcomplex'] and (val <= 0):
+                    if (modprops[mod]['ifcomplex'] is True) and (val <= 0):
                         continue  # no change because the item isn't already complex
                     val += int(modprops[mod]['complexity'])
         for key in self.part.keys():
             if key.startswith('Mod'):
                 modprops = config['Templates']['ItemModProperties']
                 if key in modprops:
-                    if modprops[key]['ifcomplex'] and (val <= 0):
+                    if (modprops[key]['ifcomplex'] is True) and (val <= 0):
                         continue  # ditto
                     val += int(modprops[key]['complexity'])
         if val > 0 or self.canbuild == 'yes':
