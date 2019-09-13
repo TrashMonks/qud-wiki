@@ -3,7 +3,7 @@
 import os
 
 import qud_object_tree  # build the object tree
-from qudobject import qindex, escape_ampersands, strip_qud_color_codes
+from qudobject import qindex
 
 # fallback location
 FILE = "C:/Steam/SteamApps/common/Caves of Qud/CoQ_Data/StreamingAssets/Base/ObjectBlueprints.xml"
@@ -14,14 +14,6 @@ if os.path.exists('last_xml_location'):
     qud_object_tree.load(filename)
 else:
     qud_object_tree.load(FILE)
-
-
-def test_escape_ampersands():
-    assert escape_ampersands('&yfloating&G &Yglowsphere') == '&amp;yfloating&amp;G &amp;Yglowsphere'
-
-
-def test_strip_qud_color_codes():
-    assert strip_qud_color_codes('&yfloating&G &Yglowsphere') == 'floating glowsphere'
 
 
 def test_inherits_from():
@@ -48,10 +40,3 @@ def test_properties():
     assert obj.hp == '500'
     assert obj.av == '11'  # natural 8 + clay pot
     # assert obj.dv == '12'  # base 6 plus (28 - 16) / 2
-
-
-def test_render_wiki_templates():
-    """Test rendering the wiki template for each object."""
-    for name, obj in qindex.items():
-        if obj.is_wiki_eligible():
-            obj.wiki_template()

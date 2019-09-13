@@ -7,7 +7,8 @@ import time
 
 from xml.etree import ElementTree as et
 
-from qudobject import QudObject, qindex
+from qudobject import qindex
+from qudobject_wiki import QudObjectWiki
 
 
 def repair_invalid_chars(contents):
@@ -53,6 +54,6 @@ def load(path):
     for element in raw:
         if element.tag != 'object':
             continue
-        QudObject(element)  # registers itself in qindex
+        QudObjectWiki(element)  # registers itself in qindex
     qud_object_root = qindex['Object']
     return qud_object_root
