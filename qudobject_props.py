@@ -1025,14 +1025,8 @@ class QudObjectProps(QudObject):
     @property
     def skills(self):
         """Unrelated to skill above, this is the skills that certain creatures have."""
-        ret = None
         if self.skill is not None:
-            ret = ""
-            for obj in self.skill:
-                if ret != "":
-                    ret += " </br>"
-                ret += f"{{{{SkillID to name|{obj}}}}}"
-        return ret
+            return self.skill
 
     @property
     def strength(self):

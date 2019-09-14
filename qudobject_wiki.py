@@ -188,6 +188,13 @@ class QudObjectWiki(QudObjectProps):
             return ret
 
     @property
+    def skills(self):
+        """A creature's learned skills/powers."""
+        skills = super().skills
+        if skills is not None:
+            return ' </br>'.join([f'{{{{SkillID to name|{skill}}}}}' for skill in skills])
+
+    @property
     def title(self):
         """The display name of the item, with ampersands escaped."""
         title = super().title
