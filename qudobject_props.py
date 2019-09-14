@@ -1049,9 +1049,19 @@ class QudObjectProps(QudObject):
         mods = QudObjectProps.mods.fget(self)  # seems necessary to avoid inheritance ambiguity
         if mods is not None and self.xtag_Grammar_Proper != 'true':  # prepend mod prefixes
             modprops = config['Templates']['ItemModProperties']
+            modprefixes = ''
+            modpostfixes = ''
             for mod, tier in mods:
-                if mod in modprops and 'prefix' in modprops[mod]:
-                    val = modprops[mod]['prefix'] + val
+                if mod in modprops:
+                    if 'prefix' in modprops[mod]:
+                        if mod == 'ModCounterweighted' and int(tier) > 2:  # special handling
+                            modprefixes += '&ycounterweighted(' + str((int(tier) + 3) // 3) + ') '
+                        else:
+                            modprefixes += modprops[mod]['prefix']
+                    if 'postfix' in modprops[mod]:
+                        modpostfixes += modprops[mod]['postfix']
+            val = (modprefixes if modprefixes != '' else '')\
+                + val + (modpostfixes if modpostfixes != '' else '')
         return val
 
     @property
