@@ -202,7 +202,7 @@ class QudObjectWiki(QudObjectProps):
         """A creature's learned skills/powers."""
         skills = super().skills
         if skills is not None:
-            return ' </br>'.join([f'{{{{SkillID to name|{skill}}}}}' for skill in skills])
+            return ' </br>'.join(f'{{{{SkillID to name|{skill}}}}}' for skill in skills)
 
     @property
     def title(self):
