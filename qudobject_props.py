@@ -29,7 +29,7 @@ class QudObjectProps(QudObject):
     # PROPERTY HELPERS
     # Helper methods to simplify the calculation of properties, further below.
     # Sorted alphabetically. All return types should be strings.
-    def attribute_helper(self, attr: str):
+    def attribute_helper(self, attr: str, mode: str = ''):
         """Helper for retrieving attributes (Strength, etc.)"""
         val = None
         if self.inherits_from('Creature') or self.inherits_from('ActivePlant'):
@@ -42,6 +42,11 @@ class QudObjectProps(QudObject):
                 val += f'+{boost}'
         elif self.inherits_from('Armor'):
             val = getattr(self, f'part_Armor_{attr}')
+        if mode in ['Average', 'Modifier']:
+            val = DiceBag(val).average()  # calculate average stat value
+            val = int(val * (0.8 if self.role == 'Minion' else 1))  # Minions lose 20% to all stats
+        if mode == 'Modifier':
+            val = (val - 16) // 2  # return stat modifier for average roll
         return val
 
     def resistance(self, element):
@@ -402,17 +407,7 @@ class QudObjectProps(QudObject):
                     dv += 2
                 if self.skill_Acrobatics_Tumble:  # the 'Tumble' skill
                     dv += 1
-                ag_str = self.agility
-                if '+' in ag_str:
-                    # agility was an sValue-format specifier, e.g.
-                    # '18+1d4+1d3' (after light processing)
-                    ag = DiceBag(ag_str).average()
-                else:
-                    ag = int(ag_str)  # agility was given as an integer
-                if self.role == 'Minion':  # lose 20% to all stats
-                    ag = int(ag * 0.8)
-                # 1 point bonus to DV for every 2 points of agility over 16
-                dv += ((int(ag) - 16) // 2)
+                dv += self.attribute_helper('Agility', 'Modifier')
                 # does this creature have armor with DV modifiers?
                 if self.inventoryobject:
                     for name in list(self.inventoryobject.keys()):
@@ -815,17 +810,10 @@ class QudObjectProps(QudObject):
                 if ret != "":
                     ret += " </br>"
                 if 'Level' in self.mutation[obj]:
-
-                    ego_str = self.attribute_helper('Ego')
-                    if '+' in ego_str:
-                        # ego was an sValue-format specifier,
-                        # e.g. '18+1d4+1d3' (after light processing)
-                        ego = DiceBag(ego_str).average()
-                    else:
-                        ego = int(ego_str)
                     ret += f"{{{{creature mutation|"\
                            f"{{{{MutationID to name|{obj}{constructor}}}}}|"\
-                           f"{self.mutation[obj]['Level']}|{ego}}}}}"
+                           f"{self.mutation[obj]['Level']}|"\
+                           f"{self.attribute_helper('Ego', 'Average')}}}}}"
                 else:
                     ret += f"{{{{creature mutation|"\
                            f"{{{{MutationID to name|{obj}{constructor}}}}}|0}}}}"
