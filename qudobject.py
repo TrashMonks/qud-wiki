@@ -29,28 +29,34 @@ class QudObject(NodeMixin):
         self.attributes = {}
         self.all_attributes = {}
         for element in blueprint:
-            if 'Name' not in element.attrib and element.tag != 'inventoryobject':
-                # probably something we don't need
-                continue
-            if element.tag not in self.attributes:
-                self.attributes[element.tag] = {}
+            element_tag = element.tag
+            if 'Name' not in element.attrib:
+                if element_tag != 'inventoryobject' and element_tag[:4] != 'xtag':
+                    # probably something we don't need
+                    continue
+                element_tag = element.tag if element.tag[:4] != 'xtag' else 'xtag'
+            if element_tag not in self.attributes:
+                self.attributes[element_tag] = {}
             if 'Name' in element.attrib:
                 # most tags
                 element_name = element.attrib.pop('Name')
+            elif element_tag == 'xtag':
+                # for xtags, use substring after 'xtag' prefix
+                element_name = element.tag[4:]
             elif 'Blueprint' in element.attrib:
                 # for tag: inventoryobject
                 element_name = element.attrib.pop('Blueprint')
-            if element_name in self.attributes[element.tag] and \
-                    isinstance(self.attributes[element.tag][element_name], dict):
+            if element_name in self.attributes[element_tag] and \
+                    isinstance(self.attributes[element_tag][element_name], dict):
                 # for rare cases like:
                 # <part Name="Brain" Hostile="false" Wanders="false" Factions="Prey-100" />
                 # followed by:
                 # <part Name="Brain" Hostile="false" />
                 # - we don't want to overwrite the former with the latter, so update instead
-                self.attributes[element.tag][element_name].update(element.attrib)
+                self.attributes[element_tag][element_name].update(element.attrib)
             else:
                 # normal case: just assign the attributes dictionary to this <tag>-Name combo
-                self.attributes[element.tag][element_name] = element.attrib
+                self.attributes[element_tag][element_name] = element.attrib
         self.all_attributes, self.inherited = self.resolve_inheritance()
         self.tile = self.render_tile()
 
