@@ -83,3 +83,11 @@ def test_inventory():
     assert '{{inventory|{{ID to name|Sandals}}|2|no|100}}' in obj.inventory
     assert '{{inventory|{{ID to name|Vinewafer Sheaf}}|2-3|no|100}}' in obj.inventory
     assert '{{inventory|{{ID to name|Iron Vinereaper}}|1|no|100}}' in obj.inventory
+
+
+def test_mods():
+    obj = qindex['Difucila']
+    assert obj.mods == '{{ModID to name|ModSharp|1}} </br>{{ModID to name|ModMasterwork|1}}'
+    obj = qindex['Caslainard']
+    assert obj.mods == '{{ModID to name|ModCounterweighted|5}} </br>'\
+                       '{{ModID to name|ModElectrified|7}}'

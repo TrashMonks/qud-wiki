@@ -23,32 +23,32 @@ class QudObjectWiki(QudObjectProps):
     def wiki_template(self):
         """Return the fully wikified template representing this object and add a category."""
         fields = config['Templates']['Fields']
-        template = self.wiki_template_type()
+        flavor = self.wiki_template_type()
         intro_string = ''
         before_title = "{{Qud text|"
         after_title = "}}"
-        text = intro_string + '{{' + f'{template}\n'
-        text += "| title = " + before_title + self.title + after_title + "\n"
+        template = intro_string + '{{' + f'{flavor}\n'
+        template += "| title = " + before_title + self.title + after_title + "\n"
         for field in fields:
             if field == 'title':
                 continue
-            if template == 'Corpse' and field in ['hunger', 'image']:
+            if flavor == 'Corpse' and field in ['hunger', 'image']:
                 continue
             else:
                 attrib = getattr(self, field)
                 if attrib is not None:
                     if field == 'renderstr':
                         attrib = attrib.replace('}', '&#125;')
-                    text += f"| {field} = {attrib}\n"
+                    template += f"| {field} = {attrib}\n"
         category = self.wiki_category()
         if category:
-            text += f"| categories = {category}\n"
-        text += "}}\n"
-        return text
+            template += f"| categories = {category}\n"
+        template += "}}\n"
+        return template
 
     def wiki_template_type(self) -> str:
         """Determine which template to use for the wiki."""
-        val = "Item"
+        flavor = "Item"
         not_corpses = ('Albino Ape Pelt',
                        'Crystal of Eve',
                        'Black Puma Haunch',
@@ -57,13 +57,13 @@ class QudObjectWiki(QudObjectProps):
                        'Ogre Ape Heart')
         characters = ['Creature', 'BasePlant', 'BaseFungus', 'Baetyl', 'Wall']
         if any(self.inherits_from(character) for character in characters):
-            val = "Character"
+            flavor = "Character"
         elif self.inherits_from('Food'):
-            val = "Food"
+            flavor = "Food"
         elif (self.inherits_from('RobotLimb') or self.inherits_from('Corpse')) and\
                 (self.name not in not_corpses):
-            val = "Corpse"
-        return val
+            flavor = "Corpse"
+        return flavor
 
     def wiki_category(self):
         """Determine what configured wiki category this object belongs in."""
@@ -145,12 +145,12 @@ class QudObjectWiki(QudObjectProps):
         # <part Name="Brain" Wanders="false" Factions="Joppa-100,Barathrumites-100" />
         factions = super().faction
         if factions is not None:
-            ret = ''
+            template = ''
             for faction, value in factions:
-                if ret != '':
-                    ret += '</br>'
-                ret += f'{{{{creature faction|{{{{FactionID to name|{faction}}}}}|{value}}}}}'
-            return ret
+                if template != '':
+                    template += '</br>'
+                template += f'{{{{creature faction|{{{{FactionID to name|{faction}}}}}|{value}}}}}'
+            return template
 
     @property
     def gasemitted(self):
@@ -181,11 +181,21 @@ class QudObjectWiki(QudObjectProps):
         and renders to a template."""
         inv = super().inventory
         if inv is not None:
-            ret = ''
+            template = ''
             for name, count, equipped, chance in inv:
-                ret += f"{{{{inventory|" \
+                template += f"{{{{inventory|" \
                        f"{{{{ID to name|{name}}}}}|{count}|{equipped}|{chance}}}}}"
-            return ret
+            return template
+
+    @property
+    def mods(self):
+        """Mods that are attached to the current item.
+
+        Retrieves a list of tuples of strings (modid, tier) and renders to a template.
+        """
+        mods = super().mods
+        if mods is not None:
+            return ' </br>'.join(f'{{{{ModID to name|{mod}|{tier}}}}}' for mod, tier in mods)
 
     @property
     def skills(self):

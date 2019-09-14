@@ -755,32 +755,25 @@ class QudObjectProps(QudObject):
 
     @property
     def mods(self):
-        ret = None
+        """Mods that are attached to the current item.
+
+        Returns a list of tuples of strings (modid, tier).
+        """
+        mods = []
         if self.part_AddMod_Mods is not None:
-            ret = ""
-            i = 0
-            tierarray = None
+            names = self.part_AddMod_Mods.split(',')
             if self.part_AddMod_Tiers is not None:
-                tierarray = self.part_AddMod_Tiers.split(",")
-            for mod in self.part_AddMod_Mods.split(","):
-                if ret != "":
-                    ret += " </br>"
-                tier = "1"
-                if tierarray is not None and len(tierarray) > i:
-                    tier = tierarray[i]
-                ret += "{{ModID to name|" + mod + "|" + tier + "}}"
-                i = i+1
+                tiers = self.part_AddMod_Tiers.split(',')
+            else:
+                tiers = [1] * len(names)
+            mods.extend(zip(names, tiers))
         for key in self.part.keys():
             if key.startswith('Mod'):
-                if ret is None:
-                    ret = ""
-                elif ret != "":
-                    ret += " </br>"
                 if 'Tier' in self.part[key]:
-                    ret += "{{ModID to name|" + key + "|" + self.part[key]['Tier'] + "}}"
+                    mods.append((key, self.part[key]['Tier']))
                 else:
-                    ret += "{{ModID to name|" + key + "}}"
-        return ret
+                    mods.append((key, '1'))
+        return mods if len(mods) > 0 else None
 
     @property
     def movespeed(self):
