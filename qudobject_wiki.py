@@ -184,7 +184,7 @@ class QudObjectWiki(QudObjectProps):
             template = ''
             for name, count, equipped, chance in inv:
                 template += f"{{{{inventory|" \
-                       f"{{{{ID to name|{name}}}}}|{count}|{equipped}|{chance}}}}}"
+                    f"{{{{ID to name|{name}}}}}|{count}|{equipped}|{chance}}}}}"
             return template
 
     @property

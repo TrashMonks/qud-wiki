@@ -690,16 +690,8 @@ class QudObjectProps(QudObject):
             # Add MA stat value if specified
             if self.stat_MA_Value:
                 ma += int(self.stat_MA_Value)
-            # calc willpower modifier and add it to MA
-            wp = self.willpower
-            if '+' in wp:
-                wp = DiceBag(wp).average()
-            else:
-                wp = int(wp)
-            if self.role == 'Minion':  # lose 20% to all stats
-                wp = int(wp * 0.8)
-            wp_bonus = (wp - 16) // 2
-            ma += wp_bonus
+            # add willpower modifier to MA
+            ma += self.attribute_helper('Willpower', 'Modifier')
         return ma
 
     @property
@@ -1054,22 +1046,12 @@ class QudObjectProps(QudObject):
             val = "&MWraith-Knight Templar of the Binary Honorum"  # override for Wraith Knights
         elif self.part_Render_DisplayName:
             val = self.part_Render_DisplayName
-
-        if self.part_ModMasterwork is not None:
-            # if mods are guaranteed, will prepend them before the name
-            val = "&Ymasterwork&y " + val
-        if self.part_ModScoped is not None:
-            val = "&yscoped " + val
-        if self.part_ModHeatSeeking is not None:
-            val = "&yhoming " + val
-        if self.part_ModRazored is not None:
-            val = "&Yserra&Rt&Yed&y " + val
-        if self.part_ModElectrified is not None:
-            val = '&Welectrified&y ' + val
-        if self.part_ModFlaming is not None:
-            val = '&Rflaming&y ' + val
-        if self.part_ModFreezing is not None:
-            val = '&Cfreezing&y ' + val
+        mods = QudObjectProps.mods.fget(self)  # seems necessary to avoid inheritance ambiguity
+        if mods is not None and self.xtag_Grammar_Proper != 'true':  # prepend mod prefixes
+            modprops = config['Templates']['ItemModProperties']
+            for mod, tier in mods:
+                if mod in modprops and 'prefix' in modprops[mod]:
+                    val = modprops[mod]['prefix'] + val
         return val
 
     @property
