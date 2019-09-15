@@ -3,8 +3,8 @@
 # Form implementation generated from reading ui file 'qud_explorer_window.ui',
 # licensing of 'qud_explorer_window.ui' applies.
 #
-# Created: Sun Aug 11 18:40:51 2019
-#      by: pyside2-uic  running on PySide2 5.13.0
+# Created: Sun Sep 15 18:23:41 2019
+#      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -103,11 +103,14 @@ class Ui_MainWindow(object):
         self.actionUpload_templates.setObjectName("actionUpload_templates")
         self.actionUpload_tiles = QtWidgets.QAction(MainWindow)
         self.actionUpload_tiles.setObjectName("actionUpload_tiles")
+        self.actionXML_source = QtWidgets.QAction(MainWindow)
+        self.actionXML_source.setObjectName("actionXML_source")
         self.menuFile.addAction(self.actionOpen_ObjectBlueprints_xml)
         self.menuFile.addAction(self.actionExit)
         self.menuView.addAction(self.actionWiki_template)
         self.menuView.addAction(self.actionAttributes)
         self.menuView.addAction(self.actionAll_attributes)
+        self.menuView.addAction(self.actionXML_source)
         self.menuWiki.addAction(self.actionScan_wiki)
         self.menuWiki.addAction(self.actionUpload_templates)
         self.menuWiki.addAction(self.actionUpload_tiles)
@@ -136,4 +139,5 @@ class Ui_MainWindow(object):
         self.actionScan_wiki.setText(QtWidgets.QApplication.translate("MainWindow", "Scan wiki for selected objects", None, -1))
         self.actionUpload_templates.setText(QtWidgets.QApplication.translate("MainWindow", "Upload templates for selected objects", None, -1))
         self.actionUpload_tiles.setText(QtWidgets.QApplication.translate("MainWindow", "Upload tiles for selected objects", None, -1))
+        self.actionXML_source.setText(QtWidgets.QApplication.translate("MainWindow", "XML source", None, -1))
 

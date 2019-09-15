@@ -3,12 +3,35 @@
 For on-demand access to individual Qud objects by name, use the `qindex` from qudobject.py."""
 
 import re
+import sys
 import time
 
-from xml.etree import ElementTree as et
+# Force Python XML parser
+sys.modules['_elementtree'] = None
+from xml.etree import ElementTree as ET  # noqa E402
 
-from qudobject import qindex
-from qudobject_wiki import QudObjectWiki
+from qudobject import qindex  # noqa E402
+from qudobject_wiki import QudObjectWiki  # noqa E402
+
+
+class LineNumberingParser(ET.XMLParser):
+    """An alternate parser for ElementTree that captures information about the source from the
+    underlying expat parser."""
+    def _start(self, *args, **kwargs):
+        # Here we assume the default XML parser which is expat
+        # and copy its element position attributes into output Elements
+        element = super(self.__class__, self)._start(*args, **kwargs)
+        element._start_line_number = self.parser.CurrentLineNumber
+        element._start_column_number = self.parser.CurrentColumnNumber
+        element._start_byte_index = self.parser.CurrentByteIndex
+        return element
+
+    def _end(self, *args, **kwargs):
+        element = super(self.__class__, self)._end(*args, **kwargs)
+        element._end_line_number = self.parser.CurrentLineNumber
+        element._end_column_number = self.parser.CurrentColumnNumber
+        element._end_byte_index = self.parser.CurrentByteIndex
+        return element
 
 
 def repair_invalid_chars(contents):
@@ -47,13 +70,19 @@ def load(path):
     start = time.time()
     print("Repairing invalid XML line breaks... ", end='')
     contents = repair_invalid_linebreaks(contents)
+    contents_b = contents.encode('utf-8')  # start/stop markers are in bytes, not Unicode characters
     print(f"done in {time.time() - start:.2f} seconds")
-    raw = et.fromstring(contents)
+    raw = ET.fromstring(contents, parser=LineNumberingParser())
     print("Building Qud object hierarchy and adding tiles...")
     # Build the Qud object hierarchy from the XML data
     for element in raw:
+        start, stop = element._start_byte_index, element._end_byte_index
+        source = contents_b[start:stop+9].decode('utf-8')
+        if not source.endswith('</object>'):
+            # parsing 'ends' at the close tag, so add 9 bytes to include '</object>'
+            print(start, stop, contents_b[start:stop+9].decode('utf-8'))
         if element.tag != 'object':
             continue
-        QudObjectWiki(element)  # registers itself in qindex
+        QudObjectWiki(element, source)  # registers itself in qindex
     qud_object_root = qindex['Object']
     return qud_object_root

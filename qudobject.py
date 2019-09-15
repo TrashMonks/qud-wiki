@@ -15,9 +15,11 @@ class QudObject(NodeMixin):
     """Represents a Caves of Qud object blueprint with attribute inheritance.
 
     Parameters:
-        blueprint: an XML Element to parse into dictionaries"""
+        blueprint: an XML Element to parse into dictionaries
+        source: a string with the XML source that created `blueprint`"""
 
-    def __init__(self, blueprint: Element):
+    def __init__(self, blueprint: Element, source: str):
+        self.source = source
         self.name = blueprint.get('Name')
         self.blueprint = blueprint
         qindex[self.name] = self

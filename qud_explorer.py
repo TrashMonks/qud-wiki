@@ -129,6 +129,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionWiki_template.triggered.connect(self.setview_wiki)
         self.actionAttributes.triggered.connect(self.setview_attr)
         self.actionAll_attributes.triggered.connect(self.setview_allattr)
+        self.actionXML_source.triggered.connect(self.setview_xmlsource)
         # TreeView context menu:
         self.treeView.context_action_expand.triggered.connect(self.expand_all)
         self.treeView.context_action_scan.triggered.connect(self.wiki_check_selected)
@@ -245,6 +246,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     text += pformat(qud_object.attributes, width=120)
                 elif self.view_type == 'all_attr':
                     text += pformat(qud_object.all_attributes, width=120)
+                elif self.view_type == 'xml_source':
+                    # cosmetic: add two spaces to indent the opening <object> tag
+                    text += '  ' + qud_object.source
                 self.statusbar.showMessage(qud_object.ui_inheritance_path())
                 self.top_selected = qud_object
                 if qud_object.tile is not None and not qud_object.tile.blacklisted:
@@ -531,6 +535,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         msg_box.exec()
 
     def setview_wiki(self):
+        """Change the view type to wiki template and update the View menu."""
         if self.view_type == 'wiki':
             return
         else:
@@ -538,10 +543,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.actionWiki_template.setChecked(True)
             self.actionAttributes.setChecked(False)
             self.actionAll_attributes.setChecked(False)
+            self.actionXML_source.setChecked(False)
             selected = self.treeView.selectedIndexes()
             self.tree_selection_handler(selected)
 
     def setview_attr(self):
+        """Change the view type to Attributes and update the View menu."""
         if self.view_type == 'attr':
             return
         else:
@@ -549,10 +556,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.actionWiki_template.setChecked(False)
             self.actionAttributes.setChecked(True)
             self.actionAll_attributes.setChecked(False)
+            self.actionXML_source.setChecked(False)
             selected = self.treeView.selectedIndexes()
             self.tree_selection_handler(selected)
 
     def setview_allattr(self):
+        """Change the view type to All attributes and update the View menu."""
         if self.view_type == 'all_attr':
             return
         else:
@@ -560,6 +569,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.actionWiki_template.setChecked(False)
             self.actionAttributes.setChecked(False)
             self.actionAll_attributes.setChecked(True)
+            self.actionXML_source.setChecked(False)
+            selected = self.treeView.selectedIndexes()
+            self.tree_selection_handler(selected)
+
+    def setview_xmlsource(self):
+        """Change the view type to XML source and update the View menu."""
+        if self.view_type == 'xml_source':
+            return
+        else:
+            self.view_type = 'xml_source'
+            self.actionWiki_template.setChecked(False)
+            self.actionAttributes.setChecked(False)
+            self.actionAll_attributes.setChecked(False)
+            self.actionXML_source.setChecked(True)
             selected = self.treeView.selectedIndexes()
             self.tree_selection_handler(selected)
 

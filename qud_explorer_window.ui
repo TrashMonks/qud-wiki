@@ -133,6 +133,7 @@
     <addaction name="actionWiki_template"/>
     <addaction name="actionAttributes"/>
     <addaction name="actionAll_attributes"/>
+    <addaction name="actionXML_source"/>
    </widget>
    <widget class="QMenu" name="menuWiki">
     <property name="title">
@@ -197,6 +198,11 @@
   <action name="actionUpload_tiles">
    <property name="text">
     <string>Upload tiles for selected objects</string>
+   </property>
+  </action>
+  <action name="actionXML_source">
+   <property name="text">
+    <string>XML source</string>
    </property>
   </action>
  </widget>
