@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'qud_explorer_window.ui',
 # licensing of 'qud_explorer_window.ui' applies.
 #
-# Created: Sun Sep 15 18:23:41 2019
+# Created: Sun Sep 15 18:44:01 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -104,6 +104,7 @@ class Ui_MainWindow(object):
         self.actionUpload_tiles = QtWidgets.QAction(MainWindow)
         self.actionUpload_tiles.setObjectName("actionUpload_tiles")
         self.actionXML_source = QtWidgets.QAction(MainWindow)
+        self.actionXML_source.setCheckable(True)
         self.actionXML_source.setObjectName("actionXML_source")
         self.menuFile.addAction(self.actionOpen_ObjectBlueprints_xml)
         self.menuFile.addAction(self.actionExit)
