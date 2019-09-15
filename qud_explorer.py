@@ -4,7 +4,7 @@ import re
 import difflib
 from pprint import pformat
 
-from PySide2.QtCore import QSize, Qt
+from PySide2.QtCore import QSize, Qt, QSortFilterProxyModel, QItemSelectionModel, QRegExp
 from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon, QPixmap
 from PySide2.QtWidgets import QMainWindow, QApplication, QTreeView, QSizePolicy, \
     QAbstractItemView, QFileDialog, QHeaderView, QMenu, QAction, QMessageBox
@@ -21,6 +21,43 @@ HEADER_LABELS = ['Name', 'Display', 'Override', 'Article exists', 'Article match
                  'Image matches']
 # TEMPLATE_RE copied from wikipage.py except that start/end patterns converted to non-capturing (?:)
 TEMPLATE_RE = r"(?:.*?)(^{{(?:Item|Character|Food|Corpse).*^}}$)(?:.*)"
+
+
+class QudFilterModel(QSortFilterProxyModel):
+    def __init__(self, parent=None):
+        super(QudFilterModel, self).__init__(parent)
+        self.setRecursiveFilteringEnabled = True
+        self.setFilterKeyColumn(0)
+        self.filterSelections = []
+        self.filterSelectionIDs = []
+        # use of separate itemIDs list is a workaround for issue bugreports.qt.io/browse/PYSIDE-74,
+        # which causes errors when using the 'in' operator on the filterSelections list's QItems
+
+    def pop_selections(self):
+        val1 = self.filterSelections
+        val2 = self.filterSelectionIDs
+        self.filterSelections = []
+        self.filterSelectionIDs = []
+        return (val1, val2)
+
+    def _accept_index(self, idx):  # recursive search
+        if idx.isValid():
+            text = idx.data(role=Qt.DisplayRole).lower()
+            found = text.find(self.filterRegExp().pattern().lower()) >= 0  # use QRegExp method?
+            if found:
+                item = self.sourceModel().itemFromIndex(idx)
+                if item.isSelectable() and id(item) not in self.filterSelectionIDs:
+                    self.filterSelections.append(item)
+                    self.filterSelectionIDs.append(id(item))
+                return True
+            for childnum in range(idx.model().rowCount(idx)):
+                if self._accept_index(idx.model().index(childnum, 0, idx)):
+                    return True
+        return False
+
+    def filterAcceptsRow(self, source_row, source_parent):
+        idx = self.sourceModel().index(source_row, 0, source_parent)  # 0 = first column
+        return self._accept_index(idx)
 
 
 class QudTreeView(QTreeView):
@@ -55,7 +92,7 @@ class QudTreeView(QTreeView):
         self.customContextMenuRequested.connect(self.on_context_menu)
 
     def on_context_menu(self, point):
-        print(str(point) + "  '" + self.indexAt(point).data() + "'")
+        # print(str(point) + "  '" + self.indexAt(point).data() + "'")
         self.tree_menu.exec_(self.mapToGlobal(point))
 
     def selectionChanged(self, selected, deselected):
@@ -79,10 +116,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowIcon(icon)
         self.view_type = 'wiki'
         self.qud_object_model = QStandardItemModel()
+        self.qud_object_proxyfilter = QudFilterModel()
+        self.qud_object_proxyfilter.setSourceModel(self.qud_object_model)
         self.items_to_expand = []  # filled out during recursion of the Qud object tree
         self.treeView = QudTreeView(self.tree_selection_handler, self.tree_target_widget)
         self.verticalLayout.addWidget(self.treeView)
         self.search_line_edit.textChanged.connect(self.search_changed)
+        self.search_line_edit.returnPressed.connect(self.search_changed_forced)
         # File menu:
         self.actionOpen_ObjectBlueprints_xml.triggered.connect(self.open_xml)
         # View type menu:
@@ -125,7 +165,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def init_qud_tree_model(self):
         """Initialize the Qud object model tree by setting up the root object."""
-        self.treeView.setModel(self.qud_object_model)
+        self.treeView.setModel(self.qud_object_proxyfilter)
         self.qud_object_model.setHorizontalHeaderLabels(HEADER_LABELS)
         header = self.treeView.header()
         header.setSectionResizeMode(QHeaderView.ResizeToContents)
@@ -185,7 +225,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def recursive_expand(self, item: QStandardItem):
         """Expand the currently selected item in the QudTreeView and all its children."""
         index = self.qud_object_model.indexFromItem(item)
-        self.treeView.expand(index)
+        self.treeView.expand(self.qud_object_proxyfilter.mapFromSource(index))
         if item.parent() is not None:
             self.recursive_expand(item.parent())
 
@@ -195,8 +235,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.statusbar.clearMessage()
         text = ""
         for index in indices:
-            if index.column() == 0:
-                item = self.qud_object_model.itemFromIndex(index)
+            model_index = self.qud_object_proxyfilter.mapToSource(index)
+            if model_index.column() == 0:
+                item = self.qud_object_model.itemFromIndex(model_index)
                 qud_object = item.data()
                 if self.view_type == 'wiki':
                     text += qud_object.wiki_template() + '\n'
@@ -225,23 +266,63 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def expand_all(self):
         """Fully expand all levels of the QudTreeView."""
         self.treeView.expandAll()
+        self.clear_search_filter(True)
 
     def expand_default(self):
         """Expand the QudTreeView to the levels configured in config.yml."""
         self.collapse_all()
         for item in self.items_to_expand:
             self.recursive_expand(item)
+        self.clear_search_filter(True)
 
-    def search_changed(self):
-        """Called when the text in the search box has changed."""
-        # TODO: replace keyboardSearch with custom search and filter display to match
-        if self.search_line_edit.text() != '':
-            self.treeView.scrollToTop()  # keyboardSearch is bad
-            self.treeView.clearSelection()  # keyboardSearch is bad
-            self.treeView.keyboardSearch(self.search_line_edit.text())
+    def scroll_to_selected(self):
+        self.currently_selected = self.treeView.selectedIndexes()
+        if self.currently_selected is not None and len(self.currently_selected) > 0:
+            self.treeView.scrollTo(self.currently_selected[0])
+
+    def clear_search_filter(self, clearfield: bool = False):
+        if clearfield and len(self.search_line_edit.text()) > 0:
+            self.search_line_edit.clear()
+        self.qud_object_proxyfilter.setFilterRegExp('')
+        self.scroll_to_selected()
+
+    def search_changed(self, mode: str = ''):
+        """Called when the text in the search box has changed. By default, the search box only
+           begins filtering after 4 or more letters are entered. However, you can override that and
+           search with fewer letters by hitting ENTER ('Forced' mode). You can also hit ENTER to
+           move to the next match for an existing/active search query."""
+        if len(self.search_line_edit.text()) <= 3:
+            self.clear_search_filter(False)
+        if len(self.search_line_edit.text()) > 3\
+                or (mode == 'Forced' and self.search_line_edit.text() != ''):
+            self.qud_object_proxyfilter.pop_selections()  # clear any lingering data in proxyfilter
+            self.qud_object_proxyfilter.setFilterRegExp(  # this applies the actual filtering
+                QRegExp(self.search_line_edit.text(), Qt.CaseInsensitive, QRegExp.FixedString))
+            self.treeView.expandAll()  # expands to show everything visible after filter is applied
+            items, itemIDs = self.qud_object_proxyfilter.pop_selections()
+            if len(items) > 0:
+                item = items[0]
+                if mode == 'Forced':  # go to next filtered item each time the user presses ENTER
+                    self.currently_selected = self.treeView.selectedIndexes()
+                    if self.currently_selected is not None and self.selected_row_count() == 1:
+                        currentitem = self.qud_object_model.itemFromIndex(
+                            self.qud_object_proxyfilter.mapToSource(self.currently_selected[0]))
+                        if id(currentitem) in itemIDs:
+                            newindex = itemIDs.index(id(currentitem)) + 1
+                            if newindex < len(items):
+                                item = items[newindex]
+                idx = self.qud_object_model.indexFromItem(item)
+                idx = self.qud_object_proxyfilter.mapFromSource(idx)
+                self.treeView.selectionModel().select(
+                    idx, QItemSelectionModel.ClearAndSelect | QItemSelectionModel.Rows)
+                self.scroll_to_selected()
+
+    def search_changed_forced(self):
+        self.search_changed('Forced')
 
     def selected_row_count(self):
-        return len(self.currently_selected) // len(HEADER_LABELS)
+        if self.currently_selected is not None:
+            return len(self.currently_selected) // len(HEADER_LABELS)
 
     def wiki_check_selected(self):
         """Check the wiki for the existence of the article and image for selected objects, and
@@ -250,16 +331,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         check_total = self.selected_row_count()
         check_count = 0
         for num, index in enumerate(self.currently_selected):
-            if index.column() == 0:
+            model_index = self.qud_object_proxyfilter.mapToSource(index)
+            if model_index.column() == 0:
                 if check_total > 1:
                     check_count += 1
                     self.statusbar.showMessage("comparing selected entries against wiki:  " +
                                                str(check_count) + "/" + str(check_total))
-                qitem = self.qud_object_model.itemFromIndex(index)
-                wiki_exists = self.qud_object_model.itemFromIndex(self.currently_selected[num+3])
-                wiki_matches = self.qud_object_model.itemFromIndex(self.currently_selected[num+4])
-                tile_exists = self.qud_object_model.itemFromIndex(self.currently_selected[num+5])
-                tile_matches = self.qud_object_model.itemFromIndex(self.currently_selected[num+6])
+                qitem = self.qud_object_model.itemFromIndex(model_index)
+                wiki_exists = self.qud_object_model.itemFromIndex(
+                    self.qud_object_proxyfilter.mapToSource(self.currently_selected[num+3]))
+                wiki_matches = self.qud_object_model.itemFromIndex(
+                    self.qud_object_proxyfilter.mapToSource(self.currently_selected[num+4]))
+                tile_exists = self.qud_object_model.itemFromIndex(
+                    self.qud_object_proxyfilter.mapToSource(self.currently_selected[num+5]))
+                tile_matches = self.qud_object_model.itemFromIndex(
+                    self.qud_object_proxyfilter.mapToSource(self.currently_selected[num+6]))
                 # first, blank the cells
                 for _ in wiki_exists, wiki_matches, tile_exists, tile_matches:
                     _.setText('')
@@ -306,12 +392,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         check_total = self.selected_row_count()
         check_count = 0
         for num, index in enumerate(self.currently_selected):
-            if index.column() == 0:
+            model_index = self.qud_object_proxyfilter.mapToSource(index)
+            if model_index.column() == 0:
                 if check_total > 1:
                     check_count += 1
                     self.statusbar.showMessage("uploading selected templates to wiki:  " +
                                                str(check_count) + "/" + str(check_total))
-                item = self.qud_object_model.itemFromIndex(index)
+                item = self.qud_object_model.itemFromIndex(model_index)
                 qud_object = item.data()
                 if not qud_object.is_wiki_eligible():
                     print(f'{qud_object.name} is disincluded from the wiki by blacklist or type.')
@@ -320,7 +407,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     try:
                         page = WikiPage(qud_object)
                         if page.upload_template() == 'Success':
-                            wiki_matches = self.currently_selected[num+4]
+                            wiki_matches = self.qud_object_proxyfilter.mapToSource(
+                                self.currently_selected[num+4])
                             self.qud_object_model.itemFromIndex(wiki_matches).setText('✅')
                             self.app.processEvents()
                             upload_processed = True
@@ -341,13 +429,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         check_total = self.selected_row_count()
         check_count = 0
         for num, index in enumerate(self.currently_selected):
-            if index.column() != 0:
+            model_index = self.qud_object_proxyfilter.mapToSource(index)
+            if model_index.column() != 0:
                 continue
             if check_total > 1:
                 check_count += 1
                 self.statusbar.showMessage("uploading selected tiles to wiki:  " +
                                            str(check_count) + "/" + str(check_total))
-            item = self.qud_object_model.itemFromIndex(index)
+            item = self.qud_object_model.itemFromIndex(model_index)
             qud_object = item.data()
             if qud_object.tile is None:
                 print(f'{qud_object.name} has no tile, so not uploading.')
@@ -388,9 +477,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                      comment=descr
                                      )
                 if result.get('result', None) == 'Success':
-                    self.qud_object_model.itemFromIndex(self.currently_selected[num+6]).setText('✅')
+                    tile_matches = self.qud_object_proxyfilter.mapToSource(
+                        self.currently_selected[num+6])
+                    self.qud_object_model.itemFromIndex(tile_matches).setText('✅')
                     self.app.processEvents()
-                print(result)
+                # print(result)
                 upload_processed = True
             finally:
                 if not upload_processed:  # unhandled exception during upload
