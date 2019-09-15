@@ -200,6 +200,7 @@ Wiki:
     Lovers_Thorns: thorns (jilted lover)
     Creeper_Thorns: thorns (livid creeper)
     Graftek_Tendril: tendril (graftek)
+    Glowcrow_Peck: peck (glowcrow)
 
     HoloMarble: Holographic marble wall
 
@@ -258,7 +259,6 @@ Wiki:
       -Wings,
       -Stinger,
       -Ghostly Flames,
-      -Icy Vapor,
       -Horticulturalist Bio-Scanning Bracelet,
       -Child of the Deep Structural Scanning Bracelet,
       -Wof_Bite,
@@ -536,7 +536,7 @@ Wiki:
     Axes: [BaseAxe]
     Long Blades: [BaseLongBlade, SalthopperMandible, Gaslight Sword]
     Whips: [Leather Whip]
-    Mutated Natural Weapons: [Burrowing Claws, Horns]
+    Mutated Natural Weapons: [Burrowing Claws, Horns, Icy Vapor]
     Missile Weapons: [MissileWeapon]
     Natural Weapons: [NaturalWeapon, NaturalMissileWeapon]
     Firearms: [BaseFirearm]
