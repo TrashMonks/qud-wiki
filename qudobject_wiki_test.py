@@ -79,10 +79,10 @@ def test_harvestedinto():
 
 def test_inventory():
     obj = qindex['HindrenVillager']
-    assert '{{inventory|{{ID to name|LeatherBracer}}|1|no|100}}' in obj.inventory
-    assert '{{inventory|{{ID to name|Sandals}}|2|no|100}}' in obj.inventory
-    assert '{{inventory|{{ID to name|Vinewafer Sheaf}}|2-3|no|100}}' in obj.inventory
-    assert '{{inventory|{{ID to name|Iron Vinereaper}}|1|no|100}}' in obj.inventory
+    assert '{{inventory|LeatherBracer|1|no|100}}' in obj.inventory
+    assert '{{inventory|Sandals|2|no|100}}' in obj.inventory
+    assert '{{inventory|Vinewafer Sheaf|2-3|no|100}}' in obj.inventory
+    assert '{{inventory|Iron Vinereaper|1|no|100}}' in obj.inventory
 
 
 def test_mods():
