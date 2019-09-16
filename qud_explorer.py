@@ -534,57 +534,39 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 f' wiki template:\n<pre>{diff_lines}</pre>')
         msg_box.exec()
 
-    def setview_wiki(self):
-        """Change the view type to wiki template and update the View menu."""
-        if self.view_type == 'wiki':
+    def setview(self, view: str):
+        """Process a request to set the view type and update the checkmarks in the View menu.
+
+        Parameters: view: one of 'wiki', 'attr', 'all_attr', 'xml_source'"""
+        if self.view_type == view:
             return
-        else:
-            self.view_type = 'wiki'
-            self.actionWiki_template.setChecked(True)
-            self.actionAttributes.setChecked(False)
-            self.actionAll_attributes.setChecked(False)
-            self.actionXML_source.setChecked(False)
-            selected = self.treeView.selectedIndexes()
-            self.tree_selection_handler(selected)
+        actions = {'wiki': self.actionWiki_template,
+                   'attr': self.actionAttributes,
+                   'all_attr': self.actionAll_attributes,
+                   'xml_source': self.actionXML_source,
+                   }
+        self.view_type = view
+        for action in actions.values():
+            action.setChecked(False)
+        actions[view].setChecked(True)
+        selected = self.treeView.selectedIndexes()
+        self.tree_selection_handler(selected)  # redraw the text view in the new type
+
+    def setview_wiki(self):
+        """Change the view type to wiki template."""
+        self.setview('wiki')
 
     def setview_attr(self):
-        """Change the view type to Attributes and update the View menu."""
-        if self.view_type == 'attr':
-            return
-        else:
-            self.view_type = 'attr'
-            self.actionWiki_template.setChecked(False)
-            self.actionAttributes.setChecked(True)
-            self.actionAll_attributes.setChecked(False)
-            self.actionXML_source.setChecked(False)
-            selected = self.treeView.selectedIndexes()
-            self.tree_selection_handler(selected)
+        """Change the view type to Attributes."""
+        self.setview('attr')
 
     def setview_allattr(self):
-        """Change the view type to All attributes and update the View menu."""
-        if self.view_type == 'all_attr':
-            return
-        else:
-            self.view_type = 'all_attr'
-            self.actionWiki_template.setChecked(False)
-            self.actionAttributes.setChecked(False)
-            self.actionAll_attributes.setChecked(True)
-            self.actionXML_source.setChecked(False)
-            selected = self.treeView.selectedIndexes()
-            self.tree_selection_handler(selected)
+        """Change the view type to All attributes."""
+        self.setview('all_attr')
 
     def setview_xmlsource(self):
-        """Change the view type to XML source and update the View menu."""
-        if self.view_type == 'xml_source':
-            return
-        else:
-            self.view_type = 'xml_source'
-            self.actionWiki_template.setChecked(False)
-            self.actionAttributes.setChecked(False)
-            self.actionAll_attributes.setChecked(False)
-            self.actionXML_source.setChecked(True)
-            selected = self.treeView.selectedIndexes()
-            self.tree_selection_handler(selected)
+        """Change the view type to XML source."""
+        self.setview('xml_source')
 
 
 qbe_app = QApplication(sys.argv)
