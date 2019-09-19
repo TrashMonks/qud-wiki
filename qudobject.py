@@ -70,7 +70,8 @@ class QudObject(NodeMixin):
             holo_parts = ['part_HologramMaterial',
                           'part_HologramWallMaterial',
                           'part_HologramMaterialPrimary']
-            if any(self.is_specified(part) for part in holo_parts):
+            if (any(self.is_specified(part) for part in holo_parts)
+               or self.name == "Wraith-Knight Templar"):
                 # special handling for holograms
                 color = '&B'
                 tilecolor = '&B^b'
