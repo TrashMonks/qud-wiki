@@ -19,6 +19,16 @@ def test_ammodamagetypes():
     assert obj.ammodamagetypes == 'Light</br>Heat'
 
 
+def test_butcheredinto():
+    obj = qindex['Albino ape corpse']
+    want = '{{corpse pop table|population=Albino ape corpse|'\
+           'object=albino ape pelt|id=Albino Ape Pelt|num=1|weight=70}}</br>'\
+           '{{corpse pop table|population=Albino ape corpse|'\
+           ' object=albino ape heart|id=Albino Ape Heart|num=1|weight=10}}</br>'\
+           '{{corpse pop table|population=Albino ape corpse|object=ape fur cloak|id=Ape Fur Cloak|num=1|weight=20}}'
+    assert obj.butcheredinto == want
+
+
 def test_colorstr():
     obj = qindex['SixDayStiltWall1']
     assert obj.colorstr == '&amp;y^c'
@@ -56,6 +66,16 @@ The Grizzly Bear is huge and wild;
 It has devoured the infant child. 
 The infant child is unaware;
 It has been eaten by the bear."""  # noqa W291
+
+
+def test_dynamictable():
+    obj = qindex['AcidGasGrenade1']
+    want = '{{Dynamic object|Grenades|AcidGasGrenade1}}'
+    assert obj.dynamictable == want
+    obj = qindex['Freeze-Dried Hoarshrooms']
+    want = '{{Dynamic object|Jungle_Ingredients|Freeze-Dried Hoarshrooms}} </br>'\
+           '{{Dynamic object|Ruins_Ingredients|Freeze-Dried Hoarshrooms}}'
+    assert obj.dynamictable == want
 
 
 def test_extra():
@@ -99,3 +119,27 @@ def test_mutations():
            '{{creature mutation|{{MutationID to name|GasGenerationPoisonGas}}|1|5}} </br>'\
            '{{creature mutation|{{MutationID to name|DarkVision}}|3|5}}'
     assert obj.mutations == want
+
+
+def test_oneat():
+    obj = qindex['FireBreatherGland']
+    want = '{{OnEat ID to name|BreatheOnEatFireBreather5}}'
+    assert obj.oneat == want
+
+
+def test_preservedinto():
+    obj = qindex['FireBreatherGland']
+    want = '{{ID to name|FireBreatherGlandPaste}}'
+    assert obj.preservedinto == want
+
+
+def test_renderstr():
+    obj = qindex['EyelessCrabShell']
+    assert obj.renderstr == '&#125;'  # not '}'
+
+
+def test_reputationbonus():
+    obj = qindex['LuminousInfection']  # glowcrust
+    want = '{{reputation bonus|{{FactionID to name|Fungi}}|200}} </br>'\
+           '{{reputation bonus|{{FactionID to name|Consortium}}|-200}}'
+    assert obj.reputationbonus == want
