@@ -70,19 +70,23 @@ def load(path):
     start = time.time()
     print("Repairing invalid XML line breaks... ", end='')
     contents = repair_invalid_linebreaks(contents)
-    contents_b = contents.encode('utf-8')  # start/stop markers are in bytes, not Unicode characters
     print(f"done in {time.time() - start:.2f} seconds")
+    contents_b = contents.encode('utf-8')  # start/stop markers are in bytes, not characters
     raw = ET.fromstring(contents, parser=LineNumberingParser())
     print("Building Qud object hierarchy and adding tiles...")
     # Build the Qud object hierarchy from the XML data
+    last_stop = 0
     for element in raw:
-        start, stop = element._start_byte_index, element._end_byte_index
-        source = contents_b[start:stop+9].decode('utf-8')
-        if not source.endswith('</object>'):
-            # parsing 'ends' at the close tag, so add 9 bytes to include '</object>'
-            print(start, stop, contents_b[start:stop+9].decode('utf-8'))
+        # parsing 'ends' at the close tag, so add 9 bytes to include '</object>'
+        start, stop = element._start_byte_index, element._end_byte_index + 9
+        source = contents_b[start:stop].decode('utf-8')
+        # capture comments, etc. before start tag for later saving
+        full_source = contents_b[last_stop:stop].decode('utf-8')
+        last_stop = stop
         if element.tag != 'object':
             continue
-        QudObjectWiki(element, source)  # registers itself in qindex
+        obj = QudObjectWiki(element, source)
+    tail = contents_b[last_stop:].decode('utf-8')
+    obj.source = source + tail  # add tail of file to the XML source of last object loaded
     qud_object_root = qindex['Object']
     return qud_object_root
