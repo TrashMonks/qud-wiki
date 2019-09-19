@@ -91,3 +91,11 @@ def test_mods():
     obj = qindex['Caslainard']
     assert obj.mods == '{{ModID to name|ModCounterweighted|5}} </br>'\
                        '{{ModID to name|ModElectrified|7}}'
+
+
+def test_mutations():
+    obj = qindex['Girshworm']
+    want = '{{creature mutation|{{MutationID to name|Regeneration}}|0|5}} </br>'\
+           '{{creature mutation|{{MutationID to name|GasGenerationPoisonGas}}|1|5}} </br>'\
+           '{{creature mutation|{{MutationID to name|DarkVision}}|3|5}}'
+    assert obj.mutations == want

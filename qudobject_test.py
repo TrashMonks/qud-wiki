@@ -2,8 +2,8 @@
 
 import os
 
-import qud_object_tree  # build the object tree
-from qudobject import qindex
+import qud_object_tree
+qindex = qud_object_tree.qindex
 
 # fallback location
 FILE = "C:/Steam/SteamApps/common/Caves of Qud/CoQ_Data/StreamingAssets/Base/ObjectBlueprints.xml"

@@ -199,6 +199,18 @@ class QudObjectWiki(QudObjectProps):
             return ' </br>'.join(f'{{{{ModID to name|{mod}|{tier}}}}}' for mod, tier in mods)
 
     @property
+    def mutations(self):
+        """The mutations the creature has along with their level."""
+        mutations = super().mutations
+        if mutations is not None:
+            templates = []
+            for mutation, level in mutations:
+                templates.append(f'{{{{creature mutation|'
+                                 f'{{{{MutationID to name|{mutation}}}}}|{level}|'
+                                 f'{self.attribute_helper("Ego", "Average")}}}}}')
+            return ' </br>'.join(templates)
+
+    @property
     def skills(self):
         """A creature's learned skills/powers."""
         skills = super().skills

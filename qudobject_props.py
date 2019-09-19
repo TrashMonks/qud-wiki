@@ -599,12 +599,12 @@ class QudObjectProps(QudObject):
     @property
     def image(self):
         """The image filename."""
-        if self.part_Render_Tile is not None:
+        if self.part_Render_Tile is None:
+            tile = 'none'
+        else:
             tile = self.displayname
             tile = re.sub(r"[^a-zA-Z\d ]", '', tile)
             tile = tile.casefold() + '.png'
-        else:
-            tile = 'none'
         return tile
 
     @property
@@ -784,25 +784,16 @@ class QudObjectProps(QudObject):
 
     @property
     def mutations(self):
-        """The mutations the creature has along with their level"""
-        ret = None
+        """The mutations the creature has along with their level.
+
+        Returns a list of tuples of strings (name, level)."""
         if self.mutation is not None:
-            ret = ""
-            for obj in self.mutation:
-                constructor = ""
-                if 'GasObject' in self.mutation[obj]:
-                    constructor = f"{self.mutation[obj]['GasObject']}"
-                if ret != "":
-                    ret += " </br>"
-                if 'Level' in self.mutation[obj]:
-                    ret += f"{{{{creature mutation|"\
-                           f"{{{{MutationID to name|{obj}{constructor}}}}}|"\
-                           f"{self.mutation[obj]['Level']}|"\
-                           f"{self.attribute_helper('Ego', 'Average')}}}}}"
-                else:
-                    ret += f"{{{{creature mutation|"\
-                           f"{{{{MutationID to name|{obj}{constructor}}}}}|0}}}}"
-        return ret
+            mutations = []
+            for mutation, data in self.mutation.items():
+                postfix = f"{data['GasObject']}" if 'GasObject' in data else ''
+                level = data['Level'] if 'Level' in data else '0'
+                mutations.append((mutation + postfix, level))
+            return mutations
 
     @property
     def omniphaseprojectile(self):
