@@ -2,7 +2,7 @@ import re
 
 from config import config
 from helpers import cp437_to_unicode, DiceBag
-from qudobject import qindex, QudObject
+from qudobject import QudObject
 from svalue import sValue
 
 
@@ -75,7 +75,7 @@ class QudObjectProps(QudObject):
             for part in parts:
                 attr = getattr(self, part)
                 if attr is not None and attr != '':
-                    item = qindex[attr]
+                    item = self.qindex[attr]
                     if part_attr:
                         return getattr(item, part_attr, None)
                     else:
@@ -151,7 +151,7 @@ class QudObjectProps(QudObject):
                     if name[0] in '*#@':
                         # special values like '*Junk 1'
                         continue
-                    item = qindex[name]
+                    item = self.qindex[name]
                     if item.av:
                         av += int(item.av)
         if av is not None:
@@ -414,7 +414,7 @@ class QudObjectProps(QudObject):
                         if name[0] in '*#@':
                             # special values like '*Junk 1'
                             continue
-                        item = qindex[name]
+                        item = self.qindex[name]
                         if item.dv:
                             dv += int(item.dv)
                 # does this creature have mutations that affect DV?

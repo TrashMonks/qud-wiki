@@ -8,18 +8,20 @@ from anytree import NodeMixin
 
 from qudtile import QudTile
 
-qindex = {}  # fast lookup of name->QudObject
-
 
 class QudObject(NodeMixin):
     """Represents a Caves of Qud object blueprint with attribute inheritance.
 
     Parameters:
         blueprint: an XML Element to parse into dictionaries
-        source: a string with the XML source that created `blueprint`"""
+        source: a string with the XML source that created `blueprint`
+        full_source: a string with the full XML source (preceding comments, whitespace, etc.)
+        qindex: a dict in which to register this object after creation, keyed by name"""
 
-    def __init__(self, blueprint: Element, source: str):
+    def __init__(self, blueprint: Element, source: str, full_source: str, qindex: dict):
         self.source = source
+        self.full_source = full_source
+        self.qindex = qindex
         self.name = blueprint.get('Name')
         self.blueprint = blueprint
         qindex[self.name] = self

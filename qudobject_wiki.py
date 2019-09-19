@@ -120,6 +120,7 @@ class QudObjectWiki(QudObjectProps):
 
     @property
     def corpse(self):
+        """What corpse a character drops."""
         obj = super().corpse
         if obj is not None:
             return f'{{{{ID to name|{obj}}}}}'

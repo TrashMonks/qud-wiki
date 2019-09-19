@@ -10,8 +10,11 @@ import time
 sys.modules['_elementtree'] = None
 from xml.etree import ElementTree as ET  # noqa E402
 
-from qudobject import qindex  # noqa E402
 from qudobject_wiki import QudObjectWiki  # noqa E402
+
+# Objects must still register themselves in the qindex because they need access to their parent by
+# name during creation for inheritance calculations.
+qindex = {}  # fast lookup of name->QudObject
 
 
 class LineNumberingParser(ET.XMLParser):
@@ -85,7 +88,7 @@ def load(path):
         last_stop = stop
         if element.tag != 'object':
             continue
-        obj = QudObjectWiki(element, source)
+        obj = QudObjectWiki(element, source, full_source, qindex)
     tail = contents_b[last_stop:].decode('utf-8')
     obj.source = source + tail  # add tail of file to the XML source of last object loaded
     qud_object_root = qindex['Object']
