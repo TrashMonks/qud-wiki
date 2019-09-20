@@ -105,6 +105,14 @@ class QudObjectWiki(QudObjectProps):
             return '</br>'.join(types)
 
     @property
+    def butcheredinto(self):
+        """What a corpse item can be butchered into."""
+        into = super().butcheredinto
+        if into is not None:
+            return f'{{{{Corpse pop table|population={self.name}|object={{{{ID to name|'\
+                   f'{into}}}}}|id={into}}}}}'
+
+    @property
     def colorstr(self):
         """The Qud color code associated with the RenderString."""
         colorstr = super().colorstr
@@ -131,6 +139,13 @@ class QudObjectWiki(QudObjectProps):
         desc = super().desc
         if desc is not None:
             return escape_ampersands(desc)
+
+    @property
+    def dynamictable(self):
+        """What dynamic tables the object is a member of."""
+        tables = super().dynamictable
+        if tables is not None:
+            return ' </br>'.join(f'{{{{Dynamic object|{table}|{self.name}}}}}' for table in tables)
 
     @property
     def extra(self):
@@ -211,6 +226,34 @@ class QudObjectWiki(QudObjectProps):
             return ' </br>'.join(templates)
 
     @property
+    def oneat(self):
+        """Effects granted when the object is eaten."""
+        effects = super().oneat
+        if effects is not None:
+            return ' </br>'.join(f'{{{{OnEat ID to name|{effect}}}}}' for effect in effects)
+
+    @property
+    def preservedinto(self):
+        """When preserved, what a preservable item produces."""
+        result = super().preservedinto
+        if result is not None:
+            return f"{{{{ID to name|{result}}}}}"
+
+    @property
+    def renderstr(self):
+        render = super().renderstr
+        if render == '}':
+            render = '&#125;'
+        return render
+
+    @property
+    def reputationbonus(self):
+        reps = super().reputationbonus
+        if reps is not None:
+            return ' </br>'.join(f'{{{{reputation bonus|{{{{FactionID to name|'
+                                 f'{faction}}}}}|{value}}}}}' for faction, value in reps)
+
+    @property
     def skills(self):
         """A creature's learned skills/powers."""
         skills = super().skills
@@ -229,3 +272,9 @@ class QudObjectWiki(QudObjectProps):
         if self.inherits_from('Creature') or self.inherits_from('ActivePlant'):
             if self.name in config['Wiki']['Categories']['Unique Characters']:
                 return 'yes'
+
+    @property
+    def weaponskill(self):
+        skill = super().weaponskill
+        if skill is not None:
+            return f'{{{{SkillID to name|{skill}}}}}'

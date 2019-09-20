@@ -20,12 +20,19 @@ def test_ammodamagetypes():
 
 
 def test_butcheredinto():
-    obj = qindex['Albino ape corpse']
-    want = '{{corpse pop table|population=Albino ape corpse|'\
-           'object=albino ape pelt|id=Albino Ape Pelt|num=1|weight=70}}</br>'\
-           '{{corpse pop table|population=Albino ape corpse|'\
-           ' object=albino ape heart|id=Albino Ape Heart|num=1|weight=10}}</br>'\
-           '{{corpse pop table|population=Albino ape corpse|object=ape fur cloak|id=Ape Fur Cloak|num=1|weight=20}}'
+    # TODO: return corpse drop chances that are not given in ObjectBlueprints.xml,
+    #  but rather in populationtables.xml:
+    # obj = qindex['Albino ape corpse']
+    # want = '{{corpse pop table|population=Albino ape corpse|'\
+    #        'object=albino ape pelt|id=Albino Ape Pelt|num=1|weight=70}}</br>'\
+    #        '{{corpse pop table|population=Albino ape corpse|'\
+    #        ' object=albino ape heart|id=Albino Ape Heart|num=1|weight=10}}</br>'\
+    #        '{{corpse pop table|population=Albino ape corpse|'\
+    #        'object=ape fur cloak|id=Ape Fur Cloak|num=1|weight=20}}'
+    # assert obj.butcheredinto == want
+    obj = qindex['Boar Corpse']
+    want = '{{Corpse pop table|population=Boar Corpse|'\
+           'object={{ID to name|Raw Boar Meat}}|id=Raw Boar Meat}}'
     assert obj.butcheredinto == want
 
 
@@ -76,6 +83,8 @@ def test_dynamictable():
     want = '{{Dynamic object|Jungle_Ingredients|Freeze-Dried Hoarshrooms}} </br>'\
            '{{Dynamic object|Ruins_Ingredients|Freeze-Dried Hoarshrooms}}'
     assert obj.dynamictable == want
+    obj = qindex['Snapjaw Troglodyte']
+    assert obj.dynamictable is None  # test {{{remove}}} as Value of DynamicObjectsTable:xxx
 
 
 def test_extra():
@@ -139,7 +148,26 @@ def test_renderstr():
 
 
 def test_reputationbonus():
+    obj = qindex['Ape Fur Hat']
+    want = '{{reputation bonus|{{FactionID to name|Apes}}|-100}}'
+    assert obj.reputationbonus == want
+    obj = qindex['Fork-Horned Helmet 3']
+    want = '{{reputation bonus|{{FactionID to name|Antelopes}}|100}} </br>'\
+           '{{reputation bonus|{{FactionID to name|Goatfolk}}|100}}'
+    assert obj.reputationbonus == want
     obj = qindex['LuminousInfection']  # glowcrust
     want = '{{reputation bonus|{{FactionID to name|Fungi}}|200}} </br>'\
            '{{reputation bonus|{{FactionID to name|Consortium}}|-200}}'
     assert obj.reputationbonus == want
+
+
+def test_weaponskill():
+    obj = qindex['Gaslight Dagger']
+    want = '{{SkillID to name|ShortBlades}}'
+    assert obj.weaponskill == want
+    obj = qindex['MasterworkCarbine']
+    want = '{{SkillID to name|Rifle}}'
+    assert obj.weaponskill == want
+    obj = qindex['Fullerite Shield']
+    want = '{{SkillID to name|Shield}}'
+    assert obj.weaponskill == want

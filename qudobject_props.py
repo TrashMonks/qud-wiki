@@ -173,9 +173,7 @@ class QudObjectProps(QudObject):
     @property
     def butcheredinto(self):
         """What a corpse item can be butchered into."""
-        if self.part_Butcherable_OnSuccess is not None:
-            return f"{{{{Corpse pop table|population={self.name}|object={{{{ID to name|"\
-                   f"{self.part_Butcherable_OnSuccess}}}}}|id={self.part_Butcherable_OnSuccess}}}}}"
+        return self.part_Butcherable_OnSuccess
 
     @property
     def canbuild(self):
@@ -427,21 +425,18 @@ class QudObjectProps(QudObject):
 
     @property
     def dynamictable(self):
-        ret = None
+        """What dynamic tables the object is a member of.
+
+        Returns a list of strings, the dynamic tables."""
         if self.tag_ExcludeFromDynamicEncounters is not None:
-            return ret
-        else:
-            for key in self.tag.keys():
-                if key.startswith('DynamicObjectsTable'):
-                    if "Value" in self.tag[key]:
-                        if self.tag[key]['Value'] == "{{{remove}}}":
-                            continue
-                    if ret is None:
-                        ret = ""
-                    elif ret != "":
-                        ret += " </br>"
-                    ret += "{{Dynamic object|" + re.split(":", key, 1)[1] + "|" + self.name + "}}"
-        return ret
+            return None
+        tables = []
+        for key, val in self.tag.items():
+            if key.startswith('DynamicObjectsTable'):
+                if 'Value' in val and val['Value'] == '{{{remove}}}':
+                    continue  # explicitly blacklisted from an inherited dynamic table
+                tables.append(key.split(':')[1])
+        return tables if len(tables) > 0 else None
 
     @property
     def eatdesc(self):
@@ -804,19 +799,21 @@ class QudObjectProps(QudObject):
 
     @property
     def oneat(self):
-        ret = None
-        for key in self.part.keys():
+        """Effects granted when the object is eaten.
+
+        Returns a list of strings, which are the effects.
+        Example:
+            Transform <part Name="BreatheOnEat" Class="FireBreather" Level="5"></part>
+            into ['BreatheOnEatFireBreather5']"""
+        effects = []
+        for key, val in self.part.items():
             if key.endswith('OnEat'):
-                if ret is None:
-                    ret = ""
-                elif ret != "":
-                    ret += " </br>"
-                if "Class" in self.part[key]:
-                    ret += f"{{{{OnEat ID to name|"\
-                           f"{key}{self.part[key]['Class']}{self.part[key]['Level']}}}}}"
-                else:
-                    ret += f"{{{{OnEat ID to name|{key}}}}}"
-        return ret
+                effect = key
+                if 'Class' in val:
+                    effect += val['Class']
+                    effect += val['Level']
+                effects.append(effect)
+        return effects if len(effects) > 0 else None
 
     @property
     def penetratingammo(self):
@@ -827,8 +824,7 @@ class QudObjectProps(QudObject):
     @property
     def preservedinto(self):
         """When preserved, what a preservable item produces."""
-        if self.part_PreservableItem_Result is not None:
-            return f"{{{{ID to name|{self.part_PreservableItem_Result}}}}}"
+        return self.part_PreservableItem_Result
 
     @property
     def preservedquantity(self):
@@ -879,43 +875,38 @@ class QudObjectProps(QudObject):
     @property
     def renderstr(self):
         """What the item looks like with tiles mode off."""
+        render = None
         if self.part_Render_RenderString and len(self.part_Render_RenderString) > 1:
             # some RenderStrings are given as CP437 character codes in base 10
-            return cp437_to_unicode(int(self.part_Render_RenderString))
+            render = cp437_to_unicode(int(self.part_Render_RenderString))
         elif self.part_Gas is not None:
-            return '▓'
-        else:
-            if self.part_Render_RenderString is not None:
-                if self.part_Render_RenderString == '}':
-                    return '&#125;'
-                return self.part_Render_RenderString
-            else:
-                return None
+            render = '▓'
+        elif self.part_Render_RenderString is not None:
+            render = self.part_Render_RenderString
+        return render
 
     @property
     def reputationbonus(self):
-        """Return reputation bonuses for each part."""
+        """Reputation bonuses granted by the object.
+
+        Returns a list of tuples of strings (faction, value)."""
+        # Examples of XML source formats:
         # <part Name="AddsRep" Faction="Apes" Value="-100" />
         # <part Name="AddsRep" Faction="Antelopes,Goatfolk" Value="100" />
         # <part Name="AddsRep" Faction="Fungi:200,Consortium:-200" />
-        ret = None
         if self.part_AddsRep:
-            ret = ''
+            reps = []
             for part in self.part_AddsRep_Faction.split(','):
                 if ':' in part:
                     # has format like `Fungi:200,Consortium:-200`
-                    if ret != "":
-                        ret += " </br>"
                     faction, value = part.split(':')
-                    ret += f'{{{{reputation bonus|{{{{FactionID to name|{faction}}}}}|{value}}}}}'
                 else:
                     # has format like `Antelopes,Goatfolk` and Value `100`
                     # or is a single faction, like `Apes` and Value `-100`
-                    if ret != "":
-                        ret += " </br>"
+                    faction = part
                     value = self.part_AddsRep_Value
-                    ret += f'{{{{reputation bonus|{{{{FactionID to name|{part}}}}}|{value}}}}}'
-        return ret
+                reps.append((faction, value))
+            return reps
 
     @property
     def role(self):
@@ -985,22 +976,22 @@ class QudObjectProps(QudObject):
         """The skill tree required for use."""
         val = None
         if self.inherits_from('MeleeWeapon') or self.is_specified('part_MeleeWeapon'):
-            val = "{{SkillID to name|"+self.part_MeleeWeapon_Skill+"}}"
+            val = self.part_MeleeWeapon_Skill
         if self.inherits_from('MissileWeapon'):
             if self.part_MissileWeapon_Skill is not None:
-                val = "{{SkillID to name|"+self.part_MissileWeapon_Skill+"}}"
+                val = self.part_MissileWeapon_Skill
         if self.part_Gaslight:
-            val = "{{SkillID to name|"+self.part_Gaslight_ChargedSkill+"}}"
+            val = self.part_Gaslight_ChargedSkill
         # disqualify various things from showing the 'cudgel' skill:
         if self.inherits_from('Projectile'):
             val = None
         if self.inherits_from('Shield'):
-            val = "Shield"
+            val = 'Shield'
         return val
 
     @property
     def skills(self):
-        """Unrelated to skill above, this is the skills that certain creatures have."""
+        """The skills that certain creatures have."""
         if self.skill is not None:
             return self.skill
 
