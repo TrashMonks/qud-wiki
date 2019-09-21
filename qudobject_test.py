@@ -3,6 +3,7 @@
 import os
 
 import qud_object_tree
+
 qindex = qud_object_tree.qindex
 
 # fallback location

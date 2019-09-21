@@ -3,7 +3,6 @@ import re
 from config import config
 from qudobject_props import QudObjectProps
 
-
 IMAGE_OVERRIDES = config['Templates']['Image overrides']
 
 
@@ -60,7 +59,7 @@ class QudObjectWiki(QudObjectProps):
             flavor = "Character"
         elif self.inherits_from('Food'):
             flavor = "Food"
-        elif (self.inherits_from('RobotLimb') or self.inherits_from('Corpse')) and\
+        elif (self.inherits_from('RobotLimb') or self.inherits_from('Corpse')) and \
                 (self.name not in not_corpses):
             flavor = "Corpse"
         return flavor
@@ -109,7 +108,7 @@ class QudObjectWiki(QudObjectProps):
         """What a corpse item can be butchered into."""
         into = super().butcheredinto
         if into is not None:
-            return f'{{{{Corpse pop table|population={self.name}|object={{{{ID to name|'\
+            return f'{{{{Corpse pop table|population={self.name}|object={{{{ID to name|' \
                    f'{into}}}}}|id={into}}}}}'
 
     @property
@@ -205,7 +204,7 @@ class QudObjectWiki(QudObjectProps):
             template = ''
             for name, count, equipped, chance in inv:
                 template += f"{{{{inventory|" \
-                    f"{name}|{count}|{equipped}|{chance}}}}}"
+                            f"{name}|{count}|{equipped}|{chance}}}}}"
             return template
 
     @property

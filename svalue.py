@@ -12,6 +12,7 @@ class sValue:
         __int__: Return the mean of the possible range
         __str__: Return the source sValue string
     """
+
     def __init__(self, svalue: str, level: int = 1):
         self.svalue = svalue
         t = level // 5 + 1

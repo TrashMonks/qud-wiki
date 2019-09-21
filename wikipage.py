@@ -5,9 +5,9 @@ import re
 from config import config
 from wiki_config import site, wiki_config
 
-CREATED_SUMMARY = f'Created by {wiki_config["operator"]}'\
+CREATED_SUMMARY = f'Created by {wiki_config["operator"]}' \
                   f' using {config["Wiki name"]} {config["Version"]}'
-EDITED_SUMMARY = f'Updated by {wiki_config["operator"]}'\
+EDITED_SUMMARY = f'Updated by {wiki_config["operator"]}' \
                  f' using {config["Wiki name"]} {config["Version"]}'
 # Link to work on or update regex:
 # https://regex101.com/r/suH7vR/1
@@ -19,6 +19,7 @@ TEMPLATE_RE = r"(.*?)(^{{(?:Item|Character|Food|Corpse).*^}}$)(.*)"
 
 class WikiPage:
     """Represent an individual article."""
+
     def __init__(self, qud_object):
         """Load the Caves of Qud wiki page for the given Qud object."""
         # is this page name overridden?

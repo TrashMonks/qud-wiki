@@ -7,7 +7,7 @@ import mwclient
 import qud_object_tree
 import qudtile
 import wikipage
-from qudobject import qindex
+from qud_object_tree import qindex
 
 # This script is not part of the main application, so set your XML location here
 FILE = 'C:/Steam/steamapps/common/Caves of Qud/CoQ_Data/StreamingAssets/Base/ObjectBlueprints.xml'

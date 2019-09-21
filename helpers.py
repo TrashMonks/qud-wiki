@@ -34,7 +34,8 @@ class DiceBag:
     """Loads a dice string and provides methods to roll or analyze that string.
 
     Parameters:
-        dice_string: a dice string, such as '1d4', '3d6+1-2d2', or '17'."""
+        dice_string: a dice string, such as '1d4', '3d6+1-2d2', or '17'.
+    """
 
     class Die:
         """Represents a single segment of a larger dice string. Numeric values are converted to dice
@@ -44,6 +45,7 @@ class DiceBag:
             quantity: the number of times to roll the die (i.e. '2' if the die string is '2d6')
             size: the number of sides on the die (i.e. '6' if the die string is '2d6')
         """
+
         def __init__(self, quantity, size):
             self.quantity = quantity
             self.size = size

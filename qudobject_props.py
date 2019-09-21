@@ -335,7 +335,7 @@ class QudObjectProps(QudObject):
         if self.part_Description_Short == 'A hideous specimen.':
             pass  # hide items with no description
         elif self.intproperty_GenotypeBasedDescription is not None:
-            desc = f"[True kin]\n{self.property_TrueManDescription_Value}\n\n"\
+            desc = f"[True kin]\n{self.property_TrueManDescription_Value}\n\n" \
                    f"[Mutant]\n{self.property_MutantDescription_Value}"
         elif self.part_Description_Short:
             if self.part_Description_Mark:
@@ -452,13 +452,13 @@ class QudObjectProps(QudObject):
         elestr = None
         if self.is_specified('part_ModFlaming'):
             tierstr = self.part_ModFlaming_Tier
-            elestr = str(int(int(tierstr)*0.8)) + '-' + str(int(int(tierstr)*1.2))
+            elestr = str(int(int(tierstr) * 0.8)) + '-' + str(int(int(tierstr) * 1.2))
         elif self.is_specified('part_ModFreezing'):
             tierstr = self.part_ModFreezing_Tier
-            elestr = str(int(int(tierstr)*0.8)) + '-' + str(int(int(tierstr)*1.2))
+            elestr = str(int(int(tierstr) * 0.8)) + '-' + str(int(int(tierstr) * 1.2))
         elif self.is_specified('part_ModElectrified'):
             tierstr = self.part_ModElectrified_Tier
-            elestr = str(int(tierstr)) + '-' + str(int(int(tierstr)*1.5))
+            elestr = str(int(tierstr)) + '-' + str(int(int(tierstr) * 1.5))
         else:
             elestr = self.part_MeleeWeapon_ElementalDamage
         return elestr
@@ -757,7 +757,7 @@ class QudObjectProps(QudObject):
                 temp = ""
                 if int(self.part_MoveCostMultiplier_Amount) < 0:
                     temp = "+"
-                return temp + str(int(self.part_MoveCostMultiplier_Amount)*-1)
+                return temp + str(int(self.part_MoveCostMultiplier_Amount) * -1)
 
     @property
     def mutations(self):
@@ -775,8 +775,8 @@ class QudObjectProps(QudObject):
     @property
     def omniphaseprojectile(self):
         projectile = self.projectile_object()
-        if projectile.is_specified('part_OmniphaseProjectile') or\
-           projectile.is_specified('tag_Omniphase'):
+        if projectile.is_specified('part_OmniphaseProjectile') or \
+                projectile.is_specified('tag_Omniphase'):
             return 'yes'
 
     @property
@@ -839,7 +839,7 @@ class QudObjectProps(QudObject):
     def pvpowered(self):
         """Whether the object's PV changes when it is powered."""
         if ((self.vibro == 'yes' and
-                (not self.part_VibroWeapon or int(self.part_VibroWeapon_ChargeUse) > 0)) or
+             (not self.part_VibroWeapon or int(self.part_VibroWeapon_ChargeUse) > 0)) or
                 (self.part_Gaslight and int(self.part_Gaslight_ChargeUse) > 0)):
             return 'yes'
 
@@ -1018,7 +1018,7 @@ class QudObjectProps(QudObject):
                             modprefixes += modprops[mod]['prefix']
                     if 'postfix' in modprops[mod]:
                         modpostfixes += modprops[mod]['postfix']
-            val = (modprefixes if modprefixes != '' else '')\
+            val = (modprefixes if modprefixes != '' else '') \
                 + val + (modpostfixes if modpostfixes != '' else '')
         return val
 

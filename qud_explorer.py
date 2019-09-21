@@ -1,13 +1,13 @@
-import os
-import sys
-import re
 import difflib
+import os
+import re
+import sys
 from pprint import pformat
 
-from PySide2.QtCore import QSize, Qt, QSortFilterProxyModel, QItemSelectionModel, QRegExp
-from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon, QPixmap
-from PySide2.QtWidgets import QMainWindow, QApplication, QTreeView, QSizePolicy, \
-    QAbstractItemView, QFileDialog, QHeaderView, QMenu, QAction, QMessageBox
+from PySide2.QtCore import QItemSelectionModel, QRegExp, QSize, QSortFilterProxyModel, Qt
+from PySide2.QtGui import QIcon, QPixmap, QStandardItem, QStandardItemModel
+from PySide2.QtWidgets import QAbstractItemView, QAction, QApplication, QFileDialog, QHeaderView, \
+    QMainWindow, QMenu, QMessageBox, QSizePolicy, QTreeView
 
 import qud_object_tree
 from config import config
@@ -108,6 +108,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     The UI layout is derived from qud_explorer_window.py, which is compiled from
     qud_explorer_window.ui (designed graphically in Qt Designer) by the UIC executable that comes
     with PySide2."""
+
     def __init__(self, app: QApplication, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.app = app
@@ -297,7 +298,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
            move to the next match for an existing/active search query."""
         if len(self.search_line_edit.text()) <= 3:
             self.clear_search_filter(False)
-        if len(self.search_line_edit.text()) > 3\
+        if len(self.search_line_edit.text()) > 3 \
                 or (mode == 'Forced' and self.search_line_edit.text() != ''):
             self.qud_object_proxyfilter.pop_selections()  # clear any lingering data in proxyfilter
             self.qud_object_proxyfilter.setFilterRegExp(  # this applies the actual filtering
@@ -343,13 +344,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                str(check_count) + "/" + str(check_total))
                 qitem = self.qud_object_model.itemFromIndex(model_index)
                 wiki_exists = self.qud_object_model.itemFromIndex(
-                    self.qud_object_proxyfilter.mapToSource(self.currently_selected[num+3]))
+                    self.qud_object_proxyfilter.mapToSource(self.currently_selected[num + 3]))
                 wiki_matches = self.qud_object_model.itemFromIndex(
-                    self.qud_object_proxyfilter.mapToSource(self.currently_selected[num+4]))
+                    self.qud_object_proxyfilter.mapToSource(self.currently_selected[num + 4]))
                 tile_exists = self.qud_object_model.itemFromIndex(
-                    self.qud_object_proxyfilter.mapToSource(self.currently_selected[num+5]))
+                    self.qud_object_proxyfilter.mapToSource(self.currently_selected[num + 5]))
                 tile_matches = self.qud_object_model.itemFromIndex(
-                    self.qud_object_proxyfilter.mapToSource(self.currently_selected[num+6]))
+                    self.qud_object_proxyfilter.mapToSource(self.currently_selected[num + 6]))
                 # first, blank the cells
                 for _ in wiki_exists, wiki_matches, tile_exists, tile_matches:
                     _.setText('')
@@ -412,7 +413,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         page = WikiPage(qud_object)
                         if page.upload_template() == 'Success':
                             wiki_matches = self.qud_object_proxyfilter.mapToSource(
-                                self.currently_selected[num+4])
+                                self.currently_selected[num + 4])
                             self.qud_object_model.itemFromIndex(wiki_matches).setText('✅')
                             self.app.processEvents()
                             upload_processed = True
@@ -470,7 +471,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 filename = config['Templates']['Image overrides'][qud_object.name]
             else:
                 filename = qud_object.image
-            descr = f'Rendered by {wiki_config["operator"]} using'\
+            descr = f'Rendered by {wiki_config["operator"]} using' \
                     ' {config["Wiki name"]} {config["Version"]}.'
             upload_processed = False
             try:
@@ -482,7 +483,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                      )
                 if result.get('result', None) == 'Success':
                     tile_matches = self.qud_object_proxyfilter.mapToSource(
-                        self.currently_selected[num+6])
+                        self.currently_selected[num + 6])
                     self.qud_object_model.itemFromIndex(tile_matches).setText('✅')
                     self.app.processEvents()
                 # print(result)

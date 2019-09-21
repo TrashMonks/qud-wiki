@@ -41,6 +41,7 @@ uses_details = set()
 
 class QudTile:
     """Class to load and color a Qud tile."""
+
     def __init__(self, filename, colorstring, raw_tilecolor, raw_detailcolor, qudname,
                  raw_transparent="transparent"):
         self.blacklisted = False  # set True if problems with tile generation encountered

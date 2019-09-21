@@ -20,6 +20,7 @@ qindex = {}  # fast lookup of name->QudObject
 class LineNumberingParser(ET.XMLParser):
     """An alternate parser for ElementTree that captures information about the source from the
     underlying expat parser."""
+
     def _start(self, *args, **kwargs):
         # Here we assume the default XML parser which is expat
         # and copy its element position attributes into output Elements

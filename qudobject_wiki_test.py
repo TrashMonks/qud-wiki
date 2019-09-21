@@ -31,7 +31,7 @@ def test_butcheredinto():
     #        'object=ape fur cloak|id=Ape Fur Cloak|num=1|weight=20}}'
     # assert obj.butcheredinto == want
     obj = qindex['Boar Corpse']
-    want = '{{Corpse pop table|population=Boar Corpse|'\
+    want = '{{Corpse pop table|population=Boar Corpse|' \
            'object={{ID to name|Raw Boar Meat}}|id=Raw Boar Meat}}'
     assert obj.butcheredinto == want
 
@@ -80,7 +80,7 @@ def test_dynamictable():
     want = '{{Dynamic object|Grenades|AcidGasGrenade1}}'
     assert obj.dynamictable == want
     obj = qindex['Freeze-Dried Hoarshrooms']
-    want = '{{Dynamic object|Jungle_Ingredients|Freeze-Dried Hoarshrooms}} </br>'\
+    want = '{{Dynamic object|Jungle_Ingredients|Freeze-Dried Hoarshrooms}} </br>' \
            '{{Dynamic object|Ruins_Ingredients|Freeze-Dried Hoarshrooms}}'
     assert obj.dynamictable == want
     obj = qindex['Snapjaw Troglodyte']
@@ -89,10 +89,10 @@ def test_dynamictable():
 
 def test_extra():
     obj = qindex['MotorizedTreads']
-    assert obj.extra == '{{Extra info|empsensitive = yes | metal = yes | savemodifier ='\
+    assert obj.extra == '{{Extra info|empsensitive = yes | metal = yes | savemodifier =' \
                         ' Move,Knockdown,Knockback,Restraint,Drag | savemodifieramt = 4}}'
     obj = qindex['Solar Condenser']
-    assert obj.extra == '{{Extra info|empsensitive = yes | metal = yes | solid = yes |'\
+    assert obj.extra == '{{Extra info|empsensitive = yes | metal = yes | solid = yes |' \
                         ' flyover = no}}'
 
 
@@ -118,14 +118,14 @@ def test_mods():
     obj = qindex['Difucila']
     assert obj.mods == '{{ModID to name|ModSharp|1}} </br>{{ModID to name|ModMasterwork|1}}'
     obj = qindex['Caslainard']
-    assert obj.mods == '{{ModID to name|ModCounterweighted|5}} </br>'\
+    assert obj.mods == '{{ModID to name|ModCounterweighted|5}} </br>' \
                        '{{ModID to name|ModElectrified|7}}'
 
 
 def test_mutations():
     obj = qindex['Girshworm']
-    want = '{{creature mutation|{{MutationID to name|Regeneration}}|0|5}} </br>'\
-           '{{creature mutation|{{MutationID to name|GasGenerationPoisonGas}}|1|5}} </br>'\
+    want = '{{creature mutation|{{MutationID to name|Regeneration}}|0|5}} </br>' \
+           '{{creature mutation|{{MutationID to name|GasGenerationPoisonGas}}|1|5}} </br>' \
            '{{creature mutation|{{MutationID to name|DarkVision}}|3|5}}'
     assert obj.mutations == want
 
@@ -152,11 +152,11 @@ def test_reputationbonus():
     want = '{{reputation bonus|{{FactionID to name|Apes}}|-100}}'
     assert obj.reputationbonus == want
     obj = qindex['Fork-Horned Helmet 3']
-    want = '{{reputation bonus|{{FactionID to name|Antelopes}}|100}} </br>'\
+    want = '{{reputation bonus|{{FactionID to name|Antelopes}}|100}} </br>' \
            '{{reputation bonus|{{FactionID to name|Goatfolk}}|100}}'
     assert obj.reputationbonus == want
     obj = qindex['LuminousInfection']  # glowcrust
-    want = '{{reputation bonus|{{FactionID to name|Fungi}}|200}} </br>'\
+    want = '{{reputation bonus|{{FactionID to name|Fungi}}|200}} </br>' \
            '{{reputation bonus|{{FactionID to name|Consortium}}|-200}}'
     assert obj.reputationbonus == want
 
