@@ -12,8 +12,8 @@ from PySide2.QtWidgets import QAbstractItemView, QAction, QApplication, QFileDia
 import qud_object_tree
 from config import config
 from qud_explorer_window import Ui_MainWindow
-from qudobject import QudObject
-from qudtile import blank_qtimage
+from qudreader.qudobject import QudObject
+from qudreader.qudtile import blank_qtimage
 from wiki_config import site, wiki_config
 from wikipage import WikiPage
 

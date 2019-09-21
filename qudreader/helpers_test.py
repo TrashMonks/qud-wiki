@@ -1,6 +1,6 @@
 """Pytest file for functions in helpers.py"""
 
-from helpers import DiceBag
+from qudreader.helpers import DiceBag
 
 
 def test_roll_average():

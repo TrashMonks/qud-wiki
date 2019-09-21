@@ -7,7 +7,7 @@ from xml.etree.ElementTree import Element
 
 from anytree import NodeMixin
 
-from qudtile import QudTile
+from qudreader.qudtile import QudTile
 
 
 class QudObject(NodeMixin):

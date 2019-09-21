@@ -1,9 +1,9 @@
 import re
 
-from constants import BIT_TRANS, ITEM_MOD_PROPS
-from helpers import DiceBag, cp437_to_unicode
-from qudobject import QudObject
-from svalue import sValue
+from qudreader.constants import BIT_TRANS, ITEM_MOD_PROPS
+from qudreader.helpers import DiceBag, cp437_to_unicode
+from qudreader.qudobject import QudObject
+from qudreader.svalue import sValue
 
 
 def strip_qud_color_codes(text: str):

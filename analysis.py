@@ -5,7 +5,7 @@ import anytree
 import mwclient
 
 import qud_object_tree
-import qudtile
+from qudreader import qudtile
 import wikipage
 from qud_object_tree import qindex
 

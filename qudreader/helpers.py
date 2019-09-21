@@ -1,9 +1,10 @@
 """Helper functions for Qud Blueprint Explorer."""
 
+import os
 import re
 
 # load and store the Code Page 437->Unicode translation
-CP437_MAP_FILE = 'IBMGRAPH.TXT'
+CP437_MAP_FILE = os.path.join(os.path.dirname(__file__), 'IBMGRAPH.TXT')
 cp437_conv = {}
 with open(CP437_MAP_FILE) as f:
     for line in f.readlines():

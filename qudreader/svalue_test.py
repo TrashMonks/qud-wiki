@@ -1,6 +1,6 @@
 """pytest functions to test functions in svalue.py"""
 
-from svalue import sValue
+from qudreader.svalue import sValue
 
 
 def test_creation():

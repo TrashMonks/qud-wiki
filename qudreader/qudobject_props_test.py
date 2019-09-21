@@ -1,5 +1,5 @@
 from qud_object_tree import qindex
-from qudobject_props import strip_qud_color_codes
+from qudreader.qudobject_props import strip_qud_color_codes
 
 
 def test_strip_qud_color_codes():
