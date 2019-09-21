@@ -2,15 +2,11 @@
 Load Caves of Qud game data from gamefiles.
 We're mostly interested in the two-character codes that map to specific implants and mutations.
 """
-
-from xml.etree import ElementTree as et
-
-# These files need to be copied in from, e.g.,
-# SteamLibrary\SteamApps\common\Caves of Qud\CoQ_Data\StreamingAssets\Base
-GENO = et.parse('xml/Genotypes.xml').getroot()
-SKILLS = et.parse('xml/Skills.xml').getroot()
-SUBTYPES = et.parse('xml/Subtypes.xml').getroot()
-MUTATIONS = et.parse('xml/Mutations.xml').getroot()
+import sys
+from pathlib import Path
+# Force Python XML parser:
+sys.modules['_elementtree'] = None
+from xml.etree import ElementTree as ET  # noqa E402
 
 STAT_NAMES = ('Strength', 'Agility', 'Toughness', 'Intelligence', 'Willpower', 'Ego')
 # these are not available from XML:
@@ -40,19 +36,27 @@ MOD_BONUSES = {'BE': [2, 0, 0, 0, 0, 0],  # Double-muscled
                }
 
 
-def read_gamedata() -> dict:
+def read_gamedata(xmlroot: Path) -> dict:
     """
     Read character code snippets and assorted data from Qud XML files. Implant codes not in XML.
+    Parameters:
+        xmlroot: the game data path of the CoQ executable, containing the XML files
     """
+
+    geno = ET.parse(xmlroot / 'Genotypes.xml').getroot()
+    skills = ET.parse(xmlroot / 'Skills.xml').getroot()
+    subtypes = ET.parse(xmlroot / 'Subtypes.xml').getroot()
+    mutations = ET.parse(xmlroot / 'Mutations.xml').getroot()
+
     # Read genotypes: currently, only two (mutated human and true kin)
     genotype_codes = {}
-    for genotype in GENO:
+    for genotype in geno:
         genotype_codes[genotype.attrib['Code'].upper()] = genotype.attrib['Name']
 
     # Read skill class names and real names
     # These are not returned, but used to parse the powers of subtypes, below.
     skill_names = {}
-    for skill_cat in SKILLS:
+    for skill_cat in skills:
         skill_names[skill_cat.attrib['Class']] = '(' + skill_cat.attrib['Name'] + ")"
         for power in skill_cat:
             skill_names[power.attrib['Class']] = power.attrib['Name']
@@ -62,7 +66,7 @@ def read_gamedata() -> dict:
     caste_codes = {}
 
     # read True Kin Castes
-    arcologies = SUBTYPES[0]
+    arcologies = subtypes[0]
     for category in arcologies:
         for caste in category:
             caste_codes[caste.attrib['Code'].upper()] = caste.attrib['Name']
@@ -80,7 +84,7 @@ def read_gamedata() -> dict:
 
     # read mutant Callings
     calling_codes = {}
-    for calling in SUBTYPES[1]:
+    for calling in subtypes[1]:
         calling_codes[calling.attrib['Code'].upper()] = calling.attrib['Name']
         stat_bonuses = [0, 0, 0, 0, 0, 0]
         for element in calling:
@@ -96,7 +100,7 @@ def read_gamedata() -> dict:
 
     # read mutations
     mod_codes = {}
-    for category in MUTATIONS:
+    for category in mutations:
         for mutation in category:
             mod_codes[mutation.attrib['Code'].upper()] = mutation.attrib['Name']
             # mark defects with '(D)' as in game

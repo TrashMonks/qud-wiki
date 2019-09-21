@@ -2,9 +2,9 @@
 
 import os
 
-import qud_object_tree
+from qudreader import gameroot
 
-qindex = qud_object_tree.qindex
+qindex = gameroot.qindex
 
 # fallback location
 FILE = "C:/Steam/SteamApps/common/Caves of Qud/CoQ_Data/StreamingAssets/Base/ObjectBlueprints.xml"
@@ -12,9 +12,9 @@ FILE = "C:/Steam/SteamApps/common/Caves of Qud/CoQ_Data/StreamingAssets/Base/Obj
 if os.path.exists('last_xml_location'):
     with open('last_xml_location') as f:
         filename = f.read()
-    qud_object_tree.load(filename)
+    gameroot.load(filename)
 else:
-    qud_object_tree.load(FILE)
+    gameroot.load(FILE)
 
 
 def test_inherits_from():

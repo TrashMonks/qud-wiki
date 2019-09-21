@@ -1,8 +1,10 @@
 """attr specification:
 QudObject.part_name_attribute"""
-
+import sys
 from copy import deepcopy
 from typing import Union
+# Force Python XML parser:
+sys.modules['_elementtree'] = None
 from xml.etree.ElementTree import Element
 
 from anytree import NodeMixin

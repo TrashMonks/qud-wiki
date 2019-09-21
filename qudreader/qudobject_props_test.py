@@ -1,4 +1,4 @@
-from qud_object_tree import qindex
+from qudreader.gameroot import qindex
 from qudreader.qudobject_props import strip_qud_color_codes
 
 

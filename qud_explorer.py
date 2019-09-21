@@ -9,7 +9,8 @@ from PySide2.QtGui import QIcon, QPixmap, QStandardItem, QStandardItemModel
 from PySide2.QtWidgets import QAbstractItemView, QAction, QApplication, QFileDialog, QHeaderView, \
     QMainWindow, QMenu, QMessageBox, QSizePolicy, QTreeView
 
-import qud_object_tree
+from qudobject_wiki import QudObjectWiki
+from qudreader.gameroot import GameRoot
 from config import config
 from qud_explorer_window import Ui_MainWindow
 from qudreader.qudobject import QudObject
@@ -124,27 +125,35 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.verticalLayout.addWidget(self.treeView)
         self.search_line_edit.textChanged.connect(self.search_changed)
         self.search_line_edit.returnPressed.connect(self.search_changed_forced)
+
+        # Set up menus
         # File menu:
-        self.actionOpen_ObjectBlueprints_xml.triggered.connect(self.open_xml)
+        self.actionOpen_ObjectBlueprints_xml.triggered.connect(self.open_gameroot)
         # View type menu:
         self.actionWiki_template.triggered.connect(self.setview_wiki)
         self.actionAttributes.triggered.connect(self.setview_attr)
         self.actionAll_attributes.triggered.connect(self.setview_allattr)
         self.actionXML_source.triggered.connect(self.setview_xmlsource)
+        # Wiki menu:
+        self.actionScan_wiki.triggered.connect(self.wiki_check_selected)
+        self.actionUpload_templates.triggered.connect(self.upload_selected_templates)
+        self.actionUpload_tiles.triggered.connect(self.upload_selected_tiles)
         # TreeView context menu:
         self.treeView.context_action_expand.triggered.connect(self.expand_all)
         self.treeView.context_action_scan.triggered.connect(self.wiki_check_selected)
         self.treeView.context_action_upload_page.triggered.connect(self.upload_selected_templates)
         self.treeView.context_action_upload_tile.triggered.connect(self.upload_selected_tiles)
         self.treeView.context_action_diff.triggered.connect(self.show_simple_diff)
-        # Wiki menu:
-        self.actionScan_wiki.triggered.connect(self.wiki_check_selected)
-        self.actionUpload_templates.triggered.connect(self.upload_selected_templates)
-        self.actionUpload_tiles.triggered.connect(self.upload_selected_tiles)
-        if os.path.exists('last_xml_location'):
-            with open('last_xml_location') as f:
-                filename = f.read()
-            self.open_xml(filename)
+        self.gameroot = None
+        while self.gameroot is None:
+            try:
+                self.open_gameroot()
+            except FileNotFoundError:
+                self.set_gamedir()
+        self.setWindowTitle("Qud Blueprint Explorer - " + self.gameroot.pathstr)
+        self.qud_object_root, qindex_throwaway = self.gameroot.get_object_tree(QudObjectWiki)
+        self.init_qud_tree_model()
+
         self.expand_all_button.clicked.connect(self.expand_all)
         self.collapse_all_button.clicked.connect(self.collapse_all)
         self.restore_all_button.clicked.connect(self.expand_default)
@@ -154,16 +163,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.top_selected = None  # used when multiple items may be selected but we only want one
         self.show()
 
-    def open_xml(self, filename=None):
-        """Browse for and open ObjectBluePrints.xml."""
-        if not filename:
-            filename = QFileDialog.getOpenFileName()[0]
-        if filename.endswith('ObjectBlueprints.xml'):
-            self.qud_object_root = qud_object_tree.load(filename)
-            self.init_qud_tree_model()
+    def set_gamedir(self):
+        """Browse for the root game directory and write it to the file last_xml_location."""
+        ask_string = 'Please locate the base directory containing the Caves of Qud executable.'
+        dir_name = QFileDialog.getExistingDirectory(caption=ask_string)
         with open('last_xml_location', 'w') as f:
-            f.write(filename)
-        self.setWindowTitle("Qud Blueprint Explorer - " + filename)
+            f.write(dir_name)
+
+    def open_gameroot(self):
+        """Attempt to load a GameRoot from the saved root game directory."""
+        try:
+            with open('last_xml_location') as f:
+                dir_name = f.read()
+        except FileNotFoundError:
+            raise
+        self.gameroot = GameRoot(dir_name)
 
     def init_qud_tree_model(self):
         """Initialize the Qud object model tree by setting up the root object."""

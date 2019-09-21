@@ -4,10 +4,9 @@ import string
 import anytree
 import mwclient
 
-import qud_object_tree
-from qudreader import qudtile
+from qudreader import qudtile, gameroot
 import wikipage
-from qud_object_tree import qindex
+from qudreader.gameroot import qindex
 
 # This script is not part of the main application, so set your XML location here
 FILE = 'C:/Steam/steamapps/common/Caves of Qud/CoQ_Data/StreamingAssets/Base/ObjectBlueprints.xml'
@@ -75,7 +74,7 @@ def print_empty_descriptions():
                 print(name, qud_object.desc)
 
 
-qud_object_tree.load(FILE)
+gameroot.load(FILE)
 
 # Run any analyses here:
 breakpoint()
