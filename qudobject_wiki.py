@@ -150,8 +150,13 @@ class QudObjectWiki(QudObjectProps):
     @property
     def extra(self):
         """Any other features that do not have an associated variable."""
-        fields = super().extra
-        if fields is not None:
+        fields = []
+        extrafields = config['Templates']['ExtraFields']
+        for field in extrafields:
+            attrib = getattr(self, field)
+            if attrib is not None:
+                fields.append((field, attrib))
+        if len(fields) > 0:
             text = ' | '.join(f'{field} = {attrib}' for field, attrib in fields)
             return f'{{{{Extra info|{text}}}}}'
 

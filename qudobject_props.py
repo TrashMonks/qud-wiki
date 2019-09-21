@@ -1,16 +1,9 @@
 import re
 
-from config import config
-from helpers import cp437_to_unicode, DiceBag
+from constants import BIT_TRANS, ITEM_MOD_PROPS
+from helpers import DiceBag, cp437_to_unicode
 from qudobject import QudObject
 from svalue import sValue
-
-
-bit_table = {'G': 'B',
-             'R': 'A',
-             'C': 'D',
-             'B': 'C'}
-BIT_TRANS = ''.maketrans(bit_table)
 
 
 def strip_qud_color_codes(text: str):
@@ -268,7 +261,7 @@ class QudObjectProps(QudObject):
         else:
             val = int(self.part_Examiner_Complexity)
         if self.part_AddMod_Mods is not None:
-            modprops = config['Templates']['ItemModProperties']
+            modprops = ITEM_MOD_PROPS
             for mod in self.part_AddMod_Mods.split(','):
                 if mod in modprops:
                     if (modprops[mod]['ifcomplex'] is True) and (val <= 0):
@@ -276,7 +269,7 @@ class QudObjectProps(QudObject):
                     val += int(modprops[mod]['complexity'])
         for key in self.part.keys():
             if key.startswith('Mod'):
-                modprops = config['Templates']['ItemModProperties']
+                modprops = ITEM_MOD_PROPS
                 if key in modprops:
                     if (modprops[key]['ifcomplex'] is True) and (val <= 0):
                         continue  # ditto
@@ -502,17 +495,6 @@ class QudObjectProps(QudObject):
         """When preserved, whether the player must explicitly choose to preserve it."""
         if self.tag_ChooseToPreserve is not None:
             return 'yes'
-
-    @property
-    def extra(self):
-        """Any other features that do not have an associated variable."""
-        fields = []
-        extrafields = config['Templates']['ExtraFields']
-        for field in extrafields:
-            attrib = getattr(self, field)
-            if attrib is not None:
-                fields.append((field, attrib))
-        return fields if len(fields) > 0 else None
 
     @property
     def faction(self):
@@ -966,12 +948,6 @@ class QudObjectProps(QudObject):
         return var or self.part_TemperatureOnHit_MaxTemp
 
     @property
-    def uniquechara(self):
-        if self.inherits_from('Creature') or self.inherits_from('ActivePlant'):
-            if self.name in config['Wiki']['Categories']['Unique Characters']:
-                return 'yes'
-
-    @property
     def weaponskill(self):
         """The skill tree required for use."""
         val = None
@@ -1030,7 +1006,7 @@ class QudObjectProps(QudObject):
             val = self.part_Render_DisplayName
         mods = QudObjectProps.mods.fget(self)  # seems necessary to avoid inheritance ambiguity
         if mods is not None and self.xtag_Grammar_Proper != 'true':  # prepend mod prefixes
-            modprops = config['Templates']['ItemModProperties']
+            modprops = ITEM_MOD_PROPS
             modprefixes = ''
             modpostfixes = ''
             for mod, tier in mods:
