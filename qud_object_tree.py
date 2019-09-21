@@ -1,6 +1,7 @@
 """Functionality for loading the Qud object blueprint XML into a tree of QudObjects.
 
-For on-demand access to individual Qud objects by name, use the `qindex` from qudobject.py."""
+For on-demand access to individual Qud objects by name, use the `qindex` from qud_object_tree.py.
+"""
 
 import re
 import sys

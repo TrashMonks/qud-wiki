@@ -1,3 +1,4 @@
+"""Load and export the Qud Blueprint Explorer config file."""
 import yaml
 
 CONFIG_FILE = "config.yml"

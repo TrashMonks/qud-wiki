@@ -1,9 +1,15 @@
+"""Various constants that are unlikely to change."""
+
+# BIT_TRANS: convert between the bit codes found in XML and the ones shown ingame.
 bit_table = {'G': 'B',
              'R': 'A',
              'C': 'D',
              'B': 'C'}
 BIT_TRANS = ''.maketrans(bit_table)
 
+# ITEM_MOD_PROPS: difficulty and complexity changes when a mod is applied to an item
+# ifcomplex means the change only applies if the item already has complexity > 0
+# these values live in code, usually in ApplyModification() method of the Mod's .cs file
 ITEM_MOD_PROPS = {'ModCounterweighted': {'complexity': 1,
                                          'difficulty': 1,
                                          'ifcomplex': True,

@@ -1,9 +1,9 @@
-"""Helper functions for Qud Blueprint Explorer"""
+"""Helper functions for Qud Blueprint Explorer."""
 
 import re
 
+# load and store the Code Page 437->Unicode translation
 CP437_MAP_FILE = 'IBMGRAPH.TXT'
-
 cp437_conv = {}
 with open(CP437_MAP_FILE) as f:
     for line in f.readlines():
@@ -15,7 +15,7 @@ with open(CP437_MAP_FILE) as f:
 def cp437_to_unicode(val: int):
     """Convert an IBM Code Page 437 code point to its Unicode equivalent.
 
-    https://stackoverflow.com/questions/46942721/is-cp437-decoding-broken-for-control-characters
+    See https://stackoverflow.com/questions/46942721/is-cp437-decoding-broken-for-control-characters
     """
     if val > 0x1f:
         # no control characters, just ascii and "upper ascii"
@@ -79,7 +79,7 @@ class DiceBag:
                     raise ValueError(f"DiceBag created with segment of unsupported format: {die}")
 
     def average(self):
-        """Returns the average value that is rolled from this dice string,
+        """Return the average value that is rolled from this dice string,
         rounded down to the nearest integer."""
         val = 0.0
         for die in self.dice_bag:
@@ -87,7 +87,7 @@ class DiceBag:
         return int(val)
 
     def minimum(self):
-        """Returns the minimum value that can be rolled from this dice string."""
+        """Return the minimum value that can be rolled from this dice string."""
         val = 0.0
         for die in self.dice_bag:
             if die.quantity >= 0:
@@ -97,7 +97,7 @@ class DiceBag:
         return int(val)
 
     def maximum(self):
-        """Returns the maximum value that can be rolled from this dice string."""
+        """Return the maximum value that can be rolled from this dice string."""
         val = 0.0
         for die in self.dice_bag:
             if die.quantity >= 0:
@@ -107,7 +107,7 @@ class DiceBag:
         return int(val)
 
     def shake(self):
-        """Simulates a random roll for this dice string."""
+        """Simulate and return a random roll for this dice string."""
         from random import randrange
         val = 0
         for die in self.dice_bag:

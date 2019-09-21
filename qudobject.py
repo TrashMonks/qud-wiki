@@ -2,6 +2,7 @@
 QudObject.part_name_attribute"""
 
 from copy import deepcopy
+from typing import Union
 from xml.etree.ElementTree import Element
 
 from anytree import NodeMixin
@@ -12,13 +13,43 @@ from qudtile import QudTile
 class QudObject(NodeMixin):
     """Represents a Caves of Qud object blueprint with attribute inheritance.
 
-    Parameters:
-        blueprint: an XML Element to parse into dictionaries
-        source: a string with the XML source that created `blueprint`
-        full_source: a string with the full XML source (preceding comments, whitespace, etc.)
-        qindex: a dict in which to register this object after creation, keyed by name"""
+    Tags from the section of XML that create each QudObject can be accessed by attempting to
+    retrieve an attribute of the object that encodes the XML tag and attributes in its name.
+
+    Example: For a QudObject `qobj` constructed from the following XML,
+
+    <object Name="SleepGasGrenade1" Inherits="Grenade">
+        <part Name="Render" DisplayName="&amp;wsleep &amp;cgas grenade mk I" />
+        <part Name="GasGrenade" Density="40" GasObject="SleepGas" />
+        <part Name="Commerce" Value="20" />
+        <part Name="Description" Short="A silver cylinder with a pull ring.~J211" />
+        <tag Name="Mark" Value="1" />
+        <tag Name="TurretStockWeight" Value="2" />
+    </object>
+
+    the DisplayName attribute of the <part> tag with Name 'Render' can be retrieved from `qobj` by:
+        qobj.part_Render_DisplayName
+    or the entire <part> tag with name 'Render' can be retrieved as a dictionary by:
+        qobj.part_Render
+    or both the <tag> tags can be retrieved as a dictionary, indexed by their Name attribute, by:
+        qobj.tag
+
+    This class is intended to be subclassed by classes that implement more sophisticated lookups
+    using this API. The QudObjectProps class implements many of these.
+
+    This class subclasses NodeMixin to reconstruct the in-game object hierarchy for inheritance
+    purposes. This also makes it easy to print or traverse the tree since all housekeeping is done
+    by the AnyTree module that provides NodeMixin.
+    """
 
     def __init__(self, blueprint: Element, source: str, full_source: str, qindex: dict):
+        """Create a new QudObject instance.
+
+        Parameters:
+            blueprint: an XML Element to parse into dictionaries
+            source: a string with the XML source that created `blueprint`
+            full_source: a string with the full XML source (preceding comments, whitespace, etc.)
+            qindex: a dict in which to register this object after creation, keyed by object name"""
         self.source = source
         self.full_source = full_source
         self.qindex = qindex
@@ -64,7 +95,8 @@ class QudObject(NodeMixin):
         self.all_attributes, self.inherited = self.resolve_inheritance()
         self.tile = self.render_tile()
 
-    def render_tile(self):
+    def render_tile(self) -> QudTile:
+        """Create and return a QudTile colored to match the in-game representation."""
         tile = None
         if self.part_Render_Tile and not self.tag_BaseObject:
             holo_parts = ['part_HologramMaterial',
@@ -122,7 +154,7 @@ class QudObject(NodeMixin):
         return tile
 
     def resolve_inheritance(self):
-        """Fetch a dictionary with all inherited tags and attributes.
+        """Compute and return a dictionary with all inherited tags and attributes.
 
         Recurses back all the way to the root Object and combines all data into
         the returned dict. Attributes of tags in children overwrite ancestors.
@@ -167,7 +199,7 @@ class QudObject(NodeMixin):
             ancestor = ancestor.parent
         return text
 
-    def inherits_from(self, name: str):
+    def inherits_from(self, name: str) -> bool:
         """Returns True if this object is 'name' or inherits from 'name', False otherwise."""
         if self.name == name:
             return True
@@ -175,7 +207,7 @@ class QudObject(NodeMixin):
             return False
         return self.parent.inherits_from(name)
 
-    def is_specified(self, attr):
+    def is_specified(self, attr) -> bool:
         """Return True if `attr` is specified explicitly for this object,
         False if it is inherited or does not exist"""
         # TODO: doesn't work right
@@ -190,7 +222,7 @@ class QudObject(NodeMixin):
             return False
         return True
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr) -> Union[str, None]:
         """Implemented to get explicit or inherited tags from the Qud object tree.
 
         These virtual attributes take the form
@@ -224,8 +256,8 @@ class QudObject(NodeMixin):
 
         Usage note:
           Empty <part> and <tag> tags (with no attributes) will evaluate to an empty dictionary,
-          which has the Boolean value False. Check to see that they are not None rather than
-          treating them as a Boolean.
+          which has the Boolean value False. Check to see that they are `is not None` rather than
+          using them as a Boolean (i.e. in an `if`).
         """
         if attr.startswith('_'):  # guard against NodeMixIn housekeeping
             raise AttributeError
@@ -242,8 +274,10 @@ class QudObject(NodeMixin):
             seek = None
         return seek
 
-    def __str__(self):
+    def __str__(self) -> str:
+        """Return a string representation of self."""
         return self.name + ' ' + str(self.attributes)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """Return a developer's string representation of self."""
         return 'QudObject(' + self.name + ')'

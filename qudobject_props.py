@@ -304,6 +304,7 @@ class QudObjectProps(QudObject):
 
     @property
     def damage(self):
+        """The damage dealt by this object."""
         val = None
         if self.inherits_from('MeleeWeapon') or self.is_specified('part_MeleeWeapon'):
             val = self.part_MeleeWeapon_BaseDamage
@@ -321,7 +322,7 @@ class QudObjectProps(QudObject):
 
     @property
     def demeanor(self):
-        """returns the demeanor of the creature"""
+        """The demeanor of the creature."""
         if self.inherits_from('Creature') or self.inherits_from('ActivePlant'):
             if self.part_Brain_Calm is not None:
                 return "docile" if self.part_Brain_Calm.lower() == "true" else "neutral"
@@ -372,6 +373,7 @@ class QudObjectProps(QudObject):
 
     @property
     def dv(self):
+        """The Dodge Value of this object."""
         dv = None
         if self.inherits_from('Armor'):
             # the 'DV' we are interested in is the DV modifier of the armor
@@ -449,7 +451,7 @@ class QudObjectProps(QudObject):
 
     @property
     def elementaldamage(self):
-        elestr = None
+        """The elemental damage dealt, if any."""
         if self.is_specified('part_ModFlaming'):
             tierstr = self.part_ModFlaming_Tier
             elestr = str(int(int(tierstr) * 0.8)) + '-' + str(int(int(tierstr) * 1.2))
@@ -465,7 +467,7 @@ class QudObjectProps(QudObject):
 
     @property
     def elementaltype(self):
-        elestr = None
+        """For elemental damage dealt, what the type of that damage is."""
         if self.is_specified('part_ModFlaming'):
             elestr = 'Fire'
         elif self.is_specified('part_ModFreezing'):
@@ -516,6 +518,7 @@ class QudObjectProps(QudObject):
 
     @property
     def flyover(self):
+        """Whether a flying creature can pass over this object."""
         if self.inherits_from('Wall') or self.inherits_from('Furniture'):
             if self.is_specified('tag_Flyover'):
                 return 'yes'
@@ -856,7 +859,7 @@ class QudObjectProps(QudObject):
 
     @property
     def renderstr(self):
-        """What the item looks like with tiles mode off."""
+        """The character used to render this object in ASCII mode."""
         render = None
         if self.part_Render_RenderString and len(self.part_Render_RenderString) > 1:
             # some RenderStrings are given as CP437 character codes in base 10

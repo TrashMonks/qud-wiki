@@ -38,7 +38,7 @@ class QudFilterModel(QSortFilterProxyModel):
         val2 = self.filterSelectionIDs
         self.filterSelections = []
         self.filterSelectionIDs = []
-        return (val1, val2)
+        return val1, val2
 
     def _accept_index(self, idx):  # recursive search
         if idx.isValid():
@@ -304,7 +304,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.qud_object_proxyfilter.setFilterRegExp(  # this applies the actual filtering
                 QRegExp(self.search_line_edit.text(), Qt.CaseInsensitive, QRegExp.FixedString))
             self.treeView.expandAll()  # expands to show everything visible after filter is applied
-            items, itemIDs = self.qud_object_proxyfilter.pop_selections()
+            items, item_ids = self.qud_object_proxyfilter.pop_selections()
             if len(items) > 0:
                 item = items[0]
                 if mode == 'Forced':  # go to next filtered item each time the user presses ENTER
@@ -312,8 +312,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     if self.currently_selected is not None and self.selected_row_count() == 1:
                         currentitem = self.qud_object_model.itemFromIndex(
                             self.qud_object_proxyfilter.mapToSource(self.currently_selected[0]))
-                        if id(currentitem) in itemIDs:
-                            newindex = itemIDs.index(id(currentitem)) + 1
+                        if id(currentitem) in item_ids:
+                            newindex = item_ids.index(id(currentitem)) + 1
                             if newindex < len(items):
                                 item = items[newindex]
                 idx = self.qud_object_model.indexFromItem(item)

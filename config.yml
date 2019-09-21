@@ -57,31 +57,6 @@ Templates:
     Crazed Goatfolk Shaman 1: goatfolk shaman crazed.png
     Wraith-Knight Templar: wraith knight templar.png
     HoloMarble: holographic marble wall.png
-  ItemModProperties:
-    # difficulty and complexity changes when a mod is applied to an item
-    # ifcomplex means the change only applies if the item already has complexity > 0
-    # these values live in code, usually in ApplyModification() method of the Mod's .cs file
-    ModCounterweighted: {difficulty: 1, complexity: 1, ifcomplex: True, prefix: '&ycounterweighted '}
-    ModElectrified: {difficulty: 1, complexity: 1, ifcomplex: False, prefix: '&Welectrified&y '}
-    ModEngraved: {difficulty: 0, complexity: 0, ifcomplex: False, prefix: '&Ye&yn&cg&Cr&Ya&yv&ce&Cd &y'}
-    ModExtradimensional: {difficulty: 8, complexity: 4, ifcomplex: True, prefix: '&Me&Mx&mt&mr&ya&yd&Yi&Ym&Oe&Yn&Ys&yi&y&mo&mn&Ma&Ml&y '}
-    ModFlaming: {difficulty: 1, complexity: 1, ifcomplex: False, prefix: '&Rflaming&y '}
-    ModFreezing: {difficulty: 1, complexity: 1, ifcomplex: False, prefix: '&Cfreezing&y '}
-    ModGesticulating: {difficulty: 1, complexity: 1, ifcomplex: False, prefix: '&mgesticulating &y'}
-    ModGlassArmor: {difficulty: 0, complexity: 0, ifcomplex: False}
-    ModHeatSeeking: {difficulty: 1, complexity: 1, ifcomplex: True, prefix: '&yhoming '}
-    ModImprovedElectricalGeneration: {difficulty: 0, complexity: 0, ifcomplex: False}
-    ModImprovedTemporalFugue: {difficulty: 0, complexity: 0, ifcomplex: False}
-    ModJewelEncrusted: {difficulty: 0, complexity: 0, ifcomplex: False}
-    ModMasterwork: {difficulty: 1, complexity: 1, ifcomplex: True, prefix: '&Ymasterwork&y '}
-    ModPainted: {difficulty: 0, complexity: 0, ifcomplex: False, prefix: '&rp&Ra&Wi&wn&gt&Ge&Bd &y'}
-    ModPiping: {difficulty: 1, complexity: 0, ifcomplex: False, postfix: ' &ywith piping'}
-    ModRazored: {difficulty: 1, complexity: 1, ifcomplex: True, prefix: '&Yserra&Rt&Yed&y '}
-    ModScoped: {difficulty: 1, complexity: 1, ifcomplex: False, prefix: '&yscoped '}
-    ModSharp: {difficulty: 1, complexity: 1, ifcomplex: True, prefix: 'sharp '}
-    ModSpringLoaded: {difficulty: 1, complexity: 1, ifcomplex: False, prefix: 'spring-loaded '}
-    ModSturdy: {difficulty: 0, complexity: 0, ifcomplex: False, prefix: 'sturdy '}
-    ModWired: {difficulty: 1, complexity: 0, ifcomplex: True, prefix: '&cwired &y'}
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
