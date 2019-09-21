@@ -57,6 +57,7 @@ Templates:
     Crazed Goatfolk Shaman 1: goatfolk shaman crazed.png
     Wraith-Knight Templar: wraith knight templar.png
     HoloMarble: holographic marble wall.png
+    Hoarshroom: hoarshroom.png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -69,6 +70,7 @@ Wiki:
     Crazed Goatfolk Shaman 1: goatfolk shaman (crazed)
     Wraith-Knight Templar: Wraith-Knight Templar
     Torch: Torch
+    Hoarshroom: Luminous hoarshroom (food)
     MerchantAdvertisement: Advertisement
     Argyve's Data Disk: Argyve's data disk
     SingleSkillsoft1: Skillsoft (low SP)
