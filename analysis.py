@@ -4,9 +4,9 @@ import string
 import anytree
 import mwclient
 
-from qudreader import qudtile, gameroot
+from hagadias import qudtile, gameroot
 import wikipage
-from qudreader.gameroot import qindex
+from hagadias.gameroot import qindex
 
 # This script is not part of the main application, so set your XML location here
 FILE = 'C:/Steam/steamapps/common/Caves of Qud/CoQ_Data/StreamingAssets/Base/ObjectBlueprints.xml'

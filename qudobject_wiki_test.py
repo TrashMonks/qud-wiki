@@ -1,4 +1,4 @@
-from qudreader.gameroot import qindex
+from hagadias.gameroot import qindex
 from qudobject_wiki import escape_ampersands
 
 

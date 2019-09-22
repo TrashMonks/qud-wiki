@@ -10,11 +10,11 @@ from PySide2.QtWidgets import QAbstractItemView, QAction, QApplication, QFileDia
     QMainWindow, QMenu, QMessageBox, QSizePolicy, QTreeView
 
 from qudobject_wiki import QudObjectWiki
-from qudreader.gameroot import GameRoot
+from hagadias.gameroot import GameRoot
 from config import config
 from qud_explorer_window import Ui_MainWindow
-from qudreader.qudobject import QudObject
-from qudreader.qudtile import blank_qtimage
+from hagadias.qudobject import QudObject
+from hagadias.qudtile import blank_qtimage
 from wiki_config import site, wiki_config
 from wikipage import WikiPage
 

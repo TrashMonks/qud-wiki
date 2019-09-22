@@ -1,5 +1,5 @@
-from qudreader.gameroot import qindex
-from qudreader.qudobject_props import strip_qud_color_codes
+from hagadias.gameroot import qindex
+from hagadias.qudobject_props import strip_qud_color_codes
 
 
 def test_strip_qud_color_codes():
