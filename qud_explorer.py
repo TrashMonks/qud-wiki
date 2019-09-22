@@ -150,7 +150,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.open_gameroot()
             except FileNotFoundError:
                 self.set_gamedir()
-        self.setWindowTitle("Qud Blueprint Explorer - " + self.gameroot.pathstr)
+        title_string = f'Qud Blueprint Explorer: CoQ version {self.gameroot.gamever} at ' \
+                       f'{self.gameroot.pathstr}'
+        self.setWindowTitle(title_string)
         self.qud_object_root, qindex_throwaway = self.gameroot.get_object_tree(QudObjectWiki)
         self.init_qud_tree_model()
 

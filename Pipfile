@@ -10,10 +10,8 @@ flake8 = "*"
 
 [packages]
 pyyaml = "*"
-anytree = "*"
 pyside2 = "*"
 mwclient = "*"
-pillow = "*"
 hagadias = {editable = true,git = "https://github.com/syntaxaire/hagadias.git",ref = "master"}
 
 [requires]

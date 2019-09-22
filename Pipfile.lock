@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "bcadb62c9a87654c9a661c20874eaf25d9f1bdb05671d73fa3554fc29974e891"
+            "sha256": "afd1b3a49eb67e1ad8c73ee532a0319cd46bf42ea80738ec653b580ebbf74314"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -20,7 +20,6 @@
             "hashes": [
                 "sha256:a221b6a603c3a5d5e417894dc48eaa8b1eab04056e1f5bb509bcfff0e7a47883"
             ],
-            "index": "pypi",
             "version": "==2.6.0"
         },
         "certifi": {
@@ -40,7 +39,7 @@
         "hagadias": {
             "editable": true,
             "git": "https://github.com/syntaxaire/hagadias.git",
-            "ref": "1faec2b0e145c513deae88c3babd26eb30ec022c"
+            "ref": "6d71346162328a0f98f23823d9a6881c5259c796"
         },
         "idna": {
             "hashes": [
@@ -93,7 +92,6 @@
                 "sha256:ef6be704ae2bc8ad0ebc5cb850ee9139493b0fc4e81abcc240fb392a63ebc808",
                 "sha256:f8dc19d92896558f9c4317ee365729ead9d7bbcf2052a9a19a3ef17abbb8ac5b"
             ],
-            "index": "pypi",
             "version": "==6.1.0"
         },
         "pyside2": {
