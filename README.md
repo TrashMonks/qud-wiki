@@ -65,11 +65,11 @@ path: /
     * Type in `cd`, then a space, then write out the file location. Press enter (or return, for Mac users)
     * Type out `pip install pipenv`, press enter, and wait until your terminal stops doing things and you can type again.
     * Type out `pipenv sync`, press enter, and wait again.
-    * Type out `pipenv run app` and wait. Hopefully, after a bit of time, Qud Blueprint Explorer should open for you. Note that if you close the terminal window, QBE will also close.
-    * Click on the button in the top left and select "Open ObjectBlueprints.xml". Navigate to where the game folder for Caves of Qud is (look it up if you cannot find it).
-    * Open "CoQ_Data"
-    * Open "StreamingAssets"
-    * Open "Base"
+    * Type out `pipenv run app` and hopefully, after printing some messages, Qud Blueprint Explorer should open for you. Note that if you close the terminal window, QBE will also close.
+    * The first screen asks you to locate the game root directory.
+        The game root should be the folder containing the Caves of Qud executable and the `CoQ_Data` folder. On Steam this should be something like `Steam/steamapps/common/Caves of Qud/`
+which on Linux might be located in `~/.local/share/`,
+or on Mac OS might be located in `~/Library/Application Support/`.
     * Scroll down until you see a file labelled "ObjectBlueprints.xml". Click on it and then click "Open". 
 
 When you want to open the app again, go to your terminal, type in "cd (File Location Here)", press enter, then type in "pipenv run app".
