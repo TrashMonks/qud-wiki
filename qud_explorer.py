@@ -1,9 +1,9 @@
 import difflib
-import os
 import re
 import sys
 from pprint import pformat
 
+from PIL import Image, ImageQt
 from PySide2.QtCore import QItemSelectionModel, QRegExp, QSize, QSortFilterProxyModel, Qt
 from PySide2.QtGui import QIcon, QPixmap, QStandardItem, QStandardItemModel
 from PySide2.QtWidgets import QAbstractItemView, QAction, QApplication, QFileDialog, QHeaderView, \
@@ -14,7 +14,6 @@ from hagadias.gameroot import GameRoot
 from config import config
 from qud_explorer_window import Ui_MainWindow
 from hagadias.qudobject import QudObject
-from hagadias.qudtile import blank_qtimage
 from wiki_config import site, wiki_config
 from wikipage import WikiPage
 
@@ -22,6 +21,9 @@ HEADER_LABELS = ['Name', 'Display', 'Override', 'Article exists', 'Article match
                  'Image matches']
 # TEMPLATE_RE copied from wikipage.py except that start/end patterns converted to non-capturing (?:)
 TEMPLATE_RE = r"(?:.*?)(^{{(?:Item|Character|Food|Corpse).*^}}$)(?:.*)"
+
+blank_image = Image.new('RGBA', (16, 24), color=(0, 0, 0, 0))
+blank_qtimage = ImageQt.ImageQt(blank_image)
 
 
 class QudFilterModel(QSortFilterProxyModel):
@@ -209,7 +211,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif qud_object.tile.blacklisted:
             display_name.setIcon(QIcon(QPixmap.fromImage(blank_qtimage)))
         else:
-            display_name.setIcon(QIcon(QPixmap.fromImage(qud_object.tile.qtimage)))
+            display_name.setIcon(QIcon(QPixmap.fromImage(ImageQt.ImageQt(qud_object.tile.image))))
         row.append(display_name)
         # third column: what the name of the wiki article will be (usually same as second column)
         override_name = QStandardItem('')
@@ -269,7 +271,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.statusbar.showMessage(qud_object.ui_inheritance_path())
                 self.top_selected = qud_object
                 if qud_object.tile is not None and not qud_object.tile.blacklisted:
-                    self.tile_label.setPixmap(QPixmap.fromImage(qud_object.tile.get_big_qtimage()))
+                    pil_qt_image = ImageQt.ImageQt(qud_object.tile.get_big_image())
+                    self.tile_label.setPixmap(QPixmap.fromImage(pil_qt_image))
                     self.save_tile_button.setDisabled(False)
                 else:
                     self.tile_label.clear()

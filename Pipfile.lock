@@ -18,9 +18,10 @@
     "default": {
         "anytree": {
             "hashes": [
-                "sha256:a221b6a603c3a5d5e417894dc48eaa8b1eab04056e1f5bb509bcfff0e7a47883"
+                "sha256:5c9b201e8820bd2c765f971c8023008e1c828cf59a8ca1d33c81a0442038e383",
+                "sha256:e39ad6f4ef112a496c92f6cadf6ec0703ab2d5dc1795d503d883ca875ec32333"
             ],
-            "version": "==2.6.0"
+            "version": "==2.7.0"
         },
         "certifi": {
             "hashes": [
@@ -39,7 +40,7 @@
         "hagadias": {
             "editable": true,
             "git": "https://github.com/syntaxaire/hagadias.git",
-            "ref": "6d71346162328a0f98f23823d9a6881c5259c796"
+            "ref": "a78732d0ffe27170cdaa7f66f743dcaec6673b6e"
         },
         "idna": {
             "hashes": [
@@ -159,10 +160,10 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:2f3eadfea5d92bc7899e75b5968410b749a054b492d5a6379c1344a1481bc2cb",
-                "sha256:9c6c593cb28f52075016307fc26b0a0f8e82bc7d1ff19aaaa959b91710a56c47"
+                "sha256:3de946ffbed6e6746608990594d08faac602528ac7015ac28d33cee6a45b7398",
+                "sha256:9a107b99a5393caf59c7aa3c1249c16e6879447533d0887f4336dde834c7be86"
             ],
-            "version": "==1.25.5"
+            "version": "==1.25.6"
         }
     },
     "develop": {
