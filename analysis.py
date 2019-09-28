@@ -51,7 +51,7 @@ def print_wikified_nonwiki():
     for name, qud_object in qindex.items():
         if not qud_object.is_wiki_eligible():
             try:
-                page = wikipage.WikiPage(qud_object)
+                page = wikipage.WikiPage(qud_object, '(version)')
                 if page.page.exists:
                     print(name, page.page.exists, page.page)
             except mwclient.errors.InvalidPageTitle:

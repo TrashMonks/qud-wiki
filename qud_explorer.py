@@ -382,7 +382,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     tile_exists.setText('-')
                     tile_matches.setText('-')
                     continue
-                article = WikiPage(qud_object)
+                article = WikiPage(qud_object, self.gameroot.gamever)
                 if article.page.exists:
                     wiki_exists.setText('✅')
                     # does the template match the article?
@@ -430,7 +430,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 else:
                     upload_processed = False
                     try:
-                        page = WikiPage(qud_object)
+                        page = WikiPage(qud_object, self.gameroot.gamever)
                         if page.upload_template() == 'Success':
                             wiki_matches = self.qud_object_proxyfilter.mapToSource(
                                 self.currently_selected[num + 4])
@@ -525,7 +525,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         qud_object = self.top_selected
         if not qud_object.is_wiki_eligible():
             return
-        article = WikiPage(qud_object)
+        article = WikiPage(qud_object, self.gameroot.gamever)
         if not article.page.exists:
             return
         txt = qud_object.wiki_template(self.gameroot.gamever).strip()
