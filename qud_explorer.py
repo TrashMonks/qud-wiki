@@ -260,7 +260,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 item = self.qud_object_model.itemFromIndex(model_index)
                 qud_object = item.data()
                 if self.view_type == 'wiki':
-                    text += qud_object.wiki_template() + '\n'
+                    text += qud_object.wiki_template(self.gameroot.gamever) + '\n'
                 elif self.view_type == 'attr':
                     text += pformat(qud_object.attributes, width=120)
                 elif self.view_type == 'all_attr':
@@ -386,7 +386,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if article.page.exists:
                     wiki_exists.setText('✅')
                     # does the template match the article?
-                    if qud_object.wiki_template().strip() in article.page.text().strip():
+                    new_template = qud_object.wiki_template(self.gameroot.gamever).strip()
+                    if new_template in article.page.text().strip():
                         wiki_matches.setText('✅')
                     else:
                         wiki_matches.setText('❌')
@@ -527,7 +528,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         article = WikiPage(qud_object)
         if not article.page.exists:
             return
-        txt = qud_object.wiki_template().strip()
+        txt = qud_object.wiki_template(self.gameroot.gamever).strip()
         wiki_txt = article.page.text().strip()
         qbe_pattern = re.compile(TEMPLATE_RE,
                                  re.MULTILINE | re.DOTALL)

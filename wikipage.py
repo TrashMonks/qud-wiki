@@ -32,7 +32,7 @@ class WikiPage:
             self.article_name = article_name[0].upper() + article_name[1:]
         else:
             self.article_name = article_name
-        self.template_text = qud_object.wiki_template()
+        self.template_text = qud_object.wiki_template(self.gameroot.gamever)
         self.page = site.pages[article_name]
 
     def upload_template(self):
