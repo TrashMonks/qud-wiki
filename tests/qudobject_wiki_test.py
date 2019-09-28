@@ -1,4 +1,7 @@
-from hagadias.gameroot import qindex
+"""pytest unit tests for qudobject_wiki.py.
+
+The qindex fixture is supplied by tests/conftest.py."""
+
 from qudobject_wiki import escape_ampersands
 
 
@@ -6,7 +9,7 @@ def test_escape_ampersands():
     assert escape_ampersands('&yfloating&G &Yglowsphere') == '&amp;yfloating&amp;G &amp;Yglowsphere'
 
 
-def test_render_wiki_templates():
+def test_render_wiki_templates(qindex):
     """Test rendering the wiki template for each object to find any exceptions."""
     for name, obj in qindex.items():
         if obj.is_wiki_eligible():
@@ -14,12 +17,12 @@ def test_render_wiki_templates():
 
 
 # Property tests
-def test_ammodamagetypes():
+def test_ammodamagetypes(qindex):
     obj = qindex['Laser Rifle']
     assert obj.ammodamagetypes == 'Light</br>Heat'
 
 
-def test_butcheredinto():
+def test_butcheredinto(qindex):
     # TODO: return corpse drop chances that are not given in ObjectBlueprints.xml,
     #  but rather in populationtables.xml:
     # obj = qindex['Albino ape corpse']
@@ -36,22 +39,22 @@ def test_butcheredinto():
     assert obj.butcheredinto == want
 
 
-def test_colorstr():
+def test_colorstr(qindex):
     obj = qindex['SixDayStiltWall1']
     assert obj.colorstr == '&amp;y^c'
 
 
-def test_cookeffect():
+def test_cookeffect(qindex):
     obj = qindex['Freeze-Dried Hoarshrooms']
     assert obj.cookeffect == '{{CookEffect ID to name|cold}},{{CookEffect ID to name|fungus}}'
 
 
-def test_corpse():
+def test_corpse(qindex):
     obj = qindex['HindrenVillager']
     assert obj.corpse == '{{ID to name|Hindren Corpse}}'
 
 
-def test_desc():
+def test_desc(qindex):
     obj = qindex['PhysicalObject']
     assert obj.desc is None
     obj = qindex['SalveTonic']
@@ -75,7 +78,7 @@ The infant child is unaware;
 It has been eaten by the bear."""  # noqa W291
 
 
-def test_dynamictable():
+def test_dynamictable(qindex):
     obj = qindex['AcidGasGrenade1']
     want = '{{Dynamic object|Grenades|AcidGasGrenade1}}'
     assert obj.dynamictable == want
@@ -87,7 +90,7 @@ def test_dynamictable():
     assert obj.dynamictable is None  # test {{{remove}}} as Value of DynamicObjectsTable:xxx
 
 
-def test_extra():
+def test_extra(qindex):
     obj = qindex['MotorizedTreads']
     assert obj.extra == '{{Extra info|empsensitive = yes | metal = yes | savemodifier =' \
                         ' Move,Knockdown,Knockback,Restraint,Drag | savemodifieramt = 4}}'
@@ -96,17 +99,17 @@ def test_extra():
                         ' flyover = no}}'
 
 
-def test_gasemitted():
+def test_gasemitted(qindex):
     obj = qindex['Defoliant Gas Pump']
     assert obj.gasemitted == '{{ID to name|DefoliantGas}}'
 
 
-def test_harvestedinto():
+def test_harvestedinto(qindex):
     obj = qindex['Dreadroot']
     assert obj.harvestedinto == '{{ID to name|Dreadroot Tuber}}'
 
 
-def test_inventory():
+def test_inventory(qindex):
     obj = qindex['HindrenVillager']
     assert '{{inventory|LeatherBracer|1|no|100}}' in obj.inventory
     assert '{{inventory|Sandals|2|no|100}}' in obj.inventory
@@ -114,7 +117,7 @@ def test_inventory():
     assert '{{inventory|Iron Vinereaper|1|no|100}}' in obj.inventory
 
 
-def test_mods():
+def test_mods(qindex):
     obj = qindex['Difucila']
     assert obj.mods == '{{ModID to name|ModSharp|1}} </br>{{ModID to name|ModMasterwork|1}}'
     obj = qindex['Caslainard']
@@ -122,7 +125,7 @@ def test_mods():
                        '{{ModID to name|ModElectrified|7}}'
 
 
-def test_mutations():
+def test_mutations(qindex):
     obj = qindex['Girshworm']
     want = '{{creature mutation|{{MutationID to name|Regeneration}}|0|5}} </br>' \
            '{{creature mutation|{{MutationID to name|GasGenerationPoisonGas}}|1|5}} </br>' \
@@ -130,24 +133,24 @@ def test_mutations():
     assert obj.mutations == want
 
 
-def test_oneat():
+def test_oneat(qindex):
     obj = qindex['FireBreatherGland']
     want = '{{OnEat ID to name|BreatheOnEatFireBreather5}}'
     assert obj.oneat == want
 
 
-def test_preservedinto():
+def test_preservedinto(qindex):
     obj = qindex['FireBreatherGland']
     want = '{{ID to name|FireBreatherGlandPaste}}'
     assert obj.preservedinto == want
 
 
-def test_renderstr():
+def test_renderstr(qindex):
     obj = qindex['EyelessCrabShell']
     assert obj.renderstr == '&#125;'  # not '}'
 
 
-def test_reputationbonus():
+def test_reputationbonus(qindex):
     obj = qindex['Ape Fur Hat']
     want = '{{reputation bonus|{{FactionID to name|Apes}}|-100}}'
     assert obj.reputationbonus == want
@@ -161,7 +164,7 @@ def test_reputationbonus():
     assert obj.reputationbonus == want
 
 
-def test_weaponskill():
+def test_weaponskill(qindex):
     obj = qindex['Gaslight Dagger']
     want = '{{SkillID to name|ShortBlades}}'
     assert obj.weaponskill == want
