@@ -61,7 +61,7 @@ class QudObjectWiki(QudObjectProps):
                        'Arsplice Seed',
                        'Albino Ape Heart',
                        'Ogre Ape Heart')
-        characters = ['Creature', 'BasePlant', 'BaseFungus', 'Baetyl', 'Wall']
+        characters = ['Creature', 'BasePlant', 'BaseFungus', 'Baetyl', 'Wall', 'Furniture']
         if any(self.inherits_from(character) for character in characters):
             flavor = "Character"
         elif self.inherits_from('Food'):
