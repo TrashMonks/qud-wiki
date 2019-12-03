@@ -1,0 +1,2 @@
+# Automatically convert text files to LF line endings in repository
+* text=auto
