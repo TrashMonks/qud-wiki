@@ -529,7 +529,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         txt = qud_object.wiki_template(self.gameroot.gamever).strip()
         wiki_txt = article.page.text().strip()
         # Import TEMPLATE_RE from wikipage, but doesn't capture things outside the template.
-        template_re = '(?:.*?)' + TEMPLATE_RE + '(?:.*?)'
+        template_re = '(?:.*?)' + TEMPLATE_RE + '(?:.*)'
         qbe_pattern = re.compile(template_re,
                                  re.MULTILINE | re.DOTALL)
         msg_box = QMessageBox()
