@@ -15,12 +15,10 @@ from config import config
 from qud_explorer_window import Ui_MainWindow
 from hagadias.qudobject import QudObject
 from wiki_config import site, wiki_config
-from wikipage import WikiPage
+from wikipage import WikiPage, TEMPLATE_RE
 
 HEADER_LABELS = ['Name', 'Display', 'Override', 'Article exists', 'Article matches', 'Image exists',
                  'Image matches']
-# TEMPLATE_RE copied from wikipage.py except that start/end patterns converted to non-capturing (?:)
-TEMPLATE_RE = r"(?:.*?)(^{{(?:Item|Character|Food|Corpse).*^}}$)(?:.*)"
 
 blank_image = Image.new('RGBA', (16, 24), color=(0, 0, 0, 0))
 blank_qtimage = ImageQt.ImageQt(blank_image)
@@ -530,7 +528,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
         txt = qud_object.wiki_template(self.gameroot.gamever).strip()
         wiki_txt = article.page.text().strip()
-        qbe_pattern = re.compile(TEMPLATE_RE,
+        # Import TEMPLATE_RE from wikipage, but doesn't capture things outside the template.
+        template_re = '(?:.*?)' + TEMPLATE_RE + '(?:.*)'
+        qbe_pattern = re.compile(template_re,
                                  re.MULTILINE | re.DOTALL)
         msg_box = QMessageBox()
         msg_box.setTextFormat(Qt.RichText)
