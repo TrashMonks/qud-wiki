@@ -2,122 +2,29 @@
 
 import difflib
 import re
-import sys
 from pprint import pformat
 
 from PIL import Image, ImageQt
-from PySide2.QtCore import QItemSelectionModel, QRegExp, QSize, QSortFilterProxyModel, Qt
+from PySide2.QtCore import QItemSelectionModel, QRegExp, QSize, Qt
 from PySide2.QtGui import QIcon, QPixmap, QStandardItem, QStandardItemModel
-from PySide2.QtWidgets import QAbstractItemView, QAction, QApplication, QFileDialog, QHeaderView, \
-    QMainWindow, QMenu, QMessageBox, QSizePolicy, QTreeView
-
-from qudobject_wiki import QudObjectWiki
+from PySide2.QtWidgets import QApplication, QFileDialog, QHeaderView, \
+    QMainWindow, QMessageBox
 from hagadias.gameroot import GameRoot
-from config import config
-from qud_explorer_window import Ui_MainWindow
 from hagadias.qudobject import QudObject
-from wiki_config import site, wiki_config
-from wikipage import WikiPage, TEMPLATE_RE
+
+from qbe.config import config
+from qbe.qud_explorer_window import Ui_MainWindow
+from qbe.search_filter import QudFilterModel
+from qbe.qudobject_wiki import QudObjectWiki
+from qbe.tree_view import QudTreeView
+from qbe.wiki_config import site, wiki_config
+from qbe.wiki_page import TEMPLATE_RE, WikiPage
 
 HEADER_LABELS = ['Name', 'Display', 'Override', 'Article exists', 'Article matches', 'Image exists',
                  'Image matches']
 
 blank_image = Image.new('RGBA', (16, 24), color=(0, 0, 0, 0))
 blank_qtimage = ImageQt.ImageQt(blank_image)
-
-
-class QudFilterModel(QSortFilterProxyModel):
-    """Custom filter proxy for the tree view."""
-    def __init__(self, parent=None):
-        super(QudFilterModel, self).__init__(parent)
-        self.setRecursiveFilteringEnabled = True
-        self.setFilterKeyColumn(0)
-        self.filterSelections = []
-        self.filterSelectionIDs = []
-        # use of separate itemIDs list is a workaround for issue bugreports.qt.io/browse/PYSIDE-74,
-        # which causes errors when using the 'in' operator on the filterSelections list's QItems
-
-    def pop_selections(self):
-        """Wipe the list of filtered items and return what they previously were."""
-        val1 = self.filterSelections
-        val2 = self.filterSelectionIDs
-        self.filterSelections = []
-        self.filterSelectionIDs = []
-        return val1, val2
-
-    def _accept_index(self, idx):
-        """Perform recursive search on an index.
-
-        Causes ancestors of matching objects to be displayed as an inheritance tree, even if the
-        ancestors themselves don't match the filter."""
-        if idx.isValid():
-            text = idx.data(role=Qt.DisplayRole).lower()
-            found = text.find(self.filterRegExp().pattern().lower()) >= 0  # use QRegExp method?
-            if found:
-                item = self.sourceModel().itemFromIndex(idx)
-                if item.isSelectable() and id(item) not in self.filterSelectionIDs:
-                    self.filterSelections.append(item)
-                    self.filterSelectionIDs.append(id(item))
-                return True
-            for childnum in range(idx.model().rowCount(idx)):
-                if self._accept_index(idx.model().index(childnum, 0, idx)):
-                    return True
-        return False
-
-    def filterAcceptsRow(self, source_row, source_parent):
-        """Overrides filterAcceptsRow to determine if the row should be included.
-
-        Documentation of overridden class:
-        Returns true if the item in the row indicated by the given source_row and source_parent
-        should be included in the model; otherwise returns false.
-
-        The default implementation returns true if the value held by the relevant item matches the
-        filter string, wildcard string or regular expression."""
-        idx = self.sourceModel().index(source_row, 0, source_parent)  # 0 = first column
-        return self._accept_index(idx)
-
-
-class QudTreeView(QTreeView):
-    """Custom tree view for the object hierarchy browser, including icons."""
-    def __init__(self, selection_handler, *args, **kwargs):
-        """selection_handler: a function in the parent window to pass selected indices to"""
-        self.selection_handler = selection_handler
-        super().__init__(*args, **kwargs)
-        size_policy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        size_policy.setHorizontalStretch(1)
-        size_policy.setVerticalStretch(0)
-        size_policy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
-        self.setSizePolicy(size_policy)
-        self.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
-        self.setObjectName("treeView")
-        self.setIndentation(10)
-        self.setIconSize(QSize(16, 24))
-        self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.tree_menu = QMenu()
-        self.context_action_expand = QAction('Expand all', self.tree_menu)
-        self.tree_menu.addAction(self.context_action_expand)
-        self.context_action_scan = QAction('Scan wiki for selected objects', self.tree_menu)
-        self.tree_menu.addAction(self.context_action_scan)
-        self.context_action_upload_page = QAction('Upload templates for selected objects',
-                                                  self.tree_menu)
-        self.tree_menu.addAction(self.context_action_upload_page)
-        self.context_action_upload_tile = QAction('Upload tiles for selected objects',
-                                                  self.tree_menu)
-        self.tree_menu.addAction(self.context_action_upload_tile)
-        self.context_action_diff = QAction('Diff template against wiki', self.tree_menu)
-        self.tree_menu.addAction(self.context_action_diff)
-        self.customContextMenuRequested.connect(self.on_context_menu)
-
-    def on_context_menu(self, point):
-        """Callback registered for right click in the tree view."""
-        self.tree_menu.exec_(self.mapToGlobal(point))
-
-    def selectionChanged(self, selected, deselected):
-        """Custom override to handle all forms of selection (keyboard, mouse)"""
-        indices = self.selectedIndexes()
-        self.selection_handler(indices)
-        super().selectionChanged(selected, deselected)
 
 
 def set_gamedir():
@@ -139,7 +46,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.app = app
         self.setupUi(self)  # lay out the inherited UI as in the graphical designer
-        icon = QIcon("book.png")
+        icon = QIcon("qbe/icon.png")
         self.setWindowIcon(icon)
         self.view_type = 'wiki'
         self.qud_object_model = QStandardItemModel()
@@ -614,10 +521,3 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def setview_xmlsource(self):
         """Change the view type to XML source."""
         self.setview('xml_source')
-
-
-if __name__ == '__main__':
-    qbe_app = QApplication(sys.argv)
-    qbe_app.setApplicationName(config['App name'])
-    main_window = MainWindow(qbe_app)
-    qbe_app.exec_()

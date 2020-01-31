@@ -2,8 +2,8 @@
 
 import re
 
-from config import config
-from wiki_config import site, wiki_config
+from qbe.config import config
+from qbe.wiki_config import site, wiki_config
 
 # Link to work on or update regex:
 # https://regex101.com/r/suH7vR/3

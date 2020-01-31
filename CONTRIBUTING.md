@@ -80,9 +80,3 @@ When you want to open the app again, go to your terminal, type in "cd (File Loca
 If this did not work, please send me a message on Discord. I am pokedragonboy, and would love to help you and make this guide better.
 
 If this did work for you, congratulations and welcome to the wiki team. We look forward to working with you!
-
-## What are all these files?
-1. `qud_explorer.py`, is code for the explorer GUI. Run qud_explorer.py from the command line to launch the GUI.
-2. `qud_explorer_window.ui`, and `qud_explorer_window.py` are user interface files auto-generated from the graphical Qt Designer app and the Qt UIC compiler, respectively.
-3. `config.py` and `config.yml` are config files, blah blah blah.
-4. `Pipfile` and `Pipfile.lock` are control files for the [pipenv](https://docs.pipenv.org/en/latest/) dependency manager. To start working on the project, first install `pipenv` to your system interpreter using `pip install pipenv`, then `cd` over to this project folder and run `pipenv sync --dev`. This will create a virtual environment and install all dependencies including development packages (like pytest). If the dependencies change, this command will also update them automatically.

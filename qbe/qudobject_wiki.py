@@ -1,7 +1,7 @@
 import re
 from typing import Union
 
-from config import config
+from qbe.config import config
 from hagadias.qudobject_props import QudObjectProps
 
 IMAGE_OVERRIDES = config['Templates']['Image overrides']

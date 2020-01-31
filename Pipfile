@@ -19,5 +19,5 @@ python_version = "3.7"
 
 [scripts]
 designer = "C:/Users/Jeff/.virtualenvs/qud-wiki-CxkOCm1p/Lib/site-packages/PySide2/designer.exe"
-uic = "C:/Users/Jeff/.virtualenvs/qud-wiki-CxkOCm1p/Scripts/pyside2-uic.exe qud_explorer_window.ui -o qud_explorer_window.py"
-app = "python qud_explorer.py"
+uic = "C:/Users/Jeff/.virtualenvs/qud-wiki-CxkOCm1p/Scripts/pyside2-uic.exe qbe/qud_explorer_window.ui -o qbe/qud_explorer_window.py"
+app = "python -m qbe"
