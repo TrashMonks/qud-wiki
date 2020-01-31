@@ -33,7 +33,7 @@ Templates:
     # Fields for the extra info template
     [empsensitive, twohanded, metal, lightprojectile, reflect, movespeedbonus, cursed, destroyonunequip,
      savemodifier, savemodifieramt, shotcooldown, penetratingammo, omniphaseprojectile,
-     spectacles, carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic, uniquechara, pettable, liquidburst, flametemperature, bleedliquid, hidden, energycellrequired, temponenter, isoccluding]
+     spectacles, carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic, uniquechara, pettable, liquidburst, flametemperature, bleedliquid, hidden, energycellrequired, temponenter, isoccluding, waterritualable]
   Image overrides:
     # Manually specify the image name to be shown for an object ID:
     Asphodel: Earl_asphodel.png
@@ -607,7 +607,7 @@ Wiki:
                  Euclid, Warden Indrix, Mamon, Svenlainard, Otho, Q Girl, Barathrum, Sparafucile,
                  Jacobo, Dardi, Hortensa, Iseppa, Neek, Mafeo, Aloysius, High Priest Eschelstadt,
                  Troll King 1, Troll King 2, Troll King 3, Doru, Rodanis Y, Shem -1,
-                 GolgothaSlog, Ctesiphus, OasisGlowpad, PaxKlanq]
+                 GolgothaSlog, Ctesiphus, OasisGlowpad, PaxKlanq, Tszappur]
     Quest Items: [Scrapped Waydroid, Scratch Data Disk, Stamped Data Disk, Argyve's Data Disk,
                   Argyve's Data Disk Encoded, ClimberBlueprints, Dormant Waydroid, BarathrumKey,
                   Clue_YuckwheatChaff, Clue_SeveredTongue, Clue_SplinteredWeaponHaft,
