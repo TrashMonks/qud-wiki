@@ -1,3 +1,5 @@
+"""Main file for Qud Blueprint Explorer."""
+
 import difflib
 import re
 import sys
@@ -25,6 +27,7 @@ blank_qtimage = ImageQt.ImageQt(blank_image)
 
 
 class QudFilterModel(QSortFilterProxyModel):
+    """Custom filter proxy for the tree view."""
     def __init__(self, parent=None):
         super(QudFilterModel, self).__init__(parent)
         self.setRecursiveFilteringEnabled = True
@@ -35,13 +38,18 @@ class QudFilterModel(QSortFilterProxyModel):
         # which causes errors when using the 'in' operator on the filterSelections list's QItems
 
     def pop_selections(self):
+        """Wipe the list of filtered items and return what they previously were."""
         val1 = self.filterSelections
         val2 = self.filterSelectionIDs
         self.filterSelections = []
         self.filterSelectionIDs = []
         return val1, val2
 
-    def _accept_index(self, idx):  # recursive search
+    def _accept_index(self, idx):
+        """Perform recursive search on an index.
+
+        Causes ancestors of matching objects to be displayed as an inheritance tree, even if the
+        ancestors themselves don't match the filter."""
         if idx.isValid():
             text = idx.data(role=Qt.DisplayRole).lower()
             found = text.find(self.filterRegExp().pattern().lower()) >= 0  # use QRegExp method?
@@ -57,11 +65,20 @@ class QudFilterModel(QSortFilterProxyModel):
         return False
 
     def filterAcceptsRow(self, source_row, source_parent):
+        """Overrides filterAcceptsRow to determine if the row should be included.
+
+        Documentation of overridden class:
+        Returns true if the item in the row indicated by the given source_row and source_parent
+        should be included in the model; otherwise returns false.
+
+        The default implementation returns true if the value held by the relevant item matches the
+        filter string, wildcard string or regular expression."""
         idx = self.sourceModel().index(source_row, 0, source_parent)  # 0 = first column
         return self._accept_index(idx)
 
 
 class QudTreeView(QTreeView):
+    """Custom tree view for the object hierarchy browser, including icons."""
     def __init__(self, selection_handler, *args, **kwargs):
         """selection_handler: a function in the parent window to pass selected indices to"""
         self.selection_handler = selection_handler
@@ -93,7 +110,7 @@ class QudTreeView(QTreeView):
         self.customContextMenuRequested.connect(self.on_context_menu)
 
     def on_context_menu(self, point):
-        # print(str(point) + "  '" + self.indexAt(point).data() + "'")
+        """Callback registered for right click in the tree view."""
         self.tree_menu.exec_(self.mapToGlobal(point))
 
     def selectionChanged(self, selected, deselected):
@@ -101,6 +118,14 @@ class QudTreeView(QTreeView):
         indices = self.selectedIndexes()
         self.selection_handler(indices)
         super().selectionChanged(selected, deselected)
+
+
+def set_gamedir():
+    """Browse for the root game directory and write it to the file last_xml_location."""
+    ask_string = 'Please locate the base directory containing the Caves of Qud executable.'
+    dir_name = QFileDialog.getExistingDirectory(caption=ask_string)
+    with open('last_xml_location', 'w') as f:
+        f.write(dir_name)
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -149,7 +174,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             try:
                 self.open_gameroot()
             except FileNotFoundError:
-                self.set_gamedir()
+                set_gamedir()
         title_string = f'Qud Blueprint Explorer: CoQ version {self.gameroot.gamever} at ' \
                        f'{self.gameroot.pathstr}'
         self.setWindowTitle(title_string)
@@ -164,13 +189,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.currently_selected = []
         self.top_selected = None  # used when multiple items may be selected but we only want one
         self.show()
-
-    def set_gamedir(self):
-        """Browse for the root game directory and write it to the file last_xml_location."""
-        ask_string = 'Please locate the base directory containing the Caves of Qud executable.'
-        dir_name = QFileDialog.getExistingDirectory(caption=ask_string)
-        with open('last_xml_location', 'w') as f:
-            f.write(dir_name)
 
     def open_gameroot(self):
         """Attempt to load a GameRoot from the saved root game directory."""
@@ -298,21 +316,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.clear_search_filter(True)
 
     def scroll_to_selected(self):
+        """Scroll the tree view to the first selected item."""
         self.currently_selected = self.treeView.selectedIndexes()
         if self.currently_selected is not None and len(self.currently_selected) > 0:
             self.treeView.scrollTo(self.currently_selected[0])
 
     def clear_search_filter(self, clearfield: bool = False):
+        """Remove any filtering that has been applied to the tree view."""
         if clearfield and len(self.search_line_edit.text()) > 0:
             self.search_line_edit.clear()
         self.qud_object_proxyfilter.setFilterRegExp('')
         self.scroll_to_selected()
 
     def search_changed(self, mode: str = ''):
-        """Called when the text in the search box has changed. By default, the search box only
-           begins filtering after 4 or more letters are entered. However, you can override that and
-           search with fewer letters by hitting ENTER ('Forced' mode). You can also hit ENTER to
-           move to the next match for an existing/active search query."""
+        """Called when the text in the search box has changed.
+
+        By default, the search box only begins filtering after 4 or more letters are entered.
+        However, you can override that and search with fewer letters by hitting ENTER ('Forced'
+        mode). You can also hit ENTER to move to the next match for an existing/active search
+        query."""
         if len(self.search_line_edit.text()) <= 3:
             self.clear_search_filter(False)
         if len(self.search_line_edit.text()) > 3 \
@@ -340,9 +362,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.scroll_to_selected()
 
     def search_changed_forced(self):
+        """Callback for when enter is pressed in search box."""
         self.search_changed('Forced')
 
     def selected_row_count(self):
+        """Return the number of currently selected rows."""
         if self.currently_selected is not None:
             return len(self.currently_selected) // len(HEADER_LABELS)
 
@@ -515,11 +539,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QApplication.restoreOverrideCursor()
 
     def save_selected_tile(self):
+        """Save the currently displayed tile as a PNG."""
         if self.top_selected.tile is not None:
             filename = QFileDialog.getSaveFileName()[0]
             self.top_selected.tile.get_big_image().save(filename, format='png')
 
     def show_simple_diff(self):
+        """Display a popup showing the diff between our template and the version on the wiki."""
         qud_object = self.top_selected
         if not qud_object.is_wiki_eligible():
             return
@@ -590,7 +616,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setview('xml_source')
 
 
-qbe_app = QApplication(sys.argv)
-qbe_app.setApplicationName(config['App name'])
-main_window = MainWindow(qbe_app)
-qbe_app.exec_()
+if __name__ == '__main__':
+    qbe_app = QApplication(sys.argv)
+    qbe_app.setApplicationName(config['App name'])
+    main_window = MainWindow(qbe_app)
+    qbe_app.exec_()
