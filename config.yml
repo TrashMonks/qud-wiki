@@ -62,8 +62,7 @@ Templates:
 Wiki:
   # See also wiki login configuration in wiki.yml.
   Article overrides:
-    # Manually specify the article title to be used for an object ID:
-    # Example:
+    # Manually specify the article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
     ClockworkBeetle: Clockwork beetle
     Mamon: Mamon Souldrinker
@@ -73,6 +72,7 @@ Wiki:
     Hoarshroom: Luminous hoarshroom (food)
     MerchantAdvertisement: Advertisement
     Argyve's Data Disk: Argyve's data disk
+    Argyve's Data Disk Encoded: Argyve's data disk encoded
     SingleSkillsoft1: Skillsoft (low SP)
     SingleSkillsoft2: Skillsoft (medium SP)
     Schemasoft2: Schemasoft (low-tier)
@@ -178,7 +178,6 @@ Wiki:
     Creeper_Thorns: thorns (livid creeper)
     Graftek_Tendril: tendril (graftek)
     Glowcrow_Peck: peck (glowcrow)
-
     HoloMarble: Holographic marble wall
 
   Article black+whitelist categories:
