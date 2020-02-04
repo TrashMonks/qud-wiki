@@ -30,10 +30,10 @@ class WikiPage:
             gamever: a string giving the patch version of CoQ
             """
         self.CREATED_SUMMARY = f'Created by {wiki_config["operator"]}' \
-                               f' to game version {gamever}' \
+                               f' with game version {gamever}' \
                                f' using {config["Wikified name"]} {config["Version"]}'
         self.EDITED_SUMMARY = f'Updated by {wiki_config["operator"]}' \
-                              f' to game version {gamever}' \
+                              f' with game version {gamever}' \
                               f' using {config["Wikified name"]} {config["Version"]}'
         self.as_of_patch = f'{{{{As Of Patch|{gamever}}}}}'
         self.intro_string = INTRO_STR + '\n' + self.as_of_patch + '\n'

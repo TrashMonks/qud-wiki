@@ -420,8 +420,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 filename = config['Templates']['Image overrides'][qud_object.name]
             else:
                 filename = qud_object.image
-            descr = f'Rendered by {wiki_config["operator"]} using' \
-                    ' {config["Wiki name"]} {config["Version"]}.'
+            descr = f'Rendered by {wiki_config["operator"]} with game version ' \
+                    f'{self.gameroot.gamever} using {config["Wikified name"]} {config["Version"]}'
             upload_processed = False
             try:
                 result = site.upload(qud_object.tile.get_big_bytesio(),
