@@ -2,6 +2,8 @@
 
 import re
 
+from mwclient.errors import InvalidPageTitle
+
 from qbe.config import config
 from qbe.wiki_config import site, wiki_config
 
@@ -49,7 +51,11 @@ class WikiPage:
         else:
             self.article_name = article_name
         self.template_text = qud_object.wiki_template(gamever)
-        self.page = site.pages[article_name]
+        try:
+            self.page = site.pages[article_name]
+        except InvalidPageTitle:
+            print(f'Invalid page title: {article_name}')
+            raise
 
     def upload_template(self):
         """Write the template for our object into the article and save it."""
