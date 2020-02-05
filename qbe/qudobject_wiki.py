@@ -39,6 +39,7 @@ class QudObjectWiki(QudObjectProps):
                 attrib = getattr(self, field)
                 if attrib is not None:
                     if field == 'renderstr':
+                        # } character messes with mediawiki template rendering
                         attrib = attrib.replace('}', '&#125;')
                     template += f"| {field} = {attrib}\n"
         category = self.wiki_category()
@@ -195,7 +196,13 @@ class QudObjectWiki(QudObjectProps):
         if self.name in IMAGE_OVERRIDES:
             return IMAGE_OVERRIDES[self.name]
         else:
-            return super().image
+            if self.part_Render_Tile is None:
+                name = 'none'
+            else:
+                name = self.displayname
+                name = re.sub(r"[^a-zA-Z\d ]", '', name)
+                name = name.casefold() + '.png'
+            return name
 
     @property
     def inventory(self) -> Union[str, None]:
