@@ -219,6 +219,12 @@ class QudObjectWiki(QudObjectProps):
             return template
 
     @property
+    def liquidburst(self) -> Union[str, None]:
+        liquid = super().liquidburst
+        if liquid is not None:
+            return '{{ID to name|' + liquid + '}}'
+
+    @property
     def mods(self) -> Union[str, None]:
         """Mods that are attached to the current item.
 
