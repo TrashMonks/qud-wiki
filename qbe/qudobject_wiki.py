@@ -235,6 +235,12 @@ class QudObjectWiki(QudObjectProps):
             return ' </br>'.join(f'{{{{ModID to name|{mod}|{tier}}}}}' for mod, tier in mods)
 
     @property
+    def movespeedbonus(self) -> Union[str, None]:
+        """The movespeed bonus of an item, prefixed with a + if positive."""
+        bonus = super().movespeedbonus
+        return '+' + str(bonus) if bonus > 0 else str(bonus)
+
+    @property
     def mutations(self) -> Union[str, None]:
         """The mutations the creature has along with their level."""
         mutations = super().mutations
