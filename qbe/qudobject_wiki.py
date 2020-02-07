@@ -238,7 +238,8 @@ class QudObjectWiki(QudObjectProps):
     def movespeedbonus(self) -> Union[str, None]:
         """The movespeed bonus of an item, prefixed with a + if positive."""
         bonus = super().movespeedbonus
-        return '+' + str(bonus) if bonus > 0 else str(bonus)
+        if bonus is not None:
+            return '+' + str(bonus) if bonus > 0 else str(bonus)
 
     @property
     def mutations(self) -> Union[str, None]:
