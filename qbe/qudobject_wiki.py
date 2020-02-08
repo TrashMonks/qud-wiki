@@ -38,9 +38,15 @@ class QudObjectWiki(QudObjectProps):
             else:
                 attrib = getattr(self, field)
                 if attrib is not None:
+                    # do some final cleanup before sending to template
                     if field == 'renderstr':
                         # } character messes with mediawiki template rendering
                         attrib = attrib.replace('}', '&#125;')
+                    # replace Booleans with wiki-compatible 'yes' and 'no'
+                    if isinstance(attrib, bool):
+                        attrib = 'yes' if attrib else 'no'
+                    elif isinstance(attrib, list):
+                        attrib = ', '.join(attrib)
                     template += f"| {field} = {attrib}\n"
         category = self.wiki_category()
         if category:
@@ -123,6 +129,13 @@ class QudObjectWiki(QudObjectProps):
             return escape_ampersands(colorstr)
 
     @property
+    def commerce(self) -> Union[float, int, None]:
+        """Remove trailing decimal points on values."""
+        value = super().commerce
+        if value is not None:
+            return value if 0 < value < 1 else int(value)
+
+    @property
     def cookeffect(self) -> Union[str, None]:
         """The possible cooking effects of an item."""
         effect = super().cookeffect
@@ -158,6 +171,9 @@ class QudObjectWiki(QudObjectProps):
         for field in extrafields:
             attrib = getattr(self, field)
             if attrib is not None:
+                # convert Booleans to wiki-compatible 'yes' and 'no'
+                if isinstance(attrib, bool):
+                    attrib = 'yes' if attrib else 'no'
                 fields.append((field, attrib))
         if len(fields) > 0:
             text = ' | '.join(f'{field} = {attrib}' for field, attrib in fields)
@@ -250,7 +266,7 @@ class QudObjectWiki(QudObjectProps):
             for mutation, level in mutations:
                 templates.append(f'{{{{creature mutation|'
                                  f'{{{{MutationID to name|{mutation}}}}}|{level}|'
-                                 f'{self.attribute_helper("Ego", "Average")}}}}}')
+                                 f'{self.attribute_helper_avg("Ego")}}}}}')
             return ' </br>'.join(templates)
 
     @property
