@@ -600,6 +600,7 @@ Wiki:
     Slugs: [BaseSlug]
     Cybernetics: [BaseCybernetics2Equipment_1point, BaseCybernetics2Equipment_2point, BaseCybernetics2Equipment_3point, BaseCybernetics2Equipment_4point]
     Merchants: [BaseMerchant]
+    Turret Tinkers: [Turret Tinker]
     Unique Characters: [Phinae Hoshaiah, Argyve, ElderBob, Mehmet, Warden Ualraig,
                  Warden Esthers, Eskhind, Meyehind, Liihart, Isahind, Neelahind, Keh, Kesehind,
                  Angohind, Lulihart, AgateSeveranceStar, Mayor Nuntu, Oboroqoru, Asphodel, Yurl,
