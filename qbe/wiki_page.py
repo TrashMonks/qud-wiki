@@ -37,7 +37,7 @@ class WikiPage:
                               f' using {config["Wikified name"]} {config["Version"]}'
         self.as_of_patch = f'{{{{As Of Patch|{gamever}}}}}'
         self.intro_string = INTRO_STR + '\n' + self.as_of_patch + '\n'
-        self.final_string = FINAL_STR
+        self.final_string = FINAL_STR + '\n'
         # Use base TEMPLATE_RE but surrounding text around template is also captured
         self.template_re = '(.*?)' + TEMPLATE_RE + '(.*)'
         # is this page name overridden?
