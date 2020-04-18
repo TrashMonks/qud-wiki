@@ -1,4 +1,9 @@
 # Config file for Qud Blueprint Explorer
+# This file contains the config used to generate the official wiki at:
+# https://cavesofqud.gamepedia.com/
+#
+# This includes various article redirects, renamings, overrides, and object exclusions.
+
 App name: Qud Blueprint Explorer
 Wikified name: >-
   [[Qud Blueprint Explorer|QBE]]
@@ -237,6 +242,7 @@ Wiki:
       -Ghostly Flames,
       -Horticulturalist Bio-Scanning Bracelet,
       -Child of the Deep Structural Scanning Bracelet,
+      -Bite,
       -Wof_Bite,
       /BaseBeadBracelet,
       +Bracelet1,  # just including one bracelet from BaseBeadBracelet
