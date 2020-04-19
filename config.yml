@@ -184,6 +184,7 @@ Wiki:
     Graftek_Tendril: tendril (graftek)
     Glowcrow_Peck: peck (glowcrow)
     HoloMarble: Holographic marble wall
+    Gun Rack: gun rack (furniture)
 
   Article black+whitelist categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -407,7 +408,7 @@ Wiki:
       -FungusPuffer,
       -Rubber Tree,
       -Shimscale Mangrove Tree_blue,
-      -Dogthorn Tree2,
+      /Leafless Dogthorn Tree,
       -Fracti2,
       -Fracti3,
       -Starapple Farm Tree,
