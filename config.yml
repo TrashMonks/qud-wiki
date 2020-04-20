@@ -184,6 +184,7 @@ Wiki:
     Graftek_Tendril: tendril (graftek)
     Glowcrow_Peck: peck (glowcrow)
     HoloMarble: Holographic marble wall
+    Sleek Table: table (sleek)
     Gun Rack: gun rack (furniture)
 
   Article black+whitelist categories:
@@ -298,6 +299,7 @@ Wiki:
       /Marble,
       +Marble,
       +SixDayStiltPillarWall1,
+      -SixDayStiltWall1,
       /Fulcrete,
       +Fulcrete,
       -GodcapMushroomFlesh2,
@@ -346,7 +348,7 @@ Wiki:
       -GritGateCanvasFoldingChair,
       -GritGateMedicalChair,
       -GritGateWorkChair,
-      -GritGateChairBear,
+      -GritGateChairbear,
       -GritGateHyperbioticChair,
       -GritGateBed,
       -GritGateMedicalBed,
