@@ -40,7 +40,11 @@ Templates:
      savemodifier, savemodifieramt, shotcooldown, penetratingammo, omniphaseprojectile,
      spectacles, carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic, uniquechara, pettable, liquidburst, flametemperature, bleedliquid, hidden, energycellrequired, temponenter, isoccluding, waterritualable, iscurrency]
   Image overrides:
-    # Manually specify the image name to be shown for an object ID:
+    # Manually specify the image name to be used for an object ID:
+    TreeSkillsoft: skillsoft_tree.png
+    Schemasoft4: schemasoft_high_tier.png
+    ElevatorSwitch: control_switch_elevator.png
+    TempleSwitch: control_switch_temple.png
     Asphodel: Earl_asphodel.png
     Lulihart: Lulihart.png
     Across1: across moghrayi.png
@@ -59,10 +63,13 @@ Templates:
     Warden Indrix: Warden indrix.png
     Molting Basilisk: Molting basilisk.png
     Sleek Table: sleek table.png
+    Gun Rack: gun rack furniture.png
     Crazed Goatfolk Shaman 1: goatfolk shaman crazed.png
     Wraith-Knight Templar: wraith knight templar.png
     HoloMarble: holographic marble wall.png
     Hoarshroom: hoarshroom.png
+    AppleMerchant: apple_farmer_merchant.png
+    Clue_Putrescence: putrescence_clue.png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -124,6 +131,7 @@ Wiki:
     Gnu Hoof: hoof (gnu)
     Humor_Pseudopod: giant pseudopod (humor)
     Gyrohumor_Pseudopod: giant pseudopod (Gyrohumor)
+    GiantAmoeba_Pseudopod: slimy pseudopod (giant amoeba)
     GiantBeetle_Bite: bite (giant beetle)
     ClockworkBeetle_Bite: bite (clockwork beetle)
     GiantCentipede_Bite: bite (giant centipede)
@@ -166,7 +174,11 @@ Wiki:
     Astral_Tabby_Claw: claw (astral tabby)
     Astral_Tabby_Bite: bite (astral tabby)
     Gamma Moth Bite: bite (gamma moth)
+    Sludgy Pseudopod: sludgy pseudopod (brown jell)
     SewageEel_Bite: bite (sewage eel)
+    Oozing Pseudopod: oozing pseudopod (black jell)
+    Luminous Pseudopod: luminous pseudopod (blue jell)
+    Gooey Pseudopod: gooey pseudopod (green goo)
     Baboon_Bite: vicious bite (baboon)
     Vicious_Baboon_Bite: vicious bite (vicious baboon)
     Voider_Bite: fangs (voider)
@@ -186,6 +198,7 @@ Wiki:
     HoloMarble: Holographic marble wall
     Sleek Table: table (sleek)
     Gun Rack: gun rack (furniture)
+    Clue_Putrescence: putrescence (clue)
 
   Article black+whitelist categories:
     # Categories, or individual articles, to include or exclude from consideration for
