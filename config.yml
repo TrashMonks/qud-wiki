@@ -198,6 +198,7 @@ Wiki:
     HoloMarble: Holographic marble wall
     Sleek Table: table (sleek)
     Gun Rack: gun rack (furniture)
+    GunRack: gun rack (cybernetic)
     Clue_Putrescence: putrescence (clue)
 
   Article black+whitelist categories:
@@ -507,6 +508,7 @@ Wiki:
       /BaseWatervineFarmer,
       +WatervineFarmer,
       -StiltPigFarmer,
+      -BethesdaBaetyl,
       -LoudSixDayZealot,
       -StiltChef,
       -Village Crier,
