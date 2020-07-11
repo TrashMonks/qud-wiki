@@ -279,7 +279,7 @@ Wiki:
       +Pitcher,
       +Ewer,
       +Jug,
-      *Long Jug,
+      "*Long Jug",
       -RandomFactionDeed,
       /BaseCookbook,
       /RandomBook,
