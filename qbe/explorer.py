@@ -131,7 +131,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         display_name.setSizeHint(QSize(250, 25))
         if qud_object.tile is None:
             display_name.setIcon(QIcon(QPixmap.fromImage(blank_qtimage)))
-        elif qud_object.tile.blacklisted:
+        elif qud_object.tile.hasproblems:
             display_name.setIcon(QIcon(QPixmap.fromImage(blank_qtimage)))
         else:
             display_name.setIcon(QIcon(QPixmap.fromImage(ImageQt.ImageQt(qud_object.tile.image))))
@@ -193,7 +193,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     text += '  ' + qud_object.source
                 self.statusbar.showMessage(qud_object.ui_inheritance_path())
                 self.top_selected = qud_object
-                if qud_object.tile is not None and not qud_object.tile.blacklisted:
+                if qud_object.tile is not None and not qud_object.tile.hasproblems:
                     pil_qt_image = ImageQt.ImageQt(qud_object.tile.get_big_image())
                     self.tile_label.setPixmap(QPixmap.fromImage(pil_qt_image))
                     self.save_tile_button.setDisabled(False)
@@ -355,7 +355,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 item = self.qud_object_model.itemFromIndex(model_index)
                 qud_object = item.data()
                 if not qud_object.is_wiki_eligible():
-                    print(f'{qud_object.name} is disincluded from the wiki by blacklist or type.')
+                    print(f'{qud_object.name} is not wiki eligible.')
                 else:
                     upload_processed = False
                     try:
@@ -395,7 +395,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if qud_object.tile is None:
                 print(f'{qud_object.name} has no tile, so not uploading.')
                 continue
-            if qud_object.tile.blacklisted:
+            if qud_object.tile.hasproblems:
                 print(f'{qud_object.name} had a tile, but bad rendering, so not uploading.')
                 continue
             wiki_tile_file = site.images[qud_object.image]

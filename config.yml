@@ -201,19 +201,19 @@ Wiki:
     GunRack: gun rack (cybernetic)
     Clue_Putrescence: putrescence (clue)
 
-  Article black+whitelist categories:
+  Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
     # wiki operations (can still generate templates for them, just not scan or upload).
     # For things that really shouldn't get wiki articles, like data buckets.
     # Later lines override earlier ones, so to include, for example, only Hindren in the wiki,
-    # you could blacklist Object then whitelist BaseHindren.
+    # you could exclude Object then include BaseHindren.
     # BaseObjects are already restricted from wiki action, since they can't be selected.
     # Objects with no DisplayName or with [ in their DisplayName are already restricted.
     #
-    # Lines starting with * whitelist a category.  (* line needs to be wrapped with "" due to YAML)
-    #   "      "      "   / blacklist a category.
-    #   "      "      "   + whitelist a single object
-    #   "      "      "   - blacklist a single object.
+    # Lines starting with * include a category.  (* line needs to be wrapped with "" due to YAML)
+    #   "      "      "   / exclude a category.
+    #   "      "      "   + include a single object
+    #   "      "      "   - exclude a single object.
     [
       /DataBucket,
       -Starch,

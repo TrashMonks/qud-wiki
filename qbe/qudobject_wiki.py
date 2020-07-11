@@ -91,7 +91,7 @@ class QudObjectWiki(QudObjectProps):
         if self.displayname == '' or '[' in self.displayname:
             return False
         eligible = True  # equal to initial +Object in config.yml
-        for entry in config['Wiki']['Article black+whitelist categories']:
+        for entry in config['Wiki']['Article eligibility categories']:
             if entry.startswith('*') and self.inherits_from(entry[1:]):
                 eligible = True
             elif entry.startswith('/') and self.inherits_from(entry[1:]):
