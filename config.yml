@@ -279,7 +279,7 @@ Wiki:
       +Pitcher,
       +Ewer,
       +Jug,
-      +Long Jug,
+      *Long Jug,
       -RandomFactionDeed,
       /BaseCookbook,
       /RandomBook,
@@ -558,6 +558,7 @@ Wiki:
       +Sarcophagus,
       +SultanSarcophagusE,
       /Reliquary,
+      +Reliquary,
       +SultanReliquaryE,
       +Scrapable Deposit Box 6,
       +ReshephsCrypt,
@@ -578,7 +579,15 @@ Wiki:
       -Ornate Potted Plant 3,
       -Conservator Special,
       -Crypt Sitter Special,
-
+      -BlueCampfire,
+      /CryptPlaqueTutor,
+      +Life Gate E,
+      -Holographic Shimscale Mangrove Tree,
+      -Holographic Dicalyptus Tree,
+      -Holographic Banana Tree,
+      -Holographic Dogthorn Tree,
+      -Holographic Swarmshade Tree,
+      -Holographic Tanglewood Tree,
       /Widget
     ]
 
