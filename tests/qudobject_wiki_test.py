@@ -2,7 +2,7 @@
 
 The qindex fixture is supplied by tests/conftest.py."""
 
-from qudobject_wiki import escape_ampersands
+from qbe.qudobject_wiki import escape_ampersands
 
 
 def test_escape_ampersands():

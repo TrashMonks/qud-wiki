@@ -7,7 +7,7 @@ import pytest
 from hagadias.gameroot import GameRoot
 from hagadias.qudobject import QudObject
 
-from qudobject_wiki import QudObjectWiki
+from qbe.qudobject_wiki import QudObjectWiki
 
 try:
     with open('game_location_for_tests') as f:

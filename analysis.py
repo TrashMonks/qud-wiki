@@ -9,6 +9,7 @@ from hagadias import qudtile, gameroot
 import mwclient
 
 from qbe.qudobject_wiki import QudObjectWiki
+from qbe import wiki_page
 
 
 def get_bad_tiles():
@@ -50,7 +51,7 @@ def print_wikified_nonwiki():
     for name, qud_object in qindex.items():
         if not qud_object.is_wiki_eligible():
             try:
-                page = wikipage.WikiPage(qud_object, '(version)')
+                page = wiki_page.WikiPage(qud_object, '(version)')
                 if page.page.exists:
                     print(name, page.page.exists, page.page)
             except mwclient.errors.InvalidPageTitle:
@@ -112,7 +113,6 @@ def print_new_tree(root, qindex, old_qindex):
 #     Check for unique descriptions that do not have wiki coverage.
 #     Check for wiki eligible objects with identical descriptions.
 #     """
-
 
 
 new_gameroot = gameroot.GameRoot(r'C:\Steam\steamapps\common\Caves of Qud')
