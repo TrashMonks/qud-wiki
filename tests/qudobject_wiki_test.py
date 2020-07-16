@@ -95,8 +95,8 @@ def test_extra(qindex):
     assert obj.extra == '{{Extra info|empsensitive = yes | metal = yes | savemodifier =' \
                         ' Move,Knockdown,Knockback,Restraint,Drag | savemodifieramt = 4}}'
     obj = qindex['Solar Condenser']
-    assert obj.extra == '{{Extra info|empsensitive = yes | metal = yes | solid = yes |' \
-                        ' flyover = no}}'
+    assert obj.extra == '{{Extra info|empsensitive = yes | metal = yes | flyover = no |' \
+                        ' isoccluding = yes}}'
 
 
 def test_gasemitted(qindex):
