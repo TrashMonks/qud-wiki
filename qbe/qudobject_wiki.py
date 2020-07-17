@@ -4,6 +4,8 @@ from typing import Union
 from qbe.config import config
 from hagadias.qudobject_props import QudObjectProps
 
+from qbe.helpers import displayname_to_wiki
+
 IMAGE_OVERRIDES = config['Templates']['Image overrides']
 
 
@@ -311,6 +313,7 @@ class QudObjectWiki(QudObjectProps):
         """The display name of the item, with ampersands escaped."""
         title = super().title
         if title is not None:
+            title = displayname_to_wiki(title)
             return escape_ampersands(title)
 
     @property
