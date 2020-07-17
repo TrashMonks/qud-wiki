@@ -38,7 +38,7 @@ Templates:
     # Fields for the extra info template
     [empsensitive, twohanded, metal, lightprojectile, reflect, movespeedbonus, cursed, destroyonunequip,
      savemodifier, savemodifieramt, shotcooldown, penetratingammo, omniphaseprojectile,
-     spectacles, carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic, uniquechara, pettable, liquidburst, flametemperature, bleedliquid, hidden, energycellrequired, temponenter, isoccluding, waterritualable, iscurrency]
+     spectacles, carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic, uniquechara, pettable, liquidburst, flametemperature, bleedliquid, hidden, energycellrequired, temponenter, isoccluding, waterritualable, iscurrency, noprone]
   Image overrides:
     # Manually specify the image name to be used for an object ID:
     TreeSkillsoft: skillsoft_tree.png
