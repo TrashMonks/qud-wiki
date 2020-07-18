@@ -307,8 +307,8 @@ class QudObjectWiki(QudObjectProps):
         """The faction rep bonuses granted by this object."""
         reps = super().reputationbonus
         if reps is not None:
-            return ' </br>'.join(f'{{{{reputation bonus|{{{{FactionID to name|'
-                                 f'{faction}}}}}|{value}}}}}' for faction, value in reps)
+            return ''.join(f'{{{{reputation bonus|{{{{FactionID to name|'
+                           f'{faction}}}}}|{value}}}}}' for faction, value in reps)
 
     @property
     def skills(self) -> Union[str, None]:
