@@ -46,7 +46,7 @@
         "hagadias": {
             "editable": true,
             "git": "https://github.com/syntaxaire/hagadias.git",
-            "ref": "360d503a8f5f5ceaef76b4f60adc06b0b85c4312"
+            "ref": "8bc3535c76a7325ff7cfe61c67d5db8dffb38349"
         },
         "idna": {
             "hashes": [
