@@ -13,7 +13,7 @@ import anytree
 from hagadias import qudtile
 import mwclient
 
-from qbe.qudobject_wiki import QudObjectWiki
+from qbe.qudobject_wiki import QudObjectWiki, escape_ampersands
 from qbe import wiki_page
 
 
@@ -119,15 +119,44 @@ def print_new_tree(root, qindex, old_qindex):
 #     Check for wiki eligible objects with identical descriptions.
 #     """
 
+def diff_stable_beta():
+    """Load an old and new instance of the game and call
+    print_new_tree on their object trees."""
+    new_gameroot = gameroot.GameRoot(r'C:\Steam\steamapps\common\Caves of Qud')
+    old_gameroot = gameroot.GameRoot(r'D:\Games\Caves of Qud stable')
 
-new_gameroot = gameroot.GameRoot(r'C:\Steam\steamapps\common\Caves of Qud')
-old_gameroot = gameroot.GameRoot(r'D:\Games\Caves of Qud stable')
+    gamever = new_gameroot.gamever
+    stable_gamever = old_gameroot.gamever
+    print(f'Comparing {gamever} to {stable_gamever}...')
 
-gamever = new_gameroot.gamever
-stable_gamever = old_gameroot.gamever
-print(f'Comparing {gamever} to {stable_gamever}...')
+    root, qindex = new_gameroot.get_object_tree(QudObjectWiki)
+    old_root, old_qindex = old_gameroot.get_object_tree()
 
-root, qindex = new_gameroot.get_object_tree(QudObjectWiki)
-old_root, old_qindex = old_gameroot.get_object_tree()
+    print_new_tree(root, qindex, old_qindex)
 
-print_new_tree(root, qindex, old_qindex)
+
+def find_changed_descriptions():
+    """Load an old and new instance of the game and report old
+    descriptions that have more lines than new ones.
+    For finding effect text that has been moved to parts."""
+    new_gameroot = gameroot.GameRoot(r'C:\Steam\steamapps\common\Caves of Qud')
+    old_gameroot = gameroot.GameRoot(r'D:\Games\Caves of Qud stable')
+
+    gamever = new_gameroot.gamever
+    stable_gamever = old_gameroot.gamever
+    print(f'Comparing {gamever} to {stable_gamever}...')
+    root, qindex = new_gameroot.get_object_tree(QudObjectWiki)
+    old_root, old_qindex = old_gameroot.get_object_tree()
+    names_in_both = [name for name in qindex if name in old_qindex]
+    for name in names_in_both:
+        old_desc = old_qindex[name].desc
+        desc = qindex[name].desc
+        if old_desc is not None and desc is not None and old_desc.count('\n') > desc.count('\n'):
+            old_desc = escape_ampersands(old_desc)
+            desc = escape_ampersands(desc)
+            print(f"""{{{{Qud look|title={name}|text={old_desc}}}}}""")
+            print(f"""{{{{Qud look|title={name}|text={desc}}}}}""")
+            print('<br><br>')
+
+
+find_changed_descriptions()
