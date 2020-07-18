@@ -156,7 +156,7 @@ class QudObjectWiki(QudObjectProps):
         """The short description of the object, with color codes included (ampersands escaped)."""
         desc = super().desc
         if desc is not None:
-            return escape_ampersands(desc)
+            return displayname_to_wiki(escape_ampersands(desc))
 
     @property
     def dynamictable(self) -> Union[str, None]:
@@ -164,6 +164,11 @@ class QudObjectWiki(QudObjectProps):
         tables = super().dynamictable
         if tables is not None:
             return ' </br>'.join(f'{{{{Dynamic object|{table}|{self.name}}}}}' for table in tables)
+
+    @property
+    def eatdesc(self) -> Union[str, None]:
+        """The text when you eat this item."""
+        return displayname_to_wiki(super().eatdesc)
 
     @property
     def extra(self) -> Union[str, None]:
