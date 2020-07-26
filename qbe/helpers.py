@@ -18,10 +18,11 @@ def displayname_to_wiki(phrase: str):
         elif ' ' in shader:
             # shader has arguments
             colors, _type = shader.split(' ')
-            template = f'{{{{Qud shader|text={{{text}|colors={colors}|type={_type}}}}}'
+            template = f'{{{{Qud shader|text={{{{(}}}}{text}{{{{)}}}}|colors={colors}|\
+                         type={_type}}}}}'  # text surrounded in {} to preserve whitespace
             output.append(template)
         else:
             # plain shader
-            template = f'{{{{Qud shader|{shader}|{{{text}}}}}'
+            template = f'{{{{Qud shader|{shader}|{{{{(}}}}{text}{{{{)}}}}}}}}'
             output.append(template)
     return ''.join(output)
