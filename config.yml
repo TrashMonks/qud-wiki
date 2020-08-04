@@ -13,8 +13,7 @@ Interface:
   # Interface options
   Initial expansion targets:
     # These object category IDs will be expanded when the tree is initialized:
-    [MeleeWeapon, MissileWeapon, Armor, Shield, Tool, Tonic, Trinket,
-     Energy Cell, Barathrumite, SapientMutatedFlower]
+    [Item, Creature]
 
 Templates:
   # Options controlling the generation of wiki infobox templates
@@ -75,6 +74,9 @@ Templates:
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
+  Article Namespaces:
+    Main: [Object]
+    Data: [NaturalWeapon, NaturalMissileWeapon]
   Article overrides:
     # Manually specify the article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
@@ -202,6 +204,8 @@ Wiki:
     Gun Rack: gun rack (furniture)
     GunRack: gun rack (cybernetic)
     Clue_Putrescence: putrescence (clue)
+    GhostPerch_Bite: bite (ghost perch)
+    CryptFerret_Bite: vicious bite (crypt ferret)
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for

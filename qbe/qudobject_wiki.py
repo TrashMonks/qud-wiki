@@ -84,6 +84,14 @@ class QudObjectWiki(QudObjectProps):
                     cat = config_cat
         return cat
 
+    def wiki_namespace(self) -> str:
+        ns = None
+        for config_ns, names in config['Wiki']['Article Namespaces'].items():
+            for name in names:
+                if self.inherits_from(name):
+                    ns = config_ns
+        return ns
+
     def is_wiki_eligible(self) -> bool:
         """Return whether this object should be included in the wiki."""
         if self.name == 'Argyve\'s Data Disk Encoded':

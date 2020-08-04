@@ -29,6 +29,7 @@ class WikiPage:
             qud_object: the QudObject to represent
             gamever: a string giving the patch version of CoQ
             """
+        self.namespace = qud_object.wiki_namespace()
         self.CREATED_SUMMARY = f'Created by {wiki_config["operator"]}' \
                                f' with game version {gamever}' \
                                f' using {config["Wikified name"]} {config["Version"]}'
@@ -50,11 +51,13 @@ class WikiPage:
             self.article_name = article_name[0].upper() + article_name[1:]
         else:
             self.article_name = article_name
+        if self.namespace is not None and self.namespace != 'Main':
+            self.article_name = f'{self.namespace}:{self.article_name}'
         self.template_text = qud_object.wiki_template(gamever)
         try:
-            self.page = site.pages[article_name]
+            self.page = site.pages[self.article_name]
         except InvalidPageTitle:
-            print(f'Invalid page title: {article_name}')
+            print(f'Invalid page title: {self.article_name}')
             raise
 
     def upload_template(self):
