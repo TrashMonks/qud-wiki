@@ -223,7 +223,7 @@ class QudObjectWiki(QudObjectProps):
         """What an item produces when harvested."""
         obj = super().harvestedinto
         if obj is not None:
-            return f'{{{{ID to name|{obj}}}}}'
+            return f'{{{{ID to page|{obj}}}}}'
 
     @property
     def image(self) -> Union[str, None]:
