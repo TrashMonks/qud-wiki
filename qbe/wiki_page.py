@@ -79,10 +79,11 @@ class WikiPage:
                 end = match.end(2)
             pre_template_text = self.page.text()[:start] + self.intro_string
             post_template_text = self.final_string + self.page.text()[end:]
-            new_text = pre_template_text + self.template_text + post_template_text
+            new_text = f"{pre_template_text}{self.template_text}{post_template_text}"
             result = self.page.save(text=new_text, summary=self.EDITED_SUMMARY)
         else:
             # simple case: creating an article
-            result = self.page.save(text=self.template_text, summary=self.CREATED_SUMMARY)
+            new_text = f"{self.intro_string}{self.template_text}{self.final_string}"
+            result = self.page.save(text=new_text, summary=self.CREATED_SUMMARY)
         print(result)
         return result['result']
