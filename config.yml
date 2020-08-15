@@ -76,7 +76,7 @@ Wiki:
   # See also wiki login configuration in wiki.yml.
   Article Namespaces:
     Main: [Object]
-    Data: [NaturalWeapon, NaturalMissileWeapon]
+    Data: [NaturalWeapon, NaturalMissileWeapon, Burrowing Claws, Horns, Icy Vapor]
   Article overrides:
     # Manually specify the article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
@@ -160,6 +160,7 @@ Wiki:
     Saltwurm_Crush: crushing bands (salt kraken)
     WaveformWorm_Crush: crushing bands (waveform worm)
     SeedsproutWorm_Crush: crushing bands (seedsprout worm)
+    BoneWorm_Crush: crushing bands (bone worm)
     Slog Bands: crushing bands (Slog)
     Scorpiock_Claws: claws (scorpiock)
     Scorpiock_Bite: bite (scorpiock)
