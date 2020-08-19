@@ -150,7 +150,7 @@ class QudObjectWiki(QudObjectProps):
         """The possible cooking effects of an item."""
         effect = super().cookeffect
         if effect is not None:
-            return ','.join(f'{{{{CookEffect ID to name|{val}}}}}' for val in effect)
+            return ','.join(f'{val}' for val in effect)
 
     @property
     def corpse(self) -> Union[str, None]:
