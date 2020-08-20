@@ -32,7 +32,7 @@ Search it up on the app store of your choosing and install the program.
 
 2. Clone the Git repository. 
     * Open GitHub for Desktop, and select "Clone a repository from the Internet..."
-    * Click the tab labeled "URL" and then, in the box that says "URL or username/repository" paste THIS --> https://github.com/syntaxaire/qud-wiki <--
+    * Click the tab labeled "URL" and then, in the box that says "URL or username/repository" paste THIS --> https://github.com/TrashMonks/qud-wiki <--
     * In the second, lower box it should now say where the repository is being put. Take note of this, as it will make things easier. Write it down, ideally somewhere you can copy and paste. This is called the "File Location" or project directory.
     * Click the blue button labeled "Clone".
 

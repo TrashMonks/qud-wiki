@@ -12,7 +12,7 @@ flake8 = "*"
 pyyaml = "*"
 pyside2 = "*"
 mwclient = "*"
-hagadias = {editable = true,git = "https://github.com/syntaxaire/hagadias.git",ref = "master"}
+hagadias = {editable = true,git = "https://github.com/TrashMonks/hagadias.git",ref = "master"}
 
 [requires]
 python_version = "3.7"
