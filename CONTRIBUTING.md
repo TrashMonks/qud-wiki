@@ -11,7 +11,7 @@ Pull requests are welcome. Please run `flake8` and `pytest` to ensure that your 
 ## Short form setup for Python programmers
 If you're not a Python programmer, skip this section and read "Setup walkthrough", below.
 * Clone the git repository
-* Download [CavesofQudTileModdingToolkit.zip](https://www.dropbox.com/s/g8coebnzoqfema9/CavesofQudTileModdingToolkit.zip?dl=0) and extract it into the project directory. This provides tile images. 
+* Download [CavesofQudTileModdingToolkit.zip](https://www.dropbox.com/s/g8coebnzoqfema9/CavesofQudTileModdingToolkit.zip?dl=0) and extract it into the project directory so that the `Textures` directory is directly within the project directory. This provides tile images. 
 * Install Python 3.7 from [Python.org](https://python.org/) and select the installer option to add it to your PATH.
 * In your terminal, `cd` to your copy of the repository and run these commands:
 ```
