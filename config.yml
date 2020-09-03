@@ -328,7 +328,7 @@ Wiki:
       -MushroomFlesh2,
       /GlassWall,
       +GlassWall,
-      -Walltrap,
+      +Walltrap,
       /CryochamberWall,
       +CryochamberWall,
       -CryochamberWallBroken,
@@ -709,6 +709,8 @@ Wiki:
     Cybernetics: [BaseCybernetics2Equipment_1point, BaseCybernetics2Equipment_2point, BaseCybernetics2Equipment_3point, BaseCybernetics2Equipment_4point]
     Merchants: [BaseMerchant]
     Turret Tinkers: [Turret Tinker]
+    Cherubim: [Antelopes Cherub, Apes Cherub, Arachnids Cherub, Baboons Cherub, Baetyls Cherub, Bears Cherub, Birds Cherub, Cats Cherub, Crabs Cherub, Dogs Cherub, Equines Cherub, Fish Cherub, Flowers Cherub, Frogs Cherub, Fungi Cherub, Hermits Cherub, Insects Cherub, Mollusks Cherub, Newly Sentient Beings Cherub, Oozes Cherub, Prey Cherub, Reptiles Cherub, Robots Cherub, Roots Cherub, Strangers Cherub, Succulents Cherub, Swine Cherub, Tortoises Cherub, Trees Cherub, Urchins Cherub, Vines Cherub, Winged Mammals Cherub, Worms Cherub]
+    Mechanical Cherubim: [Mechanical Antelopes Cherub, Mechanical Apes Cherub, Mechanical Arachnids Cherub, Mechanical Baboons Cherub, Mechanical Baetyls Cherub, Mechanical Bears Cherub, Mechanical Birds Cherub, Mechanical Cannibals Cherub, Mechanical Cats Cherub, Mechanical Crabs Cherub, Mechanical Dogs Cherub, Mechanical Equines Cherub, Mechanical Fish Cherub, Mechanical Flowers Cherub, Mechanical Frogs Cherub, Mechanical Fungi Cherub, Mechanical Hermits Cherub, Mechanical Insects Cherub, Mechanical Mollusks Cherub, Mechanical Newly Sentient Beings Cherub, Mechanical Oozes Cherub, Mechanical Prey Cherub, Mechanical Reptiles Cherub, Mechanical Robots Cherub, Mechanical Roots Cherub, Mechanical Strangers Cherub, Mechanical Succulents Cherub, Mechanical Swine Cherub, Mechanical Tortoises Cherub, Mechanical Trees Cherub, Mechanical Urchins Cherub, Mechanical Vines Cherub, Mechanical Winged Mammals Cherub, Mechanical Worms Cherub]
     Unique Characters: [Phinae Hoshaiah, Argyve, ElderBob, Mehmet, Warden Ualraig,
                  Warden Esthers, Eskhind, Meyehind, Liihart, Isahind, Neelahind, Keh, Kesehind,
                  Angohind, Lulihart, AgateSeveranceStar, Mayor Nuntu, Oboroqoru, Asphodel, Yurl,
