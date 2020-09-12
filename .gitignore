@@ -106,9 +106,8 @@ venv.bak/
 
 # Project-specific ignores
 .idea/
-Textures/
 wiki.yml
-CavesofQudTileModdingToolkit.zip
+caves-of-qud-tiles-200.71.zip
 last_xml_location
 screenshot-old.png
 game_location_for_tests

@@ -47,7 +47,7 @@
         "hagadias": {
             "editable": true,
             "git": "https://github.com/TrashMonks/hagadias.git",
-            "ref": "da5cd5334f39ddcd7ce940929af0f6a56d83c565"
+            "ref": "4ce4aa70429d93359cc48cd68fc7517335235cbc"
         },
         "idna": {
             "hashes": [
