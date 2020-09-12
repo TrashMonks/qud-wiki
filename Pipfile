@@ -15,7 +15,7 @@ mwclient = "*"
 hagadias = {editable = true,git = "https://github.com/TrashMonks/hagadias.git",ref = "master"}
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
 
 [scripts]
 designer = "C:/Users/Jeff/.virtualenvs/qud-wiki-CxkOCm1p/Lib/site-packages/PySide2/designer.exe"
