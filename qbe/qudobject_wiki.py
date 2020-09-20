@@ -231,7 +231,7 @@ class QudObjectWiki(QudObjectProps):
         if self.name in IMAGE_OVERRIDES:
             return IMAGE_OVERRIDES[self.name]
         else:
-            if self.part_Render_Tile is None:
+            if self.part_Render_Tile is None and self.part_RandomTile is None:
                 name = 'none'
             else:
                 name = self.displayname
