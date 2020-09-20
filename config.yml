@@ -462,7 +462,6 @@ Wiki:
       -Porphyryptus,
       -either,
       -or,
-      -Ebenshabat,
       -Farm Leech,
       -TestDummy,
       -ProsperousHindrenTrader,
@@ -674,6 +673,7 @@ Wiki:
     Furniture: [Furniture]
     Walls: [Wall]
     Wall Traps: [Walltrap]
+    Gemstone Walls: [AgateWall, TopazWall, JasperWall, AmethystWall, SapphireWall, EmeraldWall, PeridotWall]
     Statues: [Statue]
     Plants: [Plant]
     Creatures: [Creature]
