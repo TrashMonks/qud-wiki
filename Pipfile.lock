@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7e1ad4f8bfad32073a38b63a00ca3b3f89e8aabfdfec3e27babca91475090ade"
+            "sha256": "f4340c16147387d6e70230b342fab7fad479741a98d1e5dd6a5c816c6591ef75"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -47,7 +47,7 @@
         "hagadias": {
             "editable": true,
             "git": "https://github.com/TrashMonks/hagadias.git",
-            "ref": "4ce4aa70429d93359cc48cd68fc7517335235cbc"
+            "ref": "89d766fbb914adb096e7cf5561840afff3035bfd"
         },
         "idna": {
             "hashes": [
