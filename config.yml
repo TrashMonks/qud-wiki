@@ -76,7 +76,7 @@ Wiki:
   # See also wiki login configuration in wiki.yml.
   Article Namespaces:
     Main: [Object]
-    Data: [NaturalWeapon, NaturalMissileWeapon, Burrowing Claws, Horns, Icy Vapor]
+    Data: [NaturalWeapon, NaturalMissileWeapon, Burrowing Claws Claw, Horns, Icy Vapor, Ghostly Flames]
   Article overrides:
     # Manually specify the article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
@@ -262,7 +262,6 @@ Wiki:
       /Quills,
       -Wings,
       -Stinger,
-      -Ghostly Flames,
       -Horticulturalist Bio-Scanning Bracelet,
       -Child of the Deep Structural Scanning Bracelet,
       -Bite,
@@ -619,7 +618,7 @@ Wiki:
     Axes: [BaseAxe]
     Long Blades: [BaseLongBlade, SalthopperMandible, Gaslight Sword]
     Whips: [Leather Whip]
-    Mutated Natural Weapons: [Burrowing Claws, Horns, Icy Vapor]
+    Mutated Natural Weapons: [Burrowing Claws Claw, Horns, Icy Vapor, Ghostly Flames]
     Missile Weapons: [MissileWeapon]
     Natural Weapons: [NaturalWeapon, NaturalMissileWeapon]
     Firearms: [BaseFirearm]
