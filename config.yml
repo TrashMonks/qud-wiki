@@ -76,7 +76,7 @@ Wiki:
   # See also wiki login configuration in wiki.yml.
   Article Namespaces:
     Main: [Object]
-    Data: [NaturalWeapon, NaturalMissileWeapon, Horns, Icy Vapor, Ghostly Flames]
+    Data: [NaturalWeapon, NaturalMissileWeapon, Horns, Icy Vapor, Ghostly Flames, Quills, Carapace]
   Article overrides:
     # Manually specify the article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
@@ -259,8 +259,8 @@ Wiki:
       -TestSword,
       -CritPistol,
       -CacheFlamethrower,
-      -Carapace,
-      /Quills,
+      -Quills+2,
+      -Quills+3,
       -Wings,
       -Stinger,
       -Burrowing Claws,  # this is the old burrowing claws object
@@ -620,9 +620,9 @@ Wiki:
     Axes: [BaseAxe]
     Long Blades: [BaseLongBlade, SalthopperMandible, Gaslight Sword]
     Whips: [Leather Whip]
-    Mutated Natural Weapons: [Burrowing Claws Claw, Horns, Icy Vapor, Ghostly Flames]
     Missile Weapons: [MissileWeapon]
     Natural Weapons: [NaturalWeapon, NaturalMissileWeapon]
+    Mutated Natural Weapons: [Burrowing Claws Claw, Horns, Icy Vapor, Ghostly Flames]
     Firearms: [BaseFirearm]
     Rifles: [BaseRifle]
     Heavy Weapons: [BaseHeavyWeapon]
@@ -638,6 +638,7 @@ Wiki:
               Spectacles, Goggles, Mirrorshades]
     Armlets: [BaseArmlet]
     Armor: [BaseArmor, Ash-Stained Robes]
+    Mutated Natural Armor: [Carapace, Quills]
     Shields: [BaseShield]
     Bucklers: [Wooden Buckler, Iron Buckler, Steel Buckler, Stopsvaalinn]
     Footwear: [BaseBoot, Jeweled Sandals]
