@@ -207,6 +207,7 @@ Wiki:
     Clue_Putrescence: putrescence (clue)
     GhostPerch_Bite: bite (ghost perch)
     CryptFerret_Bite: vicious bite (crypt ferret)
+    Burrowing Claws Claw: claw (Burrowing Claws)
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -262,6 +263,7 @@ Wiki:
       /Quills,
       -Wings,
       -Stinger,
+      -Burrowing Claws,  # this is the old burrowing claws object
       -Horticulturalist Bio-Scanning Bracelet,
       -Child of the Deep Structural Scanning Bracelet,
       -Bite,
