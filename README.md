@@ -5,12 +5,8 @@ This project reads game data in the raw format used by the [Caves of Qud](http:/
 
 ![screenshot](https://raw.githubusercontent.com/trashmonks/qud-wiki/master/screenshot.png)
 
-**How do I run this**?  
-Check first in the "Releases" tab on GitHub for a recent Windows executable.  
-If you want the latest features from source, read on.
+**How do I run this**? 
+Check the detailed instructions in `CONTRIBUTING.md`.
 
 ## Tile support
 Tile support requires a download of [caves-of-qud-tiles-200.71.zip](https://www.dropbox.com/s/3hub59uoiamz0vq/caves-of-qud-tiles-200.71.zip?dl=1). This does not need to be extracted, just present in the project directory.
-
-## Contributing
-See the detailed instructions in `CONTRIBUTING.md`.

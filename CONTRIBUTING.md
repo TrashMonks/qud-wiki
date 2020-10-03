@@ -12,7 +12,7 @@ Pull requests are welcome. Please run `flake8` and `pytest` to ensure that your 
 If you're not a Python programmer, skip this section and read "Setup walkthrough", below.
 * Clone the git repository
 * Download [CavesofQudTileModdingToolkit.zip](https://www.dropbox.com/s/g8coebnzoqfema9/CavesofQudTileModdingToolkit.zip?dl=0) and extract it into the project directory so that the `Textures` directory is directly within the project directory. This provides tile images. 
-* Install Python 3.7 from [Python.org](https://python.org/) and select the installer option to add it to your PATH.
+* Install Python 3.8 from [Python.org](https://python.org/) and select the installer option to add it to your PATH.
 * In your terminal, `cd` to your copy of the repository and run these commands:
 ```
 pip install pipenv
@@ -36,7 +36,7 @@ Search it up on the app store of your choosing and install the program.
     * In the second, lower box it should now say where the repository is being put. Take note of this, as it will make things easier. Write it down, ideally somewhere you can copy and paste. This is called the "File Location" or project directory.
     * Click the blue button labeled "Clone".
 
-3. Install Python 3.7, if you have not already.
+3. Install Python 3.8, if you have not already.
 * Go to Python.org and click on the "Downloads" section, then click on the operating system you are using.
     * If you are on Mac, download the most recent Mac OS 64-bit installer. If you are on Windows, download the most recent version of Python, choosing a "Windows x86-64 executable" installer.
     * Find Python in your downloads, and install it. MAKE SURE TO CHECK THE BOX TO ADD IT TO YOUR PATH! THIS IS VERY IMPORTANT.
