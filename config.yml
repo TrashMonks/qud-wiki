@@ -76,7 +76,7 @@ Wiki:
   # See also wiki login configuration in wiki.yml.
   Article Namespaces:
     Main: [Object]
-    Data: [NaturalWeapon, NaturalMissileWeapon, Burrowing Claws Claw, Horns, Icy Vapor, Ghostly Flames]
+    Data: [NaturalWeapon, NaturalMissileWeapon, Horns, Icy Vapor, Ghostly Flames]
   Article overrides:
     # Manually specify the article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
