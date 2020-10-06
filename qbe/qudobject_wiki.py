@@ -230,14 +230,13 @@ class QudObjectWiki(QudObjectProps):
         """The image filename. May be specified in our config."""
         if self.name in IMAGE_OVERRIDES:
             return IMAGE_OVERRIDES[self.name]
-        else:
-            if self.part_Render_Tile is None and self.part_RandomTile is None:
-                name = 'none'
-            else:
-                name = self.displayname
-                name = re.sub(r"[^a-zA-Z\d ]", '', name)
-                name = name.casefold() + '.png'
+        elif self.has_tile():
+            name = self.displayname
+            name = re.sub(r"[^a-zA-Z\d ]", '', name)
+            name = name.casefold() + '.png'
             return name
+        else:
+            return 'none'
 
     @property
     def inventory(self) -> Union[str, None]:
