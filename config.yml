@@ -24,7 +24,7 @@ Templates:
      elementaltype, lv, hp, av, dv, ma, tohit, weight, commerce, weaponskill, lightradius,
      ammo, ammodamagetypes, gasemitted, temponenter, temponhit, temponhitmax,
      accuracy, shots, maxammo, maxvol, liquidgen, liquidtype, seeping,
-     maxcharge, chargeperdram, dramsperuse, chargeused, chargefunction,
+     maxcharge, chargeperdram, dramsperuse, chargeused, chargefunction, imprintchargecost,
      id, complexity, tier, bits, canbuild, candisassemble, colorstr, renderstr, bookid,
      hunger, thirst, healing, butcheredinto, harvestedinto, preservedinto, preservedquantity,
      cookeffect, eatdesc, ismeat, isplant, isfungus, exoticfood, illoneat, oneat,
