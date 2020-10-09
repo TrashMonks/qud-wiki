@@ -22,14 +22,18 @@ class QudFilterModel(QSortFilterProxyModel):
         self.filterSelectionIDs = []
         return val1, val2
 
-    def _accept_index(self, idx):
+    def _accept_index(self, idx) -> bool:
         """Perform recursive search on an index.
 
         Causes ancestors of matching objects to be displayed as an inheritance tree, even if the
         ancestors themselves don't match the filter."""
         if idx.isValid():
-            text = idx.data(role=Qt.DisplayRole).lower()
-            found = text.find(self.filterRegExp().pattern().lower()) >= 0  # use QRegExp method?
+            filter_str = self.filterRegExp().pattern().lower()
+            if filter_str.startswith('hasfield:'):
+                found = self._index_hasfield(idx, filter_str.split(':')[1])
+            else:
+                text = idx.data(role=Qt.DisplayRole).lower()
+                found = text.find(self.filterRegExp().pattern().lower()) >= 0  # use QRegExp method?
             if found:
                 item = self.sourceModel().itemFromIndex(idx)
                 if item.isSelectable() and id(item) not in self.filterSelectionIDs:
@@ -39,6 +43,14 @@ class QudFilterModel(QSortFilterProxyModel):
             for childnum in range(idx.model().rowCount(idx)):
                 if self._accept_index(idx.model().index(childnum, 0, idx)):
                     return True
+        return False
+
+    def _index_hasfield(self, idx, field: str) -> bool:
+        """Perform 'hasfield:' search to match only objects with the specified wiki template field"""
+        qud_object = self.sourceModel().itemFromIndex(idx).data()
+        if getattr(qud_object, field) is not None:
+            if qud_object.is_wiki_eligible():
+                return True
         return False
 
     def filterAcceptsRow(self, source_row, source_parent):
