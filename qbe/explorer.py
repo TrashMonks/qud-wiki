@@ -70,6 +70,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionScan_wiki.triggered.connect(self.wiki_check_selected)
         self.actionUpload_templates.triggered.connect(self.upload_selected_templates)
         self.actionUpload_tiles.triggered.connect(self.upload_selected_tiles)
+        # Help menu:
+        self.actionShow_help.triggered.connect(self.show_help)
         # TreeView context menu:
         self.treeView.context_action_expand.triggered.connect(self.expand_all)
         self.treeView.context_action_scan.triggered.connect(self.wiki_check_selected)
@@ -486,6 +488,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     diff_lines += '\n' + line
                 msg_box.setText(f'Unified diff of the QBE template and the currently published'
                                 f' wiki template:\n<pre>{diff_lines}</pre>')
+        msg_box.exec()
+
+    def show_help(self):
+        msg_box = QMessageBox()
+        msg_box.setText('<b>Search shortcuts</b>'
+                        '\n<pre> </pre>'
+                        '\n<pre>hasfield:&lt;fieldname&gt;</pre>'
+                        '\nshows only objects that have a value for the specified wiki field'
+                        '\n<pre> </pre>')
         msg_box.exec()
 
     def setview(self, view: str):
