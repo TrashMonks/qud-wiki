@@ -17,20 +17,6 @@ from qbe.qudobject_wiki import QudObjectWiki, escape_ampersands
 from qbe import wiki_page
 
 
-def get_bad_tiles():
-    """Print a list of tiles using a certain color."""
-    badset = qudtile.bad_detail_color.intersection(qudtile.uses_details)
-    badlist = list(badset)
-    print(f'{"Object ID":35} {"Tile":45} {"TileColor":10} {"DetailColor":10}')
-    for objname in badlist:
-        obj = qindex[objname]
-        name = obj.name
-        filename = obj.tile.filename
-        tilecolor = obj.tile.raw_tilecolor or "(None)"
-        detailcolor = obj.tile.raw_detailcolor or "(None)"
-        print(f'{name:35} {filename:45} {tilecolor:10} {detailcolor:10}')
-
-
 def get_wiki_eligible():
     """Return a list of QudObjects claiming to be wiki-eligible."""
     return [name for name, qud_object in qindex.items() if qud_object.is_wiki_eligible]
@@ -113,12 +99,6 @@ def print_new_tree(root, qindex, old_qindex):
             print(f' {pre}{pre_html}{node.name}{post_html} {include}')
 
 
-# def check_description_coverage(root, qindex):
-#     """
-#     Check for unique descriptions that do not have wiki coverage.
-#     Check for wiki eligible objects with identical descriptions.
-#     """
-
 def diff_stable_beta():
     """Load an old and new instance of the game and call
     print_new_tree on their object trees."""
@@ -159,4 +139,15 @@ def find_changed_descriptions():
             print('<br><br>')
 
 
-find_changed_descriptions()
+def find_empty_detailcolor():
+    """Find objects that have tiles but empty detailcolor.
+    Some objects do this deliberately (e.g. Pools) but physical items should not."""
+    root, qindex = gameroot.GameRoot(r'C:\Steam\steamapps\common\Caves of Qud').get_object_tree()
+    for name, obj in qindex.items():
+        tile = obj.tile  # force tile to render
+        if obj.part_Render_Tile is not None:
+            if obj.part_Render_DetailColor is None and name in qudtile.uses_details and obj.inherits_from('PhysicalObject'):
+                print(name)
+
+
+find_empty_detailcolor()
