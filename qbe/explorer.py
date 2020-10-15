@@ -1,12 +1,13 @@
 """Main file for Qud Blueprint Explorer."""
+import io
 
 import difflib
 import re
 from pprint import pformat
 
 from PIL import Image, ImageQt
-from PySide2.QtCore import QItemSelectionModel, QRegExp, QSize, Qt
-from PySide2.QtGui import QIcon, QPixmap, QStandardItem, QStandardItemModel
+from PySide2.QtCore import QBuffer, QByteArray, QIODevice, QItemSelectionModel, QRegExp, QSize, Qt
+from PySide2.QtGui import QIcon, QMovie, QPixmap, QStandardItem, QStandardItemModel
 from PySide2.QtWidgets import QApplication, QFileDialog, QHeaderView, \
     QMainWindow, QMessageBox
 from hagadias.gameroot import GameRoot
@@ -95,7 +96,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.restore_all_button.clicked.connect(self.expand_default)
         self.save_tile_button.clicked.connect(self.save_selected_tile)
         self.save_tile_button.setDisabled(True)
+        self.swap_tile_button.clicked.connect(self.swap_tile_mode)
+        self.swap_tile_button.setDisabled(True)
         self.currently_selected = []
+        self.gif_mode = False
         self.top_selected = None  # used when multiple items may be selected but we only want one
         self.show()
 
@@ -195,18 +199,45 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     text += '  ' + qud_object.source
                 self.statusbar.showMessage(qud_object.ui_inheritance_path())
                 self.top_selected = qud_object
-                if qud_object.tile is not None and not qud_object.tile.hasproblems:
-                    pil_qt_image = ImageQt.ImageQt(qud_object.tile.get_big_image())
-                    self.tile_label.setPixmap(QPixmap.fromImage(pil_qt_image))
-                    self.save_tile_button.setDisabled(False)
-                else:
-                    self.tile_label.clear()
-                    self.save_tile_button.setDisabled(True)
+                self.gif_mode = False
+                self.update_tile_display()
         if len(indices) == 0:
             self.tile_label.clear()
             self.top_selected = None
             self.save_tile_button.setDisabled(True)
+            self.swap_tile_button.setDisabled(True)
         self.plainTextEdit.setPlainText(text)
+
+    def update_tile_display(self):
+        qud_object = self.top_selected
+        if qud_object is not None:
+            self.tile_label.clear()
+            if qud_object.tile is not None and not qud_object.tile.hasproblems:
+                display_success = False
+                if self.gif_mode:
+                    gif_b = io.BytesIO()
+                    qud_object.gif_image.save(gif_b, format='gif')
+                    byte_arr = QByteArray(gif_b.getvalue())
+                    buffer = QBuffer(byte_arr)
+                    buffer.open(QIODevice.ReadOnly)
+                    # movie = QMovie(buffer, 'GIF')
+                    movie = QMovie()
+                    movie.setFormat(QByteArray('GIF'))
+                    movie.setDevice(buffer)
+                    print('movie valid?: %s' % movie.isValid())
+                    if movie.isValid():
+                        self.tile_label.setMovie(movie)
+                        movie.start()
+                        display_success = True
+                else:
+                    pil_qt_image = ImageQt.ImageQt(qud_object.tile.get_big_image())
+                    self.tile_label.setPixmap(QPixmap.fromImage(pil_qt_image))
+                    display_success = True
+                self.save_tile_button.setDisabled(True if not display_success else False)
+                self.swap_tile_button.setDisabled(True if qud_object.gif_image is None else False)
+            else:
+                self.save_tile_button.setDisabled(True)
+                self.swap_tile_button.setDisabled(True)
 
     def collapse_all(self):
         """Fully collapse all levels of the QudTreeView."""
@@ -449,9 +480,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_selected_tile(self):
         """Save the currently displayed tile as a PNG."""
+        # TODO: Update to save .gif file when applicable
         if self.top_selected.tile is not None:
             filename = QFileDialog.getSaveFileName()[0]
             self.top_selected.tile.get_big_image().save(filename, format='png')
+
+    def swap_tile_mode(self):
+        """Swap between the .png and .gif preview"""
+        self.gif_mode = not self.gif_mode
+        self.update_tile_display()
 
     def show_simple_diff(self):
         """Display a popup showing the diff between our template and the version on the wiki."""
