@@ -20,7 +20,7 @@ Templates:
   Fields:
     # The fields that (if applicable) will be generated for each item, in this order:
     # (title comes first)
-    [title, image, pv, maxpv, vibro, pvpowered, damage, unpowereddamage, elementaldamage,
+    [title, image, gif, pv, maxpv, vibro, pvpowered, damage, unpowereddamage, elementaldamage,
      elementaltype, lv, hp, av, dv, ma, tohit, weight, commerce, weaponskill, lightradius,
      ammo, ammodamagetypes, gasemitted, energycellrequired, iscurrency, ismissile, isthrown,
      accuracy, shots, maxammo, maxvol, liquidgen, liquidtype, seeping,

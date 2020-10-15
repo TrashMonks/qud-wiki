@@ -1,3 +1,4 @@
+import os
 import re
 from typing import Union
 
@@ -217,6 +218,14 @@ class QudObjectWiki(QudObjectProps):
         gas = super().gasemitted
         if gas is not None:
             return f'{{{{ID to name|{gas}}}}}'
+
+    @property
+    def gif(self) -> Union[str, None]:
+        """The gif image filename."""
+        if self.has_gif_tile():
+            path = self.image
+            if path is not None and path != 'none':
+                return os.path.splitext(path)[0] + ' animated.gif'
 
     @property
     def harvestedinto(self) -> Union[str, None]:
