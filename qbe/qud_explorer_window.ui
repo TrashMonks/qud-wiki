@@ -60,6 +60,16 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QPushButton" name="swap_tile_button">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="text">
+             <string>Toggle .png/.gif</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
        </layout>
@@ -213,6 +223,11 @@
    </property>
    <property name="text">
     <string>XML source</string>
+   </property>
+  </action>
+  <action name="actionShow_help">
+   <property name="text">
+    <string>Show help</string>
    </property>
   </action>
  </widget>

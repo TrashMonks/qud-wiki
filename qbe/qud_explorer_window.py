@@ -42,6 +42,9 @@ class Ui_MainWindow(object):
         self.save_tile_button = QtWidgets.QPushButton(self.centralwidget)
         self.save_tile_button.setObjectName("save_tile_button")
         self.verticalLayout_4.addWidget(self.save_tile_button)
+        self.swap_tile_button = QtWidgets.QPushButton(self.centralwidget)
+        self.swap_tile_button.setObjectName("swap_tile_button")
+        self.verticalLayout_4.addWidget(self.swap_tile_button)
         self.horizontalLayout.addLayout(self.verticalLayout_4)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
@@ -131,6 +134,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "Qud Blueprint Explorer", None, -1))
         self.save_tile_button.setText(QtWidgets.QApplication.translate("MainWindow", "Save tile...", None, -1))
+        self.swap_tile_button.setText(QtWidgets.QApplication.translate("MainWindow", "Toggle .png/.gif", None, -1))
         self.search_label.setText(QtWidgets.QApplication.translate("MainWindow", "Search:", None, -1))
         self.expand_all_button.setText(QtWidgets.QApplication.translate("MainWindow", "Expand all", None, -1))
         self.collapse_all_button.setText(QtWidgets.QApplication.translate("MainWindow", "Collapse all", None, -1))
