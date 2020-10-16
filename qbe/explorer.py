@@ -98,8 +98,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.save_tile_button.setDisabled(True)
         self.swap_tile_button.clicked.connect(self.swap_tile_mode)
         self.swap_tile_button.setDisabled(True)
-        self.currently_selected = []
+
+        # GIF rendering attributes
+        self.qbytearray: QByteArray = None
+        self.qbuffer: QBuffer = None
+        self.qmovie: QMovie = None
         self.gif_mode = False
+
+        self.currently_selected = []
         self.top_selected = None  # used when multiple items may be selected but we only want one
         self.show()
 
@@ -210,24 +216,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def update_tile_display(self):
         qud_object = self.top_selected
+        if self.qmovie is not None:
+            self.qmovie.stop()
+        if self.qbuffer is not None:
+            self.qbuffer.close()
         if qud_object is not None:
             self.tile_label.clear()
             if qud_object.tile is not None and not qud_object.tile.hasproblems:
                 display_success = False
                 if self.gif_mode:
                     gif_b = io.BytesIO()
-                    qud_object.gif_image.save(gif_b, format='gif')
-                    byte_arr = QByteArray(gif_b.getvalue())
-                    buffer = QBuffer(byte_arr)
-                    buffer.open(QIODevice.ReadOnly)
-                    # movie = QMovie(buffer, 'GIF')
-                    movie = QMovie()
-                    movie.setFormat(QByteArray('GIF'))
-                    movie.setDevice(buffer)
-                    print('movie valid?: %s' % movie.isValid())
-                    if movie.isValid():
-                        self.tile_label.setMovie(movie)
-                        movie.start()
+                    qud_object.gif_image.save(gif_b, format='gif', save_all=True)
+                    self.qbytearray = QByteArray(gif_b.getvalue())
+                    self.qbuffer = QBuffer(self.qbytearray, self)
+                    self.qbuffer.open(QIODevice.ReadOnly)
+                    self.qmovie = QMovie(self.qbuffer, b'GIF', self)
+                    if self.qmovie.isValid():
+                        self.qmovie.setCacheMode(QMovie.CacheAll)
+                        self.tile_label.setMovie(self.qmovie)
+                        self.qmovie.start()
                         display_success = True
                 else:
                     pil_qt_image = ImageQt.ImageQt(qud_object.tile.get_big_image())
@@ -479,9 +486,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QApplication.restoreOverrideCursor()
 
     def save_selected_tile(self):
-        """Save the currently displayed tile as a PNG."""
-        # TODO: Update to save .gif file when applicable
-        if self.top_selected.tile is not None:
+        """Save the currently displayed tile as a PNG or GIF."""
+        if self.gif_mode:
+            if self.top_selected.gif_image is not None:
+                filename = QFileDialog.getSaveFileName()[0]
+                self.top_selected.gif_image.save(filename, format='gif', save_all=True)
+        elif self.top_selected.tile is not None:
             filename = QFileDialog.getSaveFileName()[0]
             self.top_selected.tile.get_big_image().save(filename, format='png')
 
