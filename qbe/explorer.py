@@ -378,7 +378,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     tile_matches.setText('-')
                 self.app.processEvents()
         # restore cursor and status bar text:
-        self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
+        if self.top_selected is not None:
+            self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
         QApplication.restoreOverrideCursor()
 
     def upload_selected_templates(self):
@@ -415,7 +416,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
                             QApplication.restoreOverrideCursor()
         # restore cursor and status bar text:
-        self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
+        if self.top_selected is not None:
+            self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
         QApplication.restoreOverrideCursor()
 
     def upload_selected_tiles(self):
@@ -483,7 +485,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
                     QApplication.restoreOverrideCursor()
         # restore cursor and status bar text:
-        self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
+        if self.top_selected is not None:
+            self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
         QApplication.restoreOverrideCursor()
 
     def save_selected_tile(self):
