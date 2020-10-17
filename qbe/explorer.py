@@ -1,12 +1,12 @@
 """Main file for Qud Blueprint Explorer."""
-import io
+from typing import Union
 
 import difflib
 import re
 from pprint import pformat
 
 from PIL import Image, ImageQt
-from PySide2.QtCore import QBuffer, QByteArray, QIODevice, QItemSelectionModel, QRegExp, QSize, Qt
+from PySide2.QtCore import QBuffer, QByteArray, QIODevice, QItemSelectionModel, QRegExp, QSize, Qt, QModelIndex
 from PySide2.QtGui import QIcon, QImage, QMovie, QPixmap, QStandardItem, QStandardItemModel
 from PySide2.QtWidgets import QApplication, QFileDialog, QHeaderView, QMainWindow, QMessageBox, QDialog
 from hagadias.gameroot import GameRoot
@@ -22,8 +22,8 @@ from qbe.tree_view import QudTreeView
 from qbe.wiki_config import site, wiki_config
 from qbe.wiki_page import TEMPLATE_RE, WikiPage
 
-HEADER_LABELS = ['Name', 'Display', 'Override', 'Article exists', 'Article matches', 'Image exists',
-                 'Image matches']
+HEADER_LABELS = ['Object Name', 'Display Name', 'Wiki Title Override', 'Article?', 'Article matches?',
+                 'Image?', 'Image matches?', 'Extra images?', 'Extra images match?']
 
 blank_image = Image.new('RGBA', (16, 24), color=(0, 0, 0, 0))
 blank_qtimage = ImageQt.ImageQt(blank_image)
@@ -79,6 +79,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.treeView.context_action_scan.triggered.connect(self.wiki_check_selected)
         self.treeView.context_action_upload_page.triggered.connect(self.upload_selected_templates)
         self.treeView.context_action_upload_tile.triggered.connect(self.upload_selected_tiles)
+        self.treeView.context_action_upload_extra.triggered.connect(self.upload_extra_images)
         self.treeView.context_action_diff.triggered.connect(self.show_simple_diff)
         self.gameroot = None
         while self.gameroot is None:
@@ -107,7 +108,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.gif_mode = False
 
         self.currently_selected = []
-        self.top_selected = None  # used when multiple items may be selected but we only want one
+        self.top_selected: QudObjectWiki = None  # used when multiple items may be selected but we only want one
+        self.top_selected_index: Union[int, None] = None
         self.show()
 
     def open_gameroot(self):
@@ -125,6 +127,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.qud_object_model.setHorizontalHeaderLabels(HEADER_LABELS)
         header = self.treeView.header()
         header.setSectionResizeMode(QHeaderView.ResizeToContents)
+        header.setStretchLastSection(False)
+
         # We only need to add Object to the model, since all other Objects are loaded as children:
         self.qud_object_model.appendRow(self.init_qud_object_children(self.qud_object_root))
         self.expand_default()
@@ -156,16 +160,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         row.append(override_name)
         # fourth column: indicator for whether the wiki article exists (after scanning)
         wiki_article_exists = QStandardItem('')
+        wiki_article_exists.setTextAlignment(Qt.AlignCenter)
         row.append(wiki_article_exists)
         # fifth column: indicator for whether the wiki article matches our generated template
         wiki_article_matches = QStandardItem('')
+        wiki_article_matches.setTextAlignment(Qt.AlignCenter)
         row.append(wiki_article_matches)
         # sixth column: indicator for whether the tile image exists on the wiki (after scanning)
         image_exists = QStandardItem('')
+        image_exists.setTextAlignment(Qt.AlignCenter)
         row.append(image_exists)
         # seventh column: indicator for whether the tile image on the wiki matches generated tile
         image_matches = QStandardItem('')
+        image_matches.setTextAlignment(Qt.AlignCenter)
         row.append(image_matches)
+        # eighth column: indicator for whether the GIF or other additional images exist on the wiki (after scanning)
+        extra_image_exists = QStandardItem('')
+        extra_image_exists.setTextAlignment(Qt.AlignCenter)
+        row.append(extra_image_exists)
+        # eighth column: indicator for whether the GIF or other additional images match what's already on the wiki
+        extra_image_matches = QStandardItem('')
+        extra_image_matches.setTextAlignment(Qt.AlignCenter)
+        row.append(extra_image_matches)
 
         if not qud_object.is_wiki_eligible():
             for _ in row:
@@ -190,7 +206,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.currently_selected = indices
         self.statusbar.clearMessage()
         text = ""
-        for index in indices:
+        for num, index in enumerate(indices):
             model_index = self.qud_object_proxyfilter.mapToSource(index)
             if model_index.column() == 0:
                 item = self.qud_object_model.itemFromIndex(model_index)
@@ -206,11 +222,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     text += '  ' + qud_object.source
                 self.statusbar.showMessage(qud_object.ui_inheritance_path())
                 self.top_selected = qud_object
+                self.top_selected_index = num
                 self.gif_mode = False
                 self.update_tile_display()
         if len(indices) == 0:
             self.tile_label.clear()
             self.top_selected = None
+            self.top_selected_index = None
             self.save_tile_button.setDisabled(True)
             self.swap_tile_button.setDisabled(True)
         self.plainTextEdit.setPlainText(text)
@@ -226,9 +244,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if qud_object.tile is not None and not qud_object.tile.hasproblems:
                 display_success = False
                 if self.gif_mode and qud_object.gif_image is not None:
-                    gif_b = io.BytesIO()
-                    GifHelper.save(qud_object.gif_image, gif_b)
-                    self.qbytearray = QByteArray(gif_b.getvalue())
+                    self.qbytearray = QByteArray(GifHelper.get_bytes(qud_object.gif_image))
                     self.qbuffer = QBuffer(self.qbytearray, self)
                     self.qbuffer.open(QIODevice.ReadOnly)
                     self.qmovie = QMovie(self.qbuffer, b'GIF', self)
@@ -318,8 +334,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.currently_selected is not None:
             return len(self.currently_selected) // len(HEADER_LABELS)
 
+    def get_icon_cell(self, index_in_currently_selected: int) -> QStandardItem:
+        qmodelindex = self.qud_object_proxyfilter.mapToSource(self.currently_selected[index_in_currently_selected])
+        cell = self.qud_object_model.itemFromIndex(qmodelindex)
+        return cell
+
+    def set_icon(self, index_in_currently_selected: int, icon: str = '✅', update_ui: bool = False):
+        cell = self.get_icon_cell(index_in_currently_selected)
+        cell.setText(icon)
+        if update_ui is True:
+            self.app.processEvents()
+
     def wiki_check_selected(self):
-        """Check the wiki for the existence of the article and image for selected objects, and
+        """Check the wiki for the existence of the article and image(s) for selected objects, and
         update the columns for those states."""
         QApplication.setOverrideCursor(Qt.WaitCursor)
         check_total = self.selected_row_count()
@@ -332,16 +359,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.statusbar.showMessage("comparing selected entries against wiki:  " +
                                                str(check_count) + "/" + str(check_total))
                 qitem = self.qud_object_model.itemFromIndex(model_index)
-                wiki_exists = self.qud_object_model.itemFromIndex(
-                    self.qud_object_proxyfilter.mapToSource(self.currently_selected[num + 3]))
-                wiki_matches = self.qud_object_model.itemFromIndex(
-                    self.qud_object_proxyfilter.mapToSource(self.currently_selected[num + 4]))
-                tile_exists = self.qud_object_model.itemFromIndex(
-                    self.qud_object_proxyfilter.mapToSource(self.currently_selected[num + 5]))
-                tile_matches = self.qud_object_model.itemFromIndex(
-                    self.qud_object_proxyfilter.mapToSource(self.currently_selected[num + 6]))
+                wiki_exists = self.get_icon_cell(num + 3)
+                wiki_matches = self.get_icon_cell(num + 4)
+                tile_exists = self.get_icon_cell(num + 5)
+                tile_matches = self.get_icon_cell(num + 6)
+                extra_imgs_exist = self.get_icon_cell(num + 7)
+                extra_imgs_match = self.get_icon_cell(num + 8)
                 # first, blank the cells
-                for _ in wiki_exists, wiki_matches, tile_exists, tile_matches:
+                for _ in wiki_exists, wiki_matches, tile_exists, tile_matches, extra_imgs_exist, extra_imgs_match:
                     _.setText('')
                 # now, do the actual checking and update the cells with 'yes' or 'no'
                 qud_object = qitem.data()
@@ -351,6 +376,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     wiki_matches.setText('-')
                     tile_exists.setText('-')
                     tile_matches.setText('-')
+                    extra_imgs_exist.setText('-')
+                    extra_imgs_match.setText('-')
                     continue
                 article = WikiPage(qud_object, self.gameroot.gamever)
                 if article.page.exists:
@@ -376,6 +403,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 else:
                     tile_exists.setText('❌')
                     tile_matches.setText('-')
+                # Now check whether GIF or other images exist:
+                wiki_gif_file = site.images[qud_object.gif]
+                if wiki_gif_file.exists:
+                    extra_imgs_exist.setText('✅')
+                    # does the GIF match what's already on the wiki?
+                    if wiki_gif_file.download() == GifHelper.get_bytes(qud_object.gif_image):
+                        extra_imgs_match.setText('✅')
+                    else:
+                        extra_imgs_match.setText('❌')
+                else:
+                    extra_imgs_exist.setText('❌')
+                    extra_imgs_match.setText('-')
                 self.app.processEvents()
         # restore cursor and status bar text:
         if self.top_selected is not None:
@@ -383,7 +422,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QApplication.restoreOverrideCursor()
 
     def upload_selected_templates(self):
-        """Upload the generated templates for the selected objects to the wiki."""
+        """Upload the generated templates for all currently selected objects to the wiki."""
+        self.upload_wikidata(self.upload_wiki_template, 'templates')
+
+    def upload_selected_tiles(self):
+        """Upload the generated tiles for all currently selected objects to the wiki."""
+        self.upload_wikidata(self.upload_wiki_tile, 'tiles')
+
+    def upload_extra_images(self):
+        """Upload extra image(s) for all currently selected objects to the wiki."""
+        self.upload_wikidata(self.upload_wiki_extra_images, 'extra images')
+
+    def upload_wikidata(self, object_handler, data_descriptor: str):
+        """Generic wiki data upload template. Iterates through all selected objects in the tree, calling the
+        object_handler() method on each of them. The handler method is responsible for performing the upload.
+        """
         QApplication.setOverrideCursor(Qt.WaitCursor)
         check_total = self.selected_row_count()
         check_count = 0
@@ -392,7 +445,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if model_index.column() == 0:
                 if check_total > 1:
                     check_count += 1
-                    self.statusbar.showMessage("uploading selected templates to wiki:  " +
+                    self.statusbar.showMessage('uploading selected ' + data_descriptor + ' to wiki:  ' +
                                                str(check_count) + "/" + str(check_total))
                 item = self.qud_object_model.itemFromIndex(model_index)
                 qud_object = item.data()
@@ -400,104 +453,164 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     print(f'{qud_object.name} is not wiki eligible.')
                 else:
                     upload_processed = False
-                    try:
-                        page = WikiPage(qud_object, self.gameroot.gamever)
-                        if page.upload_template() == 'Success':
-                            wiki_matches = self.qud_object_proxyfilter.mapToSource(
-                                self.currently_selected[num + 4])
-                            self.qud_object_model.itemFromIndex(wiki_matches).setText('✅')
-                            self.app.processEvents()
-                            upload_processed = True
-                    except ValueError:
-                        print("Not uploading: page exists but format not recognized")
+                    try:  # wrapped in try to ensure we always restore the mouse cursor
+                        object_handler(qud_object, num)
                         upload_processed = True
                     finally:
-                        if not upload_processed:  # unhandled exception during upload
-                            self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
+                        if not upload_processed:
                             QApplication.restoreOverrideCursor()
+                            if self.top_selected is not None:
+                                self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
         # restore cursor and status bar text:
+        QApplication.restoreOverrideCursor()
         if self.top_selected is not None:
             self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
-        QApplication.restoreOverrideCursor()
 
-    def upload_selected_tiles(self):
-        """Upload the generated tiles for the selected objects to the wiki."""
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        check_total = self.selected_row_count()
-        check_count = 0
-        for num, index in enumerate(self.currently_selected):
-            model_index = self.qud_object_proxyfilter.mapToSource(index)
-            if model_index.column() != 0:
-                continue
-            if check_total > 1:
-                check_count += 1
-                self.statusbar.showMessage("uploading selected tiles to wiki:  " +
-                                           str(check_count) + "/" + str(check_total))
-            item = self.qud_object_model.itemFromIndex(model_index)
-            qud_object = item.data()
-            if qud_object.tile is None:
-                print(f'{qud_object.name} has no tile, so not uploading.')
-                continue
-            if qud_object.tile.hasproblems:
-                print(f'{qud_object.name} had a tile, but bad rendering, so not uploading.')
-                continue
-            wiki_tile_file = site.images[qud_object.image]
-            if wiki_tile_file.exists:
-                wiki_tile_b = wiki_tile_file.download()
-                if wiki_tile_b == qud_object.tile.get_big_bytes():
-                    print(f'Image {qud_object.image} already exists and matches our version.')
-                    continue
-                else:
-                    QApplication.restoreOverrideCursor()  # restore mouse cursor for dialog
+    def upload_wiki_template(self, qud_object: QudObjectWiki, selection_index: int):
+        """Uploads a single template to the relevant wiki page.
 
-                    dialog = QDialog()
-                    dialog.ui = Ui_WikiImageUpload()
-                    dialog.ui.setupUi(dialog)
-                    dialog.setAttribute(Qt.WA_DeleteOnClose)
-                    qud_object = self.top_selected
-                    qbe_image = ImageQt.ImageQt(qud_object.tile.get_big_image())
-                    wiki_image = QImage.fromData(QByteArray(wiki_tile_b))
-                    dialog.ui.comparison_tile_1.setPixmap(QPixmap.fromImage(qbe_image))
-                    dialog.ui.comparison_tile_2.setPixmap(QPixmap.fromImage(wiki_image))
-                    result = dialog.exec_()
+        Intended for use as an object_handler provided to the upload_wikidata() method.
+        """
+        wiki_exists_cell_index = selection_index + 3
+        wiki_matches_cell_index = selection_index + 4
+        try:
+            page = WikiPage(qud_object, self.gameroot.gamever)
+            if page.upload_template() == 'Success':
+                self.set_icon(wiki_exists_cell_index, '✅')
+                self.set_icon(wiki_matches_cell_index, '✅')
+                self.app.processEvents()
+        except ValueError:
+            print("Not uploading: page exists but format not recognized")
 
-                    QApplication.setOverrideCursor(Qt.WaitCursor)
-                    if result == QDialog.Rejected:
-                        continue
+    def upload_wiki_tile(self, qud_object: QudObjectWiki, selection_index: int):
+        """Uploads a single image to the relevant wiki page.
 
-            # if we get this far, we are uploading or replacing the wiki file
-            if qud_object.name in config['Templates']['Image overrides']:
-                filename = config['Templates']['Image overrides'][qud_object.name]
+        Intended for use as an object_handler provided to the upload_wikidata() method.
+        """
+        tile_exists_cell_index = selection_index + 5
+        tile_matches_cell_index = selection_index + 6
+        if qud_object.tile is None:
+            print(f'{qud_object.name} has no tile, so not uploading.')
+            self.set_icon(tile_exists_cell_index, '❌', True)
+            return
+        if qud_object.tile.hasproblems:
+            print(f'{qud_object.name} had a tile, but bad rendering, so not uploading.')
+            return
+        wiki_tile_file = site.images[qud_object.image]
+        if wiki_tile_file.exists:
+            self.set_icon(tile_exists_cell_index, '✅', True)
+            wiki_tile_b = wiki_tile_file.download()
+            if wiki_tile_b == qud_object.tile.get_big_bytes():
+                self.set_icon(tile_matches_cell_index, '✅', True)
+                print(f'Image {qud_object.image} already exists and matches our version.')
+                return
             else:
-                filename = qud_object.image
-            descr = f'Rendered by {wiki_config["operator"]} with game version ' \
-                    f'{self.gameroot.gamever} using {config["Wikified name"]} {config["Version"]}'
-            upload_processed = False
-            try:
-                result = site.upload(qud_object.tile.get_big_bytesio(),
-                                     filename=filename,
-                                     description=descr,
-                                     ignore=True,  # upload even if same file exists under diff name
-                                     comment=descr
-                                     )
-                if result.get('result', None) == 'Success':
-                    tile_matches = self.qud_object_proxyfilter.mapToSource(
-                        self.currently_selected[num + 6])
-                    self.qud_object_model.itemFromIndex(tile_matches).setText('✅')
-                    self.app.processEvents()
-                # print(result)
-                upload_processed = True
-            finally:
-                if not upload_processed:  # unhandled exception during upload
-                    self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
-                    QApplication.restoreOverrideCursor()
-        # restore cursor and status bar text:
-        if self.top_selected is not None:
-            self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
-        QApplication.restoreOverrideCursor()
+                self.set_icon(tile_matches_cell_index, '❌', True)
+                QApplication.restoreOverrideCursor()  # temporarily restore mouse cursor for dialog
+
+                dialog = QDialog()
+                dialog.ui = Ui_WikiImageUpload()
+                dialog.ui.setupUi(dialog)
+                dialog.setAttribute(Qt.WA_DeleteOnClose)
+                qud_object = self.top_selected
+                # add images
+                qbe_image = ImageQt.ImageQt(qud_object.tile.get_big_image())
+                wiki_image = QImage.fromData(QByteArray(wiki_tile_b))
+                dialog.ui.comparison_tile_1.setPixmap(QPixmap.fromImage(qbe_image))
+                dialog.ui.comparison_tile_2.setPixmap(QPixmap.fromImage(wiki_image))
+                # show compare dialog
+                result = dialog.exec_()
+
+                QApplication.setOverrideCursor(Qt.WaitCursor)
+                if result == QDialog.Rejected:
+                    return
+
+        # upload or replace the wiki file
+        filename = qud_object.image
+        descr = f'Rendered by {wiki_config["operator"]} with game version ' \
+                f'{self.gameroot.gamever} using {config["Wikified name"]} {config["Version"]}'
+        result = site.upload(qud_object.tile.get_big_bytesio(),
+                             filename=filename,
+                             description=descr,
+                             ignore=True,  # upload even if same file exists under diff name
+                             comment=descr
+                             )
+        if result.get('result', None) == 'Success':
+            self.set_icon(tile_exists_cell_index, '✅')
+            self.set_icon(tile_matches_cell_index, '✅', True)
+
+    def upload_wiki_extra_images(self, qud_object: QudObjectWiki, selection_index: int):
+        """Uploads a single object's extra image(s) to the relevant wiki page.
+
+        Intended for use as an object_handler provided to the upload_wikidata() method.
+
+        Currently, only the GIF animated image is supported, but this could also support other extra image types
+        in the future, such as the ripe/harvested image variants or the RandomTile image variants.
+        """
+        extraimages_exist_cell_index = selection_index + 7
+        extraimages_match_cell_index = selection_index + 8
+        if qud_object.gif_image is None:
+            self.set_icon(extraimages_exist_cell_index, '❌', True)
+            print(f'{qud_object.name} has no animated images, so not uploading.')
+            return
+        wiki_gif_file = site.images[qud_object.gif]
+        if wiki_gif_file.exists:
+            self.set_icon(extraimages_exist_cell_index, '✅', True)
+            wiki_gif_b = wiki_gif_file.download()
+            if wiki_gif_b == GifHelper.get_bytes(qud_object.gif_image):
+                self.set_icon(extraimages_match_cell_index, '✅', True)
+                print(f'Image "{qud_object.gif}" already exists and matches our version.')
+                return
+            else:
+                self.set_icon(extraimages_match_cell_index, '❌', True)
+                QApplication.restoreOverrideCursor()  # temporarily restore mouse cursor for dialog
+
+                dialog = QDialog()
+                dialog.ui = Ui_WikiImageUpload()
+                dialog.ui.setupUi(dialog)
+                dialog.setAttribute(Qt.WA_DeleteOnClose)
+                qud_object = self.top_selected
+                # add QBE GIF
+                qbe_gif_bytearray = QByteArray(GifHelper.get_bytes(qud_object.gif_image))
+                qbe_gif_buffer = QBuffer(qbe_gif_bytearray)
+                qbe_gif_buffer.open(QIODevice.ReadOnly)
+                qbe_gif_player = QMovie(qbe_gif_buffer, b'GIF')
+                if qbe_gif_player.isValid():
+                    qbe_gif_player.setCacheMode(QMovie.CacheAll)
+                    dialog.ui.comparison_tile_1.setMovie(qbe_gif_player)
+                    qbe_gif_player.start()
+                # add wiki GIF
+                wiki_gif_bytearray = QByteArray(wiki_gif_b)
+                wiki_gif_buffer = QBuffer(wiki_gif_bytearray)
+                wiki_gif_buffer.open(QIODevice.ReadOnly)
+                wiki_gif_player = QMovie(wiki_gif_buffer, b'GIF')
+                if wiki_gif_player.isValid():
+                    wiki_gif_player.setCacheMode(QMovie.CacheAll)
+                    dialog.ui.comparison_tile_2.setMovie(wiki_gif_player)
+                    wiki_gif_player.start()
+                # show compare dialog
+                result = dialog.exec_()
+
+                QApplication.setOverrideCursor(Qt.WaitCursor)
+                if result == QDialog.Rejected:
+                    return
+
+        # upload or replace the extra image(s) on the wiki
+        filename = qud_object.gif
+        descr = f'Rendered by {wiki_config["operator"]} with game version ' \
+                f'{self.gameroot.gamever} using {config["Wikified name"]} {config["Version"]}'
+        result = site.upload(GifHelper.get_bytesio(qud_object.gif_image),
+                             filename=filename,
+                             description=descr,
+                             ignore=True,  # upload even if same file exists under diff name
+                             comment=descr
+                             )
+        if result.get('result', None) == 'Success':
+            self.set_icon(extraimages_exist_cell_index, '✅')
+            self.set_icon(extraimages_match_cell_index, '✅', True)
 
     def save_selected_tile(self):
-        """Save the currently displayed tile as a PNG or GIF."""
+        """Save the currently displayed tile as a PNG or GIF to the local filesystem."""
         if self.gif_mode:
             if self.top_selected.gif_image is not None:
                 filename = QFileDialog.getSaveFileName()[0]
@@ -514,14 +627,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def show_simple_diff(self):
         """Display a popup showing the diff between our template and the version on the wiki."""
         qud_object = self.top_selected
-        if not qud_object.is_wiki_eligible():
+        if qud_object is None or not qud_object.is_wiki_eligible():
             return
+        article_exists_index = self.top_selected_index + 3
+        article_matches_index = self.top_selected_index + 4
         article = WikiPage(qud_object, self.gameroot.gamever)
         if not article.page.exists:
+            self.set_icon(article_exists_index, '❌', True)
             return
+        self.set_icon(article_exists_index, '✅')
         txt = qud_object.wiki_template(self.gameroot.gamever).strip()
         wiki_txt = article.page.text().strip()
-        # Import TEMPLATE_RE from wikipage, but doesn't capture things outside the template.
+        # Capture TEMPLATE_RE from wiki page, but ignore things outside the template.
         template_re = '(?:.*?)' + TEMPLATE_RE + '(?:.*)'
         qbe_pattern = re.compile(template_re,
                                  re.MULTILINE | re.DOTALL)
@@ -529,15 +646,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         msg_box.setTextFormat(Qt.RichText)
         if txt in wiki_txt:
             msg_box.setText("No template differences detected.")
+            match_icon = '✅'
         else:
             m = qbe_pattern.match(txt)
             m_wiki = qbe_pattern.match(wiki_txt)
             if m is None:
                 msg_box.setText('Unable to compare because the QBE template'
                                 ' is not formatted as expected.')
+                match_icon = '-'
             elif m_wiki is None:
                 msg_box.setText('Unable to compare because the wiki template'
                                 ' is not formatted as expected.')
+                match_icon = '-'
             else:
                 lines = m.group(1).splitlines()
                 wiki_lines = m_wiki.group(1).splitlines()
@@ -546,15 +666,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     diff_lines += '\n' + line
                 msg_box.setText(f'Unified diff of the QBE template and the currently published'
                                 f' wiki template:\n<pre>{diff_lines}</pre>')
-        msg_box.exec()
-
-    def show_help(self):
-        msg_box = QMessageBox()
-        msg_box.setText('<b>Search shortcuts</b>'
-                        '\n<pre> </pre>'
-                        '\n<pre>hasfield:&lt;fieldname&gt;</pre>'
-                        '\nshows only objects that have a value for the specified wiki field'
-                        '\n<pre> </pre>')
+                match_icon = '❌'
+        self.set_icon(article_matches_index, match_icon, True)
         msg_box.exec()
 
     def setview(self, view: str):
@@ -590,3 +703,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def setview_xmlsource(self):
         """Change the view type to XML source."""
         self.setview('xml_source')
+
+    def show_help(self):
+        """Show help info. Currently just shows info about search macros."""
+        msg_box = QMessageBox()
+        msg_box.setText('<b>Search shortcuts</b>'
+                        '\n<pre> </pre>'
+                        '\n<pre>hasfield:&lt;fieldname&gt;</pre>'
+                        '\nshows only objects that have a value for the specified wiki field'
+                        '\n<pre> </pre>')
+        msg_box.exec()
