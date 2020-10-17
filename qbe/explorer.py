@@ -12,6 +12,7 @@ from PySide2.QtWidgets import QApplication, QFileDialog, QHeaderView, \
     QMainWindow, QMessageBox
 from hagadias.gameroot import GameRoot
 from hagadias.qudobject import QudObject
+from hagadias.tileanimator import GifHelper
 
 from qbe.config import config
 from qbe.qud_explorer_window import Ui_MainWindow
@@ -224,9 +225,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.tile_label.clear()
             if qud_object.tile is not None and not qud_object.tile.hasproblems:
                 display_success = False
-                if self.gif_mode:
+                if self.gif_mode and qud_object.gif_image is not None:
                     gif_b = io.BytesIO()
-                    qud_object.gif_image.save(gif_b, format='gif', save_all=True)
+                    GifHelper.save(qud_object.gif_image, gif_b)
                     self.qbytearray = QByteArray(gif_b.getvalue())
                     self.qbuffer = QBuffer(self.qbytearray, self)
                     self.qbuffer.open(QIODevice.ReadOnly)
@@ -490,7 +491,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.gif_mode:
             if self.top_selected.gif_image is not None:
                 filename = QFileDialog.getSaveFileName()[0]
-                self.top_selected.gif_image.save(filename, format='gif', save_all=True)
+                GifHelper.save(self.top_selected.gif_image, filename)
         elif self.top_selected.tile is not None:
             filename = QFileDialog.getSaveFileName()[0]
             self.top_selected.tile.get_big_image().save(filename, format='png')
