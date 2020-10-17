@@ -23,7 +23,7 @@
          <widget class="QPlainTextEdit" name="plainTextEdit">
           <property name="font">
            <font>
-            <family>Courier New</family>
+            <family>Consolas</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -45,6 +45,11 @@
               <height>240</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+             </font>
+            </property>
             <property name="styleSheet">
              <string notr="true">background-color: rgb(15, 59, 58);</string>
             </property>
@@ -55,6 +60,12 @@
           </item>
           <item>
            <widget class="QPushButton" name="save_tile_button">
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>Save tile...</string>
             </property>
@@ -64,6 +75,12 @@
            <widget class="QPushButton" name="swap_tile_button">
             <property name="enabled">
              <bool>true</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+              <pointsize>10</pointsize>
+             </font>
             </property>
             <property name="text">
              <string>Toggle .png/.gif</string>
@@ -80,16 +97,47 @@
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
            <widget class="QLabel" name="search_label">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>Search:</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="search_line_edit"/>
+           <widget class="QLineEdit" name="search_line_edit">
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QPushButton" name="expand_all_button">
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>Expand all</string>
             </property>
@@ -97,6 +145,18 @@
           </item>
           <item>
            <widget class="QPushButton" name="collapse_all_button">
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>Collapse all</string>
             </property>
@@ -104,6 +164,18 @@
           </item>
           <item>
            <widget class="QPushButton" name="restore_all_button">
+            <property name="minimumSize">
+             <size>
+              <width>130</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>Default expansion</string>
             </property>
@@ -112,7 +184,13 @@
          </layout>
         </item>
         <item alignment="Qt::AlignBottom">
-         <widget class="QWidget" name="tree_target_widget" native="true"/>
+         <widget class="QWidget" name="tree_target_widget" native="true">
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+           </font>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -144,14 +222,18 @@
     <addaction name="actionAttributes"/>
     <addaction name="actionAll_attributes"/>
     <addaction name="actionXML_source"/>
+    <addaction name="separator"/>
+    <addaction name="actionDark_mode"/>
    </widget>
    <widget class="QMenu" name="menuWiki">
     <property name="title">
      <string>Wiki</string>
     </property>
     <addaction name="actionScan_wiki"/>
+    <addaction name="actionDiff_template_against_wiki"/>
     <addaction name="actionUpload_templates"/>
     <addaction name="actionUpload_tiles"/>
+    <addaction name="actionUpload_extra_image_s_for_selected_objects"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -228,6 +310,21 @@
   <action name="actionShow_help">
    <property name="text">
     <string>Show help</string>
+   </property>
+  </action>
+  <action name="actionUpload_extra_image_s_for_selected_objects">
+   <property name="text">
+    <string>Upload extra image(s) for selected objects</string>
+   </property>
+  </action>
+  <action name="actionDiff_template_against_wiki">
+   <property name="text">
+    <string>Diff template against wiki</string>
+   </property>
+  </action>
+  <action name="actionDark_mode">
+   <property name="text">
+    <string>Toggle dark mode</string>
    </property>
   </action>
  </widget>

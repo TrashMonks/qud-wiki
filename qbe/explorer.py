@@ -7,7 +7,7 @@ from pprint import pformat
 
 from PIL import Image, ImageQt
 from PySide2.QtCore import QBuffer, QByteArray, QIODevice, QItemSelectionModel, QRegExp, QSize, Qt, QModelIndex
-from PySide2.QtGui import QIcon, QImage, QMovie, QPixmap, QStandardItem, QStandardItemModel
+from PySide2.QtGui import QIcon, QImage, QMovie, QPixmap, QStandardItem, QStandardItemModel, QPalette
 from PySide2.QtWidgets import QApplication, QFileDialog, QHeaderView, QMainWindow, QMessageBox, QDialog
 from hagadias.gameroot import GameRoot
 from hagadias.qudobject import QudObject
@@ -68,10 +68,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionAttributes.triggered.connect(self.setview_attr)
         self.actionAll_attributes.triggered.connect(self.setview_allattr)
         self.actionXML_source.triggered.connect(self.setview_xmlsource)
+        self.actionDark_mode.triggered.connect(self.toggle_darkmode)
         # Wiki menu:
         self.actionScan_wiki.triggered.connect(self.wiki_check_selected)
+        self.actionDiff_template_against_wiki.triggered.connect(self.show_simple_diff)
         self.actionUpload_templates.triggered.connect(self.upload_selected_templates)
         self.actionUpload_tiles.triggered.connect(self.upload_selected_tiles)
+        self.actionUpload_extra_image_s_for_selected_objects.triggered.connect(self.upload_extra_images)
         # Help menu:
         self.actionShow_help.triggered.connect(self.show_help)
         # TreeView context menu:
@@ -703,6 +706,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def setview_xmlsource(self):
         """Change the view type to XML source."""
         self.setview('xml_source')
+
+    def toggle_darkmode(self):
+        """Toggles dark mode. This is not currently saved across sessions."""
+        if not hasattr(self, '_dark_mode_active'):
+            self._dark_mode_active = False
+        self._dark_mode_active = not self._dark_mode_active
+        is_dark = self._dark_mode_active
+        wikitext_palette = self.plainTextEdit.palette()
+        tree_palette = self.treeView.palette()
+        wikitext_palette.setColor(QPalette.Base, Qt.black if is_dark else Qt.white)
+        wikitext_palette.setColor(QPalette.Text, Qt.white if is_dark else Qt.black)
+        tree_palette.setColor(QPalette.Base, Qt.black if is_dark else Qt.white)
+        tree_palette.setColor(QPalette.Text, Qt.white if is_dark else Qt.black)
+        self.plainTextEdit.setPalette(wikitext_palette)
+        self.treeView.setPalette(tree_palette)
 
     def show_help(self):
         """Show help info. Currently just shows info about search macros."""
