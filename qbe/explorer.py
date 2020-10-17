@@ -7,15 +7,15 @@ from pprint import pformat
 
 from PIL import Image, ImageQt
 from PySide2.QtCore import QBuffer, QByteArray, QIODevice, QItemSelectionModel, QRegExp, QSize, Qt
-from PySide2.QtGui import QIcon, QMovie, QPixmap, QStandardItem, QStandardItemModel
-from PySide2.QtWidgets import QApplication, QFileDialog, QHeaderView, \
-    QMainWindow, QMessageBox
+from PySide2.QtGui import QIcon, QImage, QMovie, QPixmap, QStandardItem, QStandardItemModel
+from PySide2.QtWidgets import QApplication, QFileDialog, QHeaderView, QMainWindow, QMessageBox, QDialog
 from hagadias.gameroot import GameRoot
 from hagadias.qudobject import QudObject
 from hagadias.tileanimator import GifHelper
 
 from qbe.config import config
 from qbe.qud_explorer_window import Ui_MainWindow
+from qbe.qud_explorer_image_modal import Ui_WikiImageUpload
 from qbe.search_filter import QudFilterModel
 from qbe.qudobject_wiki import QudObjectWiki
 from qbe.tree_view import QudTreeView
@@ -443,21 +443,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 continue
             wiki_tile_file = site.images[qud_object.image]
             if wiki_tile_file.exists:
-                if wiki_tile_file.download() == qud_object.tile.get_big_bytes():
+                wiki_tile_b = wiki_tile_file.download()
+                if wiki_tile_b == qud_object.tile.get_big_bytes():
                     print(f'Image {qud_object.image} already exists and matches our version.')
                     continue
                 else:
                     QApplication.restoreOverrideCursor()  # restore mouse cursor for dialog
-                    box = QMessageBox()
-                    box.setText(f'Image for {qud_object.displayname} ({qud_object.image}) already'
-                                f' exists but is different from the auto-generated version.')
-                    box.setInformativeText(f'Please check the wiki version. Do you really want to'
-                                           f' overwrite it?')
-                    box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-                    if box.exec_() == QMessageBox.No:
-                        QApplication.setOverrideCursor(Qt.WaitCursor)
-                        continue
+
+                    dialog = QDialog()
+                    dialog.ui = Ui_WikiImageUpload()
+                    dialog.ui.setupUi(dialog)
+                    dialog.setAttribute(Qt.WA_DeleteOnClose)
+                    qud_object = self.top_selected
+                    qbe_image = ImageQt.ImageQt(qud_object.tile.get_big_image())
+                    wiki_image = QImage.fromData(QByteArray(wiki_tile_b))
+                    dialog.ui.comparison_tile_1.setPixmap(QPixmap.fromImage(qbe_image))
+                    dialog.ui.comparison_tile_2.setPixmap(QPixmap.fromImage(wiki_image))
+                    result = dialog.exec_()
+
                     QApplication.setOverrideCursor(Qt.WaitCursor)
+                    if result == QDialog.Rejected:
+                        continue
+
             # if we get this far, we are uploading or replacing the wiki file
             if qud_object.name in config['Templates']['Image overrides']:
                 filename = config['Templates']['Image overrides'][qud_object.name]
