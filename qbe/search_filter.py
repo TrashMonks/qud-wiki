@@ -31,6 +31,8 @@ class QudFilterModel(QSortFilterProxyModel):
             filter_str = self.filterRegExp().pattern().lower()
             if filter_str.startswith('hasfield:'):
                 found = self._index_hasfield(idx, filter_str.split(':')[1])
+            elif filter_str.startswith('haspart:'):
+                found = self._index_haspart(idx, self.filterRegExp().pattern().split(':')[1])
             else:
                 text = idx.data(role=Qt.DisplayRole).lower()
                 found = text.find(self.filterRegExp().pattern().lower()) >= 0  # use QRegExp method?
@@ -49,6 +51,14 @@ class QudFilterModel(QSortFilterProxyModel):
         """Perform 'hasfield:' search to match only objects with the specified wiki template field"""
         qud_object = self.sourceModel().itemFromIndex(idx).data()
         if getattr(qud_object, field) is not None:
+            if qud_object.is_wiki_eligible():
+                return True
+        return False
+
+    def _index_haspart(self, idx, part: str) -> bool:
+        """Perform 'haspart:' search to match only objects with the specified part (case sensitive)"""
+        qud_object = self.sourceModel().itemFromIndex(idx).data()
+        if getattr(qud_object, f'part_{part}') is not None:
             if qud_object.is_wiki_eligible():
                 return True
         return False

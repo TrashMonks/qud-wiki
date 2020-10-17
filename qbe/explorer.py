@@ -729,5 +729,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         '\n<pre> </pre>'
                         '\n<pre>hasfield:&lt;fieldname&gt;</pre>'
                         '\nshows only objects that have a value for the specified wiki field'
+                        '\n<pre> </pre>'
+                        '\n<pre>haspart:&lt;PartName&gt;</pre>'
+                        '\nshows only objects that have a specific part (case sensitive)'
                         '\n<pre> </pre>')
         msg_box.exec()
