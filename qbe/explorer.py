@@ -600,6 +600,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     wiki_gif_player.start()
                 # show compare dialog
                 result = dialog.exec_()
+                # close buffers
+                qbe_gif_player.stop()
+                qbe_gif_buffer.close()
+                wiki_gif_player.stop()
+                wiki_gif_buffer.close()
 
                 QApplication.setOverrideCursor(Qt.WaitCursor)
                 if result == QDialog.Rejected:
