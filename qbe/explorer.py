@@ -246,8 +246,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.tile_label.clear()
             if qud_object.tile is not None and not qud_object.tile.hasproblems:
                 display_success = False
-                if self.gif_mode and qud_object.gif_image is not None:
-                    self.qbytearray = QByteArray(GifHelper.get_bytes(qud_object.gif_image))
+                if self.gif_mode and qud_object.has_gif_tile():
+                    QApplication.setOverrideCursor(Qt.WaitCursor)  # can take a few moments for some animations
+                    try:
+                        gif_img = qud_object.gif_image
+                    finally:
+                        QApplication.restoreOverrideCursor()
+                    self.qbytearray = QByteArray(GifHelper.get_bytes(gif_img))
                     self.qbuffer = QBuffer(self.qbytearray, self)
                     self.qbuffer.open(QIODevice.ReadOnly)
                     self.qmovie = QMovie(self.qbuffer, b'GIF', self)
@@ -261,7 +266,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.tile_label.setPixmap(QPixmap.fromImage(pil_qt_image))
                     display_success = True
                 self.save_tile_button.setDisabled(True if not display_success else False)
-                self.swap_tile_button.setDisabled(True if qud_object.gif_image is None else False)
+                self.swap_tile_button.setDisabled(False if qud_object.has_gif_tile() else True)
             else:
                 self.save_tile_button.setDisabled(True)
                 self.swap_tile_button.setDisabled(True)
