@@ -416,6 +416,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if wiki_gif_file.exists:
                     extra_imgs_exist.setText('✅')
                     # does the GIF match what's already on the wiki?
+                    # TODO: This isn't properly recognizing matching images. If you upload to wiki, and then
+                    #       restart QBE, it will indicate that the extra images don't match what's on the wiki.
                     if wiki_gif_file.download() == GifHelper.get_bytes(qud_object.gif_image):
                         extra_imgs_match.setText('✅')
                     else:
