@@ -342,7 +342,7 @@ Wiki:
       /GritGateForceProjector,
       -Torchpost,  # covered by Sconce, 'torch sconce'
       -Unlit Torchpost,  # ditto
-      -Techlight2,  # covered by Techlight1, 'arc sconce'
+      -Techlight1,  # covered by Techlight2, 'arc sconce'
       -Techlight3,  # ditto
       -Candelabra,  # covered by Half Candelabra, 'candelabra'
       /Wormhole,
@@ -560,7 +560,6 @@ Wiki:
       -Crematory Liquid-Cooled Unicomputer,
       -CatacombLight,
       /Tomb Techlight1,
-      +Tomb Techlight1,
       /Sarcophagus,
       +Sarcophagus,
       +SultanSarcophagusE,
