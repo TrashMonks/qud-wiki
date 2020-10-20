@@ -1,5 +1,5 @@
 """Main file for Qud Blueprint Explorer."""
-from typing import Union
+from typing import Union, Callable
 
 import difflib
 import re
@@ -7,7 +7,7 @@ from pprint import pformat
 
 from PIL import Image, ImageQt
 from PySide2.QtCore import QBuffer, QByteArray, QIODevice, QItemSelectionModel, QRegExp, QSize, Qt, QModelIndex
-from PySide2.QtGui import QIcon, QImage, QMovie, QPixmap, QStandardItem, QStandardItemModel, QPalette
+from PySide2.QtGui import QIcon, QImage, QMovie, QPixmap, QStandardItem, QStandardItemModel, QPalette, QColor, QFont
 from PySide2.QtWidgets import QApplication, QFileDialog, QHeaderView, QMainWindow, QMessageBox, QDialog
 from hagadias.gameroot import GameRoot
 from hagadias.qudobject import QudObject
@@ -187,8 +187,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         row.append(extra_image_matches)
 
         if not qud_object.is_wiki_eligible():
-            for _ in row:
-                _.setSelectable(False)
+            row[0].setForeground(QColor.fromRgb(100, 100, 100))
+            # for _ in row:
+            #     _.setSelectable(False)
+        else:
+            font = QFont()
+            font.setBold(True)
+            row[0].setFont(font)
         if qud_object.name in config['Interface']['Initial expansion targets']:
             self.items_to_expand.append(item)
         # recurse through children before returning self
@@ -215,7 +220,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 item = self.qud_object_model.itemFromIndex(model_index)
                 qud_object = item.data()
                 if self.view_type == 'wiki':
-                    text += qud_object.wiki_template(self.gameroot.gamever) + '\n'
+                    if qud_object.is_wiki_eligible():
+                        text += qud_object.wiki_template(self.gameroot.gamever) + '\n'
+                    else:
+                        text += f'{qud_object.name} is not enabled for wiki upload.' + '\n'
                 elif self.view_type == 'attr':
                     text += pformat(qud_object.attributes, width=120)
                 elif self.view_type == 'all_attr':
@@ -379,13 +387,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 # now, do the actual checking and update the cells with 'yes' or 'no'
                 qud_object = qitem.data()
                 # Check wiki article first:
-                if not qud_object.is_wiki_eligible:
-                    wiki_exists.setText('-')
-                    wiki_matches.setText('-')
-                    tile_exists.setText('-')
-                    tile_matches.setText('-')
-                    extra_imgs_exist.setText('-')
-                    extra_imgs_match.setText('-')
+                if not qud_object.is_wiki_eligible():
+                    wiki_exists.setText('⮿')
+                    wiki_exists.setForeground(QColor.fromRgb(100, 100, 100))  # grey
+                    wiki_matches.setText('⮿')
+                    wiki_matches.setForeground(QColor.fromRgb(100, 100, 100))
+                    tile_exists.setText('⮿')
+                    tile_exists.setForeground(QColor.fromRgb(100, 100, 100))
+                    tile_matches.setText('⮿')
+                    tile_matches.setForeground(QColor.fromRgb(100, 100, 100))
+                    extra_imgs_exist.setText('⮿')
+                    extra_imgs_exist.setForeground(QColor.fromRgb(100, 100, 100))
+                    extra_imgs_match.setText('⮿')
+                    extra_imgs_match.setForeground(QColor.fromRgb(100, 100, 100))
                     continue
                 article = WikiPage(qud_object, self.gameroot.gamever)
                 if article.page.exists:
@@ -443,7 +457,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """Upload extra image(s) for all currently selected objects to the wiki."""
         self.upload_wikidata(self.upload_wiki_extra_images, 'extra images')
 
-    def upload_wikidata(self, object_handler, data_descriptor: str):
+    def upload_wikidata(self, object_handler: Callable[[QudObjectWiki, int], None], data_descriptor: str):
         """Generic wiki data upload template. Iterates through all selected objects in the tree, calling the
         object_handler() method on each of them. The handler method is responsible for performing the upload.
         """
