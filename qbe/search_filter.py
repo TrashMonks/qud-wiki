@@ -33,6 +33,8 @@ class QudFilterModel(QSortFilterProxyModel):
                 found = self._index_hasfield(idx, filter_str.split(':')[1])
             elif filter_str.startswith('haspart:'):
                 found = self._index_haspart(idx, self.filterRegExp().pattern().split(':')[1])
+            elif filter_str.startswith('hastag:'):
+                found = self._index_hastag(idx, self.filterRegExp().pattern().split(':')[1])
             else:
                 text = idx.data(role=Qt.DisplayRole).lower()
                 found = text.find(self.filterRegExp().pattern().lower()) >= 0  # use QRegExp method?
@@ -59,6 +61,14 @@ class QudFilterModel(QSortFilterProxyModel):
         """Perform 'haspart:' search to match only objects with the specified part (case sensitive)"""
         qud_object = self.sourceModel().itemFromIndex(idx).data()
         if getattr(qud_object, f'part_{part}') is not None:
+            if qud_object.is_wiki_eligible():
+                return True
+        return False
+
+    def _index_hastag(self, idx, tag: str) -> bool:
+        """Perform 'hastag:' search to match only objects with the specified tag (case sensitive)"""
+        qud_object = self.sourceModel().itemFromIndex(idx).data()
+        if getattr(qud_object, f'tag_{tag}') is not None:
             if qud_object.is_wiki_eligible():
                 return True
         return False
