@@ -536,7 +536,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 dialog.ui = Ui_WikiImageUpload()
                 dialog.ui.setupUi(dialog)
                 dialog.setAttribute(Qt.WA_DeleteOnClose)
-                qud_object = self.top_selected
                 # add images
                 qbe_image = ImageQt.ImageQt(qud_object.tile.get_big_image())
                 wiki_image = QImage.fromData(QByteArray(wiki_tile_b))
@@ -593,7 +592,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 dialog.ui = Ui_WikiImageUpload()
                 dialog.ui.setupUi(dialog)
                 dialog.setAttribute(Qt.WA_DeleteOnClose)
-                qud_object = self.top_selected
                 # add QBE GIF
                 qbe_gif_bytearray = QByteArray(GifHelper.get_bytes(qud_object.gif_image))
                 qbe_gif_buffer = QBuffer(qbe_gif_bytearray)
