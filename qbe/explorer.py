@@ -6,7 +6,7 @@ import re
 from pprint import pformat
 
 from PIL import Image, ImageQt
-from PySide2.QtCore import QBuffer, QByteArray, QIODevice, QItemSelectionModel, QRegExp, QSize, Qt, QModelIndex
+from PySide2.QtCore import QBuffer, QByteArray, QIODevice, QItemSelectionModel, QRegExp, QSize, Qt
 from PySide2.QtGui import QIcon, QImage, QMovie, QPixmap, QStandardItem, QStandardItemModel, QPalette, QColor, QFont
 from PySide2.QtWidgets import QApplication, QFileDialog, QHeaderView, QMainWindow, QMessageBox, QDialog
 from hagadias.gameroot import GameRoot
@@ -84,7 +84,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.treeView.context_action_upload_tile.triggered.connect(self.upload_selected_tiles)
         self.treeView.context_action_upload_extra.triggered.connect(self.upload_extra_images)
         self.treeView.context_action_diff.triggered.connect(self.show_simple_diff)
-        self.gameroot = None
+        self.gameroot: Union[GameRoot, None] = None
         while self.gameroot is None:
             try:
                 self.open_gameroot()
@@ -105,13 +105,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.swap_tile_button.setDisabled(True)
 
         # GIF rendering attributes
-        self.qbytearray: QByteArray = None
-        self.qbuffer: QBuffer = None
-        self.qmovie: QMovie = None
+        self.qbytearray: Union[QByteArray, None] = None
+        self.qbuffer: Union[QBuffer, None] = None
+        self.qmovie: Union[QMovie, None] = None
         self.gif_mode = False
 
         self.currently_selected = []
-        self.top_selected: QudObjectWiki = None  # used when multiple items may be selected but we only want one
+        self.top_selected: Union[QudObjectWiki, None] = None  # used if we only want one of potential multiple items
         self.top_selected_index: Union[int, None] = None
         self.show()
 
@@ -257,7 +257,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if self.gif_mode and qud_object.has_gif_tile():
                     QApplication.setOverrideCursor(Qt.WaitCursor)  # can take a few moments for some animations
                     try:
-                        gif_img = qud_object.gif_image
+                        gif_img = qud_object.gif_image(0)
                     finally:
                         QApplication.restoreOverrideCursor()
                     self.qbytearray = QByteArray(GifHelper.get_bytes(gif_img))
@@ -365,6 +365,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """Check the wiki for the existence of the article and image(s) for selected objects, and
         update the columns for those states."""
         QApplication.setOverrideCursor(Qt.WaitCursor)
+        statusbar_current = self.statusbar.currentMessage()
         check_total = self.selected_row_count()
         check_count = 0
         for num, index in enumerate(self.currently_selected):
@@ -427,22 +428,71 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     tile_matches.setText('-')
                 # Now check whether GIF or other images exist:
                 wiki_gif_file = site.images[qud_object.gif]
-                if wiki_gif_file.exists:
+                gif_exists = wiki_gif_file.exists
+                altimages_exist = False
+                if qud_object.number_of_tiles() > 1:
+                    altimages_exist = True
+                    alt_tiles, alt_metas = qud_object.tiles_and_metadata()
+                    total_altimages = len(alt_tiles)
+                    msg_prefix = self.statusbar.currentMessage()
+                    current_index = -1
+                    for alt_tile, alt_meta in zip(alt_tiles, alt_metas):
+                        current_index += 1
+                        self.statusbar.showMessage(msg_prefix + '    [scanning wiki for extra images ' +
+                                                   f'{current_index + 1}/{total_altimages}]')
+                        self.app.processEvents()
+                        alt_file = site.images[alt_meta.filename]
+                        if not alt_file.exists:
+                            altimages_exist = False
+                    self.statusbar.showMessage(msg_prefix)
+                    self.app.processEvents()
+                if gif_exists or altimages_exist:
                     extra_imgs_exist.setText('✅')
+                    gif_matches = True
+                    altimages_match = True
                     # does the GIF match what's already on the wiki?
                     # TODO: This isn't properly recognizing matching images. If you upload to wiki, and then
-                    #       restart QBE, it will indicate that the extra images don't match what's on the wiki.
-                    if wiki_gif_file.download() == GifHelper.get_bytes(qud_object.gif_image):
+                    #       restart QBE, it will indicate that the GIF image doesn't match what's on the wiki.
+                    if gif_exists and wiki_gif_file.download() != GifHelper.get_bytes(qud_object.gif_image(0)):
+                        gif_matches = False
+                    # do all of the alt images match what's already on the wiki?
+                    alt_tiles, alt_metas = qud_object.tiles_and_metadata()
+                    total_altimages = len(alt_tiles)
+                    msg_prefix = self.statusbar.currentMessage()
+                    current_index = -1
+                    for alt_tile, alt_meta in zip(alt_tiles, alt_metas):
+                        current_index += 1
+                        self.statusbar.showMessage(msg_prefix + '    [comparing extra images to wiki images ' +
+                                                   f'{current_index + 1}/{total_altimages}]')
+                        self.app.processEvents()
+                        alt_file = site.images[alt_meta.filename]
+                        if alt_file.exists and alt_file.download() != alt_tile.get_big_bytes():
+                            altimages_match = False
+                        # Temporarily disabled because comparison with wiki gifs doesn't work:
+                        # if alt_meta.is_animated():
+                        #     alt_file_gif = site.images[alt_meta.gif_filename]
+                        #     if alt_file_gif.exists:
+                        #         alt_qbe_gif = qud_object.gif_image(i)
+                        #         if alt_file_gif.download() != GifHelper.get_bytes(alt_qbe_gif):
+                        #             altimages_match = False
+                    self.statusbar.showMessage(msg_prefix)
+                    self.app.processEvents()
+                    if gif_matches and altimages_match:
                         extra_imgs_match.setText('✅')
                     else:
                         extra_imgs_match.setText('❌')
                 else:
-                    extra_imgs_exist.setText('❌')
-                    extra_imgs_match.setText('-')
+                    if qud_object.has_gif_tile() or qud_object.number_of_tiles() > 1:
+                        extra_imgs_exist.setText('❌')
+                        extra_imgs_match.setText('-')
+                    else:
+                        extra_imgs_exist.setText('⮿')
                 self.app.processEvents()
         # restore cursor and status bar text:
         if self.top_selected is not None:
             self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
+        self.statusbar.showMessage(statusbar_current)
+        self.app.processEvents()
         QApplication.restoreOverrideCursor()
 
     def upload_selected_templates(self):
@@ -567,81 +617,237 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         Intended for use as an object_handler provided to the upload_wikidata() method.
 
-        Currently, only the GIF animated image is supported, but this could also support other extra image types
-        in the future, such as the ripe/harvested image variants or the RandomTile image variants.
+        Extra images include GIF animations and alternate tiles (such as those associated with the RandomTile or
+        Harvestable parts).
         """
         extraimages_exist_cell_index = selection_index + 7
         extraimages_match_cell_index = selection_index + 8
-        if qud_object.gif_image is None:
-            self.set_icon(extraimages_exist_cell_index, '❌', True)
-            print(f'{qud_object.name} has no animated images, so not uploading.')
+        has_gif = qud_object.has_gif_tile()
+        has_altimages = qud_object.number_of_tiles() > 1
+        if not has_gif and not has_altimages:
+            self.set_icon(extraimages_exist_cell_index, '⮿', True)
+            print(f'{qud_object.name} has no extra images, so not uploading.')
             return
-        wiki_gif_file = site.images[qud_object.gif]
-        if wiki_gif_file.exists:
-            self.set_icon(extraimages_exist_cell_index, '✅', True)
-            wiki_gif_b = wiki_gif_file.download()
-            if wiki_gif_b == GifHelper.get_bytes(qud_object.gif_image):
-                self.set_icon(extraimages_match_cell_index, '✅', True)
-                print(f'Image "{qud_object.gif}" already exists and matches our version.')
-                return
+
+        success_ct = 0
+        fail_ct = 0
+        mismatch_ct = 0
+
+        if has_gif:
+            # TODO: eliminate gif field and incorporate into overrideimages
+            attempt_upload = False
+            wiki_gif_file = site.images[qud_object.gif]
+            if wiki_gif_file.exists:
+                self.set_icon(extraimages_exist_cell_index, '✅', True)
+                wiki_gif_b = wiki_gif_file.download()
+                if wiki_gif_b == GifHelper.get_bytes(qud_object.gif_image(0)):
+                    print(f'Image "{qud_object.gif}" already exists and matches our version.')
+                    success_ct += 1
+                else:
+                    QApplication.restoreOverrideCursor()  # temporarily restore mouse cursor for dialog
+
+                    dialog = QDialog()
+                    dialog.ui = Ui_WikiImageUpload()
+                    dialog.ui.setupUi(dialog)
+                    dialog.setAttribute(Qt.WA_DeleteOnClose)
+                    # add QBE GIF
+                    qbe_gif_bytearray = QByteArray(GifHelper.get_bytes(qud_object.gif_image(0)))
+                    qbe_gif_buffer = QBuffer(qbe_gif_bytearray)
+                    qbe_gif_buffer.open(QIODevice.ReadOnly)
+                    qbe_gif_player = QMovie(qbe_gif_buffer, b'GIF')
+                    if qbe_gif_player.isValid():
+                        qbe_gif_player.setCacheMode(QMovie.CacheAll)
+                        dialog.ui.comparison_tile_1.setMovie(qbe_gif_player)
+                        qbe_gif_player.start()
+                    # add wiki GIF
+                    wiki_gif_bytearray = QByteArray(wiki_gif_b)
+                    wiki_gif_buffer = QBuffer(wiki_gif_bytearray)
+                    wiki_gif_buffer.open(QIODevice.ReadOnly)
+                    wiki_gif_player = QMovie(wiki_gif_buffer, b'GIF')
+                    if wiki_gif_player.isValid():
+                        wiki_gif_player.setCacheMode(QMovie.CacheAll)
+                        dialog.ui.comparison_tile_2.setMovie(wiki_gif_player)
+                        wiki_gif_player.start()
+                    # show compare dialog
+                    result = dialog.exec_()
+                    # close buffers
+                    qbe_gif_player.stop()
+                    qbe_gif_buffer.close()
+                    wiki_gif_player.stop()
+                    wiki_gif_buffer.close()
+
+                    QApplication.setOverrideCursor(Qt.WaitCursor)
+                    if result != QDialog.Rejected:
+                        attempt_upload = True
+                    else:
+                        mismatch_ct += 1
             else:
-                self.set_icon(extraimages_match_cell_index, '❌', True)
-                QApplication.restoreOverrideCursor()  # temporarily restore mouse cursor for dialog
+                attempt_upload = True
 
-                dialog = QDialog()
-                dialog.ui = Ui_WikiImageUpload()
-                dialog.ui.setupUi(dialog)
-                dialog.setAttribute(Qt.WA_DeleteOnClose)
-                # add QBE GIF
-                qbe_gif_bytearray = QByteArray(GifHelper.get_bytes(qud_object.gif_image))
-                qbe_gif_buffer = QBuffer(qbe_gif_bytearray)
-                qbe_gif_buffer.open(QIODevice.ReadOnly)
-                qbe_gif_player = QMovie(qbe_gif_buffer, b'GIF')
-                if qbe_gif_player.isValid():
-                    qbe_gif_player.setCacheMode(QMovie.CacheAll)
-                    dialog.ui.comparison_tile_1.setMovie(qbe_gif_player)
-                    qbe_gif_player.start()
-                # add wiki GIF
-                wiki_gif_bytearray = QByteArray(wiki_gif_b)
-                wiki_gif_buffer = QBuffer(wiki_gif_bytearray)
-                wiki_gif_buffer.open(QIODevice.ReadOnly)
-                wiki_gif_player = QMovie(wiki_gif_buffer, b'GIF')
-                if wiki_gif_player.isValid():
-                    wiki_gif_player.setCacheMode(QMovie.CacheAll)
-                    dialog.ui.comparison_tile_2.setMovie(wiki_gif_player)
-                    wiki_gif_player.start()
-                # show compare dialog
-                result = dialog.exec_()
-                # close buffers
-                qbe_gif_player.stop()
-                qbe_gif_buffer.close()
-                wiki_gif_player.stop()
-                wiki_gif_buffer.close()
+            if attempt_upload:
+                # upload or replace the extra image(s) on the wiki
+                filename = qud_object.gif
+                descr = f'Rendered by {wiki_config["operator"]} with game version ' \
+                        f'{self.gameroot.gamever} using {config["Wikified name"]} {config["Version"]}'
+                result = site.upload(GifHelper.get_bytesio(qud_object.gif_image(0)),
+                                     filename=filename,
+                                     description=descr,
+                                     ignore=True,  # upload even if same file exists under diff name
+                                     comment=descr
+                                     )
+                if result.get('result', None) == 'Success':
+                    success_ct += 1
+                else:
+                    fail_ct += 1
 
-                QApplication.setOverrideCursor(Qt.WaitCursor)
-                if result == QDialog.Rejected:
-                    return
+        if has_altimages:
+            tiles, metadata = qud_object.tiles_and_metadata()
+            statusbar_current = self.statusbar.currentMessage()
+            total_altimages = len(tiles)
+            current_index = -1
 
-        # upload or replace the extra image(s) on the wiki
-        filename = qud_object.gif
-        descr = f'Rendered by {wiki_config["operator"]} with game version ' \
-                f'{self.gameroot.gamever} using {config["Wikified name"]} {config["Version"]}'
-        result = site.upload(GifHelper.get_bytesio(qud_object.gif_image),
-                             filename=filename,
-                             description=descr,
-                             ignore=True,  # upload even if same file exists under diff name
-                             comment=descr
-                             )
-        if result.get('result', None) == 'Success':
-            self.set_icon(extraimages_exist_cell_index, '✅')
-            self.set_icon(extraimages_match_cell_index, '✅', True)
+            for tile, meta in zip(tiles, metadata):
+                # update statusbar message
+                current_index += 1
+                self.statusbar.showMessage(statusbar_current +
+                                           f'    [uploading image {current_index + 1}/{total_altimages}]')
+                self.app.processEvents()
+
+                # first, handle .png image
+                should_upload_image = False
+                image_file = site.images[meta.filename]
+                if not image_file.exists:
+                    should_upload_image = True
+                else:
+                    self.set_icon(extraimages_exist_cell_index, '✅', True)
+                    image_b = image_file.download()
+                    if image_b == tile.get_big_bytes():
+                        print(f'Extra image "{meta.filename}" already exists and matches our version.')
+                        success_ct += 1
+                        #continue
+                    else:
+                        self.set_icon(extraimages_match_cell_index, '❌', True)
+                        QApplication.restoreOverrideCursor()  # temporarily restore mouse cursor for dialog
+
+                        dialog = QDialog()
+                        dialog.ui = Ui_WikiImageUpload()
+                        dialog.ui.setupUi(dialog)
+                        dialog.setAttribute(Qt.WA_DeleteOnClose)
+                        # add images
+                        qbe_image = ImageQt.ImageQt(tile.get_big_image())
+                        wiki_image = QImage.fromData(QByteArray(image_b))
+                        dialog.ui.comparison_tile_1.setPixmap(QPixmap.fromImage(qbe_image))
+                        dialog.ui.comparison_tile_2.setPixmap(QPixmap.fromImage(wiki_image))
+                        # show compare dialog
+                        result = dialog.exec_()
+
+                        QApplication.setOverrideCursor(Qt.WaitCursor)
+                        if result == QDialog.Rejected:
+                            mismatch_ct += 1
+                            #continue
+                        else:
+                            should_upload_image = True
+
+                # then, handle .gif image
+                should_upload_gif = False
+                qbe_gif = qud_object.gif_image(current_index)
+                wiki_gif = site.images[meta.gif_filename]
+                if not wiki_gif.exists:
+                    should_upload_gif = True if qbe_gif is not None else False
+                elif qbe_gif is not None:
+                    self.set_icon(extraimages_exist_cell_index, '✅', True)
+                    wiki_gif_b = wiki_gif.download()
+                    if wiki_gif_b == GifHelper.get_bytes(qbe_gif):
+                        # TODO: This probably doesn't work, so figure out why our comparison to wiki .gif is failing
+                        print(f'Extra image "{meta.filename}" already exists and matches our version.')
+                        success_ct += 1
+                        # continue
+                    else:
+                        # line commented out since it's probably not accurate:
+                        # self.set_icon(extraimages_match_cell_index, '❌', True)
+                        QApplication.restoreOverrideCursor()  # temporarily restore mouse cursor for dialog
+
+                        dialog = QDialog()
+                        dialog.ui = Ui_WikiImageUpload()
+                        dialog.ui.setupUi(dialog)
+                        dialog.setAttribute(Qt.WA_DeleteOnClose)
+                        # add QBE GIF
+                        qbe_gif_bytearray = QByteArray(GifHelper.get_bytes(qbe_gif))
+                        qbe_gif_buffer = QBuffer(qbe_gif_bytearray)
+                        qbe_gif_buffer.open(QIODevice.ReadOnly)
+                        qbe_gif_player = QMovie(qbe_gif_buffer, b'GIF')
+                        if qbe_gif_player.isValid():
+                            qbe_gif_player.setCacheMode(QMovie.CacheAll)
+                            dialog.ui.comparison_tile_1.setMovie(qbe_gif_player)
+                            qbe_gif_player.start()
+                        # add wiki GIF
+                        wiki_gif_bytearray = QByteArray(wiki_gif_b)
+                        wiki_gif_buffer = QBuffer(wiki_gif_bytearray)
+                        wiki_gif_buffer.open(QIODevice.ReadOnly)
+                        wiki_gif_player = QMovie(wiki_gif_buffer, b'GIF')
+                        if wiki_gif_player.isValid():
+                            wiki_gif_player.setCacheMode(QMovie.CacheAll)
+                            dialog.ui.comparison_tile_2.setMovie(wiki_gif_player)
+                            wiki_gif_player.start()
+                        # show compare dialog
+                        result = dialog.exec_()
+                        # close buffers
+                        qbe_gif_player.stop()
+                        qbe_gif_buffer.close()
+                        wiki_gif_player.stop()
+                        wiki_gif_buffer.close()
+
+                        QApplication.setOverrideCursor(Qt.WaitCursor)
+                        if result == QDialog.Rejected:
+                            mismatch_ct += 1
+                            #continue
+                        else:
+                            should_upload_gif = True
+
+                if should_upload_image:
+                    # upload or replace the extra image(s) on the wiki
+                    descr = f'Rendered by {wiki_config["operator"]} with game version ' \
+                            f'{self.gameroot.gamever} using {config["Wikified name"]} {config["Version"]}'
+                    result = site.upload(tile.get_big_bytesio(),
+                                         filename=meta.filename,
+                                         description=descr,
+                                         ignore=True,  # upload even if same file exists under diff name
+                                         comment=descr
+                                         )
+                    if result.get('result', None) == 'Success':
+                        success_ct += 1
+                    else:
+                        fail_ct += 1
+
+                if should_upload_gif:
+                    descr = f'Rendered by {wiki_config["operator"]} with game version ' \
+                            f'{self.gameroot.gamever} using {config["Wikified name"]} {config["Version"]}'
+                    result = site.upload(GifHelper.get_bytesio(qbe_gif),
+                                         filename=meta.gif_filename,
+                                         description=descr,
+                                         ignore=True,  # upload even if same file exists under diff name
+                                         comment=descr
+                                         )
+                    if result.get('result', None) == 'Success':
+                        success_ct += 1
+                    else:
+                        fail_ct += 1
+
+            # restore statusbar message
+            self.statusbar.showMessage(statusbar_current)
+
+        if success_ct > 0 and fail_ct == 0:
+            if mismatch_ct == 0:
+                self.set_icon(extraimages_match_cell_index, '✅', True)
+        else:
+            self.set_icon(extraimages_match_cell_index, '❌', True)
 
     def save_selected_tile(self):
         """Save the currently displayed tile as a PNG or GIF to the local filesystem."""
         if self.gif_mode:
-            if self.top_selected.gif_image is not None:
+            if self.top_selected.gif_image(0) is not None:
                 filename = QFileDialog.getSaveFileName()[0]
-                GifHelper.save(self.top_selected.gif_image, filename)
+                GifHelper.save(self.top_selected.gif_image(0), filename)
         elif self.top_selected.tile is not None:
             filename = QFileDialog.getSaveFileName()[0]
             self.top_selected.tile.get_big_image().save(filename, format='png')
