@@ -228,6 +228,7 @@ class QudObjectWiki(QudObjectProps):
     @property
     def gif(self) -> Union[str, None]:
         """The gif image filename."""
+        # TODO: Remove this and also remove from config.yml
         if self.has_gif_tile():
             path = self.image
             if path is not None and path != 'none':
@@ -308,6 +309,22 @@ class QudObjectWiki(QudObjectProps):
         effects = super().oneat
         if effects is not None:
             return ' </br>'.join(f'{{{{OnEat ID to name|{effect}}}}}' for effect in effects)
+
+    @property
+    def overrideimages(self) -> Union[str, None]:
+        if self.number_of_tiles() > 1:
+            metadata = self.tiles_and_metadata()[1]
+            val = '{{altimage start}}'
+            for meta in metadata:
+                val += '{{altimage'
+                val += f' | {meta.filename}'
+                if meta.is_animated():
+                    val += f' | gif = {meta.gif_filename}'
+                if meta.type is not None:
+                    val += f' | type = {meta.type}'
+                val += '}}'
+            val += '{{altimage end}}'
+            return val
 
     @property
     def preservedinto(self) -> Union[str, None]:
