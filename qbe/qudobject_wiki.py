@@ -36,21 +36,27 @@ class QudObjectWiki(QudObjectProps):
         for field in fields:
             if field == 'title':
                 continue
-            if flavor == 'Corpse' and field in ['hunger', 'image']:
-                continue
-            else:
-                attrib = getattr(self, field)
-                if attrib is not None:
-                    # do some final cleanup before sending to template
-                    if field == 'renderstr':
-                        # } character messes with mediawiki template rendering
-                        attrib = attrib.replace('}', '&#125;')
-                    # replace Booleans with wiki-compatible 'yes' and 'no'
-                    if isinstance(attrib, bool):
-                        attrib = 'yes' if attrib else 'no'
-                    elif isinstance(attrib, list):
-                        attrib = ', '.join(attrib)
-                    template += f"| {field} = {attrib}\n"
+            if flavor == 'Corpse':
+                if field == 'hunger':
+                    continue
+                if field == 'image':
+                    if not (self.is_specified('part_Render_Tile')
+                            or self.is_specified('part_Render_TileColor')
+                            or self.is_specified('part_Render_ColorString')
+                            or self.is_specified('part_Render_DetailColor')):
+                        continue  # uses default corpse tile/colors, so don't add image field
+            attrib = getattr(self, field)
+            if attrib is not None:
+                # do some final cleanup before sending to template
+                if field == 'renderstr':
+                    # } character messes with mediawiki template rendering
+                    attrib = attrib.replace('}', '&#125;')
+                # replace Booleans with wiki-compatible 'yes' and 'no'
+                if isinstance(attrib, bool):
+                    attrib = 'yes' if attrib else 'no'
+                elif isinstance(attrib, list):
+                    attrib = ', '.join(attrib)
+                template += f"| {field} = {attrib}\n"
         category = self.wiki_category()
         if category:
             template += f"| categories = {category}\n"
