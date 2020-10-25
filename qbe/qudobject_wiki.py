@@ -228,7 +228,8 @@ class QudObjectWiki(QudObjectProps):
     @property
     def gif(self) -> Union[str, None]:
         """The gif image filename."""
-        # TODO: Remove this and also remove from config.yml
+        # TODO: This property is deprecated and should not be used. It has been replaced by overridetiles.
+        #       This should eventually be removed, deleted from config.yml, and no longer handled in explorer.py
         if self.has_gif_tile():
             path = self.image
             if path is not None and path != 'none':
@@ -243,7 +244,9 @@ class QudObjectWiki(QudObjectProps):
 
     @property
     def image(self) -> Union[str, None]:
-        """The image filename. May be specified in our config."""
+        """The image filename for the object's primary image. May be specified in our config.
+        If the object has additional alternate images, their filenames will be derived from
+        this one."""
         if self.name in IMAGE_OVERRIDES:
             return IMAGE_OVERRIDES[self.name]
         elif self.has_tile():
@@ -312,6 +315,11 @@ class QudObjectWiki(QudObjectProps):
 
     @property
     def overrideimages(self) -> Union[str, None]:
+        """A full list of images for this object, expressed as individual {{altimage}} templates for each
+        image (and, if applicable, for that image's corresponding GIF). This property is returned
+        for any object that has more than one tile variant. On the wiki, this property is used to
+        replace the single image that is usually shown alone for an object with an image carousel that
+        can rotate through all of the images for this object."""
         if self.number_of_tiles() > 1:
             metadata = self.tiles_and_metadata()[1]
             val = '{{altimage start}}'
