@@ -227,9 +227,8 @@ class QudObjectWiki(QudObjectProps):
 
     @property
     def gif(self) -> Union[str, None]:
-        """The gif image filename."""
-        # TODO: This property is deprecated and should not be used. It has been replaced by overridetiles.
-        #       This should eventually be removed, deleted from config.yml, and no longer handled in explorer.py
+        """The gif image filename. On the wiki, this is used only by single-tile images with a GIF animation. For
+        multi-tile images, this field will be ignored in favor of overrideimages."""
         if self.has_gif_tile():
             path = self.image
             if path is not None and path != 'none':
