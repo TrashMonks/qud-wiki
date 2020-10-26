@@ -302,10 +302,13 @@ class QudObjectWiki(QudObjectProps):
         mutations = super().mutations
         if mutations is not None:
             templates = []
+            ego = self.attribute_helper_avg("Ego")
             for mutation, level in mutations:
-                templates.append(f'{{{{creature mutation|'
-                                 f'{{{{MutationID to name|{mutation}}}}}|{level}|'
-                                 f'{self.attribute_helper_avg("Ego")}}}}}')
+                mutation_entry = f'{{{{creature mutation|{{{{MutationID to name|{mutation}}}}}|{level}'
+                if ego is not None:
+                    mutation_entry += f'|{ego}'
+                mutation_entry += '}}'
+                templates.append(mutation_entry)
             return ' </br>'.join(templates)
 
     @property
