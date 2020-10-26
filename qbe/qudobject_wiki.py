@@ -150,6 +150,9 @@ class QudObjectWiki(QudObjectProps):
         """Remove trailing decimal points on values."""
         value = super().commerce
         if value is not None:
+            if self.part_Physics_Takeable is not None and self.part_Physics_Takeable == 'false':
+                if value == 0.01:
+                    return None  # ignore for non-takeable objects that inherit 0.01 from PhysicalObject
             return value if 0 < value < 1 else int(value)
 
     @property
