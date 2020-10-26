@@ -91,7 +91,9 @@ Wiki:
     Main: [Object]
     Data: [NaturalWeapon, NaturalMissileWeapon,
            Horns, Icy Vapor, Ghostly Flames, Quills, Carapace,
-           EaterStatue Gold, Techlight2, Techlight3, Tomb Techlight1]
+           EaterStatue Gold, Techlight2, Techlight3, Tomb Techlight1,
+           Holographic Shimscale Mangrove Tree, Holographic Dicalyptus Tree, Holographic Banana Tree,
+           Holographic Dogthorn Tree, Holographic Swarmshade Tree, Holographic Tanglewood Tree]
   Article overrides:
     # Manually specify the article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
@@ -237,6 +239,12 @@ Wiki:
     Tomb Techlight5: arc sconce (variation 10)
     Tomb Techlight6: arc sconce (variation 11)
     Inner Tomb Techlight6: arc sconce (variation 12)
+    Holographic Shimscale Mangrove Tree: Shimscale Mangrove Tree (holographic)
+    Holographic Dicalyptus Tree: Diacalyptus Tree (holographic)
+    Holographic Banana Tree: Banana Tree (holographic)
+    Holographic Dogthorn Tree: Dogthorn Tree (holographic)
+    Holographic Swarmshade Tree: Swarmshade Tree (holographic)
+    Holographic Tanglewood Tree: Tanglewood Tree (holographic)
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -617,12 +625,6 @@ Wiki:
       -BlueCampfire,
       /CryptPlaqueTutor,
       +Life Gate E,
-      -Holographic Shimscale Mangrove Tree,
-      -Holographic Dicalyptus Tree,
-      -Holographic Banana Tree,
-      -Holographic Dogthorn Tree,
-      -Holographic Swarmshade Tree,
-      -Holographic Tanglewood Tree,
       /Barathrumite Tinker,
       -Powerless Unicomputer,
       -Crypt Exit Teleporter,
