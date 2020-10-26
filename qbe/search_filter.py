@@ -51,10 +51,15 @@ class QudFilterModel(QSortFilterProxyModel):
 
     def _index_hasfield(self, idx, field: str) -> bool:
         """Perform 'hasfield:' search to match only objects with the specified wiki template field"""
+        target_val = None
+        if len(field.split('=')) == 2:
+            target_val = field.split('=')[1]
+            field = field.split('=')[0]
         qud_object = self.sourceModel().itemFromIndex(idx).data()
-        if getattr(qud_object, field) is not None:
+        object_val = getattr(qud_object, field)
+        if object_val is not None:
             if qud_object.is_wiki_eligible():
-                return True
+                return target_val is None or target_val == str(object_val)
         return False
 
     def _index_haspart(self, idx, part: str) -> bool:
