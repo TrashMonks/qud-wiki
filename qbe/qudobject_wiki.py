@@ -372,7 +372,10 @@ class QudObjectWiki(QudObjectProps):
     @property
     def title(self) -> Union[str, None]:
         """The display name of the item, with ampersands escaped."""
-        title = super().title
+        if self.name in config['Wiki']['Displayname overrides']:
+            title = config['Wiki']['Displayname overrides'][self.name]
+        else:
+            title = super().title
         if title is not None:
             title = displayname_to_wiki(title)
             return escape_ampersands(title)

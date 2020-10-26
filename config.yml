@@ -95,7 +95,7 @@ Wiki:
            Holographic Shimscale Mangrove Tree, Holographic Dicalyptus Tree, Holographic Banana Tree,
            Holographic Dogthorn Tree, Holographic Swarmshade Tree, Holographic Tanglewood Tree]
   Article overrides:
-    # Manually specify the article title to be used for an object ID
+    # Manually specify the wiki page article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
     ClockworkBeetle: Clockwork beetle
     Mamon: Mamon Souldrinker
@@ -245,6 +245,13 @@ Wiki:
     Holographic Dogthorn Tree: Dogthorn Tree (holographic)
     Holographic Swarmshade Tree: Swarmshade Tree (holographic)
     Holographic Tanglewood Tree: Tanglewood Tree (holographic)
+    HumanTinker1: village tinker
+    HumanApothecary1: village apothecary
+
+  Displayname overrides:
+    # Manually specify the wiki display name to be used for an object ID (returned in the 'title' property)
+    HumanTinker1: village tinker  # instead of 'human tinker'
+    HumanApothecary1: village apothecary  # instead of 'human apothecary'
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
