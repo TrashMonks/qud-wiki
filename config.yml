@@ -71,12 +71,27 @@ Templates:
     Hoarshroom: hoarshroom.png
     AppleMerchant: apple_farmer_merchant.png
     Clue_Putrescence: putrescence_clue.png
+    EaterStatue Gold: statue of eater gold.png
+    Techlight2: arc sconce variation 1.png
+    Techlight3: arc sconce variation 2.png
+    Tomb Techlight1: arc sconce variation 3.png
+    Tomb Techlight2: arc sconce variation 4.png
+    Inner Tomb Techlight2: arc sconce variation 5.png
+    Tomb Techlight3: arc sconce variation 6.png
+    Inner Tomb Techlight3: arc sconce variation 7.png
+    Tomb Techlight4: arc sconce variation 8.png
+    Inner Tomb Techlight4: arc sconce variation 9.png
+    Tomb Techlight5: arc sconce variation 10.png
+    Tomb Techlight6: arc sconce variation 11.png
+    Inner Tomb Techlight6: arc sconce variation 12.png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
   Article Namespaces:
     Main: [Object]
-    Data: [NaturalWeapon, NaturalMissileWeapon, Horns, Icy Vapor, Ghostly Flames, Quills, Carapace]
+    Data: [NaturalWeapon, NaturalMissileWeapon,
+           Horns, Icy Vapor, Ghostly Flames, Quills, Carapace,
+           EaterStatue Gold, Techlight2, Techlight3, Tomb Techlight1]
   Article overrides:
     # Manually specify the article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
@@ -86,6 +101,7 @@ Wiki:
     Wraith-Knight Templar: Wraith-Knight Templar
     Torch: Torch
     Flowers: Flowers (item)
+    EaterStatue Gold: Statue of Eater (gold)
     Hoarshroom: Luminous hoarshroom (food)
     MerchantAdvertisement: Advertisement
     Argyve's Data Disk: Argyve's data disk
@@ -209,6 +225,18 @@ Wiki:
     GhostPerch_Bite: bite (ghost perch)
     CryptFerret_Bite: vicious bite (crypt ferret)
     Burrowing Claws Claw: claw (Burrowing Claws)
+    Techlight2: arc sconce (variation 1)
+    Techlight3: arc sconce (variation 2)
+    Tomb Techlight1: arc sconce (variation 3)
+    Tomb Techlight2: arc sconce (variation 4)
+    Inner Tomb Techlight2: arc sconce (variation 5)
+    Tomb Techlight3: arc sconce (variation 6)
+    Inner Tomb Techlight3: arc sconce (variation 7)
+    Tomb Techlight4: arc sconce (variation 8)
+    Inner Tomb Techlight4: arc sconce (variation 9)
+    Tomb Techlight5: arc sconce (variation 10)
+    Tomb Techlight6: arc sconce (variation 11)
+    Inner Tomb Techlight6: arc sconce (variation 12)
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -343,8 +371,8 @@ Wiki:
       /GritGateForceProjector,
       -Torchpost,  # covered by Sconce, 'torch sconce'
       -Unlit Torchpost,  # ditto
-      -Techlight1,  # covered by Techlight2, 'arc sconce'
-      -Techlight3,  # ditto
+      -Inner Tomb Techlight5,
+      -Inner Tomb Techlight1,
       -Candelabra,  # covered by Half Candelabra, 'candelabra'
       /Wormhole,
       +Wormhole,
@@ -561,7 +589,6 @@ Wiki:
       +Industrial Fan,
       -Crematory Liquid-Cooled Unicomputer,
       -CatacombLight,
-      /Tomb Techlight1,
       /Sarcophagus,
       +Sarcophagus,
       +SultanSarcophagusE,
@@ -574,6 +601,7 @@ Wiki:
       +ConveyorPad,
       /EaterStatue,
       +EaterStatue,
+      +EaterStatue Gold,
       -Rubble Grey,
       -OpenShaft2,
       -TombShaft,
