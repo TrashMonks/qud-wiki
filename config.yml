@@ -252,6 +252,7 @@ Wiki:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title' property)
     HumanTinker1: village tinker  # instead of 'human tinker'
     HumanApothecary1: village apothecary  # instead of 'human apothecary'
+    MasterworkCarbine: scoped &Ymasterwork &ycarbine
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
