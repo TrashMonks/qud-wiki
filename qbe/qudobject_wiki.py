@@ -3,6 +3,7 @@ import re
 from typing import Union
 
 from qbe.config import config
+from hagadias.helpers import strip_oldstyle_qud_colors, strip_newstyle_qud_colors
 from hagadias.qudobject_props import QudObjectProps
 
 from qbe.helpers import displayname_to_wiki
@@ -176,6 +177,17 @@ class QudObjectWiki(QudObjectProps):
         if text is not None:
             text = displayname_to_wiki(text)
         return text
+
+    @property
+    def displayname(self) -> Union[str, None]:
+        """The display name of the object, with color codes removed. Used in QBE UI"""
+        if self.name in config['Wiki']['Displayname overrides']:
+            dname = config['Wiki']['Displayname overrides'][self.name]
+            dname = strip_oldstyle_qud_colors(dname)
+            dname = strip_newstyle_qud_colors(dname)
+        else:
+            dname = super().displayname
+        return dname
 
     @property
     def dynamictable(self) -> Union[str, None]:
