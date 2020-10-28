@@ -84,6 +84,10 @@ Templates:
     Tomb Techlight5: arc sconce variation 10.png
     Tomb Techlight6: arc sconce variation 11.png
     Inner Tomb Techlight6: arc sconce variation 12.png
+    Yellow Security Door: security door yellow.png
+    Green Security Door: security door green.png
+    Blue Security Door: security door blue.png
+    Purple Security Door: security door purple.png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -93,7 +97,8 @@ Wiki:
            Horns, Icy Vapor, Ghostly Flames, Quills, Carapace,
            EaterStatue Gold, Techlight2, Techlight3, Tomb Techlight1,
            Holographic Shimscale Mangrove Tree, Holographic Dicalyptus Tree, Holographic Banana Tree,
-           Holographic Dogthorn Tree, Holographic Swarmshade Tree, Holographic Tanglewood Tree]
+           Holographic Dogthorn Tree, Holographic Swarmshade Tree, Holographic Tanglewood Tree,
+           Yellow Security Door, Green Security Door, Blue Security Door, Purple Security Door]
   Article overrides:
     # Manually specify the wiki page article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
@@ -247,6 +252,10 @@ Wiki:
     Holographic Tanglewood Tree: Tanglewood Tree (holographic)
     HumanTinker1: village tinker
     HumanApothecary1: village apothecary
+    Yellow Security Door: security door (yellow)
+    Green Security Door: security door (green)
+    Blue Security Door: security door (blue)
+    Purple Security Door: security door (purple)
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title' property)
@@ -393,9 +402,17 @@ Wiki:
       /Wormhole,
       +Wormhole,
       /Door,
+      +Door,
       +Gate,
-      +Security Door,
-      +Autodoor,
+      '*Security Door',
+      -Security Door,
+      +Death Gate W,
+      +Life Gate W,
+      +Glass Door W,
+      +Tinted Glass Door W,
+      +Troll Door 1,
+      /Crypt Door,
+      +Crypt Door,
       -Bridge,
       /Walkway,
       -WoodFloor,
@@ -632,7 +649,6 @@ Wiki:
       -Crypt Sitter Special,
       -BlueCampfire,
       /CryptPlaqueTutor,
-      +Life Gate E,
       /Barathrumite Tinker,
       -Powerless Unicomputer,
       -Crypt Exit Teleporter,
@@ -712,6 +728,7 @@ Wiki:
                   Polyhedral Rings, Silver Rondure, Blood-stained neck-ring]
     Security Cards: [Security Card]
     Furniture: [Furniture]
+    Doors: [Door, Archway]
     Chairs: [BaseChair, FoldingChair]
     Beds: [BaseBed, Hammock, Bedroll]
     Walls: [Wall]
