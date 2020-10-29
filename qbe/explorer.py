@@ -358,6 +358,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def set_icon(self, index_in_currently_selected: int, icon: str = '✅', update_ui: bool = False):
         cell = self.get_icon_cell(index_in_currently_selected)
         cell.setText(icon)
+        if icon == '⮿':
+            cell.setForeground(QColor.fromRgb(100, 100, 100))  # grey
         if update_ui is True:
             self.app.processEvents()
 
@@ -423,9 +425,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         tile_matches.setText('✅')
                     else:
                         tile_matches.setText('❌')
-                else:
+                elif qud_object.has_tile():
                     tile_exists.setText('❌')
-                    tile_matches.setText('-')
+                    tile_matches.setText('❌')
+                else:
+                    tile_exists.setText('⮿')
+                    tile_exists.setForeground(QColor.fromRgb(100, 100, 100))  # grey
+                    tile_matches.setText('⮿')
+                    tile_matches.setForeground(QColor.fromRgb(100, 100, 100))
                 # Now check whether GIF or other images exist:
                 wiki_gif_file = site.images[qud_object.gif]
                 gif_exists = wiki_gif_file.exists
@@ -487,6 +494,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         extra_imgs_match.setText('-')
                     else:
                         extra_imgs_exist.setText('⮿')
+                        extra_imgs_exist.setForeground(QColor.fromRgb(100, 100, 100))  # grey
+                        extra_imgs_match.setText('⮿')
+                        extra_imgs_match.setForeground(QColor.fromRgb(100, 100, 100))  # grey
                 self.app.processEvents()
         # restore cursor and status bar text:
         if self.top_selected is not None:
@@ -626,6 +636,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         has_altimages = qud_object.number_of_tiles() > 1
         if not has_gif and not has_altimages:
             self.set_icon(extraimages_exist_cell_index, '⮿', True)
+            self.set_icon(extraimages_match_cell_index, '⮿', True)
             print(f'{qud_object.name} has no extra images, so not uploading.')
             return
 
@@ -634,7 +645,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         mismatch_ct = 0
 
         if has_gif:
-            # TODO: eliminate gif field and incorporate into overrideimages
             attempt_upload = False
             wiki_gif_file = site.images[qud_object.gif]
             if wiki_gif_file.exists:
@@ -724,7 +734,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     if image_b == tile.get_big_bytes():
                         print(f'Extra image "{meta.filename}" already exists and matches our version.')
                         success_ct += 1
-                        #continue
                     else:
                         self.set_icon(extraimages_match_cell_index, '❌', True)
                         QApplication.restoreOverrideCursor()  # temporarily restore mouse cursor for dialog
@@ -744,7 +753,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         QApplication.setOverrideCursor(Qt.WaitCursor)
                         if result == QDialog.Rejected:
                             mismatch_ct += 1
-                            #continue
                         else:
                             should_upload_image = True
 
@@ -800,7 +808,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         QApplication.setOverrideCursor(Qt.WaitCursor)
                         if result == QDialog.Rejected:
                             mismatch_ct += 1
-                            #continue
                         else:
                             should_upload_gif = True
 
@@ -836,9 +843,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # restore statusbar message
             self.statusbar.showMessage(statusbar_current)
 
-        if success_ct > 0 and fail_ct == 0:
-            if mismatch_ct == 0:
-                self.set_icon(extraimages_match_cell_index, '✅', True)
+        self.set_icon(extraimages_exist_cell_index, '✅')
+        if success_ct > 0 and fail_ct == 0 and mismatch_ct == 0:
+            self.set_icon(extraimages_match_cell_index, '✅', True)
         else:
             self.set_icon(extraimages_match_cell_index, '❌', True)
 
