@@ -88,17 +88,52 @@ Templates:
     Green Security Door: security door green.png
     Blue Security Door: security door blue.png
     Purple Security Door: security door purple.png
+    BookSign1: sign (book).png
+    BottleSign1: sign (honey).png
+    BootSign1: sign (boot).png
+    HatSign1: sign (hat).png
+    GloveSign1: sign (glove).png
+    CloakSign1: sign (cloak).png
+    ArmorSign1: sign (armor).png
+    GunSign1: sign (gun).png
+    DiscSign1: sign (data disc).png
+    ArgyveSign: sign (Argyve).png
+    JoppaNorthSign: sign (Joppa graveyard).png
+    EzraSign: sign (Ezra).png
+    TamSign: sign (Tam).png
+    YurlSign: sign (Yurl).png
+    YlaSign: sign (Yla).png
+    SixshrewSign: sign (Sixshrew).png
+    LiquidSign1: sign (ichor).png
+    JewelSign1: sign (jeweler).png
+    HookahSign1: sign (hookah).png
+    GrenadeSign1: sign (bombs).png
+    PepperSign1: sign (pepper).png
+    FoodSign1: sign (food).png
+    PreserveSign1: sign (preserves).png
+    WineSign1: sign (wine).png
+    JoppaMillSign: sign (Joppa mill).png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
   Article Namespaces:
     Main: [Object]
     Data: [NaturalWeapon, NaturalMissileWeapon,
+           # mutated equipment
            Horns, Icy Vapor, Ghostly Flames, Quills, Carapace,
-           EaterStatue Gold, Techlight2, Techlight3, Tomb Techlight1,
+           # eater statues
+           EaterStatue Gold,
+           # tech lights
+           Techlight2, Techlight3, Tomb Techlight1,
+           # holographic trees
            Holographic Shimscale Mangrove Tree, Holographic Dicalyptus Tree, Holographic Banana Tree,
            Holographic Dogthorn Tree, Holographic Swarmshade Tree, Holographic Tanglewood Tree,
-           Yellow Security Door, Green Security Door, Blue Security Door, Purple Security Door]
+           # security doors
+           Yellow Security Door, Green Security Door, Blue Security Door, Purple Security Door,
+           # signs
+           BookSign1, BottleSign1, BootSign1, HatSign1, GloveSign1, CloakSign1, ArmorSign1, GunSign1, DiscSign1,
+           ArgyveSign, JoppaNorthSign, EzraSign, TamSign, YurlSign, YlaSign, SixshrewSign, LiquidSign1, JewelSign1,
+           HookahSign1, GrenadeSign1, PepperSign1, FoodSign1, PreserveSign1, WineSign1, JoppaMillSign]
   Article overrides:
     # Manually specify the wiki page article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
@@ -256,6 +291,31 @@ Wiki:
     Green Security Door: security door (green)
     Blue Security Door: security door (blue)
     Purple Security Door: security door (purple)
+    BookSign1: sign (book)
+    BottleSign1: sign (honey)
+    BootSign1: sign (boot)
+    HatSign1: sign (hat)
+    GloveSign1: sign (glove)
+    CloakSign1: sign (cloak)
+    ArmorSign1: sign (armor)
+    GunSign1: sign (gun)
+    DiscSign1: sign (data disc)
+    ArgyveSign: sign (Argyve)
+    JoppaNorthSign: sign (Joppa graveyard)
+    EzraSign: sign (Ezra)
+    TamSign: sign (Tam)
+    YurlSign: sign (Yurl)
+    YlaSign: sign (Yla)
+    SixshrewSign: sign (Sixshrew)
+    LiquidSign1: sign (ichor)
+    JewelSign1: sign (jeweler)
+    HookahSign1: sign (hookah)
+    GrenadeSign1: sign (bombs)
+    PepperSign1: sign (pepper)
+    FoodSign1: sign (food)
+    PreserveSign1: sign (preserves)
+    WineSign1: sign (wine)
+    JoppaMillSign: sign (Joppa mill)
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title' property)
@@ -456,8 +516,44 @@ Wiki:
       +Clue_VillageStores,
       /Tombstone,
       +Tombstone,
-      /Sign,  # needs article with all the sign tiles in it
-      +AppleSign1,
+      -Sign,  # parent object
+      -AppleSign2,  # 2/3 variants of each sign design
+      -AppleSign3,
+      -BookSign2,
+      -BookSign3,
+      -BottleSign2,
+      -BottleSign3,
+      -BootSign2,
+      -BootSign3,
+      -HatSign2,
+      -HatSign3,
+      -GloveSign2,
+      -GloveSign3,
+      -CloakSign2,
+      -CloakSign3,
+      -ArmorSign2,
+      -ArmorSign3,
+      -GunSign2,
+      -GunSign3,
+      -DiscSign2,
+      -DiscSign3,
+      -LiquidSign2,
+      -LiquidSign3,
+      -JewelSign2,
+      -JewelSign3,
+      -HookahSign2,
+      -HookahSign3,
+      -GrenadeSign2,
+      -GrenadeSign3,
+      -PepperSign2,
+      -PepperSign3,
+      -FoodSign2,
+      -FoodSign3,
+      -PreserveSign2,
+      -PreserveSign3,
+      -WineSign2,
+      -WineSign3,
+      -PigSign,  # not in the game anywhere
       /SultanShrine,  # needs explanatory article
       -Switch,  # Switch itself is a BaseObject but not labeled as such
       -DisabledSwitch,  # cover in ElevatorSwitch article
@@ -729,6 +825,7 @@ Wiki:
     Security Cards: [Security Card]
     Furniture: [Furniture]
     Doors: [Door, Archway]
+    Signs: [Sign]
     Chairs: [BaseChair, FoldingChair]
     Beds: [BaseBed, Hammock, Bedroll]
     Walls: [Wall]
