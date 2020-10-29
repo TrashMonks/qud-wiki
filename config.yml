@@ -766,7 +766,10 @@ Wiki:
     Worms: [BaseWorm]
     Snails: [BaseSnail]
     Slugs: [BaseSlug]
-    Cybernetics: [BaseCybernetics2Equipment_1point, BaseCybernetics2Equipment_2point, BaseCybernetics2Equipment_3point, BaseCybernetics2Equipment_4point]
+    Cybernetics: [BaseCybernetics2Equipment_1point, BaseCybernetics2Equipment_2point, BaseCybernetics2Equipment_3point,
+                  BaseCybernetics2Equipment_4point, BaseCybernetics2Equipment_5point, BaseCybernetics2Equipment_6point,
+                  BaseCybernetics2Equipment_7point, BaseCybernetics2Equipment_8point, BaseCybernetics2Equipment_9point,
+                  BaseCybernetics2Equipment_10point]
     Merchants: [BaseMerchant]
     Turret Tinkers: [Turret Tinker]
     Cherubim: [Antelopes Cherub, Apes Cherub, Arachnids Cherub, Baboons Cherub, Baetyls Cherub, Bears Cherub, Birds Cherub, Cats Cherub, Crabs Cherub, Dogs Cherub, Equines Cherub, Fish Cherub, Flowers Cherub, Frogs Cherub, Fungi Cherub, Hermits Cherub, Insects Cherub, Mollusks Cherub, Newly Sentient Beings Cherub, Oozes Cherub, Prey Cherub, Reptiles Cherub, Robots Cherub, Roots Cherub, Strangers Cherub, Succulents Cherub, Swine Cherub, Tortoises Cherub, Trees Cherub, Urchins Cherub, Vines Cherub, Winged Mammals Cherub, Worms Cherub]
