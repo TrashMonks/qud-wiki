@@ -486,7 +486,7 @@ Wiki:
       -GritGateFusionPumpingStation,
       -GritGateHydraulicIrrigator,
       /GritGateForceProjector,
-      -Torchpost,  # covered by Sconce, 'torch sconce'
+      -Sconce,  # covered by Torchpost, 'torch sconce'
       -Unlit Torchpost,  # ditto
       -Inner Tomb Techlight5,
       -Inner Tomb Techlight1,
