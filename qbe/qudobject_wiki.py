@@ -104,6 +104,8 @@ class QudObjectWiki(QudObjectProps):
         """Return whether this object should be included in the wiki."""
         if self.name == 'Argyve\'s Data Disk Encoded':
             return True  # special case because of '['
+        if self.name == 'DefaultFist':
+            return True  # special case because this is the player's fist
         if self.is_specified('tag_BaseObject'):
             return False
         if self.displayname == '' or '[' in self.displayname:
