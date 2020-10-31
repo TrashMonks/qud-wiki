@@ -113,6 +113,17 @@ Templates:
     PreserveSign1: sign (preserves).png
     WineSign1: sign (wine).png
     JoppaMillSign: sign (Joppa mill).png
+    SultanWall_Period1: carved stone from the sultanate (first period).png
+    SultanWall_Period2: carved stone from the sultanate (second period).png
+    SultanWall_Period3: carved stone from the sultanate (third period).png
+    SultanWall_Period4: carved stone from the sultanate (fourth period).png
+    SultanWall_Period5: carved stone from the sultanate (fifth period).png
+    SultanWall_Ornate_Period5: carved stone from the sultanate (fifth period, ornate).png
+    InnerSultanWall_Period1: gilded marble from the sultanate (first period).png
+    InnerSultanWall_Period2: gilded marble from the sultanate (second period).png
+    InnerSultanWall_Period3: gilded marble from the sultanate (third period).png
+    InnerSultanWall_Period4: gilded marble from the sultanate (fourth period).png
+    InnerSultanWall_Period5: gilded marble from the sultanate (fifth period).png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -316,12 +327,34 @@ Wiki:
     PreserveSign1: sign (preserves)
     WineSign1: sign (wine)
     JoppaMillSign: sign (Joppa mill)
+    SultanWall_Period1: carved stone from the sultanate (first period)
+    SultanWall_Period2: carved stone from the sultanate (second period)
+    SultanWall_Period3: carved stone from the sultanate (third period)
+    SultanWall_Period4: carved stone from the sultanate (fourth period)
+    SultanWall_Period5: carved stone from the sultanate (fifth period)
+    SultanWall_Ornate_Period5: carved stone from the sultanate (fifth period, ornate)
+    InnerSultanWall_Period1: gilded marble from the sultanate (first period)
+    InnerSultanWall_Period2: gilded marble from the sultanate (second period)
+    InnerSultanWall_Period3: gilded marble from the sultanate (third period)
+    InnerSultanWall_Period4: gilded marble from the sultanate (fourth period)
+    InnerSultanWall_Period5: gilded marble from the sultanate (fifth period)
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title' property)
     HumanTinker1: village tinker  # instead of 'human tinker'
     HumanApothecary1: village apothecary  # instead of 'human apothecary'
     MasterworkCarbine: scoped &Ymasterwork &ycarbine
+    SultanWall_Period1: carved stone from the sultanate of *Sultan*
+    SultanWall_Period2: carved stone from the sultanate of *Sultan*
+    SultanWall_Period3: carved stone from the sultanate of *Sultan*
+    SultanWall_Period4: carved stone from the sultanate of *Sultan*
+    SultanWall_Period5: carved stone from the sultanate of *Sultan*
+    SultanWall_Ornate_Period5: carved stone from the sultanate of *Sultan*
+    InnerSultanWall_Period1: gilded marble from the sultanate of *Sultan*
+    InnerSultanWall_Period2: gilded marble from the sultanate of *Sultan*
+    InnerSultanWall_Period3: gilded marble from the sultanate of *Sultan*
+    InnerSultanWall_Period4: gilded marble from the sultanate of *Sultan*
+    InnerSultanWall_Period5: gilded marble from the sultanate of *Sultan*
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -704,6 +737,19 @@ Wiki:
       +HalfWall,
       -WalltrapFireCrematory,
       /BaseSultanWall,
+      +SultanWall_Period1,
+      +SultanWall_Period2,
+      +SultanWall_Period3,
+      +SultanWall_Period4,
+      +SultanWall_Period5,
+      +SultanWall_Ornate_Period5,
+      +SultanWall_Period6,
+      +InnerSultanWall_Period1,
+      +InnerSultanWall_Period2,
+      +InnerSultanWall_Period3,
+      +InnerSultanWall_Period4,
+      +InnerSultanWall_Period5,
+      +InnerSultanWall_Period6,
       /CryptWall,
       +CryptWall,
       /Fusion Pumping Station,
