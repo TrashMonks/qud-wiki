@@ -210,6 +210,8 @@ class QudObjectWiki(QudObjectProps):
     def extra(self) -> Union[str, None]:
         """Any other features that do not have an associated variable."""
         fields = []
+        if self.featureweightinfo == 'no':  # put weight in extrainfo if it's not featured
+            fields.append(('weight', self.weight))
         extrafields = config['Templates']['ExtraFields']
         for field in extrafields:
             attrib = getattr(self, field)
@@ -234,6 +236,18 @@ class QudObjectWiki(QudObjectProps):
                     template += '</br>'
                 template += f'{{{{creature faction|{{{{FactionID to name|{faction}}}}}|{value}}}}}'
             return template
+
+    @property
+    def featureweightinfo(self) -> Union[str, None]:
+        """'no' if the weight should be shown as extra data. 'yes' if the weight should be featured near the
+        top of the wiki infobox. Weight is featured only for takeable objects (i.e. items). For other things it
+        plays a much less prominent role only for explosion calculations, getting stuck in webs, etc."""
+        w = self.weight
+        if w is not None:
+            if self.part_Physics_Takeable is None or self.part_Physics_Takeable == 'true':
+                return 'yes'
+            else:
+                return 'no'
 
     @property
     def gasemitted(self) -> Union[str, None]:
