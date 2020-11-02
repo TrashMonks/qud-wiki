@@ -30,7 +30,7 @@ Templates:
      cookeffect, eatdesc, ismeat, isplant, isfungus, exoticfood, illoneat, oneat,
      corpse, corpsechance, role, extra, inheritingfrom, dynamictable,
      quickness, movespeed, strength, agility, toughness, intelligence, willpower, ego,
-     acid, electric, cold, heat, poison,
+     acid, electric, cold, heat, poison, xpvalue, xptier,
      reputationbonus, faction, wornon, usesslots, demeanor, gender, pronouns,
      inventory, skills, mutations, modcount, mods, desc]
   ExtraFields:
