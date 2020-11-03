@@ -30,7 +30,8 @@ class QudTreeView(QTreeView):
         self.context_action_upload_tile = QAction('Upload tiles for selected objects',
                                                   self.tree_menu)
         self.tree_menu.addAction(self.context_action_upload_tile)
-        self.context_action_upload_extra = QAction('Upload extra image(s) for selected objects', self.tree_menu)
+        self.context_action_upload_extra = QAction('Upload extra image(s) for selected objects',
+                                                   self.tree_menu)
         self.tree_menu.addAction(self.context_action_upload_extra)
         self.context_action_diff = QAction('Diff template against wiki', self.tree_menu)
         self.tree_menu.addAction(self.context_action_diff)

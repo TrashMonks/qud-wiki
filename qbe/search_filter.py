@@ -50,7 +50,7 @@ class QudFilterModel(QSortFilterProxyModel):
         return False
 
     def _index_hasfield(self, idx, field: str) -> bool:
-        """Perform 'hasfield:' search to match only objects with the specified wiki template field"""
+        """Perform 'hasfield:' search; match only objects with the specified wiki template field"""
         target_val = None
         if len(field.split('=')) == 2:
             target_val = field.split('=')[1]
@@ -63,7 +63,7 @@ class QudFilterModel(QSortFilterProxyModel):
         return False
 
     def _index_haspart(self, idx, part: str) -> bool:
-        """Perform 'haspart:' search to match only objects with the specified part (case sensitive)"""
+        """Perform 'haspart:' search; match only objects with the specified part (case sensitive)"""
         qud_object = self.sourceModel().itemFromIndex(idx).data()
         if getattr(qud_object, f'part_{part}') is not None:
             if qud_object.is_wiki_eligible():
@@ -71,7 +71,7 @@ class QudFilterModel(QSortFilterProxyModel):
         return False
 
     def _index_hastag(self, idx, tag: str) -> bool:
-        """Perform 'hastag:' search to match only objects with the specified tag (case sensitive)"""
+        """Perform 'hastag:' search; match only objects with the specified tag (case sensitive)"""
         qud_object = self.sourceModel().itemFromIndex(idx).data()
         if getattr(qud_object, f'tag_{tag}') is not None:
             if qud_object.is_wiki_eligible():

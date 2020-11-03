@@ -155,7 +155,8 @@ class QudObjectWiki(QudObjectProps):
         if value is not None:
             if self.part_Physics_Takeable is not None and self.part_Physics_Takeable == 'false':
                 if value == 0.01:
-                    return None  # ignore for non-takeable objects that inherit 0.01 from PhysicalObject
+                    # ignore for non-takeable objects that inherit 0.01 from PhysicalObject
+                    return None
             return value if 0 < value < 1 else int(value)
 
     @property
@@ -239,9 +240,10 @@ class QudObjectWiki(QudObjectProps):
 
     @property
     def featureweightinfo(self) -> Union[str, None]:
-        """'no' if the weight should be shown as extra data. 'yes' if the weight should be featured near the
-        top of the wiki infobox. Weight is featured only for takeable objects (i.e. items). For other things it
-        plays a much less prominent role only for explosion calculations, getting stuck in webs, etc."""
+        """'no' if the weight should be shown as extra data. 'yes' if the weight should be
+        featured near the top of the wiki infobox. Weight is featured only for takeable objects
+        (i.e. items). For other things it plays a much less prominent role only for explosion
+        calculations, getting stuck in webs, etc. """
         w = self.weight
         if w is not None:
             if self.part_Physics_Takeable is None or self.part_Physics_Takeable == 'true':
@@ -258,8 +260,9 @@ class QudObjectWiki(QudObjectProps):
 
     @property
     def gif(self) -> Union[str, None]:
-        """The gif image filename. On the wiki, this is used only by single-tile images with a GIF animation. For
-        multi-tile images, this field will be ignored in favor of overrideimages."""
+        """The gif image filename. On the wiki, this is used only by single-tile images with a
+        GIF animation. For multi-tile images, this field will be ignored in favor of
+        overrideimages."""
         if self.has_gif_tile():
             path = self.image
             if path is not None and path != 'none':
@@ -332,7 +335,8 @@ class QudObjectWiki(QudObjectProps):
             templates = []
             ego = self.attribute_helper_avg("Ego")
             for mutation, level in mutations:
-                mutation_entry = f'{{{{creature mutation|{{{{MutationID to name|{mutation}}}}}|{level}'
+                mutation_entry = \
+                    f'{{{{creature mutation|{{{{MutationID to name|{mutation}}}}}|{level}'
                 if ego is not None:
                     mutation_entry += f'|{ego}'
                 mutation_entry += '}}'
@@ -348,11 +352,11 @@ class QudObjectWiki(QudObjectProps):
 
     @property
     def overrideimages(self) -> Union[str, None]:
-        """A full list of images for this object, expressed as individual {{altimage}} templates for each
-        image (and, if applicable, for that image's corresponding GIF). This property is returned
-        for any object that has more than one tile variant. On the wiki, this property is used to
-        replace the single image that is usually shown alone for an object with an image carousel that
-        can rotate through all of the images for this object."""
+        """A full list of images for this object, expressed as individual {{altimage}} templates
+        for each image (and, if applicable, for that image's corresponding GIF). This property is
+        returned for any object that has more than one tile variant. On the wiki, this property
+        is used to replace the single image that is usually shown alone for an object with an
+        image carousel that can rotate through all of the images for this object. """
         if self.number_of_tiles() > 1:
             metadata = self.tiles_and_metadata()[1]
             val = '{{altimage start}}'
