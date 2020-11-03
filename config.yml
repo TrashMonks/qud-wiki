@@ -341,6 +341,7 @@ Wiki:
     InnerSultanWall_Period3: gilded marble from the sultanate (third period)
     InnerSultanWall_Period4: gilded marble from the sultanate (fourth period)
     InnerSultanWall_Period5: gilded marble from the sultanate (fifth period)
+    Space-Time Vortex: space-time vortex (phenomenon)
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title'
