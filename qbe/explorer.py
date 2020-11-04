@@ -22,7 +22,7 @@ from qbe.search_filter import QudFilterModel
 from qbe.qudobject_wiki import QudObjectWiki
 from qbe.tree_view import QudTreeView
 from qbe.wiki_config import site, wiki_config
-from qbe.wiki_page import TEMPLATE_RE, TEMPLATE_RE_CORE, WikiPage
+from qbe.wiki_page import TEMPLATE_RE, TEMPLATE_RE_OLD, WikiPage
 
 HEADER_LABELS = ['Object Name', 'Display Name', 'Wiki Title Override', 'Article?',
                  'Article matches?', 'Image?', 'Image matches?', 'Extra images?',
@@ -901,26 +901,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         wiki_txt = article.page.text().strip()
         # Capture TEMPLATE_RE from wiki page, but ignore things outside the template.
         template_re = '(?:.*?)' + TEMPLATE_RE + '(?:.*)'
-        template_re_qbe = '(?:.*?)' + TEMPLATE_RE_CORE + '(?:.*)'
+        template_re_old = '(?:.*?)' + TEMPLATE_RE_OLD + '(?:.*)'
         wiki_pattern = re.compile(template_re, re.MULTILINE | re.DOTALL)
-        qbe_pattern = re.compile(template_re_qbe, re.MULTILINE | re.DOTALL)
+        basic_pattern = re.compile(template_re_old, re.MULTILINE | re.DOTALL)
         msg_box = QMessageBox()
         msg_box.setTextFormat(Qt.RichText)
         if txt in wiki_txt:
             msg_box.setText("No template differences detected.")
             match_icon = '✅'
         else:
-            m = qbe_pattern.match(txt)
+            m = basic_pattern.match(txt)
             m_wiki = wiki_pattern.match(wiki_txt)
             if m is None:
                 msg_box.setText('Unable to compare because the QBE template'
                                 ' is not formatted as expected.')
                 match_icon = '-'
             elif m_wiki is None:
-                msg_box.setText('Unable to compare because the wiki template'
-                                ' is not formatted as expected.')
-                match_icon = '-'
-            else:
+                # fallback to old logic (doesn't require START QBE and END QBE tags)
+                m_wiki = basic_pattern.match(wiki_txt)
+                if m_wiki is None:
+                    msg_box.setText('Unable to compare because the wiki template'
+                                    ' is not formatted as expected.')
+                    match_icon = '-'
+            if None not in [m, m_wiki]:
                 lines = m.group(1).splitlines()
                 wiki_lines = m_wiki.group(1).splitlines()
                 diff_lines = ''
