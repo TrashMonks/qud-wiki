@@ -22,7 +22,7 @@ from qbe.search_filter import QudFilterModel
 from qbe.qudobject_wiki import QudObjectWiki
 from qbe.tree_view import QudTreeView
 from qbe.wiki_config import site, wiki_config
-from qbe.wiki_page import TEMPLATE_RE, WikiPage
+from qbe.wiki_page import TEMPLATE_RE, TEMPLATE_RE_CORE, WikiPage
 
 HEADER_LABELS = ['Object Name', 'Display Name', 'Wiki Title Override', 'Article?',
                  'Article matches?', 'Image?', 'Image matches?', 'Extra images?',
@@ -901,8 +901,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         wiki_txt = article.page.text().strip()
         # Capture TEMPLATE_RE from wiki page, but ignore things outside the template.
         template_re = '(?:.*?)' + TEMPLATE_RE + '(?:.*)'
-        qbe_pattern = re.compile(template_re,
-                                 re.MULTILINE | re.DOTALL)
+        template_re_qbe = '(?:.*?)' + TEMPLATE_RE_CORE + '(?:.*)'
+        wiki_pattern = re.compile(template_re, re.MULTILINE | re.DOTALL)
+        qbe_pattern = re.compile(template_re_qbe, re.MULTILINE | re.DOTALL)
         msg_box = QMessageBox()
         msg_box.setTextFormat(Qt.RichText)
         if txt in wiki_txt:
@@ -910,7 +911,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             match_icon = '✅'
         else:
             m = qbe_pattern.match(txt)
-            m_wiki = qbe_pattern.match(wiki_txt)
+            m_wiki = wiki_pattern.match(wiki_txt)
             if m is None:
                 msg_box.setText('Unable to compare because the QBE template'
                                 ' is not formatted as expected.')
