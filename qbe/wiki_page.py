@@ -45,6 +45,7 @@ class WikiPage:
         self.final_string = FINAL_STR
         # Use base TEMPLATE_RE but surrounding text around template is also captured
         self.template_re = '(.*?)' + TEMPLATE_RE + '(.*)'
+        self.template_re_old = '(.*?)' + TEMPLATE_RE_OLD + '(.*)'
         # is this page name overridden?
         if qud_object.name in config['Wiki']['Article overrides']:
             article_name = config['Wiki']['Article overrides'][qud_object.name]
@@ -71,8 +72,11 @@ class WikiPage:
             # existing template
             match = re.match(self.template_re, self.page.text(), re.MULTILINE | re.DOTALL)
             if match is None:
-                raise ValueError('Article exists, but existing format not recognized. '
-                                 'Try a manual edit first.')
+                # fall back to old regex that doesn't require START QBE and END QBE tags
+                match = re.match(self.template_re_old, self.page.text(), re.MULTILINE | re.DOTALL)
+                if match is None:
+                    raise ValueError('Article exists, but existing format not recognized. '
+                                     'Try a manual edit first.')
             if match.group(1) is not None:
                 start = match.end(1)
             else:
