@@ -125,7 +125,6 @@ Templates:
     InnerSultanWall_Period3: gilded marble from the sultanate (third period).png
     InnerSultanWall_Period4: gilded marble from the sultanate (fourth period).png
     InnerSultanWall_Period5: gilded marble from the sultanate (fifth period).png
-    TinkerTurret: dynamic turret.png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -148,9 +147,7 @@ Wiki:
            BookSign1, BottleSign1, BootSign1, HatSign1, GloveSign1, CloakSign1, ArmorSign1,
            GunSign1, DiscSign1, ArgyveSign, JoppaNorthSign, EzraSign, TamSign, YurlSign, YlaSign,
            SixshrewSign, LiquidSign1, JewelSign1, HookahSign1, GrenadeSign1, PepperSign1, FoodSign1,
-           PreserveSign1, WineSign1, JoppaMillSign,
-           # dynamic objects
-           TinkerTurret]
+           PreserveSign1, WineSign1, JoppaMillSign]
   Article overrides:
     # Manually specify the wiki page article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
@@ -345,7 +342,6 @@ Wiki:
     InnerSultanWall_Period4: gilded marble from the sultanate (fourth period)
     InnerSultanWall_Period5: gilded marble from the sultanate (fifth period)
     Space-Time Vortex: space-time vortex (phenomenon)
-    TinkerTurret: dynamic turret
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title'
@@ -366,7 +362,6 @@ Wiki:
     InnerSultanWall_Period3: gilded marble from the sultanate of *Sultan*
     InnerSultanWall_Period4: gilded marble from the sultanate of *Sultan*
     InnerSultanWall_Period5: gilded marble from the sultanate of *Sultan*
-    TinkerTurret: '*weapon* turret'
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
