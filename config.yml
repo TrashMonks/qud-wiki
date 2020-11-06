@@ -899,6 +899,7 @@ Wiki:
     Dogs: [BaseDog]
     Cats: [BaseCat]
     Robots: [BaseRobot]  # any creatures that are in the Robots faction will be categorized with [[Robots (Faction)]]
+    Turrets: [HostileTurret]
     Bears: [BaseBear]
     Crabs: [BaseCrab]
     Snapjaws: [BaseSnapjaw]
