@@ -859,7 +859,8 @@ Wiki:
     Energy Cells: [Energy Cell]
     Liquid Fueled Energy Cells: [Liquid Fueled Energy Cell]
     Thrown Weapons: [BaseThrownWeapon, Geomagnetic Disc, ThrowingAxe, CastNet, SmallBoulder,
-                     MediumBoulder, LargeBoulder, Small Stone]
+                     MediumBoulder, LargeBoulder, Small Stone, Large Stone, Poison-tipped Spear,
+                     Molting Basilisk Husk]
     Grenades: [Grenade]
     Trinkets: [Trinket]
     Scrap: [Scrap]
