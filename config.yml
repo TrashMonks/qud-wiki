@@ -817,7 +817,8 @@ Wiki:
     Weapons: [MeleeWeapon, MissileWeapon]
     Melee Weapons: [MeleeWeapon]
     Ammo: [Projectile]
-    Arrows: [Wooden Arrow, Steel Arrow, Boomrose Arrow]
+    Arrows: [Wooden Arrow, Steel Arrow, Boomrose Arrow, Carbide Arrow, Folded Carbide Arrow,
+             Fullerite Arrow, Crysteel Arrow, Flawless Crysteel Arrow, Zetachrome Arrow]
     Cudgels: [BaseCudgel, Prayer Rod, Stun Rod, Nanopneumatic Jackhammer, Grandfather Horn,
               Billowing Conch of the Aji]
     Short Blades: [BaseDagger, Vibro Dagger, Gaslight Dagger]
