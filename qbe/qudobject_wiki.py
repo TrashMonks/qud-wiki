@@ -30,8 +30,8 @@ class QudObjectWiki(QudObjectProps):
         gamever is a string giving the version of Caves of Qud."""
         fields = config['Templates']['Fields']
         flavor = self.wiki_template_type()
-        before_title = "{{Qud text|"
-        after_title = "}}"
+        before_title = '{{Qud text|'
+        after_title = '}}'
         template = '{{' + f'{flavor}\n'
         template += "| title = " + before_title + self.title + after_title + "\n"
         for field in fields:
@@ -57,11 +57,13 @@ class QudObjectWiki(QudObjectProps):
                     attrib = 'yes' if attrib else 'no'
                 elif isinstance(attrib, list):
                     attrib = ', '.join(attrib)
-                template += f"| {field} = {attrib}\n"
+                template += f'| {field} = {attrib}\n'
         category = self.wiki_category()
         if category:
-            template += f"| categories = {category}\n"
-        template += "}}\n"
+            template += f'| categories = {category}\n'
+        if gamever != 'unknown':
+            template += f'| gameversion = {gamever}\n'
+        template += '}}\n'
         return template
 
     def wiki_template_type(self) -> str:

@@ -40,8 +40,7 @@ class WikiPage:
         self.EDITED_SUMMARY = f'Updated by {wiki_config["operator"]}' \
                               f' with game version {gamever}' \
                               f' using {config["Wikified name"]} {config["Version"]}'
-        self.as_of_patch = f'{{{{As Of Patch|{gamever}}}}}'
-        self.intro_string = INTRO_STR + '\n' + self.as_of_patch + '\n'
+        self.intro_string = INTRO_STR + '\n'
         self.final_string = FINAL_STR
         # Use base TEMPLATE_RE but surrounding text around template is also captured
         self.template_re = '(.*?)' + TEMPLATE_RE + '(.*)'
