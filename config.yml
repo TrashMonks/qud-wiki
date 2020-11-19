@@ -352,7 +352,7 @@ Wiki:
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title'
     # property). This should only be used if the object's display name in game is dynamically
-    # dynamically determined in such a way that it doesn't match the ObjectBlueprints.xml value,
+    # determined in such a way that it doesn't match the ObjectBlueprints.xml value,
     # or for abstract objects like 'village tinker' that will have a unique NPC name in-game.
     HumanTinker1: village tinker  # instead of 'human tinker'
     HumanApothecary1: village apothecary  # instead of 'human apothecary'
@@ -368,6 +368,8 @@ Wiki:
     InnerSultanWall_Period3: gilded marble from the sultanate of *Sultan*
     InnerSultanWall_Period4: gilded marble from the sultanate of *Sultan*
     InnerSultanWall_Period5: gilded marble from the sultanate of *Sultan*
+    RareChest: chest (rare)  # make chest names unique to avoid favilink conflicts on wiki
+    RelicChest: chest (relic)
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -813,7 +815,8 @@ Wiki:
       -Powerless Unicomputer,
       -Crypt Exit Teleporter,
       -MopangoPilgrim Still,
-      /Widget
+      /Widget,
+      +CaverCorpse
     ]
 
   Categories:
@@ -894,11 +897,13 @@ Wiki:
     Signs: [Sign]
     Chairs: [BaseChair, FoldingChair]
     Beds: [BaseBed, Hammock, Bedroll]
+    Chests: [Chest]
     Walls: [Wall]
     Wall Traps: [Walltrap]
     Gemstone Walls: [AgateWall, TopazWall, JasperWall, AmethystWall, SapphireWall, EmeraldWall,
                      PeridotWall]
     Statues: [Statue]
+    Loot Corpses: [FossilizedRemains, CaverCorpse]
     Plants: [Plant]
     Creatures: [Creature]
     Animals: [Animal]
