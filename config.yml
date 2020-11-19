@@ -126,6 +126,8 @@ Templates:
     InnerSultanWall_Period4: gilded marble from the sultanate (fourth period).png
     InnerSultanWall_Period5: gilded marble from the sultanate (fifth period).png
     SultanShrine: sultanshrine.png
+    RelicChest: chest (relic).png
+    RareChest: chest (rare).png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -344,6 +346,8 @@ Wiki:
     InnerSultanWall_Period5: gilded marble from the sultanate (fifth period)
     Space-Time Vortex: space-time vortex (phenomenon)
     SultanShrine: sultan shrine
+    RelicChest: chest (relic)
+    RareChest: chest (rare)
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title'
@@ -553,6 +557,9 @@ Wiki:
       +FossilizedRemains,
       +RustLocker,
       +MedLocker,
+      +Locker,
+      +RelicChest,
+      +RareChest,
       "*Weapon Rack",
       +CyberneticsRack,
       +Clue_VillageStores,
