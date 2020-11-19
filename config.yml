@@ -128,6 +128,7 @@ Templates:
     SultanShrine: sultanshrine.png
     RelicChest: chest (relic).png
     RareChest: chest (rare).png
+    SultanReliquaryW: sultan reliquary.png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -348,6 +349,7 @@ Wiki:
     SultanShrine: sultan shrine
     RelicChest: chest (relic)
     RareChest: chest (rare)
+    SultanReliquaryW: sultan reliquary
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title'
@@ -370,6 +372,7 @@ Wiki:
     InnerSultanWall_Period5: gilded marble from the sultanate of *Sultan*
     RareChest: chest (rare)  # make chest names unique to avoid favilink conflicts on wiki
     RelicChest: chest (relic)
+    SultanReliquaryW: sultan reliquary
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -789,7 +792,7 @@ Wiki:
       /Reliquary,
       +Reliquary,
       +Recoming Reliquary,
-      +SultanReliquaryE,
+      +SultanReliquaryW,
       +Scrapable Deposit Box 6,
       +ReshephsCrypt,
       /ConveyorPad,
@@ -897,7 +900,7 @@ Wiki:
     Signs: [Sign]
     Chairs: [BaseChair, FoldingChair]
     Beds: [BaseBed, Hammock, Bedroll]
-    Chests: [Chest]
+    Chests: [Chest, Reliquary]
     Walls: [Wall]
     Wall Traps: [Walltrap]
     Gemstone Walls: [AgateWall, TopazWall, JasperWall, AmethystWall, SapphireWall, EmeraldWall,
