@@ -125,6 +125,7 @@ Templates:
     InnerSultanWall_Period3: gilded marble from the sultanate (third period).png
     InnerSultanWall_Period4: gilded marble from the sultanate (fourth period).png
     InnerSultanWall_Period5: gilded marble from the sultanate (fifth period).png
+    SultanShrine: sultanshrine.png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -342,6 +343,7 @@ Wiki:
     InnerSultanWall_Period4: gilded marble from the sultanate (fourth period)
     InnerSultanWall_Period5: gilded marble from the sultanate (fifth period)
     Space-Time Vortex: space-time vortex (phenomenon)
+    SultanShrine: sultan shrine
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title'
@@ -594,7 +596,8 @@ Wiki:
       -WineSign2,
       -WineSign3,
       -PigSign,  # not in the game anywhere
-      /SultanShrine,  # needs explanatory article
+      /SultanShrine,
+      +SultanShrine,
       -Switch,  # Switch itself is a BaseObject but not labeled as such
       -DisabledSwitch,  # cover in ElevatorSwitch article
       /Alchemist Table,
