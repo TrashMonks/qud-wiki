@@ -356,6 +356,8 @@ Wiki:
     # property). This should only be used if the object's display name in game is dynamically
     # determined in such a way that it doesn't match the ObjectBlueprints.xml value,
     # or for abstract objects like 'village tinker' that will have a unique NPC name in-game.
+    # Ocassionally, may also be used if multiple objects have the same display name (in which case
+    # their wiki favilinks will conflict with one another unless each has a distinct display name)
     HumanTinker1: village tinker  # instead of 'human tinker'
     HumanApothecary1: village apothecary  # instead of 'human apothecary'
     MasterworkCarbine: scoped &Ymasterwork &ycarbine
@@ -370,9 +372,10 @@ Wiki:
     InnerSultanWall_Period3: gilded marble from the sultanate of *Sultan*
     InnerSultanWall_Period4: gilded marble from the sultanate of *Sultan*
     InnerSultanWall_Period5: gilded marble from the sultanate of *Sultan*
-    RareChest: chest (rare)  # make chest names unique to avoid favilink conflicts on wiki
+    RareChest: chest (rare)  # avoid duplicate 'chest'
     RelicChest: chest (relic)
-    SultanReliquaryW: sultan reliquary
+    SultanReliquaryW: sultan reliquary  # avoid duplicate 'reliquary'
+    Clue_Putrescence: putrescence (clue)  # avoid duplicate 'putrescence'
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
