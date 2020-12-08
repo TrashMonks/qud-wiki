@@ -377,6 +377,7 @@ Wiki:
     RelicChest: chest (relic)
     SultanReliquaryW: sultan reliquary  # avoid duplicate 'reliquary'
     Clue_Putrescence: putrescence (clue)  # avoid duplicate 'putrescence'
+    Crazed Goatfolk Shaman 1: goatfolk shaman (crazed)
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
