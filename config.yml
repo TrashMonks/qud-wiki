@@ -950,12 +950,12 @@ Wiki:
     Merchants: [BaseMerchant]
     Turret Tinkers: [Turret Tinker]
     Cherubim: [Antelopes Cherub, Apes Cherub, Arachnids Cherub, Baboons Cherub, Baetyls Cherub,
-               Bears Cherub, Birds Cherub, Cats Cherub, Crabs Cherub, Dogs Cherub, Equines Cherub,
-               Fish Cherub, Flowers Cherub, Frogs Cherub, Fungi Cherub, Hermits Cherub,
-               Insects Cherub, Mollusks Cherub, Newly Sentient Beings Cherub, Oozes Cherub,
-               Prey Cherub, Reptiles Cherub, Robots Cherub, Roots Cherub, Strangers Cherub,
-               Succulents Cherub, Swine Cherub, Tortoises Cherub, Trees Cherub, Urchins Cherub,
-               Vines Cherub, Winged Mammals Cherub, Worms Cherub]
+               Bears Cherub, Birds Cherub, Cannibals Cherub, Cats Cherub, Crabs Cherub, Dogs Cherub,
+               Equines Cherub, Fish Cherub, Flowers Cherub, Frogs Cherub, Fungi Cherub,
+               Hermits Cherub, Insects Cherub, Mollusks Cherub, Newly Sentient Beings Cherub,
+               Oozes Cherub, Prey Cherub, Reptiles Cherub, Robots Cherub, Roots Cherub,
+               Strangers Cherub, Succulents Cherub, Swine Cherub, Tortoises Cherub, Trees Cherub,
+               Urchins Cherub, Vines Cherub, Winged Mammals Cherub, Worms Cherub]
     Mechanical Cherubim: [Mechanical Antelopes Cherub, Mechanical Apes Cherub,
                           Mechanical Arachnids Cherub, Mechanical Baboons Cherub,
                           Mechanical Baetyls Cherub, Mechanical Bears Cherub,
