@@ -911,7 +911,7 @@ Wiki:
     Wall Traps: [Walltrap]
     Gemstone Walls: [AgateWall, TopazWall, JasperWall, AmethystWall, SapphireWall, EmeraldWall,
                      PeridotWall]
-    Statues: [Statue]
+    Statues: [Statue, SultanShrine]
     Loot Corpses: [FossilizedRemains, CaverCorpse]
     Plants: [Plant]
     Creatures: [Creature]
