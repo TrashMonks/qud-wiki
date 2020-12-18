@@ -415,11 +415,39 @@ class QudObjectWiki(QudObjectProps):
             return escape_ampersands(title)
 
     @property
+    def unknownname(self) -> Union[str, None]:
+        """The name of the object when unidentified, such as 'weird artifact'."""
+        name = super().unknownname
+        if name is not None:
+            return displayname_to_wiki(name)
+
+    @property
+    def unknownaltname(self) -> Union[str, None]:
+        """The name of the object when partially identified, such as 'backpack'."""
+        altname = super().unknownaltname
+        if altname is not None:
+            return displayname_to_wiki(altname)
+
+    @property
     def uniquechara(self) -> Union[str, None]:
         """Whether this is a unique character, for wiki purposes."""
         if self.inherits_from('Creature') or self.inherits_from('ActivePlant'):
             if self.name in config['Wiki']['Categories']['Unique Characters']:
                 return 'yes'
+
+    @property
+    def unidentifiedinfo(self) -> Union[str, None]:
+        """Details about this object when it is unidentified."""
+        tile = self.unknowntile
+        name = self.unknownname
+        altname = self.unknownaltname
+        if tile or name or altname:
+            result = '{{Unidentified info'
+            result += f' | tile = {tile}' if tile is not None else ''
+            result += f' | name = {name}' if name is not None else ''
+            result += f' | altname = {altname}' if altname is not None else ''
+            result += ' }}'
+            return result
 
     @property
     def weaponskill(self) -> Union[str, None]:
