@@ -130,6 +130,7 @@ Templates:
     RelicChest: chest (relic).png
     RareChest: chest (rare).png
     SultanReliquaryW: sultan reliquary.png
+    ClockworkBeetle: clockwork beetle.png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
