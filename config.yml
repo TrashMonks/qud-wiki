@@ -363,7 +363,7 @@ Wiki:
     # their wiki favilinks will conflict with one another unless each has a distinct display name)
     HumanTinker1: village tinker  # instead of 'human tinker'
     HumanApothecary1: village apothecary  # instead of 'human apothecary'
-    MasterworkCarbine: scoped &Ymasterwork &ycarbine
+    MasterworkCarbine: "scoped &Ymasterwork &ycarbine"
     SultanWall_Period1: carved stone from the sultanate of *Sultan*
     SultanWall_Period2: carved stone from the sultanate of *Sultan*
     SultanWall_Period3: carved stone from the sultanate of *Sultan*
@@ -380,8 +380,7 @@ Wiki:
     SultanReliquaryW: sultan reliquary  # avoid duplicate 'reliquary'
     Clue_Putrescence: putrescence (clue)  # avoid duplicate 'putrescence'
     Crazed Goatfolk Shaman 1: goatfolk shaman (crazed)
-    MerchantAdvertisement: &Wmerchant advertisement
-    Spiked Gauntlets: &Ys&Rpike&Yd steel &ygauntlets
+    MerchantAdvertisement: advertisement for *legendary merchant*
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
