@@ -131,6 +131,7 @@ Templates:
     RareChest: chest (rare).png
     SultanReliquaryW: sultan reliquary.png
     ClockworkBeetle: clockwork beetle.png
+    Spiked Gauntlets: spiked steel gauntlets.png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -157,6 +158,7 @@ Wiki:
   Article overrides:
     # Manually specify the wiki page article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
+    Spiked Gauntlets: Spiked steel gauntlets
     ClockworkBeetle: Clockwork beetle
     Mamon: Mamon Souldrinker
     Crazed Goatfolk Shaman 1: goatfolk shaman (crazed)
@@ -379,6 +381,7 @@ Wiki:
     Clue_Putrescence: putrescence (clue)  # avoid duplicate 'putrescence'
     Crazed Goatfolk Shaman 1: goatfolk shaman (crazed)
     MerchantAdvertisement: &Wmerchant advertisement
+    Spiked Gauntlets: &Ys&Rpike&Yd steel &ygauntlets
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
