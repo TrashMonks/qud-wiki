@@ -419,7 +419,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     wiki_exists.setText('✅')
                     # does the template match the article?
                     new_template = qud_object.wiki_template(self.gameroot.gamever).strip()
-                    if new_template in article.page.text().strip():
+                    if self.check_template_match(new_template, article.page.text().strip()):
                         wiki_matches.setText('✅')
                     else:
                         wiki_matches.setText('❌')
@@ -885,6 +885,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.gif_mode = not self.gif_mode
         self.update_tile_display()
 
+    def check_template_match(self, new: str, current: str) -> bool:
+        """Checks if the new template text and the wiki's current template text match. Ignores the
+        'gameversion' line in the template - otherwise every single page is marked as not matching
+        whenever there's a new update, which makes the 'Article Matches?' column kind of useless."""
+        new = re.sub(r'^\| gameversion = .*?$', '', new, flags=re.MULTILINE)
+        current = re.sub(r'^\| gameversion = .*?$', '', current, flags=re.MULTILINE)
+        return new in current
+
     def show_simple_diff(self):
         """Display a popup showing the diff between our template and the version on the wiki."""
         qud_object = self.top_selected
@@ -932,6 +940,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 msg_box.setText(f'Unified diff of the QBE template and the currently published'
                                 f' wiki template:\n<pre>{diff_lines}</pre>')
                 match_icon = '❌'
+                if self.check_template_match(m.group(1), m_wiki.group(1)):
+                    match_icon = '✅'  # only difference is gameversion
         self.set_icon(article_matches_index, match_icon, True)
         msg_box.exec()
 
