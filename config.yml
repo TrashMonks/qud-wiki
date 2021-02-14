@@ -31,6 +31,8 @@ Templates:
      corpse, corpsechance, role, extra, inheritingfrom, dynamictable, unidentifiedinfo,
      quickness, movespeed, strength, agility, toughness, intelligence, willpower, ego,
      strengthmult, agilitymult, toughnessmult, intelligencemult, willpowermult, egomult,
+     strengthextrinsic, agilityextrinsic, toughnessextrinsic, intelligenceextrinsic,
+     willpowerextrinsic, egoextrinsic,
      acid, electric, cold, heat, poison, xpvalue, xptier,
      reputationbonus, faction, wornon, usesslots, demeanor, gender, pronouns,
      inventory, skills, mutations, modcount, mods, desc]
