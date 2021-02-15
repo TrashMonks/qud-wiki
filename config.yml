@@ -918,6 +918,7 @@ Wiki:
     Gemstone Walls: [AgateWall, TopazWall, JasperWall, AmethystWall, SapphireWall, EmeraldWall,
                      PeridotWall]
     Statues: [Statue, SultanShrine]
+    Village Monuments: [Village Monument]
     Loot Corpses: [FossilizedRemains, CaverCorpse]
     Plants: [Plant]
     Creatures: [Creature]
