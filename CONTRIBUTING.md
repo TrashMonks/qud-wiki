@@ -11,7 +11,7 @@ Pull requests are welcome. Please run `flake8` and `pytest` to ensure that your 
 ## Short form setup for Python programmers
 If you're not a Python programmer, skip this section and read "Setup walkthrough", below.
 * Clone the git repository
-* Download [CavesofQudTileModdingToolkit.zip](https://www.dropbox.com/s/g8coebnzoqfema9/CavesofQudTileModdingToolkit.zip?dl=0) and place it into the project directory so that the zip is directly within the project directory. This provides tile images. 
+* Download [CavesofQudTileModdingToolkit.zip](https://www.dropbox.com/s/g8coebnzoqfema9/CavesofQudTileModdingToolkit.zip?dl=0) and extract it into the project directory so that the `Textures` directory is directly within the project directory. This provides tile images.
 * Install Python 3.8 from [Python.org](https://python.org/) and select the installer option to add it to your PATH.
 * In your terminal, `cd` to your copy of the repository and run these commands:
 ```
@@ -44,8 +44,8 @@ Search it up on the app store of your choosing and install the program.
 4. Download the Tiles.
     * Click [this download link](https://www.dropbox.com/s/g8coebnzoqfema9/CavesofQudTileModdingToolkit.zip?dl=0) to access a zip file containing all the tiles from the game.
     * Up in the top right corner, click the white button which says "Download", then click "Direct download"
-    * Once again, go to your downloads folder and, once it is finished downloading, copy the file (Which should be called `CavesofQudTileMOddingToolkit.zip`).
-    * Type in the file location from earlier in the address bar and press enter. Paste the zip here.
+     * Once again, go to your downloads folder and, once it is finished downloading, right click on the file (Which should be called `CavesofQudTileMOddingToolkit.zip`) and click "Extract All"
+    * You should now be asked to select the files' destination. Type in the file location from earlier and press enter. This will take a while.
 
 5. Bot credentials.
     * PM syntaxaire on Discord and ask for bot credentials. They might need your username on Gamepedia. The bot credentials are used because all bot edits are done from the same account which is marked as a bot.
