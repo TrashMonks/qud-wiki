@@ -25,7 +25,7 @@ python -m qbe
 
 For Ubuntu users:
 ```
-sudo apt install python3.8 python3-pip
+sudo apt install python3.8 python3-pip libqt5gui5
 python3 -m pip install --user pipenv
 cd (your qud-wiki source directory)
 python3 -m pipenv sync --dev
