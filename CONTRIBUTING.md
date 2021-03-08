@@ -14,11 +14,24 @@ If you're not a Python programmer, skip this section and read "Setup walkthrough
 * Download [CavesofQudTileModdingToolkit.zip](https://www.dropbox.com/s/g8coebnzoqfema9/CavesofQudTileModdingToolkit.zip?dl=0) and extract it into the project directory so that the `Textures` directory is directly within the project directory. This provides tile images.
 * Install Python 3.8 from [Python.org](https://python.org/) and select the installer option to add it to your PATH.
 * In your terminal, `cd` to your copy of the repository and run these commands:
+For Windows users, with Python 3.8 installed and the options to 'Install launcher for all users' and 'Add Python 3.8 to PATH' selected in the installer:
 ```
-pip install pipenv
-pipenv sync --dev
-pipenv run app
+py -3 -m pip install pipenv
+cd (your qud-wiki source directory)
+py -3 -m pipenv sync --dev
+pipenv shell
+python -m qbe
 ``` 
+
+For Ubuntu users:
+```
+sudo apt install python3.8 python3-pip
+python3 -m pip install --user pipenv
+cd (your qud-wiki source directory)
+python3 -m pipenv sync --dev
+pipenv shell
+python -m qbe
+```
 
 ## Contributing
 See `CONTRIBUTING.md`.
