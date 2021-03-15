@@ -7,6 +7,7 @@ from hagadias.helpers import strip_oldstyle_qud_colors, strip_newstyle_qud_color
 from hagadias.qudobject_props import QudObjectProps
 
 from qbe.helpers import displayname_to_wiki
+from qbe.genderparser import GenderParser
 
 IMAGE_OVERRIDES = config['Templates']['Image overrides']
 
@@ -180,6 +181,7 @@ class QudObjectWiki(QudObjectProps):
         """The short description of the object, with color codes included (ampersands escaped)."""
         text = super().desc
         if text is not None:
+            text = GenderParser.parse(self, text, self.gender, self.pronouns)
             text = displayname_to_wiki(text)
         return text
 
