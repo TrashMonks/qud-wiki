@@ -732,8 +732,8 @@ Wiki:
       # NPCs
       /BaseArconaut,
       +Arconaut,
-      /Barathrumite_FactionMemberMale,
-      +Barathrumite_FactionMemberMale,
+      -Barathrumite Tinker Omonporch,
+      -Barathrumite Arconaut Omonporch,
       -OthoCopy,
       -MafeoCopy,
       /BaseWatervineFarmer,
@@ -824,7 +824,6 @@ Wiki:
       -BlueCampfire,
       -BlueCampfireRemains,
       /CryptPlaqueTutor,
-      /Barathrumite Tinker,
       -Powerless Unicomputer,
       -Crypt Exit Teleporter,
       -MopangoPilgrim Still,
