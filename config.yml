@@ -43,7 +43,7 @@ Templates:
      omniphaseprojectile, spectacles, carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic,
      uniquechara, pettable, liquidburst, flametemperature, bleedliquid, hidden, energycellrequired,
      temponenter, temponhit, temponhitmax, isoccluding, waterritualable, iscurrency, noprone, phase,
-     poisononhit, realitydistortionbased, leakswhenbroken, mutatedplant, waterritualskill, animatable, hurtbyfungicide, hurtbydefoliant]
+     poisononhit, realitydistortionbased, leakswhenbroken, mutatedplant, waterritualskill, animatable, hurtbyfungicide, hurtbydefoliant, hasmentalshield]
   Image overrides:
     # Manually specify the image name to be used for an object ID:
     TreeSkillsoft: skillsoft_tree.png
