@@ -61,14 +61,14 @@ Search it up on the app store of your choosing and install the program.
     * You should now be asked to select the files' destination. Type in the file location from earlier and press enter. This will take a while.
 
 5. Bot credentials.
-    * PM syntaxaire on Discord and ask for bot credentials. They might need your username on Gamepedia. The bot credentials are used because all bot edits are done from the same account which is marked as a bot.
+    * PM syntaxaire on Discord and ask for bot credentials. They might need your username on Fandom.com. The bot credentials are used because all bot edits are done from the same account which is marked as a bot.
     * Create a new text file and paste in the following:
 ```yaml
 username: Trashmonks@user
 password: xxxxxxxxxxxxxxxxxxxxxxxxx
 operator: >-
   [[User:you|you]]
-base: cavesofqud.gamepedia.com
+base: cavesofqud.fandom.com
 path: /
 ```
 *
