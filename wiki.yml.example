@@ -1,6 +1,5 @@
 # Copy to wiki.yml to set up your own bot user
-# Use Special:BotPasswords to set up bot user
-# Ensure image uploading checkboxes are ticked on that page
+# Ask Trash Monks for bot credentials on Discord
 
 username: Yourusername@Botname
 password: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

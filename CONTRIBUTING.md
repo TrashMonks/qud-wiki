@@ -10,16 +10,19 @@ Pull requests are welcome. Please run `flake8` and `pytest` to ensure that your 
 
 ## Short form setup for Python programmers
 If you're not a Python programmer, skip this section and read "Setup walkthrough", below.
-* Clone the git repository
-* Download [CavesofQudTileModdingToolkit.zip](https://www.dropbox.com/s/g8coebnzoqfema9/CavesofQudTileModdingToolkit.zip?dl=0) and extract it into the project directory so that the `Textures` directory is directly within the project directory. This provides tile images.
-* Install Python 3.8 from [Python.org](https://python.org/) and select the installer option to add it to your PATH.
+* Obtain bot credentials from syntaxaire on Discord
+* Install Git and clone this repository
+* Download [the tiles zip](https://www.dropbox.com/s/3hub59uoiamz0vq/caves-of-qud-tiles-200.71.zip?dl=1) and extract it into the project directory so that the `Textures` directory is in the project directory.
+* If you don't have Python 3.8, install Python 3.8 from [Python.org](https://python.org/) and select the installer option to add it to your PATH. If on Ubuntu, follow the instructions below.
 * In your terminal, `cd` to your copy of the repository and run these commands:
-For Windows users, with Python 3.8 installed and the options to 'Install launcher for all users' and 'Add Python 3.8 to PATH' selected in the installer:
+For Windows users, with Python 3.8 installed and the options to 'Install launcher for all users' and 'Add Python 3.8 to PATH' having been selected in the installer:
 ```
 py -3 -m pip install pipenv
 cd (your qud-wiki source directory)
 py -3 -m pipenv sync --dev
-pipenv shell
+py -3 -m pipenv shell
+copy wiki.yml.example wiki.yml
+(edit wiki.yml to include bot credentials)
 python -m qbe
 ``` 
 
@@ -29,15 +32,16 @@ sudo apt install python3.8 python3-pip libqt5gui5
 python3 -m pip install --user pipenv
 cd (your qud-wiki source directory)
 python3 -m pipenv sync --dev
-pipenv shell
+python3 -m pipenv shell
+cp wiki.yml.example wiki.yml
+(edit wiki.yml to include bot credentials)
 python -m qbe
 ```
 
-## Contributing
-See `CONTRIBUTING.md`.
+## Setup walkthrough for Windows
+(Written by a user)
 
-## Setup walkthrough
-My experience installing python QBE (Qud Blueprint Explorer) was a long and hard one, only possible with the help of the very kind people on the Discord Server.
+My experience installing QBE (Qud Blueprint Explorer) was a long and hard one, only possible with the help of the very kind people on the Discord Server.
 Hopefully, the following guide will make it easier for people like me. This was not 100% written with MacOS in mind, but hopefully will still work for Mac.
 
 1. Download [GitHub Desktop](https://desktop.github.com/), if you have not already. 
@@ -55,25 +59,13 @@ Search it up on the app store of your choosing and install the program.
     * Find Python in your downloads, and install it. MAKE SURE TO CHECK THE BOX TO ADD IT TO YOUR PATH! THIS IS VERY IMPORTANT.
 
 4. Download the Tiles.
-    * Click [this download link](https://www.dropbox.com/s/g8coebnzoqfema9/CavesofQudTileModdingToolkit.zip?dl=0) to access a zip file containing all the tiles from the game.
-    * Up in the top right corner, click the white button which says "Download", then click "Direct download"
-     * Once again, go to your downloads folder and, once it is finished downloading, right click on the file (Which should be called `CavesofQudTileMOddingToolkit.zip`) and click "Extract All"
-    * You should now be asked to select the files' destination. Type in the file location from earlier and press enter. This will take a while.
+    * Click [this download link](https://www.dropbox.com/s/3hub59uoiamz0vq/caves-of-qud-tiles-200.71.zip?dl=1) to access a zip file containing all the tiles from the game.
+    * Once again, go to your downloads folder and, once it is finished downloading, right click on the file (which should be called `caves-of-qud-tiles-200.71.zip`) and click "Extract All".
+    * You should now be asked to select the files' destination. Type in the file location from earlier and press enter. This will take a while. When this is done, you should have a "Textures" folder in your project directory.
 
 5. Bot credentials.
     * PM syntaxaire on Discord and ask for bot credentials. They might need your username on Fandom.com. The bot credentials are used because all bot edits are done from the same account which is marked as a bot.
-    * Create a new text file and paste in the following:
-```yaml
-username: Trashmonks@user
-password: xxxxxxxxxxxxxxxxxxxxxxxxx
-operator: >-
-  [[User:you|you]]
-base: cavesofqud.fandom.com
-path: /
-```
-*
-    * Replace the username with `Trashmonks@(your username here, without the parentheses)`, `you|you` with `(your username)|(your username)` and the password with the password syntaxaire gave you.
-    * Save the file as `wiki.yml` in the project directory. If you are saving from a text editor, you might see some kind of warning that you are changing the filetype. That is good. If you do not see this, look up how to change file types on your operating system and turn it into `.yml`.
+    * Copy `wiki.yml.example` to `wiki.yml` and edit it to include your own details.
 
 6. Run the App
     * Open your terminal. On Mac you can look for an application called "Terminal" in your applications, on Windows you can search for "Command Prompt". Either way, start the app.
