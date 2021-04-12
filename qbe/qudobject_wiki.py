@@ -169,13 +169,6 @@ class QudObjectWiki(QudObjectProps):
             return ','.join(f'{val}' for val in effect)
 
     @property
-    def corpse(self) -> Union[str, None]:
-        """What corpse a character drops."""
-        obj = super().corpse
-        if obj is not None:
-            return f'{{{{ID to name|{obj}}}}}'
-
-    @property
     def desc(self) -> Union[str, None]:
         """The short description of the object, with color codes included (ampersands escaped)."""
         text = super().desc
@@ -269,13 +262,6 @@ class QudObjectWiki(QudObjectProps):
             path = self.image
             if path is not None and path != 'none':
                 return os.path.splitext(path)[0] + ' animated.gif'
-
-    @property
-    def harvestedinto(self) -> Union[str, None]:
-        """What an item produces when harvested."""
-        obj = super().harvestedinto
-        if obj is not None:
-            return f'{{{{ID to page|{obj}}}}}'
 
     @property
     def image(self) -> Union[str, None]:
@@ -372,13 +358,6 @@ class QudObjectWiki(QudObjectProps):
                 val += '}}'
             val += '{{altimage end}}'
             return val
-
-    @property
-    def preservedinto(self) -> Union[str, None]:
-        """When preserved, what a preservable item produces."""
-        result = super().preservedinto
-        if result is not None:
-            return f"{{{{ID to name|{result}}}}}"
 
     @property
     def renderstr(self) -> Union[str, None]:
