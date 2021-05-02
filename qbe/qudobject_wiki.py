@@ -75,8 +75,8 @@ class QudObjectWiki(QudObjectProps):
                        'Arsplice Seed',
                        'Albino Ape Heart',
                        'Ogre Ape Heart')
-        characters = ['Creature', 'BasePlant', 'BaseFungus', 'Baetyl', 'Wall']
-        if any(self.inherits_from(character) for character in characters):
+        if (self.part_Physics_Takeable == "false" or self.part_Physics_Takeable == "False") and \
+                (self.part_Gas is None):
             flavor = "Character"
         elif self.inherits_from('Food'):
             flavor = "Food"
