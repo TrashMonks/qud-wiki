@@ -8,7 +8,7 @@ def displayname_to_wiki(phrase: str):
     See hagadias.helpers.parse_qud_colors for details of the new in-game
     coloring templates.
 
-    {{Qud shader}} syntax: https://cavesofqud.gamepedia.com/Template:Qud_shader/doc
+    {{Qud shader}} syntax: https://wiki.cavesofqud.com/Template:Qud_shader/doc
     Example: {{Qud shader|text=Stopsvalinn|colors=R-r-K-y-Y|type=sequence|unbolded=true}}"""
     parsed = parse_qud_colors(phrase)
     output = []
