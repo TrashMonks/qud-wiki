@@ -76,7 +76,9 @@ class QudObjectWiki(QudObjectProps):
                        'Albino Ape Heart',
                        'Ogre Ape Heart')
         if (self.part_Physics_Takeable == "false" or self.part_Physics_Takeable == "False") and \
-                (self.part_Gas is None):
+                self.part_Gas is None and not self.inherits_from('MeleeWeapon') and \
+                not self.is_specified('part_MeleeWeapon') and \
+                not self.inherits_from('MissileWeapon'):
             flavor = "Character"
         elif self.inherits_from('Food'):
             flavor = "Food"
