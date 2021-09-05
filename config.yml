@@ -951,7 +951,7 @@ Wiki:
     Worms: [BaseWorm]
     Snails: [BaseSnail]
     Slugs: [BaseSlug]
-    Cybernetics: [BaseCybernetics2Equipment]
+    Cybernetics: [BaseCyberneticsEquipment]
     Merchants: [BaseMerchant]
     Turret Tinkers: [Turret Tinker]
     Cherubim: [Antelopes Cherub, Apes Cherub, Arachnids Cherub, Baboons Cherub, Baetyls Cherub,
