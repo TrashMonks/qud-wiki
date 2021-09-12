@@ -48,6 +48,7 @@ Templates:
     # Manually specify the image name to be used for an object ID:
     TreeSkillsoft: skillsoft_tree.png
     Schemasoft4: schemasoft_high_tier.png
+    NightVision: night vision (implant).png
     ElevatorSwitch: control_switch_elevator.png
     TempleSwitch: control_switch_temple.png
     Asphodel: Earl_asphodel.png
@@ -185,6 +186,7 @@ Wiki:
     TreeSkillsoft: Skillsoft Plus
     Schemasoft3: Schemasoft (mid-tier)
     Schemasoft4: Schemasoft (high-tier)
+    NightVision: night vision (implant)
     BethesdaBaetyl: Baetyl (Bethesda Susa)
     OasisGlowpad: oddly-hued glowpad
     Molting Basilisk: Molting basilisk
