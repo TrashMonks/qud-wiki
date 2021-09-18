@@ -194,9 +194,8 @@ Wiki:
     Svenlainard: Svenlainard
     AppleMerchant: apple farmer (merchant)
     Doru: Tam
-    # Not 100% sure what to do with these next two "giant clam" entries. They both seem significant.
-    # I'll name them by color for now, and we can re-evaluate later if needed
-    Giant Clam: giant clam (white)
+    # Not 100% sure what to do with this next "giant clam" entry. Appears to be a special variant
+    # of giant clam with different stats. May be significant, so uploading as separate page for now.
     Tzimtzlum Clam: giant clam (magenta)
     DoorSwitch: control switch (door)
     ElevatorSwitch: control switch (elevator)
