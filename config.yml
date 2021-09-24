@@ -673,6 +673,8 @@ Wiki:
       +NormalityGas,
       /MiasmaticAsh,
       +MiasmaticAsh,
+      /Miasma,
+      +Miasma
       /Plasma,
       +Plasma,
       -FungalSporeGasLuminous,
