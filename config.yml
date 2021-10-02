@@ -163,7 +163,9 @@ Wiki:
            GunSign1, DiscSign1, ArgyveSign, JoppaNorthSign, EzraSign, TamSign, YurlSign, YlaSign,
            SixshrewSign, LiquidSign1, JewelSign1, HookahSign1, GrenadeSign1, PepperSign1, FoodSign1,
            PreserveSign1, WineSign1, JoppaMillSign, YdColumbariumSign, YdLivingQuartersSign,
-           YdMedicalSign]
+           YdMedicalSign,
+           # quest-related stuff
+           Charred Goatfolk Corpse, Flayed Goatfolk Corpse]
   Article overrides:
     # Manually specify the wiki page article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
@@ -430,20 +432,12 @@ Wiki:
       /GenericLimb,
       /PlantLimb,
       /FungusLimb,
-      /Corpse,
-      +Human Corpse,
-      +Charred Corpse,
-      +Mangled Corpse,
-      +Ancient Corpse,
-      +Fresh Corpse,
-      +Moldering Corpse,
-      +TarBones,
-      +Albino Ape Pelt,
-      +Albino Ape Heart,
-      +Black Puma Haunch,
       -ExileCorpse,  # extraneous
       -JoppaCorpse,  # extraneous
-      +Ogre Ape Heart,
+      -CaverCorpse2, # covered by CaverCorpse
+      -GitsCorpse,   # never in game?
+      -Girsh Larva,  # no longer in game
+      -Girsh Ovary,  # no longer in game
       +Crystal of Eve,
       +Arsplice Seed,
       /RobotLimb,
