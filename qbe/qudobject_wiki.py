@@ -141,10 +141,19 @@ class QudObjectWiki(QudObjectProps):
     @property
     def butcheredinto(self) -> Union[str, None]:
         """What a corpse item can be butchered into."""
-        into = super().butcheredinto
-        if into is not None:
-            return f'{{{{Corpse pop table|population={self.name}|object={{{{ID to name|' \
-                   f'{into}}}}}|id={into}}}}}'
+        outcomes = super().butcheredinto
+        if outcomes is not None:
+            result = ''
+            total_weight = 0
+            for outcome in outcomes:
+                total_weight += outcome['Weight']
+            for outcome in outcomes:
+                chance_num = 100.0 * outcome['Weight'] / total_weight
+                chance = ("%.1f" % chance_num).rstrip('0').rstrip('.')
+                result += f'{{{{corpse pop table|population={self.name}|object={{{{ID to name|' \
+                    + f'{outcome["Object"]}}}}}|id={outcome["Object"]}|num={outcome["Number"]}|' \
+                    + f'weight={outcome["Weight"]}|chance={chance}}}}}'
+            return result
 
     @property
     def colorstr(self) -> Union[str, None]:
