@@ -35,7 +35,7 @@ Templates:
      toughnessextrinsic, intelligenceextrinsic, willpowerextrinsic, egoextrinsic,
      acid, electric, cold, heat, poison, xpvalue, xptier,
      reputationbonus, faction, wornon, usesslots, demeanor, gender, pronouns,
-     inventory, skills, mutations, modcount, mods, desc]
+     inventory, skills, mutations, supportedmods, modcount, mods, desc]
   ExtraFields:
     # Fields for the extra info template
     [empsensitive, twohanded, metal, lightprojectile, reflect, movespeedbonus, cursed,
