@@ -38,7 +38,7 @@ Templates:
      inventory, skills, mutations, supportedmods, modcount, mods, desc]
   ExtraFields:
     # Fields for the extra info template
-    [empsensitive, twohanded, metal, lightprojectile, reflect, movespeedbonus, cursed,
+    [empsensitive, twohanded, metal, lightprojectile, reflect, movespeedbonus, cursed, filtersgas,
      destroyonunequip, savemodifier, savemodifieramt, shotcooldown, penetratingammo,
      omniphaseprojectile, spectacles, carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic,
      uniquechara, pettable, liquidburst, flametemperature, bleedliquid, hidden, energycellrequired,
