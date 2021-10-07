@@ -30,11 +30,11 @@ Templates:
      tier, bits, canbuild, candisassemble, colorstr, tilecolors, renderstr, chairlevel, hunger,
      thirst, healing, butcheredinto, harvestedinto, preservedinto, preservedquantity, cookeffect,
      eatdesc, ismeat, isplant, isfungus, exoticfood, illoneat, oneat, corpse, corpsechance, role,
-     extra, inheritingfrom, dynamictable, unidentifiedinfo, quickness, movespeed, strength, agility,
-     toughness, intelligence, willpower, ego, strengthmult, agilitymult, toughnessmult,
-     intelligencemult, willpowermult, egomult, strengthextrinsic, agilityextrinsic,
-     toughnessextrinsic, intelligenceextrinsic, willpowerextrinsic, egoextrinsic,
-     acid, electric, cold, heat, poison, xpvalue, xptier,
+     extra, inheritingfrom, dynamictable, unidentifiedimage, unidentifiedname, unidentifiedaltname,
+     quickness, movespeed, strength, agility, toughness, intelligence, willpower, ego,
+     strengthmult, agilitymult, toughnessmult, intelligencemult, willpowermult, egomult,
+     strengthextrinsic, agilityextrinsic, toughnessextrinsic, intelligenceextrinsic,
+     willpowerextrinsic, egoextrinsic, acid, electric, cold, heat, poison, xpvalue, xptier,
      reputationbonus, faction, wornon, usesslots, demeanor, gender, pronouns,
      inventory, skills, mutations, supportedmods, modcount, mods, desc]
   ExtraFields:
