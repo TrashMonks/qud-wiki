@@ -41,8 +41,8 @@ Templates:
     # Fields for the extra info template
     [empsensitive, powerloadsensitive, twohanded, metal, lightprojectile, reflect, movespeedbonus,
      cursed, filtersgas, destroyonunequip, savemodifier, savemodifieramt,
-     shotcooldown, penetratingammo, omniphaseprojectile, spectacles, carrybonus,
-     solid, flyover, isswarmer, swarmbonus, aquatic, uniquechara, pettable,
+     shotcooldown, penetratingammo, omniphaseprojectile, spectacles, refractive, flashprotection,
+     carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic, uniquechara, pettable,
      liquidburst, flametemperature, bleedliquid, hidden, energycellrequired,
      temponenter, temponhit, temponhitmax, isoccluding, waterritualable, iscurrency, noprone, phase,
      poisononhit, realitydistortionbased, leakswhenbroken, mutatedplant, waterritualskill,
