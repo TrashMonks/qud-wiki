@@ -1,5 +1,6 @@
-from PySide2.QtCore import QSize, Qt
-from PySide2.QtWidgets import QTreeView, QSizePolicy, QAbstractItemView, QMenu, QAction
+from PySide6.QtCore import QSize, Qt
+from PySide6.QtWidgets import QTreeView, QSizePolicy, QAbstractItemView, QMenu
+from PySide6.QtGui import QAction
 
 
 class QudTreeView(QTreeView):

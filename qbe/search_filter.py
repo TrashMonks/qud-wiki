@@ -1,6 +1,6 @@
 """Search filter for the QBE application window."""
 
-from PySide2.QtCore import QSortFilterProxyModel, Qt
+from PySide6.QtCore import QSortFilterProxyModel, Qt
 
 
 class QudFilterModel(QSortFilterProxyModel):
@@ -28,16 +28,16 @@ class QudFilterModel(QSortFilterProxyModel):
         Causes ancestors of matching objects to be displayed as an inheritance tree, even if the
         ancestors themselves don't match the filter."""
         if idx.isValid():
-            filter_str = self.filterRegExp().pattern().lower()
+            filter_str = self.filterRegularExpression().pattern().lower()
             if filter_str.startswith('hasfield:'):
                 found = self._index_hasfield(idx, filter_str.split(':')[1])
             elif filter_str.startswith('haspart:'):
-                found = self._index_haspart(idx, self.filterRegExp().pattern().split(':')[1])
+                found = self._index_haspart(idx, self.filterRegularExpression().pattern().split(':')[1])
             elif filter_str.startswith('hastag:'):
-                found = self._index_hastag(idx, self.filterRegExp().pattern().split(':')[1])
+                found = self._index_hastag(idx, self.filterRegularExpression().pattern().split(':')[1])
             else:
                 text = idx.data(role=Qt.DisplayRole).lower()
-                found = text.find(self.filterRegExp().pattern().lower()) >= 0  # use QRegExp method?
+                found = text.find(self.filterRegularExpression().pattern().lower()) >= 0  # use QRegularExpression method?
             if found:
                 item = self.sourceModel().itemFromIndex(idx)
                 if item.isSelectable() and id(item) not in self.filterSelectionIDs:
