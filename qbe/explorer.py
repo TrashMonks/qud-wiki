@@ -6,7 +6,8 @@ import re
 from pprint import pformat
 
 from PIL import Image, ImageQt
-from PySide6.QtCore import QBuffer, QByteArray, QIODevice, QItemSelectionModel, QRegularExpression, QSize, Qt
+from PySide6.QtCore import QBuffer, QByteArray, QIODevice, QItemSelectionModel, \
+    QRegularExpression, QSize, Qt
 from PySide6.QtGui import QIcon, QImage, QMovie, QPixmap, QStandardItem, QStandardItemModel, \
     QPalette, QColor, QFont
 from PySide6.QtWidgets import QApplication, QFileDialog, QHeaderView, QMainWindow, QMessageBox, \
@@ -329,7 +330,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 or (mode == 'Forced' and self.search_line_edit.text() != ''):
             self.qud_object_proxyfilter.pop_selections()  # clear any lingering data in proxyfilter
             self.qud_object_proxyfilter.setFilterRegExp(  # this applies the actual filtering
-                QRegularExpression(self.search_line_edit.text(), Qt.CaseInsensitive, QRegularExpression.FixedString))
+                QRegularExpression(self.search_line_edit.text(),
+                                   Qt.CaseInsensitive,
+                                   QRegularExpression.FixedString))
             self.treeView.expandAll()  # expands to show everything visible after filter is applied
             items, item_ids = self.qud_object_proxyfilter.pop_selections()
             if len(items) > 0:

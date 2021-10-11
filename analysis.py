@@ -146,7 +146,8 @@ def find_empty_detailcolor():
     for name, obj in qindex.items():
         tile = obj.tile  # force tile to render
         if obj.part_Render_Tile is not None:
-            if obj.part_Render_DetailColor is None and name in qudtile.uses_details and obj.inherits_from('PhysicalObject'):
+            if obj.part_Render_DetailColor is None and name in qudtile.uses_details and \
+                    obj.inherits_from('PhysicalObject'):
                 print(name)
 
 

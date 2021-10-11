@@ -32,12 +32,15 @@ class QudFilterModel(QSortFilterProxyModel):
             if filter_str.startswith('hasfield:'):
                 found = self._index_hasfield(idx, filter_str.split(':')[1])
             elif filter_str.startswith('haspart:'):
-                found = self._index_haspart(idx, self.filterRegularExpression().pattern().split(':')[1])
+                found = self._index_haspart(idx,
+                                            self.filterRegularExpression().pattern().split(':')[1])
             elif filter_str.startswith('hastag:'):
-                found = self._index_hastag(idx, self.filterRegularExpression().pattern().split(':')[1])
+                found = self._index_hastag(idx,
+                                           self.filterRegularExpression().pattern().split(':')[1])
             else:
                 text = idx.data(role=Qt.DisplayRole).lower()
-                found = text.find(self.filterRegularExpression().pattern().lower()) >= 0  # use QRegularExpression method?
+                # use QRegularExpression method?
+                found = text.find(self.filterRegularExpression().pattern().lower()) >= 0
             if found:
                 item = self.sourceModel().itemFromIndex(idx)
                 if item.isSelectable() and id(item) not in self.filterSelectionIDs:
