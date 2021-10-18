@@ -40,7 +40,7 @@ class QudTreeView(QTreeView):
 
     def on_context_menu(self, point):
         """Callback registered for right click in the tree view."""
-        self.tree_menu.exec_(self.mapToGlobal(point))
+        self.tree_menu.exec(self.mapToGlobal(point))
 
     def selectionChanged(self, selected, deselected):
         """Custom override to handle all forms of selection (keyboard, mouse)"""

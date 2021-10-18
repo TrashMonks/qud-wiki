@@ -329,10 +329,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if len(self.search_line_edit.text()) > 3 \
                 or (mode == 'Forced' and self.search_line_edit.text() != ''):
             self.qud_object_proxyfilter.pop_selections()  # clear any lingering data in proxyfilter
-            self.qud_object_proxyfilter.setFilterRegExp(  # this applies the actual filtering
-                QRegularExpression(self.search_line_edit.text(),
-                                   Qt.CaseInsensitive,
-                                   QRegularExpression.FixedString))
+            self.qud_object_proxyfilter.setFilterRegularExpression(  # apply the actual filtering
+                QRegularExpression(self.search_line_edit.text()))
             self.treeView.expandAll()  # expands to show everything visible after filter is applied
             items, item_ids = self.qud_object_proxyfilter.pop_selections()
             if len(items) > 0:
