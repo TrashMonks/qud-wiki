@@ -103,9 +103,9 @@ class WikiPage:
                     backoff_delay *= 2
                 result = self.page.save(text=new_text, summary=summary_text)
                 break
-            except APIError as apierror:
+            except APIError:
                 print(f'Page edit rate-limited. Retrying in {backoff_delay} seconds...')
-            except AssertUserFailedError as loginerror:
+            except AssertUserFailedError:
                 print(f'Session expired. Will re-login and wait {backoff_delay} seconds...')
                 site.login(wiki_config['username'], wiki_config['password'])
         print(result)
