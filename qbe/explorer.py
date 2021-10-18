@@ -580,7 +580,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.set_icon(wiki_matches_cell_index, '✅')
                 self.app.processEvents()
         except ValueError:
-            print("Not uploading: page exists but format not recognized")
+            print(f"Not uploading: page exists but format not recognized ({qud_object.name})")
 
     def upload_wiki_tile(self, qud_object: QudObjectWiki, selection_index: int):
         """Uploads a single image to the relevant wiki page.

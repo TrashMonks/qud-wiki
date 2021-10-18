@@ -1,8 +1,8 @@
 """Class to assist with managing individual wiki articles on the Caves of Qud wiki."""
-
 import re
 
-from mwclient.errors import InvalidPageTitle
+from time import sleep
+from mwclient.errors import InvalidPageTitle, APIError, AssertUserFailedError
 
 from qbe.config import config
 from qbe.wiki_config import site, wiki_config
@@ -87,10 +87,26 @@ class WikiPage:
             pre_template_text = self.page.text()[:start] + self.intro_string
             post_template_text = self.final_string + self.page.text()[end:]
             new_text = f"{pre_template_text}{self.template_text}{post_template_text}"
-            result = self.page.save(text=new_text, summary=self.EDITED_SUMMARY)
+            summary_text = self.EDITED_SUMMARY
         else:
             # simple case: creating an article
             new_text = f"{self.intro_string}{self.template_text}{self.final_string}"
-            result = self.page.save(text=new_text, summary=self.CREATED_SUMMARY)
+            summary_text = self.CREATED_SUMMARY
+        backoff_delay = 3
+        max_attempts = 7
+        for attempt in range(1, max_attempts + 1):
+            try:
+                if attempt > max_attempts:
+                    raise RuntimeError(f'Unable to edit page after {max_attempts} attempts.')
+                elif attempt > 1:
+                    sleep(backoff_delay)
+                    backoff_delay *= 2
+                result = self.page.save(text=new_text, summary=summary_text)
+                break
+            except APIError as apierror:
+                print(f'Page edit rate-limited. Retrying in {backoff_delay} seconds...')
+            except AssertUserFailedError as loginerror:
+                print(f'Session expired. Will re-login and wait {backoff_delay} seconds...')
+                site.login(wiki_config['username'], wiki_config['password'])
         print(result)
         return result['result']

@@ -20,34 +20,38 @@ Templates:
   Fields:
     # The fields that (if applicable) will be generated for each item, in this order:
     # (title comes first)
-    [title, image, gif, overrideimages, pv, maxpv, vibro, pvpowered, damage, unpowereddamage,
-     elementaldamage, elementaltype, lv, hp, av, dv, ma, marange, tohit, weight, featureweightinfo,
-     commerce, weaponskill, lightradius, ammo, ammodamagetypes, gasemitted, energycellrequired,
-     iscurrency, ismissile, isthrown, accuracy, shots, ammoperaction, maxammo, maxvol, liquidgen,
-     liquidtype, seeping, maxcharge, chargeperdram, dramsperuse, chargeused, chargefunction,
-     imprintchargecost, id, complexity, tier, bits, canbuild, candisassemble, colorstr, tilecolors,
-     renderstr, chairlevel, hunger, thirst, healing, butcheredinto, harvestedinto, preservedinto,
-     preservedquantity, cookeffect, eatdesc, ismeat, isplant, isfungus, exoticfood, illoneat, oneat,
-     corpse, corpsechance, role, extra, inheritingfrom, dynamictable, unidentifiedinfo,
+    [title, image, gif, overrideimages, pv, maxpv, vibro, penetratingammo, pvpowered,
+     damage, unpowereddamage, primarydamageelement, elementaldamage, elementaltype,
+     lv, hp, av, dv, ma, marange, tohit, weight, featureweightinfo, commerce,
+     weaponskill, lightradius, ammo, ammodamagetypes, gasemitted, energycellrequired,
+     iscurrency, ismissile, isthrown, accuracy, shots, ammoperaction, maxammo,
+     maxvol, liquidgentype, liquidgenrate, inhaled, seeping, maxcharge,
+     chargeperdram, dramsperuse, chargeused, chargefunction, imprintchargecost, id, complexity,
+     tier, bits, canbuild, candisassemble, colorstr, tilecolors, renderstr, chairlevel, hunger,
+     thirst, healing, butcheredinto, harvestedinto, preservedinto, preservedquantity, cookeffect,
+     eatdesc, ismeat, isplant, isfungus, exoticfood, illoneat, oneat, corpse, corpsechance, role,
+     extra, inheritingfrom, dynamictable, unidentifiedimage, unidentifiedname, unidentifiedaltname,
      quickness, movespeed, strength, agility, toughness, intelligence, willpower, ego,
      strengthmult, agilitymult, toughnessmult, intelligencemult, willpowermult, egomult,
      strengthextrinsic, agilityextrinsic, toughnessextrinsic, intelligenceextrinsic,
-     willpowerextrinsic, egoextrinsic,
-     acid, electric, cold, heat, poison, xpvalue, xptier,
+     willpowerextrinsic, egoextrinsic, acid, electric, cold, heat, poison, xpvalue, xptier,
      reputationbonus, faction, wornon, usesslots, demeanor, gender, pronouns,
-     inventory, skills, mutations, modcount, mods, desc]
+     inventory, skills, mutations, supportedmods, modcount, mods, desc]
   ExtraFields:
     # Fields for the extra info template
-    [empsensitive, twohanded, metal, lightprojectile, reflect, movespeedbonus, cursed,
-     destroyonunequip, savemodifier, savemodifieramt, shotcooldown, penetratingammo,
-     omniphaseprojectile, spectacles, carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic,
-     uniquechara, pettable, liquidburst, flametemperature, bleedliquid, hidden, energycellrequired,
+    [empsensitive, powerloadsensitive, twohanded, metal, lightprojectile, reflect, movespeedbonus,
+     cursed, filtersgas, destroyonunequip, savemodifier, savemodifieramt,
+     shotcooldown, penetratingammo, omniphaseprojectile, spectacles, refractive, flashprotection,
+     carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic, uniquechara, pettable,
+     liquidburst, flametemperature, bleedliquid, hidden, energycellrequired,
      temponenter, temponhit, temponhitmax, isoccluding, waterritualable, iscurrency, noprone, phase,
-     poisononhit, realitydistortionbased, leakswhenbroken, mutatedplant, waterritualskill, animatable, hurtbyfungicide, hurtbydefoliant, hasmentalshield, bodytype]
+     poisononhit, realitydistortionbased, leakswhenbroken, mutatedplant, waterritualskill,
+     animatable, hurtbyfungicide, hurtbydefoliant, hasmentalshield, bodytype, shrinelike]
   Image overrides:
     # Manually specify the image name to be used for an object ID:
     TreeSkillsoft: skillsoft_tree.png
     Schemasoft4: schemasoft_high_tier.png
+    NightVision: night vision (implant).png
     ElevatorSwitch: control_switch_elevator.png
     TempleSwitch: control_switch_temple.png
     Asphodel: Earl_asphodel.png
@@ -117,6 +121,9 @@ Templates:
     PreserveSign1: sign (preserves).png
     WineSign1: sign (wine).png
     JoppaMillSign: sign (Joppa mill).png
+    YdColumbariumSign: sign (Yd Freehold columbarium).png
+    YdLivingQuartersSign: sign (Yd Freehold living quarters).png
+    YdMedicalSign: sign (Yd Freehold convalescence).png
     SultanWall_Period1: carved stone from the sultanate (first period).png
     SultanWall_Period2: carved stone from the sultanate (second period).png
     SultanWall_Period3: carved stone from the sultanate (third period).png
@@ -133,7 +140,8 @@ Templates:
     RareChest: chest (rare).png
     SultanReliquaryW: sultan reliquary.png
     ClockworkBeetle: clockwork beetle.png
-    Spiked Gauntlets: spiked steel gauntlets.png
+    MachineWallHotTubing: machine wall (hot).png
+    MachineWallColdTubing: machine wall (cold).png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -156,11 +164,13 @@ Wiki:
            BookSign1, BottleSign1, BootSign1, HatSign1, GloveSign1, CloakSign1, ArmorSign1,
            GunSign1, DiscSign1, ArgyveSign, JoppaNorthSign, EzraSign, TamSign, YurlSign, YlaSign,
            SixshrewSign, LiquidSign1, JewelSign1, HookahSign1, GrenadeSign1, PepperSign1, FoodSign1,
-           PreserveSign1, WineSign1, JoppaMillSign]
+           PreserveSign1, WineSign1, JoppaMillSign, YdColumbariumSign, YdLivingQuartersSign,
+           YdMedicalSign,
+           # quest-related stuff
+           Charred Goatfolk Corpse, Flayed Goatfolk Corpse]
   Article overrides:
     # Manually specify the wiki page article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
-    Spiked Gauntlets: Spiked steel gauntlets
     ClockworkBeetle: Clockwork beetle
     Mamon: Mamon Souldrinker
     Crazed Goatfolk Shaman 1: goatfolk shaman (crazed)
@@ -179,6 +189,7 @@ Wiki:
     TreeSkillsoft: Skillsoft Plus
     Schemasoft3: Schemasoft (mid-tier)
     Schemasoft4: Schemasoft (high-tier)
+    NightVision: night vision (implant)
     BethesdaBaetyl: Baetyl (Bethesda Susa)
     OasisGlowpad: oddly-hued glowpad
     Molting Basilisk: Molting basilisk
@@ -290,6 +301,19 @@ Wiki:
     GhostPerch_Bite: bite (ghost perch)
     CryptFerret_Bite: vicious bite (crypt ferret)
     Burrowing Claws Claw: claw (Burrowing Claws)
+    Svardym_WebbedFoot: webbed foot (Svardym)
+    Svardym_Spit: mouth of crushed polyps (Svardym)
+    PrismPerch_Bite: bite (prism perch)
+    WhiteEsh_Beak: hooked beak (white esh)
+    QuatravoltGlider_Bite: bite (quatravolt glider)
+    TriningLamprey_Bite: psychic bite (trining lamprey)
+    SultanCroc_Bite: bite (sultan croc)
+    EnigmaSnail_Bite: perplexcis (enigma snail)
+    PlasmaJelly_Sting: ionized tentacle (plasma jelly)
+    StarKraken_Arm: cyclopean arm (star kraken)
+    ReefSlug_Foot: nacreous foot (kaleidoslug)
+    Naser Cannon: naser cannon (galgal)
+    Ixlthyxl_Bite: bite (ixlthyxl)
     Techlight2: arc sconce (variation 1)
     Techlight3: arc sconce (variation 2)
     Tomb Techlight1: arc sconce (variation 3)
@@ -339,6 +363,9 @@ Wiki:
     PreserveSign1: sign (preserves)
     WineSign1: sign (wine)
     JoppaMillSign: sign (Joppa mill)
+    YdColumbariumSign: sign (Yd Freehold - columbarium)
+    YdLivingQuartersSign: sign (Yd Freehold - living quarters)
+    YdMedicalSign: sign (Yd Freehold - convalescence)
     SultanWall_Period1: carved stone from the sultanate (first period)
     SultanWall_Period2: carved stone from the sultanate (second period)
     SultanWall_Period3: carved stone from the sultanate (third period)
@@ -355,6 +382,8 @@ Wiki:
     RelicChest: chest (relic)
     RareChest: chest (rare)
     SultanReliquaryW: sultan reliquary
+    MachineWallHotTubing: machine wall (hot)
+    MachineWallColdTubing: machine wall (cold)
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title'
@@ -404,20 +433,12 @@ Wiki:
       /GenericLimb,
       /PlantLimb,
       /FungusLimb,
-      /Corpse,
-      +Human Corpse,
-      +Charred Corpse,
-      +Mangled Corpse,
-      +Ancient Corpse,
-      +Fresh Corpse,
-      +Moldering Corpse,
-      +TarBones,
-      +Albino Ape Pelt,
-      +Albino Ape Heart,
-      +Black Puma Haunch,
       -ExileCorpse,  # extraneous
       -JoppaCorpse,  # extraneous
-      +Ogre Ape Heart,
+      -CaverCorpse2, # covered by CaverCorpse
+      -GitsCorpse,   # never in game?
+      -Girsh Larva,  # no longer in game
+      -Girsh Ovary,  # no longer in game
       +Crystal of Eve,
       +Arsplice Seed,
       /RobotLimb,
@@ -449,6 +470,7 @@ Wiki:
       -Scaled Helmet,
       -Gesticulators,
       -TestShockGlove,
+      -Spiked Gauntlets,
       -BrokenSnailmotherEgg,
       -SnailmotherEgg,
       -FungalInfection,
@@ -629,6 +651,8 @@ Wiki:
       -StairsDownBarathrumsStudy,
       -Air,
       -GritGateMainframeRoomCommPanel,
+      -Space-Time Rift,
+      # Gases
       /PoisonGas,
       +PoisonGas,
       -Steam,
@@ -643,11 +667,16 @@ Wiki:
       +ConfusionGas,
       /NormalityGas,
       +NormalityGas,
+      /MiasmaticAsh,
+      +MiasmaticAsh,
+      /Miasma,
+      +Miasma,
+      /Plasma,
+      +Plasma,
       -FungalSporeGasLuminous,
       -FungalSporeGasPuff,
       -FungalSporeGasWax,
       -FungalSporeGasMumbles,
-      -Space-Time Rift,
       # Plants
       -Godsbrush,
       -LiquidLichen,
@@ -662,7 +691,6 @@ Wiki:
       -Starapple Tree Ripe,
       -Swarmshade Tree_blue,
       -Tanglewood Tree_blue,
-      -Spotted Shagspook 2,
       -Branchy Tree,
       -Fuzzy Tree,
       -Cloudy Tree,
@@ -670,6 +698,8 @@ Wiki:
       # Creatures
       /Ray Cat,
       +Ray Cat,
+      /SoupSludge,
+      +SoupSludge,
       +Ctesiphus,
       -Farm Goat,
       -Goatfolk Hero 1,
@@ -683,6 +713,16 @@ Wiki:
       -RedrockGirshling,
       -Phase Spider Coward,
       -Farm Electric Snail,
+      /Coral Polyp,
+      +Coral Polyp,
+      /Palladium Strut,
+      +Palladium Strut,
+      /Coral and Palladium Strut,
+      +Coral and Palladium Strut,
+      /Arsplice Hyphae,
+      +Arsplice Hyphae A,
+      -Yd Junk Dollar,
+      -Farm Kaleidoslug,
       -Lyngbaskr,
       -Porphyryptus,
       -either,
@@ -753,7 +793,6 @@ Wiki:
       /Water,
       /Terrain,
       +Clue_Putrescence,
-      # beta branch:
       -Tattoo Gun Barathrum,
       -SmallBoulder Grey,
       -MediumBoulder Grey,
@@ -784,6 +823,14 @@ Wiki:
       +InnerSultanWall_Period6,
       /CryptWall,
       +CryptWall,
+      /FulcreteWithSquareWave,
+      +FulcreteWithSquareWave,
+      -Yd ColumbariumWall,
+      -Yd StairsDown Kitchen,
+      /Village Monument Diptych,
+      +Village Monument Diptych,
+      /GlassHydraulicPipe,
+      +GlassHydraulicPipe,
       /Fusion Pumping Station,
       +Fusion Pumping Station,
       /NormCore1,
@@ -814,21 +861,26 @@ Wiki:
       -TombShaft,
       /BaseMuralWall,
       +BaseMuralCenter,
-      /MiasmaticAsh,
-      +MiasmaticAsh,
+      -Porous Coral Rag,
       -Starapple Farm Ezra,
       -Ornate Potted Plant 2,
       -Ornate Potted Plant 3,
+      -Ornate Potted Plant 4,
       -Conservator Special,
       -Crypt Sitter Special,
       -BlueCampfire,
       -BlueCampfireRemains,
       /CryptPlaqueTutor,
       -Powerless Unicomputer,
+      -Powerless Fluxthing,
+      -Powerless Electrothing,
       -Crypt Exit Teleporter,
       -MopangoPilgrim Still,
       /Widget,
-      +CaverCorpse
+      +CaverCorpse,
+      /Sofa,
+      +Sofa L,
+      -YdFreeholderUrn
     ]
 
   Categories:
@@ -865,7 +917,7 @@ Wiki:
     Hats: [BaseHat]
     Masks: [BaseMask]
     Facial Jewelry: [BaseFaceJewelry]
-    Eyewear: [VISAGE, Telemetric Visor, Night-vision Goggles, Telescopic Monocle,
+    Eyewear: [BaseEyewear, VISAGE, Telemetric Visor, Telescopic Monocle,
               Spectacles, Goggles, Mirrorshades]
     Armlets: [BaseArmlet]
     Armor: [BaseArmor, Ash-Stained Robes]
@@ -881,7 +933,7 @@ Wiki:
     Backpacks: [Nylon Bodypack, Gyrocopter Backpack, Portable Beehive, Helping Hands,
                 SkybearJetpack, Mechanical Wings, Strength Exo]
     Banners: [Issachari Banner, Banner of the Holy Rhombus]
-    Floating Nearby: [Light-Obfuscating Lens, Cyclopean Prism, Hoversled]
+    Floating Nearby: [BaseFloat, Light-Obfuscating Lens, Cyclopean Prism, Hoversled]
     Tokens: [Token]
     Light Sources: [LightSource]
     Energy Cells: [Energy Cell]
@@ -951,7 +1003,7 @@ Wiki:
     Worms: [BaseWorm]
     Snails: [BaseSnail]
     Slugs: [BaseSlug]
-    Cybernetics: [BaseCybernetics2Equipment]
+    Cybernetics: [BaseCyberneticsEquipment]
     Merchants: [BaseMerchant]
     Turret Tinkers: [Turret Tinker]
     Cherubim: [Antelopes Cherub, Apes Cherub, Arachnids Cherub, Baboons Cherub, Baetyls Cherub,
