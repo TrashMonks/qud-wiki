@@ -1,23 +1,17 @@
 [[source]]
-name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
-
-[dev-packages]
-pytest = "*"
-pyinstaller = "*"
-flake8 = "*"
+name = "pypi"
 
 [packages]
+pyside6 = "*"
 pyyaml = "*"
-pyside2 = "*"
 mwclient = "*"
 hagadias = {editable = true,git = "https://github.com/TrashMonks/hagadias.git",ref = "main"}
 
-[requires]
-python_version = "3.8"
+[dev-packages]
+pytest = "*"
+flake8 = "*"
 
-[scripts]
-designer = "C:/Users/Jeff/.virtualenvs/qud-wiki-CxkOCm1p/Lib/site-packages/PySide2/designer.exe"
-uic = "C:/Users/Jeff/.virtualenvs/qud-wiki-CxkOCm1p/Scripts/pyside2-uic.exe qbe/qud_explorer_window.ui -o qbe/qud_explorer_window.py"
-app = "python -m qbe"
+[requires]
+python_version = "3.10"

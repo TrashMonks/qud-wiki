@@ -6,10 +6,11 @@ import re
 from pprint import pformat
 
 from PIL import Image, ImageQt
-from PySide2.QtCore import QBuffer, QByteArray, QIODevice, QItemSelectionModel, QRegExp, QSize, Qt
-from PySide2.QtGui import QIcon, QImage, QMovie, QPixmap, QStandardItem, QStandardItemModel, \
+from PySide6.QtCore import QBuffer, QByteArray, QIODevice, QItemSelectionModel, \
+    QRegularExpression, QSize, Qt
+from PySide6.QtGui import QIcon, QImage, QMovie, QPixmap, QStandardItem, QStandardItemModel, \
     QPalette, QColor, QFont
-from PySide2.QtWidgets import QApplication, QFileDialog, QHeaderView, QMainWindow, QMessageBox, \
+from PySide6.QtWidgets import QApplication, QFileDialog, QHeaderView, QMainWindow, QMessageBox, \
     QDialog
 from hagadias.gameroot import GameRoot
 from hagadias.qudobject import QudObject
@@ -45,7 +46,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     The UI layout is derived from qud_explorer_window.py, which is compiled from
     qud_explorer_window.ui (designed graphically in Qt Designer) by the UIC executable that comes
-    with PySide2."""
+    with PySide6."""
 
     def __init__(self, app: QApplication, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
@@ -313,7 +314,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """Remove any filtering that has been applied to the tree view."""
         if clearfield and len(self.search_line_edit.text()) > 0:
             self.search_line_edit.clear()
-        self.qud_object_proxyfilter.setFilterRegExp('')
+        self.qud_object_proxyfilter.setFilterRegularExpression('')
         self.scroll_to_selected()
 
     def search_changed(self, mode: str = ''):
@@ -329,7 +330,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 or (mode == 'Forced' and self.search_line_edit.text() != ''):
             self.qud_object_proxyfilter.pop_selections()  # clear any lingering data in proxyfilter
             self.qud_object_proxyfilter.setFilterRegExp(  # this applies the actual filtering
-                QRegExp(self.search_line_edit.text(), Qt.CaseInsensitive, QRegExp.FixedString))
+                QRegularExpression(self.search_line_edit.text(),
+                                   Qt.CaseInsensitive,
+                                   QRegularExpression.FixedString))
             self.treeView.expandAll()  # expands to show everything visible after filter is applied
             items, item_ids = self.qud_object_proxyfilter.pop_selections()
             if len(items) > 0:

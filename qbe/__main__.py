@@ -9,7 +9,7 @@ from hagadias import gameroot  # noqa F401
 
 import sys
 
-from PySide2.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication
 
 from qbe.config import config
 from qbe.explorer import MainWindow
@@ -17,4 +17,4 @@ from qbe.explorer import MainWindow
 qbe_app = QApplication(sys.argv)
 qbe_app.setApplicationName(config['App name'])
 main_window = MainWindow(qbe_app)
-qbe_app.exec_()
+qbe_app.exec()
