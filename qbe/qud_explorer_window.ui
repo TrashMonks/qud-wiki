@@ -234,6 +234,7 @@
     <addaction name="actionUpload_templates"/>
     <addaction name="actionUpload_tiles"/>
     <addaction name="actionUpload_extra_image_s_for_selected_objects"/>
+    <addaction name="actionSuppress_image_comparison_popups"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -325,6 +326,17 @@
   <action name="actionDark_mode">
    <property name="text">
     <string>Toggle dark mode</string>
+   </property>
+  </action>
+  <action name="actionSuppress_image_comparison_popups">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Suppress image comparison pop-ups</string>
    </property>
   </action>
  </widget>

@@ -63,6 +63,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.verticalLayout.addWidget(self.treeView)
         self.search_line_edit.textChanged.connect(self.search_changed)
         self.search_line_edit.returnPressed.connect(self.search_changed_forced)
+        self._prompt_for_image_changes = True
 
         # Set up menus
         # File menu:
@@ -80,6 +81,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionUpload_tiles.triggered.connect(self.upload_selected_tiles)
         self.actionUpload_extra_image_s_for_selected_objects.triggered\
             .connect(self.upload_extra_images)
+        self.actionSuppress_image_comparison_popups.triggered.connect(self.toggle_img_comparisons)
         # Help menu:
         self.actionShow_help.triggered.connect(self.show_help)
         # TreeView context menu:
@@ -520,6 +522,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.app.processEvents()
         QApplication.restoreOverrideCursor()
 
+    def toggle_img_comparisons(self):
+        """Toggle whether image comparison pop-ups are shown when uploading tiles or extra images.
+        If toggled off, images will be uploaded regardless of differences with no warnings. This is
+        not currently saved across sessions."""
+        self._prompt_for_image_changes = not self._prompt_for_image_changes
+
     def upload_selected_templates(self):
         """Upload the generated templates for all currently selected objects to the wiki."""
         self.upload_wikidata(self.upload_wiki_template, 'templates')
@@ -607,23 +615,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
             else:
                 self.set_icon(tile_matches_cell_index, '❌', True)
-                QApplication.restoreOverrideCursor()  # temporarily restore mouse cursor for dialog
+                if self._prompt_for_image_changes:
+                    QApplication.restoreOverrideCursor()  # temporarily restore cursor for dialog
 
-                dialog = QDialog()
-                dialog.ui = Ui_WikiImageUpload()
-                dialog.ui.setupUi(dialog)
-                dialog.setAttribute(Qt.WA_DeleteOnClose)
-                # add images
-                qbe_image = ImageQt.ImageQt(qud_object.tile.get_big_image())
-                wiki_image = QImage.fromData(QByteArray(wiki_tile_b))
-                dialog.ui.comparison_tile_1.setPixmap(QPixmap.fromImage(qbe_image))
-                dialog.ui.comparison_tile_2.setPixmap(QPixmap.fromImage(wiki_image))
-                # show compare dialog
-                result = dialog.exec()
+                    dialog = QDialog()
+                    dialog.ui = Ui_WikiImageUpload()
+                    dialog.ui.setupUi(dialog)
+                    dialog.setAttribute(Qt.WA_DeleteOnClose)
+                    # add images
+                    qbe_image = ImageQt.ImageQt(qud_object.tile.get_big_image())
+                    wiki_image = QImage.fromData(QByteArray(wiki_tile_b))
+                    dialog.ui.comparison_tile_1.setPixmap(QPixmap.fromImage(qbe_image))
+                    dialog.ui.comparison_tile_2.setPixmap(QPixmap.fromImage(wiki_image))
+                    # show compare dialog
+                    result = dialog.exec()
 
-                QApplication.setOverrideCursor(Qt.WaitCursor)
-                if result == QDialog.Rejected:
-                    return
+                    QApplication.setOverrideCursor(Qt.WaitCursor)
+                    if result == QDialog.Rejected:
+                        return
 
         # upload or replace the wiki file
         filename = qud_object.image
@@ -664,6 +673,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if wiki_gif_b == GifHelper.get_bytes(qud_object.gif_image(0)):
                     print(f'Image "{qud_object.gif}" already exists and matches our version.')
                     success_ct += 1
+                elif not self._prompt_for_image_changes:
+                    attempt_upload = True
                 else:
                     QApplication.restoreOverrideCursor()  # temporarily restore cursor for dialog
 
@@ -742,26 +753,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         success_ct += 1
                     else:
                         self.set_icon(extraimages_match_cell_index, '❌', True)
-                        # temporarily restore cursor for dialog
-                        QApplication.restoreOverrideCursor()
-
-                        dialog = QDialog()
-                        dialog.ui = Ui_WikiImageUpload()
-                        dialog.ui.setupUi(dialog)
-                        dialog.setAttribute(Qt.WA_DeleteOnClose)
-                        # add images
-                        qbe_image = ImageQt.ImageQt(tile.get_big_image())
-                        wiki_image = QImage.fromData(QByteArray(image_b))
-                        dialog.ui.comparison_tile_1.setPixmap(QPixmap.fromImage(qbe_image))
-                        dialog.ui.comparison_tile_2.setPixmap(QPixmap.fromImage(wiki_image))
-                        # show compare dialog
-                        result = dialog.exec()
-
-                        QApplication.setOverrideCursor(Qt.WaitCursor)
-                        if result == QDialog.Rejected:
-                            mismatch_ct += 1
-                        else:
+                        if not self._prompt_for_image_changes:
                             should_upload_image = True
+                        else:
+                            # temporarily restore cursor for dialog
+                            QApplication.restoreOverrideCursor()
+
+                            dialog = QDialog()
+                            dialog.ui = Ui_WikiImageUpload()
+                            dialog.ui.setupUi(dialog)
+                            dialog.setAttribute(Qt.WA_DeleteOnClose)
+                            # add images
+                            qbe_image = ImageQt.ImageQt(tile.get_big_image())
+                            wiki_image = QImage.fromData(QByteArray(image_b))
+                            dialog.ui.comparison_tile_1.setPixmap(QPixmap.fromImage(qbe_image))
+                            dialog.ui.comparison_tile_2.setPixmap(QPixmap.fromImage(wiki_image))
+                            # show compare dialog
+                            result = dialog.exec()
+
+                            QApplication.setOverrideCursor(Qt.WaitCursor)
+                            if result == QDialog.Rejected:
+                                mismatch_ct += 1
+                            else:
+                                should_upload_image = True
 
                 # then, handle .gif image
                 should_upload_gif = False
@@ -778,6 +792,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         print(f'Extra image "{meta.filename}" already exists ' +
                               'and matches our version.')
                         success_ct += 1
+                    elif not self._prompt_for_image_changes:
+                        should_upload_gif = True
                     else:
                         # temporarily restore cursor for dialog
                         QApplication.restoreOverrideCursor()

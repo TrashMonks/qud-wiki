@@ -3,15 +3,23 @@
 ################################################################################
 ## Form generated from reading UI file 'qud_explorer_window.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.15.1
+## Created by: Qt User Interface Compiler version 6.2.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import *
-from PySide6.QtGui import *
-from PySide6.QtWidgets import *
-
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
+    QCursor, QFont, QFontDatabase, QGradient,
+    QIcon, QImage, QKeySequence, QLinearGradient,
+    QPainter, QPalette, QPixmap, QRadialGradient,
+    QTransform)
+from PySide6.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QLabel,
+    QLineEdit, QMainWindow, QMenu, QMenuBar,
+    QPlainTextEdit, QPushButton, QSizePolicy, QStatusBar,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -49,6 +57,10 @@ class Ui_MainWindow(object):
         self.actionDiff_template_against_wiki.setObjectName(u"actionDiff_template_against_wiki")
         self.actionDark_mode = QAction(MainWindow)
         self.actionDark_mode.setObjectName(u"actionDark_mode")
+        self.actionSuppress_image_comparison_popups = QAction(MainWindow)
+        self.actionSuppress_image_comparison_popups.setObjectName(u"actionSuppress_image_comparison_popups")
+        self.actionSuppress_image_comparison_popups.setCheckable(True)
+        self.actionSuppress_image_comparison_popups.setChecked(False)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -60,7 +72,7 @@ class Ui_MainWindow(object):
         self.plainTextEdit = QPlainTextEdit(self.centralwidget)
         self.plainTextEdit.setObjectName(u"plainTextEdit")
         font = QFont()
-        font.setFamily(u"Consolas")
+        font.setFamilies([u"Consolas"])
         font.setPointSize(10)
         self.plainTextEdit.setFont(font)
         self.plainTextEdit.setUndoRedoEnabled(False)
@@ -74,7 +86,7 @@ class Ui_MainWindow(object):
         self.tile_label.setObjectName(u"tile_label")
         self.tile_label.setMinimumSize(QSize(160, 240))
         font1 = QFont()
-        font1.setFamily(u"Segoe UI")
+        font1.setFamilies([u"Segoe UI"])
         self.tile_label.setFont(font1)
         self.tile_label.setStyleSheet(u"background-color: rgb(15, 59, 58);")
 
@@ -83,7 +95,7 @@ class Ui_MainWindow(object):
         self.save_tile_button = QPushButton(self.centralwidget)
         self.save_tile_button.setObjectName(u"save_tile_button")
         font2 = QFont()
-        font2.setFamily(u"Segoe UI")
+        font2.setFamilies([u"Segoe UI"])
         font2.setPointSize(10)
         self.save_tile_button.setFont(font2)
 
@@ -189,6 +201,7 @@ class Ui_MainWindow(object):
         self.menuWiki.addAction(self.actionUpload_templates)
         self.menuWiki.addAction(self.actionUpload_tiles)
         self.menuWiki.addAction(self.actionUpload_extra_image_s_for_selected_objects)
+        self.menuWiki.addAction(self.actionSuppress_image_comparison_popups)
         self.menuHelp.addAction(self.actionShow_help)
 
         self.retranslateUi(MainWindow)
@@ -211,6 +224,7 @@ class Ui_MainWindow(object):
         self.actionUpload_extra_image_s_for_selected_objects.setText(QCoreApplication.translate("MainWindow", u"Upload extra image(s) for selected objects", None))
         self.actionDiff_template_against_wiki.setText(QCoreApplication.translate("MainWindow", u"Diff template against wiki", None))
         self.actionDark_mode.setText(QCoreApplication.translate("MainWindow", u"Toggle dark mode", None))
+        self.actionSuppress_image_comparison_popups.setText(QCoreApplication.translate("MainWindow", u"Suppress image comparison pop-ups", None))
         self.tile_label.setText("")
         self.save_tile_button.setText(QCoreApplication.translate("MainWindow", u"Save tile...", None))
         self.swap_tile_button.setText(QCoreApplication.translate("MainWindow", u"Toggle .png/.gif", None))
