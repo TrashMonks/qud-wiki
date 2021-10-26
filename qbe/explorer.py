@@ -619,7 +619,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 dialog.ui.comparison_tile_1.setPixmap(QPixmap.fromImage(qbe_image))
                 dialog.ui.comparison_tile_2.setPixmap(QPixmap.fromImage(wiki_image))
                 # show compare dialog
-                result = dialog.exec_()
+                result = dialog.exec()
 
                 QApplication.setOverrideCursor(Qt.WaitCursor)
                 if result == QDialog.Rejected:
@@ -690,7 +690,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         dialog.ui.comparison_tile_2.setMovie(wiki_gif_player)
                         wiki_gif_player.start()
                     # show compare dialog
-                    result = dialog.exec_()
+                    result = dialog.exec()
                     # close buffers
                     qbe_gif_player.stop()
                     qbe_gif_buffer.close()
@@ -755,7 +755,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         dialog.ui.comparison_tile_1.setPixmap(QPixmap.fromImage(qbe_image))
                         dialog.ui.comparison_tile_2.setPixmap(QPixmap.fromImage(wiki_image))
                         # show compare dialog
-                        result = dialog.exec_()
+                        result = dialog.exec()
 
                         QApplication.setOverrideCursor(Qt.WaitCursor)
                         if result == QDialog.Rejected:
@@ -805,7 +805,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             dialog.ui.comparison_tile_2.setMovie(wiki_gif_player)
                             wiki_gif_player.start()
                         # show compare dialog
-                        result = dialog.exec_()
+                        result = dialog.exec()
                         # close buffers
                         qbe_gif_player.stop()
                         qbe_gif_buffer.close()
