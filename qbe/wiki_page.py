@@ -1,5 +1,6 @@
 """Class to assist with managing individual wiki articles on the Caves of Qud wiki."""
 import re
+from io import BytesIO
 
 from time import sleep
 from mwclient.errors import InvalidPageTitle, APIError, AssertUserFailedError
@@ -110,3 +111,27 @@ class WikiPage:
                 site.login(wiki_config['username'], wiki_config['password'])
         print(result)
         return result['result']
+
+
+def upload_wiki_image(file: BytesIO, filename: str, gamever: str):
+    description = f'Rendered by {wiki_config["operator"]} with game version ' \
+            f'{gamever} using {config["Wikified name"]} {config["Version"]}'
+    max_attempts = 5
+    for attempt in range(1, max_attempts + 1):
+        try:
+            result = site.upload(file=file,
+                                 filename=filename,
+                                 description=description,
+                                 ignore=True,  # upload even if same file w diff name exists
+                                 comment=description
+                                 )
+            return result
+        except APIError as err:
+            if err.code == 'badtoken':
+                print('CSRF token expired, retrying...')
+                site.tokens = {}  # clear token cache
+            elif err.code == 'mustbeloggedin':
+                print(f'Session expired. Will re-login and try again...')
+                site.login(wiki_config['username'], wiki_config['password'])
+            else:
+                raise err

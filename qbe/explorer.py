@@ -23,7 +23,7 @@ from qbe.search_filter import QudFilterModel
 from qbe.qudobject_wiki import QudObjectWiki
 from qbe.tree_view import QudTreeView
 from qbe.wiki_config import site, wiki_config
-from qbe.wiki_page import TEMPLATE_RE, TEMPLATE_RE_OLD, WikiPage
+from qbe.wiki_page import TEMPLATE_RE, TEMPLATE_RE_OLD, WikiPage, upload_wiki_image
 
 HEADER_LABELS = ['Object Name', 'Display Name', 'Wiki Title Override', 'Article?',
                  'Article matches?', 'Image?', 'Image matches?', 'Extra images?',
@@ -627,14 +627,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # upload or replace the wiki file
         filename = qud_object.image
-        descr = f'Rendered by {wiki_config["operator"]} with game version ' \
-                f'{self.gameroot.gamever} using {config["Wikified name"]} {config["Version"]}'
-        result = site.upload(qud_object.tile.get_big_bytesio(),
-                             filename=filename,
-                             description=descr,
-                             ignore=True,  # upload even if same file exists under diff name
-                             comment=descr
-                             )
+        result = upload_wiki_image(qud_object.tile.get_big_bytesio(), filename,
+                                   self.gameroot.gamever)
         if result.get('result', None) == 'Success':
             self.set_icon(tile_exists_cell_index, '✅')
             self.set_icon(tile_matches_cell_index, '✅', True)
@@ -714,15 +708,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if attempt_upload:
                 # upload or replace the extra image(s) on the wiki
                 filename = qud_object.gif
-                descr = f'Rendered by {wiki_config["operator"]} with game version ' \
-                        f'{self.gameroot.gamever} using {config["Wikified name"]} ' \
-                        f'{config["Version"]}'
-                result = site.upload(GifHelper.get_bytesio(qud_object.gif_image(0)),
-                                     filename=filename,
-                                     description=descr,
-                                     ignore=True,  # upload even if same file exists under diff name
-                                     comment=descr
-                                     )
+                result = upload_wiki_image(GifHelper.get_bytesio(qud_object.gif_image(0)), filename,
+                                           self.gameroot.gamever)
                 if result.get('result', None) == 'Success':
                     success_ct += 1
                 else:
@@ -833,30 +820,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 if should_upload_image:
                     # upload or replace the extra image(s) on the wiki
-                    descr = f'Rendered by {wiki_config["operator"]} with game version ' \
-                            f'{self.gameroot.gamever} using {config["Wikified name"]} ' \
-                            f'{config["Version"]}'
-                    result = site.upload(tile.get_big_bytesio(),
-                                         filename=meta.filename,
-                                         description=descr,
-                                         ignore=True,  # upload even if same file w diff name exists
-                                         comment=descr
-                                         )
+                    result = upload_wiki_image(tile.get_big_bytesio(), meta.filename,
+                                               self.gameroot.gamever)
                     if result.get('result', None) == 'Success':
                         success_ct += 1
                     else:
                         fail_ct += 1
 
                 if should_upload_gif:
-                    descr = f'Rendered by {wiki_config["operator"]} with game version ' \
-                            f'{self.gameroot.gamever} using {config["Wikified name"]} ' \
-                            f'{config["Version"]}'
-                    result = site.upload(GifHelper.get_bytesio(qbe_gif),
-                                         filename=meta.gif_filename,
-                                         description=descr,
-                                         ignore=True,  # upload even if same file w diff name exists
-                                         comment=descr
-                                         )
+                    result = upload_wiki_image(GifHelper.get_bytesio(qbe_gif), meta.gif_filename,
+                                               self.gameroot.gamever)
                     if result.get('result', None) == 'Success':
                         success_ct += 1
                     else:
