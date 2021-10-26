@@ -30,7 +30,7 @@ class Ui_WikiImageUpload(object):
         font.setFamily(u"Segoe UI")
         font.setPointSize(12)
         font.setBold(False)
-        font.setWeight(50)
+        # font.setWeight(50)
         self.buttonBox.setFont(font)
         self.buttonBox.setLayoutDirection(Qt.LeftToRight)
         self.buttonBox.setAutoFillBackground(False)
