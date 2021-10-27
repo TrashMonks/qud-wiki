@@ -172,7 +172,7 @@ Wiki:
            SixshrewSign, LiquidSign1, JewelSign1, HookahSign1, GrenadeSign1, PepperSign1, FoodSign1,
            PreserveSign1, WineSign1, JoppaMillSign, YdColumbariumSign, YdLivingQuartersSign,
            YdMedicalSign, YdKitchenSign, YdLibrarySign, YdMarketSign, YdWorkshopSign,
-           YdManyEyesSign, YdSalonSign
+           YdManyEyesSign, YdSalonSign,
            # quest-related stuff
            Charred Goatfolk Corpse, Flayed Goatfolk Corpse]
   Article overrides:
