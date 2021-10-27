@@ -124,6 +124,12 @@ Templates:
     YdColumbariumSign: sign (Yd Freehold columbarium).png
     YdLivingQuartersSign: sign (Yd Freehold living quarters).png
     YdMedicalSign: sign (Yd Freehold convalescence).png
+    YdKitchenSign: sign (Yd Freehold kitchen).png
+    YdLibrarySign: sign (Yd Freehold library).png
+    YdMarketSign: sign (Yd Freehold market).png
+    YdWorkshopSign: sign (Yd Freehold workshop).png
+    YdManyEyesSign: sign (Yd Freehold Many Eyes).png
+    YdSalonSign: sign (Yd Freehold salon).png
     SultanWall_Period1: carved stone from the sultanate (first period).png
     SultanWall_Period2: carved stone from the sultanate (second period).png
     SultanWall_Period3: carved stone from the sultanate (third period).png
@@ -165,7 +171,8 @@ Wiki:
            GunSign1, DiscSign1, ArgyveSign, JoppaNorthSign, EzraSign, TamSign, YurlSign, YlaSign,
            SixshrewSign, LiquidSign1, JewelSign1, HookahSign1, GrenadeSign1, PepperSign1, FoodSign1,
            PreserveSign1, WineSign1, JoppaMillSign, YdColumbariumSign, YdLivingQuartersSign,
-           YdMedicalSign,
+           YdMedicalSign, YdKitchenSign, YdLibrarySign, YdMarketSign, YdWorkshopSign,
+           YdManyEyesSign, YdSalonSign
            # quest-related stuff
            Charred Goatfolk Corpse, Flayed Goatfolk Corpse]
   Article overrides:
@@ -239,6 +246,8 @@ Wiki:
     Girshworm_Crush: crushing bands (girshworm)
     Glowfish_Bite: bite (glowfish)
     Glowpad_Burn: bite (glowpad)
+    Glowwight_Claws: bloody claws
+    Glowwight_Claws2: bloody claws (strong)
     Chameleon_Bite: bite (chameleon)
     Mimic_Bite: bite (mimic)
     Ice frog bite: bite (ice frog)
@@ -262,6 +271,7 @@ Wiki:
     Snapjaw_Bite: bite (snapjaw)
     Slumberling Claw: claw (slumberling)
     Slug_Bite: bite (slug)
+    Tortoise_Bite: bite (tortoise)
     Juice_Sap_Bite: bite (juice sap)
     Breather_Claw: claw (breather)
     Pearlfrog_Bite: bite (pearlfrog)
@@ -366,6 +376,12 @@ Wiki:
     YdColumbariumSign: sign (Yd Freehold - columbarium)
     YdLivingQuartersSign: sign (Yd Freehold - living quarters)
     YdMedicalSign: sign (Yd Freehold - convalescence)
+    YdKitchenSign: sign (Yd Freehold - kitchen)
+    YdLibrarySign: sign (Yd Freehold - library)
+    YdMarketSign: sign (Yd Freehold - market)
+    YdWorkshopSign: sign (Yd Freehold - workshop)
+    YdManyEyesSign: sign (Yd Freehold - Many Eyes)
+    YdSalonSign: sign (Yd Freehold - salon)
     SultanWall_Period1: carved stone from the sultanate (first period)
     SultanWall_Period2: carved stone from the sultanate (second period)
     SultanWall_Period3: carved stone from the sultanate (third period)
@@ -849,6 +865,7 @@ Wiki:
       /Reliquary,
       +Reliquary,
       +Recoming Reliquary,
+      +Melted Reliquary,
       +SultanReliquaryW,
       +Scrapable Deposit Box 6,
       /ConveyorPad,
@@ -884,6 +901,7 @@ Wiki:
       -YdFreeholdCrysteelPlatedWallWithPipes,
       -YdFreeholdFusionPowerStation,
       -Powerless Loudspeaker,
+      -Powerless Bubblething,
       -Painted Column R,
       -Barathrumite Hyperbiotic Chair,
       -Yd StairsDown Columbarium,
@@ -894,7 +912,9 @@ Wiki:
       -Yd StairsDown Market,
       -Yd StairsDown Many Eyes,
       -Yd StairsDown Salon,
-      -Farm Bop Sponge
+      -Farm Bop Sponge,
+      -Cherubic Hand Claw,  # Same as Cherubic Claw
+      -Mechanical Cherubic Hand Claw  # Same as Mechanical Cherubic Claw
     ]
 
   Categories:
