@@ -50,6 +50,7 @@ Templates:
   Image overrides:
     # Manually specify the image name to be used for an object ID:
     TreeSkillsoft: skillsoft_tree.png
+    SkinGlitter2: skin glitter (high-tier).png
     Schemasoft4: schemasoft_high_tier.png
     NightVision: night vision (implant).png
     ElevatorSwitch: control_switch_elevator.png
@@ -194,6 +195,7 @@ Wiki:
     Schemasoft2: Schemasoft (low-tier)
     SingleSkillsoft3: Skillsoft (high SP)
     TreeSkillsoft: Skillsoft plus
+    SkinGlitter2: skin glitter (high-tier)
     Schemasoft3: Schemasoft (mid-tier)
     Schemasoft4: Schemasoft (high-tier)
     NightVision: night vision (implant)
