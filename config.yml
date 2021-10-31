@@ -944,7 +944,7 @@ Wiki:
     Mutated Natural Weapons: [Burrowing Claws Claw, Horns, Icy Vapor, Ghostly Flames]
     Firearms: [BaseFirearm]
     Rifles: [BaseRifle]
-    Heavy Weapons: [BaseHeavyWeapon]
+    Heavy Weapons: [BaseHeavyWeapon, Chain Laser]
     Bows: [BaseBow, Electrobow]
     Pistols: [BasePistol, Boosterbot_Gun, Dart Gun]
     Equipment: [Armor, Shield]
