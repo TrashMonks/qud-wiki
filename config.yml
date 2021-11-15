@@ -43,7 +43,7 @@ Templates:
      cursed, filtersgas, destroyonunequip, savemodifier, savemodifieramt,
      shotcooldown, penetratingammo, omniphaseprojectile, spectacles, refractive, flashprotection,
      carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic, uniquechara, pettable,
-     liquidburst, flametemperature, bleedliquid, hidden, energycellrequired,
+     liquidburst, flametemperature, bleedliquid, hidden, energycellrequired, energyammoloader,
      temponenter, temponhit, temponhitmax, isoccluding, waterritualable, iscurrency, noprone, phase,
      poisononhit, realitydistortionbased, leakswhenbroken, mutatedplant, waterritualskill,
      animatable, hurtbyfungicide, hurtbydefoliant, hasmentalshield, bodytype, shrinelike]
