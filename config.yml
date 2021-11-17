@@ -62,6 +62,8 @@ Templates:
     Across3: across moghrayi.png
     Lyngbaskr: Lyngbaskr.png
     Porphyryptus: Porphyryptus.png
+    ExileCorpse: human remains (rainbow wood).png
+    JoppaCorpse: human remains (ruins of Joppa).png
     either: either.png
     or: or.png
     Ebenshabat: Ebenshabat.png
@@ -185,6 +187,8 @@ Wiki:
     Wraith-Knight Templar: Wraith-Knight Templar
     Torch: Torch
     Flowers: Flowers (item)
+    ExileCorpse: human remains (Rainbow Wood)
+    JoppaCorpse: human remains (ruins of Joppa)
     EaterStatue Gold: Statue of Eater (gold)
     Hoarshroom: Luminous hoarshroom (food)
     MerchantAdvertisement: Advertisement
@@ -451,8 +455,7 @@ Wiki:
       /GenericLimb,
       /PlantLimb,
       /FungusLimb,
-      -ExileCorpse,  # extraneous
-      -JoppaCorpse,  # extraneous
+      -HumanRemains,  # not used in base game anywhere
       -CaverCorpse2, # covered by CaverCorpse
       -GitsCorpse,   # never in game?
       -Girsh Larva,  # no longer in game
@@ -1005,7 +1008,7 @@ Wiki:
                      PeridotWall]
     Statues: [Statue, SultanShrine]
     Village Monuments: [Village Monument]
-    Loot Corpses: [FossilizedRemains, CaverCorpse]
+    Loot Corpses: [FossilizedRemains, CaverCorpse, JoppaCorpse, ExileCorpse]
     Plants: [Plant]
     Creatures: [Creature]
     Animals: [Animal]
