@@ -192,7 +192,6 @@ Wiki:
     EaterStatue Gold: Statue of Eater (gold)
     Hoarshroom: Luminous hoarshroom (food)
     MerchantAdvertisement: Advertisement
-    Argyve's Data Disk: Argyve's data disk
     Argyve's Data Disk Encoded: Stamped data disk with Q Girl's instructions encoded
     SingleSkillsoft1: Skillsoft (low SP)
     SingleSkillsoft2: Skillsoft (medium SP)
@@ -470,6 +469,7 @@ Wiki:
       +Dagger,
       /Dagger3,
       +Dagger3,
+      -Argyve's Data Disk,
       -Flail,
       -Chain,
       -Stun Whip,
@@ -1080,7 +1080,7 @@ Wiki:
                         Nacham, Vivira, Vaam, Yona, Sixshrew, Yla Haj, Haddas, Rainwater Shomer,
                         Biographer, Zothom, k-Goninon, Warden 1-FF, Bep, Geeub, Goek, Krka, Mak,
                         Thah, Tillifergaewicz, Une, Rokhas, Many Eyes]
-    Quest Items: [Scrapped Waydroid, Scratch Data Disk, Stamped Data Disk, Argyve's Data Disk,
+    Quest Items: [Scrapped Waydroid, Scratch Data Disk, Stamped Data Disk,
                   Argyve's Data Disk Encoded, ClimberBlueprints, Dormant Waydroid, BarathrumKey,
                   Clue_YuckwheatChaff, Clue_SeveredTongue, Clue_SplinteredWeaponHaft,
                   Clue_BloodyArrow, Clue_DiscardedBracer, Clue_WornBracer, Clue_BloodyPatchOfFur,
