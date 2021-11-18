@@ -470,10 +470,7 @@ Wiki:
       /Dagger3,
       +Dagger3,
       -Argyve's Data Disk,
-      -Flail,
-      -Chain,
       -Stun Whip,
-      -TestSword,
       -CritPistol,
       -CacheFlamethrower,
       -Quills+2,
@@ -484,7 +481,6 @@ Wiki:
       -Horticulturalist Bio-Scanning Bracelet,
       -Child of the Deep Structural Scanning Bracelet,
       -Bite,
-      -Wof_Bite,
       /BaseBeadBracelet,
       +Bracelet1,  # just including one bracelet from BaseBeadBracelet
       -Fork-Horned Helmet 4,  # was an experimental item
