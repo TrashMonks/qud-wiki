@@ -177,7 +177,9 @@ Wiki:
            YdMedicalSign, YdKitchenSign, YdLibrarySign, YdMarketSign, YdWorkshopSign,
            YdManyEyesSign, YdSalonSign,
            # quest-related stuff
-           Charred Goatfolk Corpse, Flayed Goatfolk Corpse]
+           Charred Goatfolk Corpse, Flayed Goatfolk Corpse,
+           # grenades
+           Grenade]
   Article overrides:
     # Manually specify the wiki page article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
