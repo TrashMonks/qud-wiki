@@ -182,6 +182,7 @@ Wiki:
            Grenade]
   Article overrides:
     # Manually specify the wiki page article title to be used for an object ID
+    Wire Strand 1: wire strand
     MasterworkCarbine: Scoped masterwork carbine
     ClockworkBeetle: Clockwork beetle
     Mamon: Mamon Souldrinker
@@ -516,7 +517,6 @@ Wiki:
       -Blank Recoiler,
       /Random Figurine,
       -Jewel-Encrusted Item,
-      -Wire Strand 1,
       -Wire Strand 3,
       -Wire Strand 10,
       -Wire Strand 20,
@@ -926,7 +926,7 @@ Wiki:
     # Order matters since later, more specific entries can override earlier, more general ones.
     Items: [Item]
     Fungal Infections: [FungalInfection]
-    Corpses: [Corpse]
+    Corpses: [Corpse, Ashes, Bones]
     Gases: [Gas]
     Baetyls: [Baetyl]
     Weapons: [MeleeWeapon, MissileWeapon]
@@ -990,24 +990,27 @@ Wiki:
     Preserved Food: [Preservable]
     Tools: [Tool]
     Tonics: [Tonic]
-    Liquid Containers: [WaterContainer, Vessel, PolypCache]
+    Liquid Containers: [WaterContainer, Vessel, Gourd, StorageTank, PolypCache]
     Trade Goods: [Copper Nugget, Silver Nugget, Gold Nugget, Gemstone, Bronze Ingot, BoxOfCrayons,
-                  Polyhedral Rings, Silver Rondure, Blood-stained neck-ring, BaseBeadBracelet]
+                  Polyhedral Rings, Silver Rondure, Blood-stained neck-ring, BaseBeadBracelet,
+                  Ogre Ape Pelt, Albino Ape Pelt]
     Security Cards: [Security Card]
     Furniture: [Furniture]
     Doors: [Door, Archway]
     Signs: [Sign]
     Chairs: [BaseChair, FoldingChair]
     Beds: [BaseBed, Hammock, Bedroll]
+    Instruments: [Hammered Dulcimer, Harp, HurdyGurdy, Rectangular Bells]
     Chests: [Chest, Reliquary]
     Walls: [Wall]
     Wall Traps: [Walltrap]
     Gemstone Walls: [AgateWall, TopazWall, JasperWall, AmethystWall, SapphireWall, EmeraldWall,
                      PeridotWall]
-    Statues: [Statue, SultanShrine]
+    Statues: [Statue, SultanShrine, Bust of K4K5, Bust of Mehmet I]
+    Holograms: [hologram of Shekhinah, Eater Hologram, Village Hologram 1, Light Sculpture]
     Village Monuments: [Village Monument]
     Loot Corpses: [FossilizedRemains, CaverCorpse, JoppaCorpse, ExileCorpse]
-    Plants: [Plant]
+    Plants: [Plant, Flower, Flowers, Bouquet]
     Creatures: [Creature]
     Animals: [Animal]
     Mutated Plants: [MutatedPlant]
@@ -1036,13 +1039,14 @@ Wiki:
     Frogs: [Ice frog, Bloated Pearlfrog]
     Fish: [BaseFish]
     Spiders: [BaseSpider]
-    Nests: [BaseNest]
+    Nests: [BaseNest, Svardym Egg Sac]
     Worms: [BaseWorm]
     Snails: [BaseSnail]
     Slugs: [BaseSlug]
     Cybernetics: [BaseCyberneticsEquipment]
     Merchants: [BaseMerchant]
     Turret Tinkers: [Turret Tinker]
+    Terrain Features: [Campfire, Campfire Remains, Garbage, Coral and Palladium Strut]
     Cherubim: [Antelopes Cherub, Apes Cherub, Arachnids Cherub, Baboons Cherub, Baetyls Cherub,
                Bears Cherub, Birds Cherub, Cannibals Cherub, Cats Cherub, Crabs Cherub, Dogs Cherub,
                Equines Cherub, Fish Cherub, Flowers Cherub, Frogs Cherub, Fungi Cherub,
@@ -1078,9 +1082,9 @@ Wiki:
                         Nacham, Vivira, Vaam, Yona, Sixshrew, Yla Haj, Haddas, Rainwater Shomer,
                         Biographer, Zothom, k-Goninon, Warden 1-FF, Bep, Geeub, Goek, Krka, Mak,
                         Thah, Tillifergaewicz, Une, Rokhas, Many Eyes, 0lam]
-    Quest Items: [Scrapped Waydroid, Scratch Data Disk, Stamped Data Disk,
+    Quest Items: [Scrapped Waydroid, Wire Strand 1, Scratched Data Disk, Stamped Data Disk,
                   Argyve's Data Disk Encoded, ClimberBlueprints, Dormant Waydroid, BarathrumKey,
                   Clue_YuckwheatChaff, Clue_SeveredTongue, Clue_SplinteredWeaponHaft,
                   Clue_BloodyArrow, Clue_DiscardedBracer, Clue_WornBracer, Clue_BloodyPatchOfFur,
                   Clue_LeatherScraps, Clue_CopperNugget, Clue_BulgingWaterskin, Clue_VillageStores,
-                  Gnawed Watervine, Clue_BloodyWatervine]
+                  Gnawed Watervine, Clue_BloodyWatervine, Repulsive Device]
