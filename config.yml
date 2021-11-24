@@ -46,7 +46,7 @@ Templates:
      liquidburst, flametemperature, bleedliquid, hidden, energycellrequired, energyammoloader,
      temponenter, temponhit, temponhitmax, isoccluding, waterritualable, iscurrency, noprone, phase,
      poisononhit, realitydistortionbased, leakswhenbroken, mutatedplant, waterritualskill,
-     animatable, hurtbyfungicide, hurtbydefoliant, hasmentalshield, bodytype, shrinelike]
+     animatable, hurtbyfungicide, hurtbydefoliant, hasmentalshield, bodytype, shrinelike, enclosing]
   Image overrides:
     # Manually specify the image name to be used for an object ID:
     TreeSkillsoft: skillsoft_tree.png
@@ -846,6 +846,7 @@ Wiki:
       +FulcreteWithSquareWave,
       -Yd ColumbariumWall,
       -Yd StairsDown Kitchen,
+      -Yd Regen Tank,
       /Village Monument Diptych,
       +Village Monument Diptych,
       /GlassHydraulicPipe,
