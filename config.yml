@@ -974,7 +974,6 @@ Wiki:
     Banners: [Issachari Banner, Banner of the Holy Rhombus]
     Floating Nearby: [BaseFloat, Light-Obfuscating Lens, Cyclopean Prism, Hoversled]
     Tokens: [Token]
-    Light Sources: [LightSource]
     Energy Cells: [Energy Cell]
     Liquid Fueled Energy Cells: [Liquid Fueled Energy Cell]
     Thrown Weapons: [BaseThrownWeapon, Geomagnetic Disc, ThrowingAxe, CastNet, SmallBoulder,
@@ -998,20 +997,30 @@ Wiki:
                   Ogre Ape Pelt, Albino Ape Pelt, Grave Goods]
     Security Cards: [Security Card]
     Furniture: [Furniture]
-    Doors: [Door, Archway]
+    Doors: [Door, Archway, BeltCurtains]
     Signs: [Sign]
     Chairs: [BaseChair, FoldingChair]
     Beds: [BaseBed, Hammock, Bedroll]
     Tables: [Table, Octagonal Table, Book Table, Low Table]
     Instruments: [Hammered Dulcimer, Harp, HurdyGurdy, Rectangular Bells]
-    Chests: [Chest, Reliquary]
+    Chests: [Chest, Reliquary, Sarcophagus, SultanSarcophagusW, Woven Basket]
     Walls: [Wall]
     Wall Traps: [Walltrap]
     Gemstone Walls: [AgateWall, TopazWall, JasperWall, AmethystWall, SapphireWall, EmeraldWall,
                      PeridotWall]
     Statues: [Statue, SultanShrine, Bust of K4K5, Bust of Mehmet I]
+    Sculptures: [Brain Sculpture, Unfinished Sculpture]
+    Paintings: [Painted Column L, Painting]
     Holograms: [hologram of Shekhinah, Eater Hologram, Village Hologram 1, Light Sculpture]
-    Village Monuments: [Village Monument]
+    Conduits: [PowerLine, HeavyPowerLine, BaseHydraulicPipe]
+    Machinery: [HighTechInstallation, BaseMechanicalTransmission, Induction Charging Station,
+                Universal Charging Station, Sewing Machine, Glass Furnace, Glass Printer, Lathe,
+                Rock Tumbler, Kiln, Display Breadboard, Regen Tank, Millstone, Wooden Water Wheel,
+                Wooden Wind Turbine, ConveyorDrive, ConveyorPad, Food Processor, Powered Orrery,
+                Psiamp Sarcophagus, CyberneticsTerminal2, Switch, Platform, Solar Still]
+    Light Sources: [LightSource, Full-Spectrum Techlight, Candelabra, Half Candelabra, Techlight1,
+                     Techlight2, Techlight3, Tomb Techlight1, Sconce, Torchpost]
+    Monuments: [Village Monument, Tombstone]
     Loot Corpses: [FossilizedRemains, CaverCorpse, JoppaCorpse, ExileCorpse]
     Plants: [Plant, Flower, Flowers, Bouquet]
     Creatures: [Creature]
@@ -1050,6 +1059,7 @@ Wiki:
     Merchants: [BaseMerchant]
     Turret Tinkers: [Turret Tinker]
     Terrain Features: [Campfire, Campfire Remains, Garbage, Coral and Palladium Strut]
+    Environmental Hazards: [Space-Time Vortex, Wormhole]
     Cherubim: [Antelopes Cherub, Apes Cherub, Arachnids Cherub, Baboons Cherub, Baetyls Cherub,
                Bears Cherub, Birds Cherub, Cannibals Cherub, Cats Cherub, Crabs Cherub, Dogs Cherub,
                Equines Cherub, Fish Cherub, Flowers Cherub, Frogs Cherub, Fungi Cherub,
