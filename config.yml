@@ -1002,6 +1002,7 @@ Wiki:
     Signs: [Sign]
     Chairs: [BaseChair, FoldingChair]
     Beds: [BaseBed, Hammock, Bedroll]
+    Tables: [Table, Octagonal Table, Book Table]
     Instruments: [Hammered Dulcimer, Harp, HurdyGurdy, Rectangular Bells]
     Chests: [Chest, Reliquary]
     Walls: [Wall]
