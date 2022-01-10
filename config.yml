@@ -32,8 +32,8 @@ Templates:
      eatdesc, ismeat, isplant, isfungus, exoticfood, illoneat, oneat, corpse, corpsechance, role,
      extra, inheritingfrom, dynamictable, unidentifiedimage, unidentifiedname, unidentifiedaltname,
      capacitorcharge, capacitormax, capacitorrate, chargeconsumebroadcast, chargeconsumeelectrical,
-     chargeconsumehydraulic, chargeproducebroadcast, chargeproduceelectric, chargeproducehydraulic,
-     chargeproducesolar,
+     chargeconsumehydraulic, chargeconsumemechanical, chargeproducebroadcast, chargeproduceelectric,
+     chargeproducehydraulic, chargeproducemechanical, chargeproducesolar,
      quickness, movespeed, strength, agility, toughness, intelligence, willpower, ego,
      strengthmult, agilitymult, toughnessmult, intelligencemult, willpowermult, egomult,
      strengthextrinsic, agilityextrinsic, toughnessextrinsic, intelligenceextrinsic,
@@ -51,8 +51,8 @@ Templates:
      poisononhit, realitydistortionbased, leakswhenbroken, mutatedplant, waterritualskill,
      animatable, hurtbyfungicide, hurtbydefoliant, hasmentalshield, bodytype, shrinelike, enclosing,
      capacitorcharge, capacitormax, capacitorrate, chargeconsumebroadcast, chargeconsumeelectrical,
-     chargeconsumehydraulic, chargeproducebroadcast, chargeproduceelectric, chargeproducehydraulic,
-     chargeproducesolar]
+     chargeconsumehydraulic, chargeconsumemechanical, chargeproducebroadcast, chargeproduceelectric,
+     chargeproducehydraulic, chargeproducemechanical, chargeproducesolar]
   Image overrides:
     # Manually specify the image name to be used for an object ID:
     TreeSkillsoft: skillsoft_tree.png
