@@ -1019,7 +1019,8 @@ Wiki:
     Paintings: [Painted Column L, Painting]
     Holograms: [hologram of Shekhinah, Eater Hologram, Village Hologram 1, Light Sculpture]
     Conduits: [PowerLine, HeavyPowerLine, BaseHydraulicPipe]
-    Machinery: [HighTechInstallation, BaseMechanicalTransmission, Induction Charging Station,
+    Gearboxes: [BaseMechanicalTransmission]
+    Machinery: [HighTechInstallation, Induction Charging Station,
                 Universal Charging Station, Sewing Machine, Glass Furnace, Glass Printer, Lathe,
                 Rock Tumbler, Kiln, Display Breadboard, Regen Tank, Millstone, Wooden Water Wheel,
                 Wooden Wind Turbine, ConveyorDrive, ConveyorPad, Food Processor, Powered Orrery,
