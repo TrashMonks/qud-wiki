@@ -114,6 +114,7 @@ Templates:
     ArmorSign1: sign (armor).png
     GunSign1: sign (gun).png
     DiscSign1: sign (data disc).png
+    ImplantSign1: sign (implant).png
     ArgyveSign: sign (Argyve).png
     JoppaNorthSign: sign (Joppa graveyard).png
     EzraSign: sign (Ezra).png
@@ -151,6 +152,7 @@ Templates:
     InnerSultanWall_Period4: gilded marble from the sultanate (fourth period).png
     InnerSultanWall_Period5: gilded marble from the sultanate (fifth period).png
     SultanShrine: sultanshrine.png
+    Metal Chest1: chest (metal).png
     RelicChest: chest (relic).png
     RareChest: chest (rare).png
     SultanReliquaryW: sultan reliquary.png
@@ -181,14 +183,13 @@ Wiki:
            SixshrewSign, LiquidSign1, JewelSign1, HookahSign1, GrenadeSign1, PepperSign1, FoodSign1,
            PreserveSign1, WineSign1, JoppaMillSign, YdColumbariumSign, YdLivingQuartersSign,
            YdMedicalSign, YdKitchenSign, YdLibrarySign, YdMarketSign, YdWorkshopSign,
-           YdManyEyesSign, YdSalonSign,
+           YdManyEyesSign, YdSalonSign, ImplantSign1
            # quest-related stuff
            Charred Goatfolk Corpse, Flayed Goatfolk Corpse,
            # grenades
            Grenade]
   Article overrides:
     # Manually specify the wiki page article title to be used for an object ID
-    Wire Strand 1: wire strand
     MasterworkCarbine: Scoped masterwork carbine
     ClockworkBeetle: Clockwork beetle
     Mamon: Mamon Souldrinker
@@ -371,6 +372,7 @@ Wiki:
     ArmorSign1: sign (armor)
     GunSign1: sign (gun)
     DiscSign1: sign (data disc)
+    ImplantSign1: sign (implant)
     ArgyveSign: sign (Argyve)
     JoppaNorthSign: sign (Joppa graveyard)
     EzraSign: sign (Ezra)
@@ -409,6 +411,7 @@ Wiki:
     InnerSultanWall_Period5: gilded marble from the sultanate (fifth period)
     Space-Time Vortex: space-time vortex (phenomenon)
     SultanShrine: sultan shrine
+    Metal Chest1: chest (metal)
     RelicChest: chest (relic)
     RareChest: chest (rare)
     SultanReliquaryW: sultan reliquary
@@ -436,6 +439,7 @@ Wiki:
     InnerSultanWall_Period3: gilded marble from the sultanate of *Sultan*
     InnerSultanWall_Period4: gilded marble from the sultanate of *Sultan*
     InnerSultanWall_Period5: gilded marble from the sultanate of *Sultan*
+    Metal Chest1: chest (metal)
     RareChest: chest (rare)  # avoid duplicate 'chest'
     RelicChest: chest (relic)
     SultanReliquaryW: sultan reliquary  # avoid duplicate 'reliquary'
@@ -481,8 +485,6 @@ Wiki:
       +Dagger3,
       -Argyve's Data Disk,
       -Stun Whip,
-      -CritPistol,
-      -CacheFlamethrower,
       -Quills+2,
       -Quills+3,
       -Wings,
@@ -524,6 +526,7 @@ Wiki:
       -Blank Recoiler,
       /Random Figurine,
       -Jewel-Encrusted Item,
+      -Wire Strand 1,
       -Wire Strand 3,
       -Wire Strand 10,
       -Wire Strand 20,
@@ -572,7 +575,8 @@ Wiki:
       +Wormhole,
       /Door,
       +Door,
-      +Gate,
+      +Brinestalk Gate,
+      +Iron Gate,
       '*Security Door',
       -Security Door,
       +Death Gate W,
@@ -616,6 +620,7 @@ Wiki:
       /Random Statue,
       /Chest,  # needs a lot of explanation in an article!
       +Chest,
+      +Metal Chest1,
       +WedgeChest1,  # needs explanatory article for 5 types
       +FossilizedRemains,
       +RustLocker,
@@ -665,6 +670,8 @@ Wiki:
       -PreserveSign3,
       -WineSign2,
       -WineSign3,
+      -ImplantSign2,
+      -ImplantSign3,
       -PigSign,  # not in the game anywhere
       /SultanShrine,
       +SultanShrine,
@@ -718,7 +725,6 @@ Wiki:
       -Swarmshade Tree_blue,
       -Tanglewood Tree_blue,
       -Branchy Tree,
-      -Fuzzy Tree,
       -Cloudy Tree,
       -Circle Tree,
       # Creatures
@@ -781,8 +787,6 @@ Wiki:
       -Snapjaw Laser,
       -InjectorSnapper,
       -CyberSnapper,
-      /Snapjaw Warlord,
-      +Snapjaw Warlord,
       -Snapjaw Packlord,
       -Wof,
       -Tabula Rasa,  # needs hand-edited article
@@ -925,7 +929,35 @@ Wiki:
       -Yd StairsDown Salon,
       -Farm Bop Sponge,
       -Cherubic Hand Claw,  # Same as Cherubic Claw
-      -Mechanical Cherubic Hand Claw  # Same as Mechanical Cherubic Claw
+      -Mechanical Cherubic Hand Claw,  # Same as Mechanical Cherubic Claw
+      /Snapjaw Scavenger,
+      +Snapjaw Scavenger 0,
+      /Snapjaw Hunter,
+      +Snapjaw Hunter 0,
+      /Snapjaw Shotgunner,
+      +Snapjaw Shotgunner 0,
+      /Snapjaw Brute,
+      +Snapjaw Brute 0,
+      /Snapjaw Warrior,
+      +Snapjaw Warrior 0,
+      /Snapjaw Warlord,
+      +Snapjaw Warlord 0,
+      /BaseBreather,
+      +Breather,
+      +Elder Breather,
+      /BaseBreatherCorpse,
+      +BaseBreatherCorpse,
+      /Novice of the Sightless Way,
+      +Novice of the Sightless Way 2,
+      -Random Bottle Rare Liquid,
+      -Redrock Metal Workbench,
+      -Uplifted Glowfish,
+      -Uplifted Glowpad,
+      -Pariah Still Unique,
+      -Redrock Bookshelf,
+      -Underground Air Well,
+      -Underground Catchbasin,
+      -Unpowered Gas Burner
     ]
 
   Categories:
@@ -1103,7 +1135,7 @@ Wiki:
                         Biographer, Zothom, k-Goninon, Warden 1-FF, Bep, Geeub, Goek, Krka, Mak,
                         Thah, Tillifergaewicz, Une, Rokhas, Many Eyes, 0lam,
                         Wild Watervine Merchant]
-    Quest Items: [Scrapped Waydroid, Wire Strand 1, Scratched Data Disk, Stamped Data Disk,
+    Quest Items: [Scrapped Waydroid, Wire Strand, Scratched Data Disk, Stamped Data Disk,
                   Argyve's Data Disk Encoded, ClimberBlueprints, Dormant Waydroid, BarathrumKey,
                   Clue_YuckwheatChaff, Clue_SeveredTongue, Clue_SplinteredWeaponHaft,
                   Clue_BloodyArrow, Clue_DiscardedBracer, Clue_WornBracer, Clue_BloodyPatchOfFur,
