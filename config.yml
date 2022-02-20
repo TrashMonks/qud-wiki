@@ -186,8 +186,27 @@ Wiki:
            YdManyEyesSign, YdSalonSign, ImplantSign1,
            # quest-related stuff
            Charred Goatfolk Corpse, Flayed Goatfolk Corpse,
-           # grenades
-           Grenade]
+           # grenades - need to specify which ones instead of just using "Grenade" because a few
+           # don't go to Data namespace, like Hand-E-Nuke and Phase Shift Grenade MK1
+           AcidGasGrenade1, AcidGasGrenade2, AcidGasGrenade3,
+           ColdGrenade1, ColdGrenade2, ColdGrenade3,
+           DefoliantGrenade1, DefoliantGrenade2, DefoliantGrenade3,
+           EMPGrenade1, EMPGrenade2, EMPGrenade3,
+           FireSupportGrenade1, FireSupportGrenade2, FireSupportGrenade3,
+           FlashbangGrenade1, FlashbangGrenade2, FlashbangGrenade3,
+           FungicideGrenade1, FungicideGrenade2, FungicideGrenade3,
+           GlitterGrenade1, GlitterGrenade2, GlitterGrenade3,
+           GravityGrenade1, GravityGrenade2, GravityGrenade3,
+           HeatGrenade1, HeatGrenade2, HeatGrenade3,
+           HEGrenade1, HEGrenade2, HEGrenade3,
+           NormalityGasGrenade1, NormalityGasGrenade2, NormalityGasGrenade3,
+           PlasmaGrenade1, PlasmaGrenade2, PlasmaGrenade3,
+           PoisonGasGrenade1, PoisonGasGrenade2, PoisonGasGrenade3,
+           SleepGasGrenade1, SleepGasGrenade2, SleepGasGrenade3,
+           StasisGrenade1, StasisGrenade2, StasisGrenade3,
+           StunGasGrenade1, StunGasGrenade2, StunGasGrenade3,
+           SunderGrenade1, SunderGrenade2, SunderGrenade3,
+           TimeDilationGrenade1, TimeDilationGrenade2, TimeDilationGrenade3]
   Article overrides:
     # Manually specify the wiki page article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
