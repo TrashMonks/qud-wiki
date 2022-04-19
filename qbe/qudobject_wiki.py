@@ -75,6 +75,7 @@ class QudObjectWiki(QudObjectProps):
                        'Arsplice Seed',
                        'Albino Ape Heart',
                        'Ogre Ape Heart')
+        other_foods = ['Black Puma Haunch', 'Flowers', 'Flower']
         if (self.part_Physics_Takeable == "false" or self.part_Physics_Takeable == "False") and \
                 self.part_Gas is None and not self.inherits_from('MeleeWeapon') and \
                 not self.inherits_from('NaturalWeapon') and \
@@ -82,7 +83,7 @@ class QudObjectWiki(QudObjectProps):
                 not self.inherits_from('MissileWeapon') and \
                 not self.is_specified('part_MissileWeapon'):
             flavor = "Character"
-        elif self.inherits_from('Food'):
+        elif self.inherits_from('Food') or self.name in other_foods:
             flavor = "Food"
         elif (self.inherits_from('RobotLimb') or self.inherits_from('Corpse')) and \
                 (self.name not in not_corpses):
