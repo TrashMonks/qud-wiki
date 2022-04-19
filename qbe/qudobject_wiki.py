@@ -113,8 +113,8 @@ class QudObjectWiki(QudObjectProps):
         if self.name == 'DefaultFist':
             return True  # special case because this is the player's fist
         if self.tag_BaseObject:
-            if self.name == 'ScrapCape':
-                return True  # special case; unsure why this is marked as a BaseObject
+            if self.name in ['ScrapCape', 'CatacombWall']:
+                return True  # special cases, not sure why they're marked as BaseObjects
             return False
         if self.displayname == '' or '[' in self.displayname:
             return False
