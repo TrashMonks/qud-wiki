@@ -52,7 +52,7 @@ Templates:
      animatable, hurtbyfungicide, hurtbydefoliant, hasmentalshield, bodytype, shrinelike, enclosing,
      capacitorcharge, capacitormax, capacitorrate, chargeconsumebroadcast, chargeconsumeelectrical,
      chargeconsumehydraulic, chargeconsumemechanical, chargeproducebroadcast, chargeproduceelectric,
-     chargeproducehydraulic, chargeproducemechanical, chargeproducesolar]
+     chargeproducehydraulic, chargeproducemechanical, chargeproducesolar, unreplicable]
   Image overrides:
     # Manually specify the image name to be used for an object ID:
     TreeSkillsoft: skillsoft_tree.png
