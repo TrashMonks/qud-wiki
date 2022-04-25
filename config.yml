@@ -930,6 +930,7 @@ Wiki:
       -TombShaft,
       /BaseMuralWall,
       +BaseMuralCenter,
+      +BaseMuralLeftend,
       +SultanMuralWall1,
       +SultanMuralWall2,
       +SultanMuralWall3,
