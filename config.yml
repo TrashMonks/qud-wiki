@@ -151,6 +151,12 @@ Templates:
     InnerSultanWall_Period3: gilded marble from the sultanate (third period).png
     InnerSultanWall_Period4: gilded marble from the sultanate (fourth period).png
     InnerSultanWall_Period5: gilded marble from the sultanate (fifth period).png
+    SultanMuralWall1: sultan mural 1.png
+    SultanMuralWall2: sultan mural 2.png
+    SultanMuralWall3: sultan mural 3.png
+    SultanMuralWall4: sultan mural 4.png
+    SultanMuralWall5: sultan mural 5.png
+    SultanMuralWall6: sultan mural 6.png
     SultanShrine: sultanshrine.png
     Metal Chest1: chest (metal).png
     RelicChest: chest (relic).png
@@ -428,6 +434,12 @@ Wiki:
     InnerSultanWall_Period3: gilded marble from the sultanate (third period)
     InnerSultanWall_Period4: gilded marble from the sultanate (fourth period)
     InnerSultanWall_Period5: gilded marble from the sultanate (fifth period)
+    SultanMuralWall1: sultan mural (first period)
+    SultanMuralWall2: sultan mural (second period)
+    SultanMuralWall3: sultan mural (third period)
+    SultanMuralWall4: sultan mural (fourth period)
+    SultanMuralWall5: sultan mural (fifth period)
+    SultanMuralWall6: sultan mural (sixth period)
     Space-Time Vortex: space-time vortex (phenomenon)
     SultanShrine: sultan shrine
     Metal Chest1: chest (metal)
@@ -458,6 +470,12 @@ Wiki:
     InnerSultanWall_Period3: gilded marble from the sultanate of *Sultan*
     InnerSultanWall_Period4: gilded marble from the sultanate of *Sultan*
     InnerSultanWall_Period5: gilded marble from the sultanate of *Sultan*
+    SultanMuralWall1: mural of *Sultan1*
+    SultanMuralWall2: mural of *Sultan2*
+    SultanMuralWall3: mural of *Sultan3*
+    SultanMuralWall4: mural of *Sultan4*
+    SultanMuralWall5: mural of *Sultan5*
+    SultanMuralWall6: mural of *Player*
     Metal Chest1: chest (metal)
     RareChest: chest (rare)  # avoid duplicate 'chest'
     RelicChest: chest (relic)
@@ -912,6 +930,12 @@ Wiki:
       -TombShaft,
       /BaseMuralWall,
       +BaseMuralCenter,
+      +SultanMuralWall1,
+      +SultanMuralWall2,
+      +SultanMuralWall3,
+      +SultanMuralWall4,
+      +SultanMuralWall5,
+      +SultanMuralWall6,
       -Porous Coral Rag,
       -Starapple Farm Ezra,
       -Ornate Potted Plant 2,
