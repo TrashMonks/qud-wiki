@@ -1091,6 +1091,7 @@ Wiki:
     Wall Traps: [Walltrap]
     Gemstone Walls: [AgateWall, TopazWall, JasperWall, AmethystWall, SapphireWall, EmeraldWall,
                      PeridotWall]
+    Murals: [BaseMuralWall]
     Statues: [Statue, SultanShrine, Bust of K4K5, Bust of Mehmet I]
     Sculptures: [Brain Sculpture, Unfinished Sculpture]
     Paintings: [Painted Column L, Painting]
