@@ -459,23 +459,23 @@ Wiki:
     HumanTinker1: village tinker  # instead of 'human tinker'
     HumanApothecary1: village apothecary  # instead of 'human apothecary'
     MasterworkCarbine: "scoped &Ymasterwork &ycarbine"
-    SultanWall_Period1: carved stone from the sultanate of *Sultan*
-    SultanWall_Period2: carved stone from the sultanate of *Sultan*
-    SultanWall_Period3: carved stone from the sultanate of *Sultan*
-    SultanWall_Period4: carved stone from the sultanate of *Sultan*
-    SultanWall_Period5: carved stone from the sultanate of *Sultan*
-    SultanWall_Ornate_Period5: carved stone from the sultanate of *Sultan*
-    InnerSultanWall_Period1: gilded marble from the sultanate of *Sultan*
-    InnerSultanWall_Period2: gilded marble from the sultanate of *Sultan*
-    InnerSultanWall_Period3: gilded marble from the sultanate of *Sultan*
-    InnerSultanWall_Period4: gilded marble from the sultanate of *Sultan*
-    InnerSultanWall_Period5: gilded marble from the sultanate of *Sultan*
+    SultanWall_Period1: carved stone from the sultanate of *Sultan1*
+    SultanWall_Period2: carved stone from the sultanate of *Sultan2*
+    SultanWall_Period3: carved stone from the sultanate of *Sultan3*
+    SultanWall_Period4: carved stone from the sultanate of *Sultan4*
+    SultanWall_Period5: carved stone from the sultanate of *Sultan5*
+    SultanWall_Ornate_Period5: carved stone from the sultanate of *Sultan5*
+    InnerSultanWall_Period1: gilded marble from the sultanate of *Sultan1*
+    InnerSultanWall_Period2: gilded marble from the sultanate of *Sultan2*
+    InnerSultanWall_Period3: gilded marble from the sultanate of *Sultan3*
+    InnerSultanWall_Period4: gilded marble from the sultanate of *Sultan4*
+    InnerSultanWall_Period5: gilded marble from the sultanate of *Sultan5*
     SultanMuralWall1: mural of *Sultan1*
     SultanMuralWall2: mural of *Sultan2*
     SultanMuralWall3: mural of *Sultan3*
     SultanMuralWall4: mural of *Sultan4*
     SultanMuralWall5: mural of *Sultan5*
-    SultanMuralWall6: mural of *Player*
+    SultanMuralWall6: mural of *Sultan6*
     Metal Chest1: chest (metal)
     RareChest: chest (rare)  # avoid duplicate 'chest'
     RelicChest: chest (relic)
