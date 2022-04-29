@@ -9,7 +9,7 @@ from PIL import Image, ImageQt
 from PySide6.QtCore import QBuffer, QByteArray, QIODevice, QItemSelectionModel, \
     QRegularExpression, QSize, Qt
 from PySide6.QtGui import QIcon, QImage, QMovie, QPixmap, QStandardItem, QStandardItemModel, \
-    QPalette, QColor, QFont
+    QColor, QFont
 from PySide6.QtWidgets import QApplication, QFileDialog, QHeaderView, QMainWindow, QMessageBox, \
     QDialog
 from hagadias.gameroot import GameRoot
@@ -17,6 +17,7 @@ from hagadias.qudobject import QudObject
 from hagadias.tileanimator import GifHelper
 
 from qbe.config import config
+from qbe.helpers import load_fonts_from_dir
 from qbe.qud_explorer_window import Ui_MainWindow
 from qbe.qud_explorer_image_modal import Ui_WikiImageUpload
 from qbe.search_filter import QudFilterModel
@@ -51,6 +52,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, app: QApplication, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.app = app
+
+        # load fonts and styles for the UI
+        load_fonts_from_dir('helpers')  # 'Source Code Pro Semibold' & 'Source Code Pro'
+        with open("helpers/ManjaroMix.qss", "r") as f:
+            _style = f.read()
+            app.setStyleSheet(_style)
+
         self.setupUi(self)  # lay out the inherited UI as in the graphical designer
         icon = QIcon("qbe/icon.png")
         self.setWindowIcon(icon)
@@ -73,7 +81,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionAttributes.triggered.connect(self.setview_attr)
         self.actionAll_attributes.triggered.connect(self.setview_allattr)
         self.actionXML_source.triggered.connect(self.setview_xmlsource)
-        self.actionDark_mode.triggered.connect(self.toggle_darkmode)
         # Wiki menu:
         self.actionScan_wiki.triggered.connect(self.wiki_check_selected)
         self.actionDiff_template_against_wiki.triggered.connect(self.show_simple_diff)
@@ -968,21 +975,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def setview_xmlsource(self):
         """Change the view type to XML source."""
         self.setview('xml_source')
-
-    def toggle_darkmode(self):
-        """Toggles dark mode. This is not currently saved across sessions."""
-        if not hasattr(self, '_dark_mode_active'):
-            self._dark_mode_active = False
-        self._dark_mode_active = not self._dark_mode_active
-        is_dark = self._dark_mode_active
-        wikitext_palette = self.plainTextEdit.palette()
-        tree_palette = self.treeView.palette()
-        wikitext_palette.setColor(QPalette.Base, Qt.black if is_dark else Qt.white)
-        wikitext_palette.setColor(QPalette.Text, Qt.white if is_dark else Qt.black)
-        tree_palette.setColor(QPalette.Base, Qt.black if is_dark else Qt.white)
-        tree_palette.setColor(QPalette.Text, Qt.white if is_dark else Qt.black)
-        self.plainTextEdit.setPalette(wikitext_palette)
-        self.treeView.setPalette(tree_palette)
 
     def show_help(self):
         """Show help info. Currently just shows info about search macros."""

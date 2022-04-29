@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>717</width>
-    <height>456</height>
+    <width>1280</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -109,6 +109,12 @@
           </item>
           <item row="1" column="0">
            <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+            <property name="topMargin">
+             <number>8</number>
+            </property>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_2">
               <item>
@@ -204,7 +210,7 @@
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>10</height>
+                <height>0</height>
                </size>
               </property>
               <property name="font">
@@ -225,6 +231,42 @@
          <attribute name="title">
           <string>Populations</string>
          </attribute>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Loading population tables is not yet supported</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+              </property>
+              <property name="margin">
+               <number>16</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
        </widget>
       </item>
@@ -237,7 +279,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>717</width>
+     <width>1280</width>
      <height>17</height>
     </rect>
    </property>
@@ -256,8 +298,6 @@
     <addaction name="actionAttributes"/>
     <addaction name="actionAll_attributes"/>
     <addaction name="actionXML_source"/>
-    <addaction name="separator"/>
-    <addaction name="actionDark_mode"/>
    </widget>
    <widget class="QMenu" name="menuWiki">
     <property name="title">

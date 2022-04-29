@@ -1,3 +1,5 @@
+from PySide6.QtCore import QDir
+from PySide6.QtGui import QFontDatabase
 from hagadias.helpers import parse_qud_colors
 
 
@@ -26,3 +28,12 @@ def displayname_to_wiki(phrase: str):
             template = '{{Qud shader|' + shader + '|{{(}}' + text + '{{)}}}}'
             output.append(template)
     return ''.join(output)
+
+
+def load_fonts_from_dir(directory):
+    """Loads .ttf files from the specified directory and returns their font names as a set."""
+    families = set()
+    for fi in QDir(directory).entryInfoList(["*.ttf"]):
+        _id = QFontDatabase.addApplicationFont(fi.absoluteFilePath())
+        families |= set(QFontDatabase.applicationFontFamilies(_id))
+    return families

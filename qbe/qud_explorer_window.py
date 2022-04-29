@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(717, 456)
+        MainWindow.resize(1280, 720)
         self.actionOpen_ObjectBlueprints_xml = QAction(MainWindow)
         self.actionOpen_ObjectBlueprints_xml.setObjectName(u"actionOpen_ObjectBlueprints_xml")
         self.actionExit = QAction(MainWindow)
@@ -122,7 +122,9 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 
         self.verticalLayout_3 = QVBoxLayout()
+        self.verticalLayout_3.setSpacing(3)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(-1, 8, -1, -1)
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.search_label = QLabel(self.objects_tab)
@@ -164,7 +166,7 @@ class Ui_MainWindow(object):
 
         self.tree_target_widget = QWidget(self.objects_tab)
         self.tree_target_widget.setObjectName(u"tree_target_widget")
-        self.tree_target_widget.setMinimumSize(QSize(0, 10))
+        self.tree_target_widget.setMinimumSize(QSize(0, 0))
         self.tree_target_widget.setFont(font1)
         self.tree_target_widget.setStyleSheet(u"margin: 2px;")
 
@@ -176,6 +178,29 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.objects_tab, "")
         self.populations_tab = QWidget()
         self.populations_tab.setObjectName(u"populations_tab")
+        self.gridLayout_3 = QGridLayout(self.populations_tab)
+        self.gridLayout_3.setObjectName(u"gridLayout_3")
+        self.verticalLayout_2 = QVBoxLayout()
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.label = QLabel(self.populations_tab)
+        self.label.setObjectName(u"label")
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy)
+        self.label.setMaximumSize(QSize(16777215, 16777215))
+        font3 = QFont()
+        font3.setPointSize(12)
+        self.label.setFont(font3)
+        self.label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
+        self.label.setMargin(16)
+
+        self.verticalLayout_2.addWidget(self.label)
+
+
+        self.gridLayout_3.addLayout(self.verticalLayout_2, 0, 0, 1, 1)
+
         self.tabWidget.addTab(self.populations_tab, "")
 
         self.verticalLayout.addWidget(self.tabWidget)
@@ -186,7 +211,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 717, 17))
+        self.menubar.setGeometry(QRect(0, 0, 1280, 17))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         self.menuView = QMenu(self.menubar)
@@ -210,8 +235,6 @@ class Ui_MainWindow(object):
         self.menuView.addAction(self.actionAttributes)
         self.menuView.addAction(self.actionAll_attributes)
         self.menuView.addAction(self.actionXML_source)
-        self.menuView.addSeparator()
-        self.menuView.addAction(self.actionDark_mode)
         self.menuWiki.addAction(self.actionScan_wiki)
         self.menuWiki.addAction(self.actionDiff_template_against_wiki)
         self.menuWiki.addAction(self.actionUpload_templates)
@@ -252,6 +275,7 @@ class Ui_MainWindow(object):
         self.collapse_all_button.setText(QCoreApplication.translate("MainWindow", u"Collapse all", None))
         self.restore_all_button.setText(QCoreApplication.translate("MainWindow", u"Default expansion", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.objects_tab), QCoreApplication.translate("MainWindow", u"Objects", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Loading population tables is not yet supported", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.populations_tab), QCoreApplication.translate("MainWindow", u"Populations", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuView.setTitle(QCoreApplication.translate("MainWindow", u"View type", None))
