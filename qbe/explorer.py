@@ -55,7 +55,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # load fonts and styles for the UI
         load_fonts_from_dir('helpers')  # 'Source Code Pro Semibold' & 'Source Code Pro'
-        with open("helpers/ManjaroMix.qss", "r") as f:
+        with open("helpers/stylesheets/ManjaroMix.qss", "r") as f:
             _style = f.read()
             app.setStyleSheet(_style)
 
