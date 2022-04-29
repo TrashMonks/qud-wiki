@@ -552,6 +552,7 @@ QTreeView {
 	border-width: 1px;
 	border-style: solid;
 	border-color: #4fa08b;
+	color: #d3dae3;
 }
 QTreeView::item {
     border-top-color: transparent;
