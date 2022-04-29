@@ -60,7 +60,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.qud_object_proxyfilter.setSourceModel(self.qud_object_model)
         self.items_to_expand = []  # filled out during recursion of the Qud object tree
         self.treeView = QudTreeView(self.tree_selection_handler, self.tree_target_widget)
-        self.verticalLayout.addWidget(self.treeView)
+        self.verticalLayout_3.addWidget(self.treeView)
         self.search_line_edit.textChanged.connect(self.search_changed)
         self.search_line_edit.returnPressed.connect(self.search_changed_forced)
         self._prompt_for_image_changes = True
