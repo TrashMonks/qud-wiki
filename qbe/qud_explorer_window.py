@@ -26,8 +26,6 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(1280, 720)
-        self.actionOpen_ObjectBlueprints_xml = QAction(MainWindow)
-        self.actionOpen_ObjectBlueprints_xml.setObjectName(u"actionOpen_ObjectBlueprints_xml")
         self.actionExit = QAction(MainWindow)
         self.actionExit.setObjectName(u"actionExit")
         self.actionWiki_template = QAction(MainWindow)
