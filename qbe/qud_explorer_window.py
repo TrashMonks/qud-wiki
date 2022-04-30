@@ -233,7 +233,6 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuView.menuAction())
         self.menubar.addAction(self.menuWiki.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
-        self.menuFile.addAction(self.actionOpen_ObjectBlueprints_xml)
         self.menuFile.addAction(self.actionExit)
         self.menuView.addAction(self.actionWiki_template)
         self.menuView.addAction(self.actionAttributes)
@@ -259,7 +258,6 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Qud Blueprint Explorer", None))
-        self.actionOpen_ObjectBlueprints_xml.setText(QCoreApplication.translate("MainWindow", u"Open ObjectBlueprints.xml...", None))
         self.actionExit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
         self.actionWiki_template.setText(QCoreApplication.translate("MainWindow", u"Wiki template", None))
         self.actionAttributes.setText(QCoreApplication.translate("MainWindow", u"Attributes", None))

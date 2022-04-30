@@ -78,7 +78,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Set up menus
         # File menu:
-        self.actionOpen_ObjectBlueprints_xml.triggered.connect(self.open_gameroot)
         # View type menu:
         self.actionWiki_template.triggered.connect(self.setview_wiki)
         self.actionAttributes.triggered.connect(self.setview_attr)

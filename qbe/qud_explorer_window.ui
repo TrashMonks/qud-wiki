@@ -287,7 +287,6 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionOpen_ObjectBlueprints_xml"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -324,11 +323,6 @@
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionOpen_ObjectBlueprints_xml">
-   <property name="text">
-    <string>Open ObjectBlueprints.xml...</string>
-   </property>
-  </action>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
