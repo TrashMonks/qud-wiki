@@ -393,11 +393,6 @@
     <string>Diff template against wiki</string>
    </property>
   </action>
-  <action name="actionDark_mode">
-   <property name="text">
-    <string>Toggle dark mode</string>
-   </property>
-  </action>
   <action name="actionSuppress_image_comparison_popups">
    <property name="checkable">
     <bool>true</bool>
@@ -407,11 +402,6 @@
    </property>
    <property name="text">
     <string>Suppress image comparison pop-ups</string>
-   </property>
-  </action>
-  <action name="actionToggle_dark_mode">
-   <property name="text">
-    <string>Toggle dark mode</string>
    </property>
   </action>
   <action name="actionToggle_Qud_mode">
