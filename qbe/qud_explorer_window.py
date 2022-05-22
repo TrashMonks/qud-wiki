@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'qud_explorer_window.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.2.0
+## Created by: Qt User Interface Compiler version 6.3.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -19,15 +19,13 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QLabel,
     QLineEdit, QMainWindow, QMenu, QMenuBar,
     QPlainTextEdit, QPushButton, QSizePolicy, QStatusBar,
-    QVBoxLayout, QWidget)
+    QTabWidget, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1024, 768)
-        self.actionOpen_ObjectBlueprints_xml = QAction(MainWindow)
-        self.actionOpen_ObjectBlueprints_xml.setObjectName(u"actionOpen_ObjectBlueprints_xml")
+        MainWindow.resize(1280, 720)
         self.actionExit = QAction(MainWindow)
         self.actionExit.setObjectName(u"actionExit")
         self.actionWiki_template = QAction(MainWindow)
@@ -55,22 +53,29 @@ class Ui_MainWindow(object):
         self.actionUpload_extra_image_s_for_selected_objects.setObjectName(u"actionUpload_extra_image_s_for_selected_objects")
         self.actionDiff_template_against_wiki = QAction(MainWindow)
         self.actionDiff_template_against_wiki.setObjectName(u"actionDiff_template_against_wiki")
-        self.actionDark_mode = QAction(MainWindow)
-        self.actionDark_mode.setObjectName(u"actionDark_mode")
         self.actionSuppress_image_comparison_popups = QAction(MainWindow)
         self.actionSuppress_image_comparison_popups.setObjectName(u"actionSuppress_image_comparison_popups")
         self.actionSuppress_image_comparison_popups.setCheckable(True)
         self.actionSuppress_image_comparison_popups.setChecked(False)
+        self.actionToggle_Qud_mode = QAction(MainWindow)
+        self.actionToggle_Qud_mode.setObjectName(u"actionToggle_Qud_mode")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName(u"gridLayout")
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
+        self.tabWidget = QTabWidget(self.centralwidget)
+        self.tabWidget.setObjectName(u"tabWidget")
+        self.objects_tab = QWidget()
+        self.objects_tab.setObjectName(u"objects_tab")
+        self.gridLayout_2 = QGridLayout(self.objects_tab)
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.plainTextEdit = QPlainTextEdit(self.centralwidget)
+        self.plainTextEdit = QPlainTextEdit(self.objects_tab)
         self.plainTextEdit.setObjectName(u"plainTextEdit")
+        self.plainTextEdit.setMinimumSize(QSize(300, 0))
         font = QFont()
         font.setFamilies([u"Consolas"])
         font.setPointSize(10)
@@ -82,7 +87,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4 = QVBoxLayout()
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.tile_label = QLabel(self.centralwidget)
+        self.tile_label = QLabel(self.objects_tab)
         self.tile_label.setObjectName(u"tile_label")
         self.tile_label.setMinimumSize(QSize(160, 240))
         font1 = QFont()
@@ -92,7 +97,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.tile_label)
 
-        self.save_tile_button = QPushButton(self.centralwidget)
+        self.save_tile_button = QPushButton(self.objects_tab)
         self.save_tile_button.setObjectName(u"save_tile_button")
         font2 = QFont()
         font2.setFamilies([u"Segoe UI"])
@@ -101,7 +106,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.save_tile_button)
 
-        self.swap_tile_button = QPushButton(self.centralwidget)
+        self.swap_tile_button = QPushButton(self.objects_tab)
         self.swap_tile_button.setObjectName(u"swap_tile_button")
         self.swap_tile_button.setEnabled(True)
         self.swap_tile_button.setFont(font2)
@@ -112,40 +117,42 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addLayout(self.verticalLayout_4)
 
 
-        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.gridLayout_2.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 
         self.verticalLayout_3 = QVBoxLayout()
+        self.verticalLayout_3.setSpacing(3)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(-1, 8, -1, -1)
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.search_label = QLabel(self.centralwidget)
+        self.search_label = QLabel(self.objects_tab)
         self.search_label.setObjectName(u"search_label")
         self.search_label.setMinimumSize(QSize(0, 0))
         self.search_label.setFont(font2)
 
         self.horizontalLayout_2.addWidget(self.search_label)
 
-        self.search_line_edit = QLineEdit(self.centralwidget)
+        self.search_line_edit = QLineEdit(self.objects_tab)
         self.search_line_edit.setObjectName(u"search_line_edit")
         self.search_line_edit.setFont(font2)
 
         self.horizontalLayout_2.addWidget(self.search_line_edit)
 
-        self.expand_all_button = QPushButton(self.centralwidget)
+        self.expand_all_button = QPushButton(self.objects_tab)
         self.expand_all_button.setObjectName(u"expand_all_button")
         self.expand_all_button.setMinimumSize(QSize(90, 0))
         self.expand_all_button.setFont(font2)
 
         self.horizontalLayout_2.addWidget(self.expand_all_button)
 
-        self.collapse_all_button = QPushButton(self.centralwidget)
+        self.collapse_all_button = QPushButton(self.objects_tab)
         self.collapse_all_button.setObjectName(u"collapse_all_button")
         self.collapse_all_button.setMinimumSize(QSize(90, 0))
         self.collapse_all_button.setFont(font2)
 
         self.horizontalLayout_2.addWidget(self.collapse_all_button)
 
-        self.restore_all_button = QPushButton(self.centralwidget)
+        self.restore_all_button = QPushButton(self.objects_tab)
         self.restore_all_button.setObjectName(u"restore_all_button")
         self.restore_all_button.setMinimumSize(QSize(130, 0))
         self.restore_all_button.setFont(font2)
@@ -155,14 +162,46 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
 
-        self.tree_target_widget = QWidget(self.centralwidget)
+        self.tree_target_widget = QWidget(self.objects_tab)
         self.tree_target_widget.setObjectName(u"tree_target_widget")
+        self.tree_target_widget.setMinimumSize(QSize(0, 0))
         self.tree_target_widget.setFont(font1)
+        self.tree_target_widget.setStyleSheet(u"margin: 2px;")
 
         self.verticalLayout_3.addWidget(self.tree_target_widget, 0, Qt.AlignBottom)
 
 
-        self.verticalLayout.addLayout(self.verticalLayout_3)
+        self.gridLayout_2.addLayout(self.verticalLayout_3, 1, 0, 1, 1)
+
+        self.tabWidget.addTab(self.objects_tab, "")
+        self.populations_tab = QWidget()
+        self.populations_tab.setObjectName(u"populations_tab")
+        self.gridLayout_3 = QGridLayout(self.populations_tab)
+        self.gridLayout_3.setObjectName(u"gridLayout_3")
+        self.verticalLayout_2 = QVBoxLayout()
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.label = QLabel(self.populations_tab)
+        self.label.setObjectName(u"label")
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy)
+        self.label.setMaximumSize(QSize(16777215, 16777215))
+        font3 = QFont()
+        font3.setPointSize(12)
+        self.label.setFont(font3)
+        self.label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
+        self.label.setMargin(16)
+
+        self.verticalLayout_2.addWidget(self.label)
+
+
+        self.gridLayout_3.addLayout(self.verticalLayout_2, 0, 0, 1, 1)
+
+        self.tabWidget.addTab(self.populations_tab, "")
+
+        self.verticalLayout.addWidget(self.tabWidget)
 
 
         self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
@@ -170,7 +209,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1024, 21))
+        self.menubar.setGeometry(QRect(0, 0, 1280, 17))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         self.menuView = QMenu(self.menubar)
@@ -188,14 +227,13 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuView.menuAction())
         self.menubar.addAction(self.menuWiki.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
-        self.menuFile.addAction(self.actionOpen_ObjectBlueprints_xml)
         self.menuFile.addAction(self.actionExit)
         self.menuView.addAction(self.actionWiki_template)
         self.menuView.addAction(self.actionAttributes)
         self.menuView.addAction(self.actionAll_attributes)
         self.menuView.addAction(self.actionXML_source)
         self.menuView.addSeparator()
-        self.menuView.addAction(self.actionDark_mode)
+        self.menuView.addAction(self.actionToggle_Qud_mode)
         self.menuWiki.addAction(self.actionScan_wiki)
         self.menuWiki.addAction(self.actionDiff_template_against_wiki)
         self.menuWiki.addAction(self.actionUpload_templates)
@@ -206,12 +244,14 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
+        self.tabWidget.setCurrentIndex(0)
+
+
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Qud Blueprint Explorer", None))
-        self.actionOpen_ObjectBlueprints_xml.setText(QCoreApplication.translate("MainWindow", u"Open ObjectBlueprints.xml...", None))
         self.actionExit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
         self.actionWiki_template.setText(QCoreApplication.translate("MainWindow", u"Wiki template", None))
         self.actionAttributes.setText(QCoreApplication.translate("MainWindow", u"Attributes", None))
@@ -223,8 +263,8 @@ class Ui_MainWindow(object):
         self.actionShow_help.setText(QCoreApplication.translate("MainWindow", u"Show help", None))
         self.actionUpload_extra_image_s_for_selected_objects.setText(QCoreApplication.translate("MainWindow", u"Upload extra image(s) for selected objects", None))
         self.actionDiff_template_against_wiki.setText(QCoreApplication.translate("MainWindow", u"Diff template against wiki", None))
-        self.actionDark_mode.setText(QCoreApplication.translate("MainWindow", u"Toggle dark mode", None))
         self.actionSuppress_image_comparison_popups.setText(QCoreApplication.translate("MainWindow", u"Suppress image comparison pop-ups", None))
+        self.actionToggle_Qud_mode.setText(QCoreApplication.translate("MainWindow", u"Toggle Qud mode", None))
         self.tile_label.setText("")
         self.save_tile_button.setText(QCoreApplication.translate("MainWindow", u"Save tile...", None))
         self.swap_tile_button.setText(QCoreApplication.translate("MainWindow", u"Toggle .png/.gif", None))
@@ -232,8 +272,11 @@ class Ui_MainWindow(object):
         self.expand_all_button.setText(QCoreApplication.translate("MainWindow", u"Expand all", None))
         self.collapse_all_button.setText(QCoreApplication.translate("MainWindow", u"Collapse all", None))
         self.restore_all_button.setText(QCoreApplication.translate("MainWindow", u"Default expansion", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.objects_tab), QCoreApplication.translate("MainWindow", u"Objects", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Loading population tables is not yet supported", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.populations_tab), QCoreApplication.translate("MainWindow", u"Populations", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
-        self.menuView.setTitle(QCoreApplication.translate("MainWindow", u"View type", None))
+        self.menuView.setTitle(QCoreApplication.translate("MainWindow", u"View", None))
         self.menuWiki.setTitle(QCoreApplication.translate("MainWindow", u"Wiki", None))
         self.menuHelp.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))
     # retranslateUi

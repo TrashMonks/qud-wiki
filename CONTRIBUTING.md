@@ -78,7 +78,6 @@ Search it up on the app store of your choosing and install the program.
         The game root should be the folder containing the Caves of Qud executable and the `CoQ_Data` folder. On Steam this should be something like `Steam/steamapps/common/Caves of Qud/`
 which on Linux might be located in `~/.local/share/`,
 or on Mac OS might be located in `~/Library/Application Support/`.
-    * Scroll down until you see a file labelled "ObjectBlueprints.xml". Click on it and then click "Open". 
 
 When you want to open the app again, go to your terminal, type in "cd (File Location Here)", press enter, then type in "pipenv run app".
 

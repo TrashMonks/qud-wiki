@@ -23,7 +23,7 @@ def test_ammodamagetypes(qindex):
 
 
 def test_butcheredinto(qindex):
-    # TODO: return corpse drop chances that are not given in ObjectBlueprints.xml,
+    # TODO: return corpse drop chances that are not given in ObjectBlueprints,
     #  but rather in populationtables.xml:
     # obj = qindex['Albino ape corpse']
     # want = '{{corpse pop table|population=Albino ape corpse|'\

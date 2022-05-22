@@ -452,7 +452,7 @@ Wiki:
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title'
     # property). This should only be used if the object's display name in game is dynamically
-    # determined in such a way that it doesn't match the ObjectBlueprints.xml value,
+    # determined in such a way that it doesn't match the ObjectBlueprints value,
     # or for abstract objects like 'village tinker' that will have a unique NPC name in-game.
     # Ocassionally, may also be used if multiple objects have the same display name (in which case
     # their wiki favilinks will conflict with one another unless each has a distinct display name)

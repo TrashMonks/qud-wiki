@@ -1,15 +1,17 @@
 """Main file for Qud Blueprint Explorer."""
+import os
 from typing import Union, Callable
 
 import difflib
 import re
 from pprint import pformat
 
+import yaml
 from PIL import Image, ImageQt
 from PySide6.QtCore import QBuffer, QByteArray, QIODevice, QItemSelectionModel, \
     QRegularExpression, QSize, Qt
 from PySide6.QtGui import QIcon, QImage, QMovie, QPixmap, QStandardItem, QStandardItemModel, \
-    QPalette, QColor, QFont
+    QColor, QFont
 from PySide6.QtWidgets import QApplication, QFileDialog, QHeaderView, QMainWindow, QMessageBox, \
     QDialog
 from hagadias.gameroot import GameRoot
@@ -17,6 +19,7 @@ from hagadias.qudobject import QudObject
 from hagadias.tileanimator import GifHelper
 
 from qbe.config import config
+from qbe.helpers import load_fonts_from_dir
 from qbe.qud_explorer_window import Ui_MainWindow
 from qbe.qud_explorer_image_modal import Ui_WikiImageUpload
 from qbe.search_filter import QudFilterModel
@@ -37,8 +40,14 @@ def set_gamedir():
     """Browse for the root game directory and write it to the file last_xml_location."""
     ask_string = 'Please locate the base directory containing the Caves of Qud executable.'
     dir_name = QFileDialog.getExistingDirectory(caption=ask_string)
-    with open('last_xml_location', 'w') as f:
-        f.write(dir_name)
+    try:
+        with open('userconfig.yml', 'r') as f:
+            user_settings = yaml.safe_load(f)
+    except FileNotFoundError:
+        user_settings = dict()
+    user_settings['base directory'] = dir_name
+    with open('userconfig.yml', 'w') as f:
+        yaml.safe_dump(user_settings, f)
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -51,6 +60,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, app: QApplication, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.app = app
+        load_fonts_from_dir('helpers')  # load Source Code Pro fonts for UI theme
+        self.apply_theme()
         self.setupUi(self)  # lay out the inherited UI as in the graphical designer
         icon = QIcon("qbe/icon.png")
         self.setWindowIcon(icon)
@@ -60,20 +71,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.qud_object_proxyfilter.setSourceModel(self.qud_object_model)
         self.items_to_expand = []  # filled out during recursion of the Qud object tree
         self.treeView = QudTreeView(self.tree_selection_handler, self.tree_target_widget)
-        self.verticalLayout.addWidget(self.treeView)
+        self.verticalLayout_3.addWidget(self.treeView)
         self.search_line_edit.textChanged.connect(self.search_changed)
         self.search_line_edit.returnPressed.connect(self.search_changed_forced)
         self._prompt_for_image_changes = True
 
         # Set up menus
         # File menu:
-        self.actionOpen_ObjectBlueprints_xml.triggered.connect(self.open_gameroot)
+        self.actionExit.triggered.connect(self.app.quit)
         # View type menu:
         self.actionWiki_template.triggered.connect(self.setview_wiki)
         self.actionAttributes.triggered.connect(self.setview_attr)
         self.actionAll_attributes.triggered.connect(self.setview_allattr)
         self.actionXML_source.triggered.connect(self.setview_xmlsource)
-        self.actionDark_mode.triggered.connect(self.toggle_darkmode)
+        self.actionToggle_Qud_mode.triggered.connect(self.toggle_qudmode)
         # Wiki menu:
         self.actionScan_wiki.triggered.connect(self.wiki_check_selected)
         self.actionDiff_template_against_wiki.triggered.connect(self.show_simple_diff)
@@ -126,9 +137,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def open_gameroot(self):
         """Attempt to load a GameRoot from the saved root game directory."""
         try:
-            with open('last_xml_location') as f:
-                dir_name = f.read()
+            with open('userconfig.yml', 'r') as f:
+                user_settings = yaml.safe_load(f)
+                dir_name = user_settings['base directory']
         except FileNotFoundError:
+            try:
+                # load path from legacy last_xml_location file if present
+                with open('last_xml_location') as f:
+                    dir_name = f.read()
+                user_settings = {'base directory': dir_name}
+                with open('userconfig.yml', 'w') as f:
+                    yaml.safe_dump(user_settings, f)
+                os.remove('last_xml_location')
+            except FileNotFoundError:
+                raise
+        except KeyError:
             raise
         self.gameroot = GameRoot(dir_name)
 
@@ -969,20 +992,35 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """Change the view type to XML source."""
         self.setview('xml_source')
 
-    def toggle_darkmode(self):
-        """Toggles dark mode. This is not currently saved across sessions."""
-        if not hasattr(self, '_dark_mode_active'):
-            self._dark_mode_active = False
-        self._dark_mode_active = not self._dark_mode_active
-        is_dark = self._dark_mode_active
-        wikitext_palette = self.plainTextEdit.palette()
-        tree_palette = self.treeView.palette()
-        wikitext_palette.setColor(QPalette.Base, Qt.black if is_dark else Qt.white)
-        wikitext_palette.setColor(QPalette.Text, Qt.white if is_dark else Qt.black)
-        tree_palette.setColor(QPalette.Base, Qt.black if is_dark else Qt.white)
-        tree_palette.setColor(QPalette.Text, Qt.white if is_dark else Qt.black)
-        self.plainTextEdit.setPalette(wikitext_palette)
-        self.treeView.setPalette(tree_palette)
+    def apply_theme(self):
+        self.toggle_qudmode(use_current_setting=True)
+
+    def toggle_qudmode(self, use_current_setting: bool = False):
+        """Toggles qud mode (dark theme). This preference is saved to userconfig.yml."""
+        try:
+            with open('userconfig.yml', 'r') as f:
+                user_settings = yaml.safe_load(f)
+        except FileNotFoundError:
+            user_settings = dict()
+        try:
+            qudmode_active = user_settings['dark mode']
+        except KeyError:
+            qudmode_active = False
+
+        if qudmode_active == use_current_setting:
+            try:
+                with open("helpers/stylesheets/ManjaroMix.qss", "r") as f:
+                    _style = f.read()
+                    self.app.setStyleSheet(_style)
+                qudmode_active = True
+            except FileNotFoundError:
+                print('Error: unable to load style sheet for qud mode theme.')
+        else:
+            self.app.setStyleSheet('')
+            qudmode_active = False
+        user_settings['dark mode'] = qudmode_active
+        with open('userconfig.yml', 'w') as f:
+            yaml.safe_dump(user_settings, f)
 
     def show_help(self):
         """Show help info. Currently just shows info about search macros."""
