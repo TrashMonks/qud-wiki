@@ -106,7 +106,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         while self.gameroot is None:
             try:
                 self.open_gameroot()
-            except FileNotFoundError:
+            except (FileNotFoundError, KeyError):
                 set_gamedir()
         title_string = f'Qud Blueprint Explorer: CoQ version {self.gameroot.gamever} at ' \
                        f'{self.gameroot.pathstr}'
