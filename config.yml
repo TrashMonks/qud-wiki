@@ -869,7 +869,6 @@ Wiki:
       -MachineWallHotTubingWithPiping,
       -MachineWallEmptyTubing,
       /CrematoryMainframeWall,  # just copies of the Grit Gate mainframe walls with same names
-      -Polished Black Marble,
       -WoodWallWithGearbox,
       /HalfWall,
       +HalfWall,
