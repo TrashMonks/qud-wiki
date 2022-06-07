@@ -228,6 +228,7 @@ Wiki:
     Hoarshroom: Luminous hoarshroom (food)
     MerchantAdvertisement: Advertisement
     Argyve's Data Disk Encoded: Stamped data disk with Q Girl's instructions encoded
+    Decrypted Signal Data Disk: Stamped data disk with signal encoded
     SingleSkillsoft1: Skillsoft (low SP)
     SingleSkillsoft2: Skillsoft (medium SP)
     Schemasoft2: Schemasoft (low-tier)
@@ -1186,8 +1187,9 @@ Wiki:
                         Thah, Tillifergaewicz, Une, Rokhas, Many Eyes, 0lam,
                         Wild Watervine Merchant]
     Quest Items: [Scrapped Waydroid, Wire Strand, Scratched Data Disk, Stamped Data Disk,
-                  Argyve's Data Disk Encoded, ClimberBlueprints, Dormant Waydroid, BarathrumKey,
-                  Clue_YuckwheatChaff, Clue_SeveredTongue, Clue_SplinteredWeaponHaft,
-                  Clue_BloodyArrow, Clue_DiscardedBracer, Clue_WornBracer, Clue_BloodyPatchOfFur,
-                  Clue_LeatherScraps, Clue_CopperNugget, Clue_BulgingWaterskin, Clue_VillageStores,
-                  Gnawed Watervine, Clue_BloodyWatervine, Repulsive Device]
+                  Argyve's Data Disk Encoded, Decrypted Signal Data Disk, ClimberBlueprints,
+                  Dormant Waydroid, BarathrumKey, Clue_YuckwheatChaff, Clue_SeveredTongue,
+                  Clue_SplinteredWeaponHaft, Clue_BloodyArrow, Clue_DiscardedBracer,
+                  Clue_WornBracer, Clue_BloodyPatchOfFur, Clue_LeatherScraps, Clue_CopperNugget,
+                  Clue_BulgingWaterskin, Clue_VillageStores, Gnawed Watervine, Clue_BloodyWatervine,
+                  Repulsive Device]
