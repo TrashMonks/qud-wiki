@@ -8,7 +8,7 @@ pyside6 = "*"
 pyyaml = "*"
 mwclient = "*"
 hagadias = {editable = true,git = "https://github.com/TrashMonks/hagadias.git",ref = "main"}
-pillow = "==9.1.0"
+pillow = "==9.1.1"
 
 [dev-packages]
 pytest = "*"
