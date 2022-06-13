@@ -9,4 +9,4 @@ This project reads game data in the raw format used by the [Caves of Qud](http:/
 Check the detailed instructions in `CONTRIBUTING.md`.
 
 ## Tile support
-Tile support requires a full extract of the game Textures directory. A slightly outdated version can be downloaded here: [caves-of-qud-tiles-200.71.zip](https://www.dropbox.com/s/3hub59uoiamz0vq/caves-of-qud-tiles-200.71.zip?dl=1). To get a more recent version, you can install the [brinedump](https://github.com/TrashMonks/brinedump) mod and use the `brinedump:textures` wish to dump an up-to-date version of Textures on your local machine.
+Tile support requires a full extract of the game Textures directory. To get an up-to-date copy of the game textures, you can install the [brinedump](https://github.com/TrashMonks/brinedump) mod and use the `brinedump:textures` wish to dump an up-to-date version of Textures on your local machine.
