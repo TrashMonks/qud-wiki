@@ -594,7 +594,7 @@ Wiki:
       /GlassWall,
       +GlassWall,
       +TintedGlassWall,
-      +SpindleGlassWall
+      +SpindleGlassWall,
       +Walltrap,
       /CryochamberWall,
       +CryochamberWall,
