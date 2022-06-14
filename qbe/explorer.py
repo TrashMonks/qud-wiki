@@ -660,7 +660,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # upload or replace the wiki file
         filename = qud_object.image
         result = upload_wiki_image(qud_object.tile.get_big_bytesio(), filename,
-                                   self.gameroot.gamever)
+                                   self.gameroot.gamever, qud_object.tile.filename)
         if result.get('result', None) == 'Success':
             self.set_icon(tile_exists_cell_index, '✅')
             self.set_icon(tile_matches_cell_index, '✅', True)
@@ -860,7 +860,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if should_upload_image:
                     # upload or replace the extra image(s) on the wiki
                     result = upload_wiki_image(tile.get_big_bytesio(), meta.filename,
-                                               self.gameroot.gamever)
+                                               self.gameroot.gamever, tile.filename)
                     if result.get('result', None) == 'Success':
                         success_ct += 1
                     else:

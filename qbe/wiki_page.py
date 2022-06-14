@@ -114,9 +114,11 @@ class WikiPage:
         return result['result']
 
 
-def upload_wiki_image(file: BytesIO, filename: str, gamever: str):
+def upload_wiki_image(file: BytesIO, filename: str, gamever: str, sourcetilepath: str = ''):
     description = f'Rendered by {wiki_config["operator"]} with game version ' \
-            f'{gamever} using {config["Wikified name"]} {config["Version"]}'
+            f'{gamever} using {config["Wikified name"]} {config["Version"]}.'
+    if len(sourcetilepath) > 0:
+        description += f' Original game asset filepath: {sourcetilepath}'
     max_attempts = 5
     for attempt in range(1, max_attempts + 1):
         try:
