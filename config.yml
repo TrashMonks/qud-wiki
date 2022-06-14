@@ -1093,7 +1093,7 @@ Wiki:
     Instruments: [Hammered Dulcimer, Harp, HurdyGurdy, Rectangular Bells]
     Chests: [Chest, Reliquary, Sarcophagus, SultanSarcophagusW, Woven Basket]
     Walls: [Wall]
-    Wall Traps: [Walltrap]
+    Vents: [Walltrap]
     Gemstone Walls: [AgateWall, TopazWall, JasperWall, AmethystWall, SapphireWall, EmeraldWall,
                      PeridotWall]
     Murals: [BaseMuralWall]
