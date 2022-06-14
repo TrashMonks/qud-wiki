@@ -91,7 +91,8 @@ class WikiPage:
             summary_text = self.EDITED_SUMMARY
         else:
             # simple case: creating an article
-            new_text = f"{self.intro_string}{self.template_text}{self.final_string}"
+            new_text = f"{self.intro_string}{self.template_text}{self.final_string}" \
+                       + "\n{{No Description}}"
             summary_text = self.CREATED_SUMMARY
         backoff_delay = 3
         max_attempts = 7
