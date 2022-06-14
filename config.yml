@@ -593,6 +593,8 @@ Wiki:
       -MushroomFlesh2,
       /GlassWall,
       +GlassWall,
+      +TintedGlassWall,
+      +SpindleGlassWall
       +Walltrap,
       /CryochamberWall,
       +CryochamberWall,
@@ -1092,10 +1094,17 @@ Wiki:
     Tables: [Table, Octagonal Table, Book Table, Low Table]
     Instruments: [Hammered Dulcimer, Harp, HurdyGurdy, Rectangular Bells]
     Chests: [Chest, Reliquary, Sarcophagus, SultanSarcophagusW, Woven Basket]
-    Walls: [Wall]
+    Walls: [Wall, Rubble]
+    Fences: [BrinestalkFence, BrinestalkStakes, BrinestalkArrowslit, WoodFence, IronFence]
     Vents: [Walltrap]
     Gemstone Walls: [AgateWall, TopazWall, JasperWall, AmethystWall, SapphireWall, EmeraldWall,
                      PeridotWall]
+    Glass Walls: [GlassWall, TintedGlassWall, SpindleGlassWall, CyberWall]
+    Force Fields: [BaseForcefield]
+    Holographic Walls: [HolographicLowSandstoneWall, HoloMarble, HolographicShaleWall,
+                        HolographicThatchedWall]
+    Sultan Walls: [BaseSultanWall]
+    Tech Walls: [BaseWallMainframe, BaseWallTubing]
     Murals: [BaseMuralWall]
     Statues: [Statue, SultanShrine, Bust of K4K5, Bust of Mehmet I]
     Sculptures: [Brain Sculpture, Unfinished Sculpture]
@@ -1148,7 +1157,8 @@ Wiki:
     Cybernetics: [BaseCyberneticsEquipment]
     Merchants: [BaseMerchant]
     Turret Tinkers: [Turret Tinker]
-    Terrain Features: [Campfire, Campfire Remains, Garbage, Coral and Palladium Strut]
+    Terrain Features: [Campfire, Campfire Remains, Garbage, Palladium Strut,
+                       Coral and Palladium Strut]
     Environmental Hazards: [Space-Time Vortex, Wormhole]
     Cherubim: [Antelopes Cherub, Apes Cherub, Arachnids Cherub, Baboons Cherub, Baetyls Cherub,
                Bears Cherub, Birds Cherub, Cannibals Cherub, Cats Cherub, Crabs Cherub, Dogs Cherub,
