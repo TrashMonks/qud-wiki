@@ -7,7 +7,7 @@ name = "pypi"
 pyside6 = "*"
 pyyaml = "*"
 mwclient = "*"
-hagadias = {editable = true,git = "https://github.com/TrashMonks/hagadias.git",ref = "main"}
+hagadias = {editable = true, ref = "main", git = "https://github.com/TrashMonks/hagadias.git"}
 pillow = "==9.1.1"
 
 [dev-packages]
