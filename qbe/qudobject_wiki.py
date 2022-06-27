@@ -210,6 +210,7 @@ class QudObjectWiki(QudObjectProps):
         """What dynamic tables the object is a member of."""
         tables = super().dynamictable
         if tables is not None:
+            tables = sorted(tables)
             return ' </br>'.join(f'{{{{Dynamic object|{table}|{self.name}}}}}' for table in tables)
 
     @property
