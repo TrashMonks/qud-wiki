@@ -1085,6 +1085,8 @@ Wiki:
     Trade Goods: [Copper Nugget, Silver Nugget, Gold Nugget, Gemstone, Bronze Ingot, BoxOfCrayons,
                   Polyhedral Rings, Silver Rondure, Blood-stained neck-ring, BaseBeadBracelet,
                   Ogre Ape Pelt, Albino Ape Pelt, Grave Goods]
+    Rough Gemstones: [Gemstone]
+    Smooth Gemstones: [Polished Gemstone]
     Security Cards: [Security Card]
     Furniture: [Furniture]
     Doors: [Door, Archway, BeltCurtains]
