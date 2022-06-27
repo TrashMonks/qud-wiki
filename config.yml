@@ -172,7 +172,7 @@ Wiki:
     Main: [Object]
     Data: [NaturalWeapon, NaturalMissileWeapon,
            # mutated equipment
-           Horns, Icy Vapor, Ghostly Flames, Quills, Carapace,
+           Horns, Icy Vapor, Ghostly Flames, Quills, Carapace, Stinger,
            # eater statues
            EaterStatue Gold,
            # tech lights
@@ -527,7 +527,6 @@ Wiki:
       -Quills+2,
       -Quills+3,
       -Wings,
-      -Stinger,
       -Burrowing Claws,  # this is the old burrowing claws object
       -Horticulturalist Bio-Scanning Bracelet,
       -Child of the Deep Structural Scanning Bracelet,
@@ -1035,7 +1034,7 @@ Wiki:
     Whips: [Leather Whip]
     Missile Weapons: [MissileWeapon]
     Natural Weapons: [NaturalWeapon, NaturalMissileWeapon]
-    Mutated Natural Weapons: [Burrowing Claws Claw, Horns, Icy Vapor, Ghostly Flames]
+    Mutated Natural Weapons: [Burrowing Claws Claw, Horns, Icy Vapor, Ghostly Flames, Stinger]
     Firearms: [BaseFirearm]
     Rifles: [BaseRifle]
     Heavy Weapons: [BaseHeavyWeapon, Chain Laser]
