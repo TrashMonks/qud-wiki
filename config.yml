@@ -212,7 +212,8 @@ Wiki:
            StasisGrenade1, StasisGrenade2, StasisGrenade3,
            StunGasGrenade1, StunGasGrenade2, StunGasGrenade3,
            SunderGrenade1, SunderGrenade2, SunderGrenade3,
-           TimeDilationGrenade1, TimeDilationGrenade2, TimeDilationGrenade3]
+           TimeDilationGrenade1, TimeDilationGrenade2, TimeDilationGrenade3,
+           Strength Sap, Toughness Sap, Agility Sap, Intelligence Sap, Ego Sap, Willpower Sap]
   Article overrides:
     # Manually specify the wiki page article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
