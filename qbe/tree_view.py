@@ -4,7 +4,7 @@ from PySide6.QtGui import QAction
 
 
 class QudTreeView(QTreeView):
-    """Custom tree view for the object hierarchy browser, including icons."""
+    """Custom tree view for QBE object and population hierarchy browsers."""
     def __init__(self, selection_handler, *args, **kwargs):
         """selection_handler: a function in the parent window to pass selected indices to"""
         self.selection_handler = selection_handler
@@ -16,8 +16,21 @@ class QudTreeView(QTreeView):
         self.setSizePolicy(size_policy)
         self.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.setSelectionMode(QAbstractItemView.ExtendedSelection)
-        self.setObjectName("treeView")
         self.setIndentation(10)
+
+    def selectionChanged(self, selected, deselected):
+        """Custom override to handle all forms of selection (keyboard, mouse)"""
+        indices = self.selectedIndexes()
+        self.selection_handler(indices)
+        super().selectionChanged(selected, deselected)
+
+
+class QudObjTreeView(QudTreeView):
+    """Custom tree view for the object hierarchy browser, including icons."""
+    def __init__(self, selection_handler, *args, **kwargs):
+        """selection_handler: a function in the parent window to pass selected indices to"""
+        super().__init__(selection_handler, *args, **kwargs)
+        self.setObjectName("treeView")
         self.setIconSize(QSize(16, 24))
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.tree_menu = QMenu()
@@ -42,8 +55,10 @@ class QudTreeView(QTreeView):
         """Callback registered for right click in the tree view."""
         self.tree_menu.exec(self.mapToGlobal(point))
 
-    def selectionChanged(self, selected, deselected):
-        """Custom override to handle all forms of selection (keyboard, mouse)"""
-        indices = self.selectedIndexes()
-        self.selection_handler(indices)
-        super().selectionChanged(selected, deselected)
+
+class QudPopTreeView(QudTreeView):
+    """Custom tree view for the population hierarchy browser."""
+    def __init__(self, selection_handler, *args, **kwargs):
+        """selection_handler: a function in the parent window to pass selected indices to"""
+        super().__init__(selection_handler, *args, **kwargs)
+        self.setObjectName("popTreeView")

@@ -24,13 +24,16 @@ from qbe.qud_explorer_window import Ui_MainWindow
 from qbe.qud_explorer_image_modal import Ui_WikiImageUpload
 from qbe.search_filter import QudFilterModel
 from qbe.qudobject_wiki import QudObjectWiki
-from qbe.tree_view import QudTreeView
+from qbe.tree_view import QudObjTreeView, QudPopTreeView
 from qbe.wiki_config import site, wiki_config
 from qbe.wiki_page import TEMPLATE_RE, TEMPLATE_RE_OLD, WikiPage, upload_wiki_image
 
-HEADER_LABELS = ['Object Name', 'Display Name', 'Wiki Title Override', 'Article?',
-                 'Article matches?', 'Image?', 'Image matches?', 'Extra images?',
-                 'Extra images match?']
+OBJ_HEADER_LABELS = ['Object Name', 'Display Name', 'Wiki Title Override', 'Article?',
+                     'Article matches?', 'Image?', 'Image matches?', 'Extra images?',
+                     'Extra images match?']
+POP_HEADER_LABELS = ['Population Name']
+OBJ_TAB_INDEX = 0
+POP_TAB_INDEX = 1
 
 blank_image = Image.new('RGBA', (16, 24), color=(0, 0, 0, 0))
 blank_qtimage = ImageQt.ImageQt(blank_image)
@@ -70,10 +73,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.qud_object_proxyfilter = QudFilterModel()
         self.qud_object_proxyfilter.setSourceModel(self.qud_object_model)
         self.items_to_expand = []  # filled out during recursion of the Qud object tree
-        self.treeView = QudTreeView(self.tree_selection_handler, self.tree_target_widget)
+        self.treeView = QudObjTreeView(self.tree_selection_handler, self.tree_target_widget)
         self.verticalLayout_3.addWidget(self.treeView)
         self.search_line_edit.textChanged.connect(self.search_changed)
         self.search_line_edit.returnPressed.connect(self.search_changed_forced)
+
+        self.qud_pop_model = QStandardItemModel()
+        self.qud_pop_proxyfilter = QudFilterModel()
+        self.qud_pop_proxyfilter.setSourceModel(self.qud_pop_model)
+        self.popTreeView = QudPopTreeView(self.pop_tree_selection_handler,
+                                          self.pop_tree_target_widget)
+        self.pop_layout2_bottom.addWidget(self.popTreeView)
+        self.pop_search_line_edit.textChanged.connect(self.pop_search_changed)
+        self.pop_search_line_edit.returnPressed.connect(self.pop_search_changed_forced)
         self._prompt_for_image_changes = True
 
         # Set up menus
@@ -113,6 +125,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowTitle(title_string)
         self.qud_object_root, qindex_throwaway = self.gameroot.get_object_tree(QudObjectWiki)
         self.init_qud_tree_model()
+        self.tabWidget.currentChanged.connect(self.tab_changed)
+        self.population_data = None
 
         self.expand_all_button.clicked.connect(self.expand_all)
         self.collapse_all_button.clicked.connect(self.collapse_all)
@@ -158,7 +172,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def init_qud_tree_model(self):
         """Initialize the Qud object model tree by setting up the root object."""
         self.treeView.setModel(self.qud_object_proxyfilter)
-        self.qud_object_model.setHorizontalHeaderLabels(HEADER_LABELS)
+        self.qud_object_model.setHorizontalHeaderLabels(OBJ_HEADER_LABELS)
         header = self.treeView.header()
         header.setSectionResizeMode(QHeaderView.ResizeToContents)
         header.setStretchLastSection(False)
@@ -382,7 +396,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def selected_row_count(self):
         """Return the number of currently selected rows."""
         if self.currently_selected is not None:
-            return len(self.currently_selected) // len(HEADER_LABELS)
+            return len(self.currently_selected) // len(OBJ_HEADER_LABELS)
 
     def get_icon_cell(self, index_in_currently_selected: int) -> QStandardItem:
         qmodelindex = self.qud_object_proxyfilter\
@@ -397,6 +411,56 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             cell.setForeground(QColor.fromRgb(100, 100, 100))  # grey
         if update_ui is True:
             self.app.processEvents()
+
+    def tab_changed(self, idx: int):
+        if idx == POP_TAB_INDEX:
+            self.load_populations()
+
+    def load_populations(self):
+        if self.population_data is not None:
+            return
+        self.population_data = self.gameroot.get_populations()
+        self.init_qud_pop_tree_model()
+
+    def init_qud_pop_tree_model(self):
+        """Initialize the Qud object model tree by setting up the root object."""
+        self.popTreeView.setModel(self.qud_pop_proxyfilter)
+        self.qud_pop_model.setHorizontalHeaderLabels(POP_HEADER_LABELS)
+        header = self.popTreeView.header()
+        header.setSectionResizeMode(QHeaderView.ResizeToContents)
+        header.setStretchLastSection(False)
+        for pop_name, pop_value in self.population_data.items():
+            row = []
+            item = QStandardItem(pop_name)
+            item.setData(pop_value)
+            # print(f'ABC:  {pop_value}')
+            # print(f'DEF:  {pop_value.xml()}')
+            row.append(item)  # do this for each additional column
+            # item2 = QStandardItem(len(pop_value.children))
+            # row.append(item2)
+            self.qud_pop_model.appendRow(row)
+        self.popTreeView.expandAll()
+
+    def pop_tree_selection_handler(self, indices: list):
+        """Registered with custom QudTreeView class as the handler for selection."""
+        self.currently_selected = indices
+        self.statusbar.clearMessage()
+        text = ""
+        for num, index in enumerate(indices):
+            model_index = self.qud_pop_proxyfilter.mapToSource(index)
+            if model_index.column() == 0:
+                item = self.qud_pop_model.itemFromIndex(model_index)
+                pop_entry = item.data()
+                self.pop_plainTextEdit.setPlainText(pop_entry.xml)
+        if len(indices) == 0:
+            self.pop_plainTextEdit.clear()
+            pass
+
+    def pop_search_changed(self):
+        pass
+
+    def pop_search_changed_forced(self):
+        pass
 
     def wiki_check_selected(self):
         """Check the wiki for the existence of the article and image(s) for selected objects, and
