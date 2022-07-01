@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'qud_explorer_window.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.3.0
+## Created by: Qt User Interface Compiler version 6.3.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -178,26 +178,69 @@ class Ui_MainWindow(object):
         self.populations_tab.setObjectName(u"populations_tab")
         self.gridLayout_3 = QGridLayout(self.populations_tab)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.verticalLayout_2 = QVBoxLayout()
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.label = QLabel(self.populations_tab)
-        self.label.setObjectName(u"label")
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
-        self.label.setSizePolicy(sizePolicy)
-        self.label.setMaximumSize(QSize(16777215, 16777215))
+        self.pop_layout1_top = QVBoxLayout()
+        self.pop_layout1_top.setObjectName(u"pop_layout1_top")
+        self.pop_plainTextEdit = QPlainTextEdit(self.populations_tab)
+        self.pop_plainTextEdit.setObjectName(u"pop_plainTextEdit")
+
+        self.pop_layout1_top.addWidget(self.pop_plainTextEdit)
+
+
+        self.gridLayout_3.addLayout(self.pop_layout1_top, 0, 0, 1, 1)
+
+        self.pop_layout2_bottom = QVBoxLayout()
+        self.pop_layout2_bottom.setSpacing(3)
+        self.pop_layout2_bottom.setObjectName(u"pop_layout2_bottom")
+        self.pop_layout2_bottom.setContentsMargins(-1, 8, -1, -1)
+        self.pop_layout3_search_buttons = QHBoxLayout()
+        self.pop_layout3_search_buttons.setObjectName(u"pop_layout3_search_buttons")
+        self.pop_search_label = QLabel(self.populations_tab)
+        self.pop_search_label.setObjectName(u"pop_search_label")
         font3 = QFont()
-        font3.setPointSize(12)
-        self.label.setFont(font3)
-        self.label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
-        self.label.setMargin(16)
+        font3.setPointSize(10)
+        self.pop_search_label.setFont(font3)
 
-        self.verticalLayout_2.addWidget(self.label)
+        self.pop_layout3_search_buttons.addWidget(self.pop_search_label)
+
+        self.pop_search_line_edit = QLineEdit(self.populations_tab)
+        self.pop_search_line_edit.setObjectName(u"pop_search_line_edit")
+        self.pop_search_line_edit.setFont(font3)
+
+        self.pop_layout3_search_buttons.addWidget(self.pop_search_line_edit)
+
+        self.pop_expand_all_button = QPushButton(self.populations_tab)
+        self.pop_expand_all_button.setObjectName(u"pop_expand_all_button")
+        self.pop_expand_all_button.setMinimumSize(QSize(90, 0))
+        self.pop_expand_all_button.setFont(font3)
+
+        self.pop_layout3_search_buttons.addWidget(self.pop_expand_all_button)
+
+        self.pop_collapse_all_button = QPushButton(self.populations_tab)
+        self.pop_collapse_all_button.setObjectName(u"pop_collapse_all_button")
+        self.pop_collapse_all_button.setMinimumSize(QSize(90, 0))
+        self.pop_collapse_all_button.setFont(font3)
+
+        self.pop_layout3_search_buttons.addWidget(self.pop_collapse_all_button)
+
+        self.pop_restore_all_button = QPushButton(self.populations_tab)
+        self.pop_restore_all_button.setObjectName(u"pop_restore_all_button")
+        self.pop_restore_all_button.setMinimumSize(QSize(130, 0))
+        self.pop_restore_all_button.setFont(font3)
+
+        self.pop_layout3_search_buttons.addWidget(self.pop_restore_all_button)
 
 
-        self.gridLayout_3.addLayout(self.verticalLayout_2, 0, 0, 1, 1)
+        self.pop_layout2_bottom.addLayout(self.pop_layout3_search_buttons)
+
+        self.pop_tree_target_widget = QWidget(self.populations_tab)
+        self.pop_tree_target_widget.setObjectName(u"pop_tree_target_widget")
+        self.pop_tree_target_widget.setMinimumSize(QSize(0, 0))
+        self.pop_tree_target_widget.setStyleSheet(u"margin: 2px;")
+
+        self.pop_layout2_bottom.addWidget(self.pop_tree_target_widget)
+
+
+        self.gridLayout_3.addLayout(self.pop_layout2_bottom, 1, 0, 1, 1)
 
         self.tabWidget.addTab(self.populations_tab, "")
 
@@ -273,7 +316,10 @@ class Ui_MainWindow(object):
         self.collapse_all_button.setText(QCoreApplication.translate("MainWindow", u"Collapse all", None))
         self.restore_all_button.setText(QCoreApplication.translate("MainWindow", u"Default expansion", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.objects_tab), QCoreApplication.translate("MainWindow", u"Objects", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Loading population tables is not yet supported", None))
+        self.pop_search_label.setText(QCoreApplication.translate("MainWindow", u"Search:", None))
+        self.pop_expand_all_button.setText(QCoreApplication.translate("MainWindow", u"Expand all", None))
+        self.pop_collapse_all_button.setText(QCoreApplication.translate("MainWindow", u"Collapse all", None))
+        self.pop_restore_all_button.setText(QCoreApplication.translate("MainWindow", u"Default expansion", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.populations_tab), QCoreApplication.translate("MainWindow", u"Populations", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuView.setTitle(QCoreApplication.translate("MainWindow", u"View", None))
