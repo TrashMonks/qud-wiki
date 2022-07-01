@@ -155,6 +155,9 @@ QMenuBar::item:selected {
   	background-color: #252a2e;
 	color: #FFFFFF;
 }
+QMenuBar::item:disabled {
+    color: #717175;
+}
 QMenu {
 	background-color: #151a1e;
 }

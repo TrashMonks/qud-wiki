@@ -421,7 +421,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def tab_changed(self, idx: int):
         if idx == POP_TAB_INDEX:
+            self.menuWiki.setDisabled(True)
             self.load_populations()
+        elif idx == OBJ_TAB_INDEX:
+            self.menuWiki.setEnabled(True)
 
     def load_populations(self):
         if self.population_data is not None:
