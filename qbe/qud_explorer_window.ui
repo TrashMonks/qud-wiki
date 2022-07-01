@@ -235,7 +235,20 @@
           <item row="0" column="0">
            <layout class="QVBoxLayout" name="pop_layout1_top">
             <item>
-             <widget class="QPlainTextEdit" name="pop_plainTextEdit"/>
+             <widget class="QPlainTextEdit" name="pop_plainTextEdit">
+              <property name="font">
+               <font>
+                <family>Consolas</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="undoRedoEnabled">
+               <bool>false</bool>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>

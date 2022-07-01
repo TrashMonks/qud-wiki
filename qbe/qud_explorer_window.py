@@ -182,6 +182,9 @@ class Ui_MainWindow(object):
         self.pop_layout1_top.setObjectName(u"pop_layout1_top")
         self.pop_plainTextEdit = QPlainTextEdit(self.populations_tab)
         self.pop_plainTextEdit.setObjectName(u"pop_plainTextEdit")
+        self.pop_plainTextEdit.setFont(font)
+        self.pop_plainTextEdit.setUndoRedoEnabled(False)
+        self.pop_plainTextEdit.setReadOnly(True)
 
         self.pop_layout1_top.addWidget(self.pop_plainTextEdit)
 
