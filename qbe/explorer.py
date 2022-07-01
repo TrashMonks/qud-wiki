@@ -144,6 +144,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.gif_mode = False
 
         self.objects_selected = []
+        self.pops_selected = []
         # used if we only want one of potential multiple items:
         self.top_selected_obj: Union[QudObjectWiki, None] = None
         self.top_selected_obj_index: Union[int, None] = None
@@ -444,7 +445,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def pop_tree_selection_handler(self, indices: list):
         """Registered with custom QudTreeView class as the handler for selection."""
-        self.objects_selected = indices
+        self.pops_selected = indices
         self.statusbar.clearMessage()
         text = ""
         for num, index in enumerate(indices):
@@ -453,6 +454,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 item = self.qud_pop_model.itemFromIndex(model_index)
                 pop_entry = item.data()
                 self.pop_plainTextEdit.setPlainText(pop_entry.xml)
+                self.statusbar.showMessage(item.text())  # population name
         if len(indices) == 0:
             self.pop_plainTextEdit.clear()
             pass
