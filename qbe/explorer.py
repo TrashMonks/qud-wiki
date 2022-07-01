@@ -443,12 +443,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             row = []
             item = QStandardItem(pop_name)
             item.setData(pop_value)
-            # print(f'ABC:  {pop_value}')
-            # print(f'DEF:  {pop_value.xml()}')
             row.append(item)  # do this for each additional column
             row.append(QStandardItem('population'))
-            # item2 = QStandardItem(len(pop_value.children))
-            # row.append(item2)
             for pop_child in pop_value.children:
                 item.appendRow(self.init_qud_pop_children(pop_child))
             self.qud_pop_model.appendRow(row)
@@ -488,9 +484,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             pass
 
     def pop_search_changed(self):
+        # TODO: implement search for Population tab
         pass
 
     def pop_search_changed_forced(self):
+        # TODO: implement search for Population tab
         pass
 
     def wiki_check_selected(self):
