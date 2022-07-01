@@ -31,7 +31,7 @@ from qbe.wiki_page import TEMPLATE_RE, TEMPLATE_RE_OLD, WikiPage, upload_wiki_im
 OBJ_HEADER_LABELS = ['Object Name', 'Display Name', 'Wiki Title Override', 'Article?',
                      'Article matches?', 'Image?', 'Image matches?', 'Extra images?',
                      'Extra images match?']
-POP_HEADER_LABELS = ['Population Name']
+POP_HEADER_LABELS = ['Name', 'Type']
 OBJ_TAB_INDEX = 0
 POP_TAB_INDEX = 1
 
@@ -132,6 +132,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.expand_all_button.clicked.connect(self.expand_all)
         self.collapse_all_button.clicked.connect(self.collapse_all)
         self.restore_all_button.clicked.connect(self.expand_default)
+
+        self.pop_expand_all_button.clicked.connect(self.pop_expand_all)
+        self.pop_collapse_all_button.clicked.connect(self.pop_collapse_all)
+        self.pop_restore_all_button.clicked.connect(self.pop_collapse_all)
+
         self.save_tile_button.clicked.connect(self.save_selected_tile)
         self.save_tile_button.setDisabled(True)
         self.swap_tile_button.clicked.connect(self.swap_tile_mode)
@@ -438,10 +443,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # print(f'ABC:  {pop_value}')
             # print(f'DEF:  {pop_value.xml()}')
             row.append(item)  # do this for each additional column
+            row.append(QStandardItem('population'))
             # item2 = QStandardItem(len(pop_value.children))
             # row.append(item2)
+            for pop_child in pop_value.children:
+                item.appendRow(self.init_qud_pop_children(pop_child))
             self.qud_pop_model.appendRow(row)
+        self.popTreeView.collapseAll()
+
+    def init_qud_pop_children(self, pop_item):  # pop_item: QudPopItem):
+        child = QStandardItem(pop_item.displayname)
+        if pop_item.type == 'group':
+            for pop_child in pop_item.children:
+                child.appendRow(self.init_qud_pop_children(pop_child))
+        return [child, QStandardItem(pop_item.type)]
+
+    def pop_expand_all(self):
         self.popTreeView.expandAll()
+
+    def pop_collapse_all(self):
+        self.popTreeView.collapseAll()
 
     def pop_tree_selection_handler(self, indices: list):
         """Registered with custom QudTreeView class as the handler for selection."""
@@ -453,8 +474,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if model_index.column() == 0:
                 item = self.qud_pop_model.itemFromIndex(model_index)
                 pop_entry = item.data()
-                self.pop_plainTextEdit.setPlainText(pop_entry.xml)
-                self.statusbar.showMessage(item.text())  # population name
+                if pop_entry is not None:
+                    self.pop_plainTextEdit.setPlainText(pop_entry.xml)
+                    self.statusbar.showMessage(item.text())  # population name
+                else:
+                    self.pop_plainTextEdit.clear()
+                    self.statusbar.showMessage(item.text())
         if len(indices) == 0:
             self.pop_plainTextEdit.clear()
             pass
