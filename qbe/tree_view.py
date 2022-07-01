@@ -30,7 +30,7 @@ class QudObjTreeView(QudTreeView):
     def __init__(self, selection_handler, *args, **kwargs):
         """selection_handler: a function in the parent window to pass selected indices to"""
         super().__init__(selection_handler, *args, **kwargs)
-        self.setObjectName("treeView")
+        self.setObjectName("objTreeView")
         self.setIconSize(QSize(16, 24))
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.tree_menu = QMenu()

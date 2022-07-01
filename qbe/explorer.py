@@ -68,13 +68,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)  # lay out the inherited UI as in the graphical designer
         icon = QIcon("qbe/icon.png")
         self.setWindowIcon(icon)
-        self.view_type = 'wiki'
+        self.obj_view_type = 'wiki'
         self.qud_object_model = QStandardItemModel()
         self.qud_object_proxyfilter = QudFilterModel()
         self.qud_object_proxyfilter.setSourceModel(self.qud_object_model)
-        self.items_to_expand = []  # filled out during recursion of the Qud object tree
-        self.treeView = QudObjTreeView(self.tree_selection_handler, self.tree_target_widget)
-        self.verticalLayout_3.addWidget(self.treeView)
+        self.objects_to_expand = []  # filled out during recursion of the Qud object tree
+        self.objTreeView = QudObjTreeView(self.tree_selection_handler, self.tree_target_widget)
+        self.verticalLayout_3.addWidget(self.objTreeView)
         self.search_line_edit.textChanged.connect(self.search_changed)
         self.search_line_edit.returnPressed.connect(self.search_changed_forced)
 
@@ -108,12 +108,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Help menu:
         self.actionShow_help.triggered.connect(self.show_help)
         # TreeView context menu:
-        self.treeView.context_action_expand.triggered.connect(self.expand_all)
-        self.treeView.context_action_scan.triggered.connect(self.wiki_check_selected)
-        self.treeView.context_action_upload_page.triggered.connect(self.upload_selected_templates)
-        self.treeView.context_action_upload_tile.triggered.connect(self.upload_selected_tiles)
-        self.treeView.context_action_upload_extra.triggered.connect(self.upload_extra_images)
-        self.treeView.context_action_diff.triggered.connect(self.show_simple_diff)
+        self.objTreeView.context_action_expand.triggered.connect(self.expand_all)
+        self.objTreeView.context_action_scan.triggered.connect(self.wiki_check_selected)
+        self.objTreeView.context_action_upload_page.triggered\
+            .connect(self.upload_selected_templates)
+        self.objTreeView.context_action_upload_tile.triggered.connect(self.upload_selected_tiles)
+        self.objTreeView.context_action_upload_extra.triggered.connect(self.upload_extra_images)
+        self.objTreeView.context_action_diff.triggered.connect(self.show_simple_diff)
         self.gameroot: Union[GameRoot, None] = None
         while self.gameroot is None:
             try:
@@ -124,7 +125,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                        f'{self.gameroot.pathstr}'
         self.setWindowTitle(title_string)
         self.qud_object_root, qindex_throwaway = self.gameroot.get_object_tree(QudObjectWiki)
-        self.init_qud_tree_model()
+        self.init_obj_tree_model()
         self.tabWidget.currentChanged.connect(self.tab_changed)
         self.population_data = None
 
@@ -142,10 +143,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.qmovie: Union[QMovie, None] = None
         self.gif_mode = False
 
-        self.currently_selected = []
+        self.objects_selected = []
         # used if we only want one of potential multiple items:
-        self.top_selected: Union[QudObjectWiki, None] = None
-        self.top_selected_index: Union[int, None] = None
+        self.top_selected_obj: Union[QudObjectWiki, None] = None
+        self.top_selected_obj_index: Union[int, None] = None
         self.show()
 
     def open_gameroot(self):
@@ -169,11 +170,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             raise
         self.gameroot = GameRoot(dir_name)
 
-    def init_qud_tree_model(self):
+    def init_obj_tree_model(self):
         """Initialize the Qud object model tree by setting up the root object."""
-        self.treeView.setModel(self.qud_object_proxyfilter)
+        self.objTreeView.setModel(self.qud_object_proxyfilter)
         self.qud_object_model.setHorizontalHeaderLabels(OBJ_HEADER_LABELS)
-        header = self.treeView.header()
+        header = self.objTreeView.header()
         header.setSectionResizeMode(QHeaderView.ResizeToContents)
         header.setStretchLastSection(False)
 
@@ -242,7 +243,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             font.setBold(True)
             row[0].setFont(font)
         if qud_object.name in config['Interface']['Initial expansion targets']:
-            self.items_to_expand.append(item)
+            self.objects_to_expand.append(item)
         # recurse through children before returning self
         if not qud_object.is_leaf:
             for child in qud_object.children:
@@ -252,13 +253,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def recursive_expand(self, item: QStandardItem):
         """Expand the currently selected item in the QudTreeView and all its children."""
         index = self.qud_object_model.indexFromItem(item)
-        self.treeView.expand(self.qud_object_proxyfilter.mapFromSource(index))
+        self.objTreeView.expand(self.qud_object_proxyfilter.mapFromSource(index))
         if item.parent() is not None:
             self.recursive_expand(item.parent())
 
     def tree_selection_handler(self, indices: list):
         """Registered with custom QudTreeView class as the handler for selection."""
-        self.currently_selected = indices
+        self.objects_selected = indices
         self.statusbar.clearMessage()
         text = ""
         for num, index in enumerate(indices):
@@ -266,33 +267,33 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if model_index.column() == 0:
                 item = self.qud_object_model.itemFromIndex(model_index)
                 qud_object = item.data()
-                if self.view_type == 'wiki':
+                if self.obj_view_type == 'wiki':
                     if qud_object.is_wiki_eligible():
                         text += qud_object.wiki_template(self.gameroot.gamever) + '\n'
                     else:
                         text += f'{qud_object.name} is not enabled for wiki upload.' + '\n'
-                elif self.view_type == 'attr':
+                elif self.obj_view_type == 'attr':
                     text += pformat(qud_object.attributes, width=120)
-                elif self.view_type == 'all_attr':
+                elif self.obj_view_type == 'all_attr':
                     text += pformat(qud_object.all_attributes, width=120)
-                elif self.view_type == 'xml_source':
+                elif self.obj_view_type == 'xml_source':
                     # cosmetic: add two spaces to indent the opening <object> tag
                     text += '  ' + qud_object.source
                 self.statusbar.showMessage(qud_object.ui_inheritance_path())
-                self.top_selected = qud_object
-                self.top_selected_index = num
+                self.top_selected_obj = qud_object
+                self.top_selected_obj_index = num
                 self.gif_mode = False
                 self.update_tile_display()
         if len(indices) == 0:
             self.tile_label.clear()
-            self.top_selected = None
-            self.top_selected_index = None
+            self.top_selected_obj = None
+            self.top_selected_obj_index = None
             self.save_tile_button.setDisabled(True)
             self.swap_tile_button.setDisabled(True)
         self.plainTextEdit.setPlainText(text)
 
     def update_tile_display(self):
-        qud_object = self.top_selected
+        qud_object = self.top_selected_obj
         if self.qmovie is not None:
             self.qmovie.stop()
         if self.qbuffer is not None:
@@ -329,25 +330,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def collapse_all(self):
         """Fully collapse all levels of the QudTreeView."""
-        self.treeView.collapseAll()
+        self.objTreeView.collapseAll()
 
     def expand_all(self):
         """Fully expand all levels of the QudTreeView."""
-        self.treeView.expandAll()
+        self.objTreeView.expandAll()
         self.clear_search_filter(True)
 
     def expand_default(self):
         """Expand the QudTreeView to the levels configured in config.yml."""
         self.collapse_all()
-        for item in self.items_to_expand:
+        for item in self.objects_to_expand:
             self.recursive_expand(item)
         self.clear_search_filter(True)
 
     def scroll_to_selected(self):
         """Scroll the tree view to the first selected item."""
-        self.currently_selected = self.treeView.selectedIndexes()
-        if self.currently_selected is not None and len(self.currently_selected) > 0:
-            self.treeView.scrollTo(self.currently_selected[0])
+        self.objects_selected = self.objTreeView.selectedIndexes()
+        if self.objects_selected is not None and len(self.objects_selected) > 0:
+            self.objTreeView.scrollTo(self.objects_selected[0])
 
     def clear_search_filter(self, clearfield: bool = False):
         """Remove any filtering that has been applied to the tree view."""
@@ -370,22 +371,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.qud_object_proxyfilter.pop_selections()  # clear any lingering data in proxyfilter
             self.qud_object_proxyfilter.setFilterRegularExpression(  # apply the actual filtering
                 QRegularExpression(self.search_line_edit.text()))
-            self.treeView.expandAll()  # expands to show everything visible after filter is applied
+            self.objTreeView.expandAll()  # expands to show everything visible after filter applied
             items, item_ids = self.qud_object_proxyfilter.pop_selections()
             if len(items) > 0:
                 item = items[0]
                 if mode == 'Forced':  # go to next filtered item each time the user presses ENTER
-                    self.currently_selected = self.treeView.selectedIndexes()
-                    if self.currently_selected is not None and self.selected_row_count() == 1:
+                    self.objects_selected = self.objTreeView.selectedIndexes()
+                    if self.objects_selected is not None and self.selected_row_count() == 1:
                         currentitem = self.qud_object_model.itemFromIndex(
-                            self.qud_object_proxyfilter.mapToSource(self.currently_selected[0]))
+                            self.qud_object_proxyfilter.mapToSource(self.objects_selected[0]))
                         if id(currentitem) in item_ids:
                             newindex = item_ids.index(id(currentitem)) + 1
                             if newindex < len(items):
                                 item = items[newindex]
                 idx = self.qud_object_model.indexFromItem(item)
                 idx = self.qud_object_proxyfilter.mapFromSource(idx)
-                self.treeView.selectionModel().select(
+                self.objTreeView.selectionModel().select(
                     idx, QItemSelectionModel.ClearAndSelect | QItemSelectionModel.Rows)
                 self.scroll_to_selected()
 
@@ -395,17 +396,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def selected_row_count(self):
         """Return the number of currently selected rows."""
-        if self.currently_selected is not None:
-            return len(self.currently_selected) // len(OBJ_HEADER_LABELS)
+        if self.objects_selected is not None:
+            return len(self.objects_selected) // len(OBJ_HEADER_LABELS)
 
-    def get_icon_cell(self, index_in_currently_selected: int) -> QStandardItem:
+    def get_icon_cell(self, index_in_objects_selected: int) -> QStandardItem:
         qmodelindex = self.qud_object_proxyfilter\
-            .mapToSource(self.currently_selected[index_in_currently_selected])
+            .mapToSource(self.objects_selected[index_in_objects_selected])
         cell = self.qud_object_model.itemFromIndex(qmodelindex)
         return cell
 
-    def set_icon(self, index_in_currently_selected: int, icon: str = '✅', update_ui: bool = False):
-        cell = self.get_icon_cell(index_in_currently_selected)
+    def set_icon(self, index_in_objects_selected: int, icon: str = '✅', update_ui: bool = False):
+        cell = self.get_icon_cell(index_in_objects_selected)
         cell.setText(icon)
         if icon == '⮿':
             cell.setForeground(QColor.fromRgb(100, 100, 100))  # grey
@@ -443,7 +444,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def pop_tree_selection_handler(self, indices: list):
         """Registered with custom QudTreeView class as the handler for selection."""
-        self.currently_selected = indices
+        self.objects_selected = indices
         self.statusbar.clearMessage()
         text = ""
         for num, index in enumerate(indices):
@@ -469,7 +470,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         statusbar_current = self.statusbar.currentMessage()
         check_total = self.selected_row_count()
         check_count = 0
-        for num, index in enumerate(self.currently_selected):
+        for num, index in enumerate(self.objects_selected):
             model_index = self.qud_object_proxyfilter.mapToSource(index)
             if model_index.column() == 0:
                 if check_total > 1:
@@ -603,8 +604,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         extra_imgs_match.setForeground(QColor.fromRgb(100, 100, 100))  # grey
                 self.app.processEvents()
         # restore cursor and status bar text:
-        if self.top_selected is not None:
-            self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
+        if self.top_selected_obj is not None:
+            self.statusbar.showMessage(self.top_selected_obj.ui_inheritance_path())
         self.statusbar.showMessage(statusbar_current)
         self.app.processEvents()
         QApplication.restoreOverrideCursor()
@@ -636,7 +637,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         check_total = self.selected_row_count()
         check_count = 0
-        for num, index in enumerate(self.currently_selected):
+        for num, index in enumerate(self.objects_selected):
             model_index = self.qud_object_proxyfilter.mapToSource(index)
             if model_index.column() == 0:
                 if check_total > 1:
@@ -655,12 +656,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     finally:
                         if not upload_processed:
                             QApplication.restoreOverrideCursor()
-                            if self.top_selected is not None:
-                                self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
+                            if self.top_selected_obj is not None:
+                                self.statusbar.showMessage(
+                                    self.top_selected_obj.ui_inheritance_path())
         # restore cursor and status bar text:
         QApplication.restoreOverrideCursor()
-        if self.top_selected is not None:
-            self.statusbar.showMessage(self.top_selected.ui_inheritance_path())
+        if self.top_selected_obj is not None:
+            self.statusbar.showMessage(self.top_selected_obj.ui_inheritance_path())
 
     def upload_wiki_template(self, qud_object: QudObjectWiki, selection_index: int):
         """Uploads a single template to the relevant wiki page.
@@ -950,12 +952,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def save_selected_tile(self):
         """Save the currently displayed tile as a PNG or GIF to the local filesystem."""
         if self.gif_mode:
-            if self.top_selected.gif_image(0) is not None:
+            if self.top_selected_obj.gif_image(0) is not None:
                 filename = QFileDialog.getSaveFileName()[0]
-                GifHelper.save(self.top_selected.gif_image(0), filename)
-        elif self.top_selected.tile is not None:
+                GifHelper.save(self.top_selected_obj.gif_image(0), filename)
+        elif self.top_selected_obj.tile is not None:
             filename = QFileDialog.getSaveFileName()[0]
-            self.top_selected.tile.get_big_image().save(filename, format='png')
+            self.top_selected_obj.tile.get_big_image().save(filename, format='png')
 
     def swap_tile_mode(self):
         """Swap between the .png and .gif preview"""
@@ -972,11 +974,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def show_simple_diff(self):
         """Display a popup showing the diff between our template and the version on the wiki."""
-        qud_object = self.top_selected
+        qud_object = self.top_selected_obj
         if qud_object is None or not qud_object.is_wiki_eligible():
             return
-        article_exists_index = self.top_selected_index + 3
-        article_matches_index = self.top_selected_index + 4
+        article_exists_index = self.top_selected_obj_index + 3
+        article_matches_index = self.top_selected_obj_index + 4
         article = WikiPage(qud_object, self.gameroot.gamever)
         if not article.page.exists:
             self.set_icon(article_exists_index, '❌', True)
@@ -1026,18 +1028,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """Process a request to set the view type and update the checkmarks in the View menu.
 
         Parameters: view: one of 'wiki', 'attr', 'all_attr', 'xml_source'"""
-        if self.view_type == view:
+        if self.obj_view_type == view:
             return
         actions = {'wiki': self.actionWiki_template,
                    'attr': self.actionAttributes,
                    'all_attr': self.actionAll_attributes,
                    'xml_source': self.actionXML_source,
                    }
-        self.view_type = view
+        self.obj_view_type = view
         for action in actions.values():
             action.setChecked(False)
         actions[view].setChecked(True)
-        selected = self.treeView.selectedIndexes()
+        selected = self.objTreeView.selectedIndexes()
         self.tree_selection_handler(selected)  # redraw the text view in the new type
 
     def setview_wiki(self):
