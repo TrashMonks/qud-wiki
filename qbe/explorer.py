@@ -8,8 +8,7 @@ from pprint import pformat
 
 import yaml
 from PIL import Image, ImageQt
-from PySide6.QtCore import QBuffer, QByteArray, QIODevice, QItemSelectionModel, \
-    QRegularExpression, QSize, Qt
+from PySide6.QtCore import QBuffer, QByteArray, QIODevice, QSize, Qt
 from PySide6.QtGui import QIcon, QImage, QMovie, QPixmap, QStandardItem, QStandardItemModel, \
     QColor, QFont
 from PySide6.QtWidgets import QApplication, QFileDialog, QHeaderView, QMainWindow, QMessageBox, \
@@ -25,7 +24,7 @@ from qbe.qud_explorer_image_modal import Ui_WikiImageUpload
 from qbe.search_filter import QudObjFilterModel, QudPopFilterModel, QudSearchBehaviorHandler
 from qbe.qudobject_wiki import QudObjectWiki
 from qbe.tree_view import QudObjTreeView, QudPopTreeView
-from qbe.wiki_config import site, wiki_config
+from qbe.wiki_config import site
 from qbe.wiki_page import TEMPLATE_RE, TEMPLATE_RE_OLD, WikiPage, upload_wiki_image
 
 OBJ_HEADER_LABELS = ['Object Name', 'Display Name', 'Wiki Title Override', 'Article?',
@@ -73,9 +72,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.qud_object_proxyfilter = QudObjFilterModel()
         self.qud_object_proxyfilter.setSourceModel(self.qud_object_model)
         self.objects_to_expand = []  # filled out during recursion of the Qud object tree
-        self.objTreeView = QudObjTreeView(self.tree_selection_handler, OBJ_HEADER_LABELS, self.tree_target_widget)
+        self.objTreeView = QudObjTreeView(
+            self.tree_selection_handler, OBJ_HEADER_LABELS, self.tree_target_widget)
         self.verticalLayout_3.addWidget(self.objTreeView)
-        self.objTreeSearchHandler = QudSearchBehaviorHandler(self.search_line_edit, self.qud_object_proxyfilter, self.objTreeView)
+        self.objTreeSearchHandler = QudSearchBehaviorHandler(
+            self.search_line_edit, self.qud_object_proxyfilter, self.objTreeView)
         self.search_line_edit.textChanged.connect(self.objTreeSearchHandler.search_changed)
         self.search_line_edit.returnPressed.connect(self.objTreeSearchHandler.search_changed_forced)
 
@@ -85,9 +86,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.popTreeView = QudPopTreeView(self.pop_tree_selection_handler, POP_HEADER_LABELS,
                                           self.pop_tree_target_widget)
         self.pop_layout2_bottom.addWidget(self.popTreeView)
-        self.popTreeSearchHandler = QudSearchBehaviorHandler(self.pop_search_line_edit, self.qud_pop_proxyfilter, self.popTreeView)
+        self.popTreeSearchHandler = QudSearchBehaviorHandler(
+            self.pop_search_line_edit, self.qud_pop_proxyfilter, self.popTreeView)
         self.pop_search_line_edit.textChanged.connect(self.popTreeSearchHandler.search_changed)
-        self.pop_search_line_edit.returnPressed.connect(self.popTreeSearchHandler.search_changed_forced)
+        self.pop_search_line_edit.returnPressed.connect(
+            self.popTreeSearchHandler.search_changed_forced)
         self._prompt_for_image_changes = True
 
         # Set up menus
@@ -407,9 +410,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def pop_tree_selection_handler(self, indices: list):
         """Registered with custom QudTreeView class as the handler for selection."""
-        self.pops_selected = indices
+        self.popTreeView.items_selected = indices
         self.statusbar.clearMessage()
-        text = ""
         for num, index in enumerate(indices):
             model_index = self.qud_pop_proxyfilter.mapToSource(index)
             if model_index.column() == 0:
@@ -424,14 +426,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if len(indices) == 0:
             self.pop_plainTextEdit.clear()
             pass
-
-    def pop_search_changed(self):
-        # TODO: implement search for Populations tab
-        pass
-
-    def pop_search_changed_forced(self):
-        # TODO: implement search for Populations tab
-        pass
 
     def wiki_check_selected(self):
         """Check the wiki for the existence of the article and image(s) for selected objects, and
