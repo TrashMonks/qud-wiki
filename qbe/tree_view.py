@@ -4,9 +4,13 @@ from PySide6.QtGui import QAction
 
 
 class QudTreeView(QTreeView):
-    """Custom tree view for QBE object and population hierarchy browsers."""
     def __init__(self, selection_handler, header_labels, *args, **kwargs):
-        """selection_handler: a function in the parent window to pass selected indices to"""
+        """Custom tree view for QBE object and population hierarchy browsers.
+
+        Args:
+            selection_handler: a function in the parent window to pass selected indices to
+            header_labels: the tree view header row labels above each column
+        """
         self.selection_handler = selection_handler
         super().__init__(*args, **kwargs)
         size_policy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -24,7 +28,7 @@ class QudTreeView(QTreeView):
         self.top_selected_item_index = None
 
     def selected_row_count(self):
-        """Return the number of currently selected rows in the tree."""
+        """Returns the number of currently selected rows in the tree."""
         if self.items_selected is not None:
             return len(self.items_selected) // len(self.header_labels)
 
@@ -36,9 +40,13 @@ class QudTreeView(QTreeView):
 
 
 class QudObjTreeView(QudTreeView):
-    """Custom tree view for the object hierarchy browser, including icons."""
     def __init__(self, selection_handler, header_labels, *args, **kwargs):
-        """selection_handler: a function in the parent window to pass selected indices to"""
+        """Custom tree view for QBE object hierarchy browser, including icons.
+
+        Args:
+            selection_handler: a function in the parent window to pass selected indices to
+            header_labels: the tree view header row labels above each column
+        """
         super().__init__(selection_handler, header_labels, *args, **kwargs)
         self.setObjectName("objTreeView")
         self.setIconSize(QSize(16, 24))
@@ -67,8 +75,12 @@ class QudObjTreeView(QudTreeView):
 
 
 class QudPopTreeView(QudTreeView):
-    """Custom tree view for the population hierarchy browser."""
     def __init__(self, selection_handler, header_labels, *args, **kwargs):
-        """selection_handler: a function in the parent window to pass selected indices to"""
+        """Custom tree view for QBE population hierarchy browser.
+
+        Args:
+            selection_handler: a function in the parent window to pass selected indices to
+            header_labels: the tree view header row labels above each column
+        """
         super().__init__(selection_handler, header_labels, *args, **kwargs)
         self.setObjectName("popTreeView")

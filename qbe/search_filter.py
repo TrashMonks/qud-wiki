@@ -62,10 +62,8 @@ class QudObjFilterModel(QudFilterModel):
     """Custom filter proxy for the object tree view."""
 
     def _accept_index(self, idx) -> bool:
-        """Perform recursive search on an index.
-
-        Causes ancestors of matching objects to be displayed as an inheritance tree, even if the
-        ancestors themselves don't match the filter."""
+        """Override function includes special handling for object search modifiers like 'hasfield:'
+        and 'haspart:'"""
         if idx.isValid():
             filter_str = self.filterRegularExpression().pattern().lower()
             if filter_str.startswith('hasfield:'):
@@ -127,7 +125,7 @@ class QudPopFilterModel(QudFilterModel):
 
 class QudSearchBehaviorHandler:
     def __init__(self, search_edit: QLineEdit, proxy: QudFilterModel, tree_view: QudTreeView):
-        """Handles searching behavior related to the search text box.
+        """Handles searching behavior for a search text box associated with a tree view.
 
         Args:
             search_edit: The search edit bar widget
@@ -140,6 +138,7 @@ class QudSearchBehaviorHandler:
 
     @property
     def source_model(self):
+        """The underlying source model for the tree view and its proxy filter model."""
         return self.proxy_filter.sourceModel()
 
     def search_changed(self, mode: str = ''):
@@ -162,7 +161,8 @@ class QudSearchBehaviorHandler:
                 item = items[0]
                 if mode == 'Forced':  # go to next filtered item each time the user presses ENTER
                     self.tree_view.items_selected = self.tree_view.selectedIndexes()
-                    if self.tree_view.items_selected is not None and self.tree_view.selected_row_count() == 1:
+                    if self.tree_view.items_selected is not None \
+                            and self.tree_view.selected_row_count() == 1:
                         currentitem = self.source_model.itemFromIndex(
                             self.proxy_filter.mapToSource(self.tree_view.items_selected[0]))
                         if id(currentitem) in item_ids:
