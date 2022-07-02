@@ -1,10 +1,12 @@
-"""Search filter for the QBE application window."""
+"""Search filters for the QBE application window."""
 
-from PySide6.QtCore import QSortFilterProxyModel, Qt
+from PySide6.QtCore import QSortFilterProxyModel, Qt, QRegularExpression, QItemSelectionModel
+from PySide6.QtWidgets import QLineEdit
+from qbe.tree_view import QudTreeView
 
 
 class QudFilterModel(QSortFilterProxyModel):
-    """Custom filter proxy for the tree view."""
+    """Custom QBE filter proxy for the object or population tree view."""
     def __init__(self, parent=None):
         super(QudFilterModel, self).__init__(parent)
         self.setRecursiveFilteringEnabled = True
@@ -21,6 +23,43 @@ class QudFilterModel(QSortFilterProxyModel):
         self.filterSelections = []
         self.filterSelectionIDs = []
         return val1, val2
+
+    def _accept_index(self, idx) -> bool:
+        """Perform recursive search on an index.
+
+        Causes ancestors of matching objects to be displayed as an inheritance tree, even if the
+        ancestors themselves don't match the filter."""
+        if idx.isValid():
+            filter_str = self.filterRegularExpression().pattern().lower()
+            text = idx.data(role=Qt.DisplayRole).lower()
+            # use QRegularExpression method?
+            found = text.find(filter_str) >= 0
+            if found:
+                item = self.sourceModel().itemFromIndex(idx)
+                if item.isSelectable() and id(item) not in self.filterSelectionIDs:
+                    self.filterSelections.append(item)
+                    self.filterSelectionIDs.append(id(item))
+                return True
+            for childnum in range(idx.model().rowCount(idx)):
+                if self._accept_index(idx.model().index(childnum, 0, idx)):
+                    return True
+        return False
+
+    def filterAcceptsRow(self, source_row, source_parent):
+        """Overrides filterAcceptsRow to determine if the row should be included.
+
+        Documentation of overridden class:
+        Returns true if the item in the row indicated by the given source_row and source_parent
+        should be included in the model; otherwise returns false.
+
+        The default implementation returns true if the value held by the relevant item matches the
+        filter string, wildcard string or regular expression."""
+        idx = self.sourceModel().index(source_row, 0, source_parent)  # 0 = first column
+        return self._accept_index(idx)
+
+
+class QudObjFilterModel(QudFilterModel):
+    """Custom filter proxy for the object tree view."""
 
     def _accept_index(self, idx) -> bool:
         """Perform recursive search on an index.
@@ -81,14 +120,73 @@ class QudFilterModel(QSortFilterProxyModel):
                 return True
         return False
 
-    def filterAcceptsRow(self, source_row, source_parent):
-        """Overrides filterAcceptsRow to determine if the row should be included.
 
-        Documentation of overridden class:
-        Returns true if the item in the row indicated by the given source_row and source_parent
-        should be included in the model; otherwise returns false.
+class QudPopFilterModel(QudFilterModel):
+    """Custom filter proxy for the population tree view."""
 
-        The default implementation returns true if the value held by the relevant item matches the
-        filter string, wildcard string or regular expression."""
-        idx = self.sourceModel().index(source_row, 0, source_parent)  # 0 = first column
-        return self._accept_index(idx)
+
+class QudSearchBehaviorHandler:
+    def __init__(self, search_edit: QLineEdit, proxy: QudFilterModel, tree_view: QudTreeView):
+        """Handles searching behavior related to the search text box.
+
+        Args:
+            search_edit: The search edit bar widget
+            proxy: The proxy filter for the tree view
+            tree_view: The tree view associated with the search edit bar
+        """
+        self.search_edit = search_edit
+        self.proxy_filter = proxy
+        self.tree_view = tree_view
+
+    @property
+    def source_model(self):
+        return self.proxy_filter.sourceModel()
+
+    def search_changed(self, mode: str = ''):
+        """Called when the text in the search box has changed.
+
+        By default, the search box only begins filtering after 4 or more letters are entered.
+        However, you can override that and search with fewer letters by hitting ENTER ('Forced'
+        mode). You can also hit ENTER to move to the next match for an existing/active search
+        query."""
+        if len(self.search_edit.text()) <= 3:
+            self.clear_search_filter(False)
+        if len(self.search_edit.text()) > 3 \
+                or (mode == 'Forced' and self.search_edit.text() != ''):
+            self.proxy_filter.pop_selections()  # clear any lingering data in proxyfilter
+            self.proxy_filter.setFilterRegularExpression(  # apply the actual filtering
+                QRegularExpression(self.search_edit.text()))
+            self.tree_view.expandAll()  # expands to show everything visible after filter applied
+            items, item_ids = self.proxy_filter.pop_selections()
+            if len(items) > 0:
+                item = items[0]
+                if mode == 'Forced':  # go to next filtered item each time the user presses ENTER
+                    self.tree_view.items_selected = self.tree_view.selectedIndexes()
+                    if self.tree_view.items_selected is not None and self.tree_view.selected_row_count() == 1:
+                        currentitem = self.source_model.itemFromIndex(
+                            self.proxy_filter.mapToSource(self.tree_view.items_selected[0]))
+                        if id(currentitem) in item_ids:
+                            newindex = item_ids.index(id(currentitem)) + 1
+                            if newindex < len(items):
+                                item = items[newindex]
+                idx = self.source_model.indexFromItem(item)
+                idx = self.proxy_filter.mapFromSource(idx)
+                self.tree_view.selectionModel().select(
+                    idx, QItemSelectionModel.ClearAndSelect | QItemSelectionModel.Rows)
+                self.scroll_to_selected()
+
+    def search_changed_forced(self):
+        self.search_changed('Forced')
+
+    def clear_search_filter(self, clearfield: bool = False):
+        """Remove any filtering that has been applied to the tree view."""
+        if clearfield and len(self.search_edit.text()) > 0:
+            self.search_edit.clear()
+        self.proxy_filter.setFilterRegularExpression('')
+        self.scroll_to_selected()
+
+    def scroll_to_selected(self):
+        """Scroll the tree view to the first selected item."""
+        self.tree_view.items_selected = self.tree_view.selectedIndexes()
+        if self.tree_view.items_selected is not None and len(self.tree_view.items_selected) > 0:
+            self.tree_view.scrollTo(self.tree_view.items_selected[0])
