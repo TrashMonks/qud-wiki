@@ -11,6 +11,9 @@ Modified by egocarib 28/04/2022 for use in the qud-wiki project
 QMainWindow {
 	background-color:#151a1e;
 }
+QDialog {
+	background-color: #1e282c;
+}
 QCalendar {
 	background-color: #151a1e;
 }
