@@ -388,6 +388,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             row = []
             item = QStandardItem(pop_name)
             item.setData(pop_value)
+            font = QFont()
+            font.setBold(True)
+            item.setFont(font)
             row.append(item)  # do this for each additional column
             row.append(QStandardItem('population'))
             for pop_child in pop_value.children:
@@ -400,10 +403,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if pop_item.type == 'group':
             for pop_child in pop_item.children:
                 child.appendRow(self.init_qud_pop_children(pop_child))
-        return [child, QStandardItem(pop_item.type)]
+        child.setForeground(QColor.fromRgb(100, 100, 100))
+        child_type = QStandardItem(pop_item.type)
+        child_type.setForeground(QColor.fromRgb(100, 100, 100))
+        return [child, child_type]
 
     def pop_expand_all(self):
         self.popTreeView.expandAll()
+        self.popTreeSearchHandler.clear_search_filter(True)
 
     def pop_collapse_all(self):
         self.popTreeView.collapseAll()
