@@ -301,14 +301,14 @@ class QudObjectWiki(QudObjectProps):
     def inventory(self) -> Union[str, None]:
         """The inventory of a character.
 
-        Retrieves a list of tuples of strings (name, count, equipped, chance)
+        Retrieves a list of tuples of strings (name, count, equipped, chance, is_pop)
         and renders to a template."""
         inv = super().inventory
         if inv is not None:
             template = ''
-            for name, count, equipped, chance in inv:
+            for name, count, equipped, chance, is_pop in inv:
                 template += f"{{{{inventory|" \
-                            f"{name}|{count}|{equipped}|{chance}}}}}"
+                            f"{name}|{count}|{equipped}|{chance}|{is_pop}}}}}"
             return template
 
     @property
