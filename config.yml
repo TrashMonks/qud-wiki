@@ -165,6 +165,7 @@ Templates:
     ClockworkBeetle: clockwork beetle.png
     MachineWallHotTubing: machine wall (hot).png
     MachineWallColdTubing: machine wall (cold).png
+    MerchantAdvertisement: scroll for legendary merchant.png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
