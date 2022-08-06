@@ -1,12 +1,6 @@
 """Various analyses made possible by the Qud object tree and tile rendering system.
 
 This script file is not part of the main project. Some of these may be out of date."""
-
-# This import is deliberately placed at the top of analysis.py to guarantee
-# that hagadias is able to import ElementTree before any other package does,
-# enabling it to switch to the Python-mode XML parser to get line numbers.
-from hagadias import gameroot
-
 import string
 
 import anytree

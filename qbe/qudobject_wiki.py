@@ -2,10 +2,10 @@ import os
 import re
 from typing import Union
 
-from qbe.config import config
 from hagadias.helpers import strip_oldstyle_qud_colors, strip_newstyle_qud_colors
 from hagadias.qudobject_props import QudObjectProps
 
+from qbe.config import config
 from qbe.helpers import displayname_to_wiki
 
 IMAGE_OVERRIDES = config['Templates']['Image overrides']

@@ -1,10 +1,9 @@
 """Main file for Qud Blueprint Explorer."""
-import os
-from typing import Union, Callable
-
 import difflib
+import os
 import re
 from pprint import pformat
+from typing import Union, Callable
 
 import yaml
 from PIL import Image, ImageQt
@@ -19,10 +18,10 @@ from hagadias.tileanimator import GifHelper
 
 from qbe.config import config
 from qbe.helpers import load_fonts_from_dir
-from qbe.qud_explorer_window import Ui_MainWindow
 from qbe.qud_explorer_image_modal import Ui_WikiImageUpload
-from qbe.search_filter import QudObjFilterModel, QudPopFilterModel, QudSearchBehaviorHandler
+from qbe.qud_explorer_window import Ui_MainWindow
 from qbe.qudobject_wiki import QudObjectWiki
+from qbe.search_filter import QudObjFilterModel, QudPopFilterModel, QudSearchBehaviorHandler
 from qbe.tree_view import QudObjTreeView, QudPopTreeView
 from qbe.wiki_config import site
 from qbe.wiki_page import TEMPLATE_RE, TEMPLATE_RE_OLD, WikiPage, upload_wiki_image

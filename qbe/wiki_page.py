@@ -1,8 +1,8 @@
 """Class to assist with managing individual wiki articles on the Caves of Qud wiki."""
 import re
 from io import BytesIO
-
 from time import sleep
+
 from mwclient.errors import InvalidPageTitle, APIError, AssertUserFailedError
 
 from qbe.config import config

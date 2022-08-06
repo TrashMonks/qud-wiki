@@ -1,7 +1,7 @@
 """Search filters for the QBE application window."""
-
 from PySide6.QtCore import QSortFilterProxyModel, Qt, QRegularExpression, QItemSelectionModel
 from PySide6.QtWidgets import QLineEdit
+
 from qbe.tree_view import QudTreeView
 
 
