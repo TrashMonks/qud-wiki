@@ -1,5 +1,6 @@
 """Main file for Qud Blueprint Explorer."""
 import difflib
+import importlib.resources
 import os
 import re
 from pprint import pformat
@@ -61,7 +62,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, app: QApplication, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.app = app
-        load_fonts_from_dir('helpers')  # load Source Code Pro fonts for UI theme
+        # these font files are now used from hagadias' assets dir instead of being included
+        font_path = importlib.resources.files("hagadias") / 'assets'
+        load_fonts_from_dir(str(font_path))  # load Source Code Pro fonts for UI theme
         self.apply_theme()
         self.setupUi(self)  # lay out the inherited UI as in the graphical designer
         icon = QIcon("qbe/icon.png")
