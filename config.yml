@@ -1023,6 +1023,7 @@ Wiki:
       +InteriorContainer,
       -VehicleGolemConsole S,
       -PaxKlanq2,
+      -Chavvah Chime Right,
       # golems - temporarily excluded until we implement <mixin> tag behavior for QBE
       -Antelope Golem,
       -Ape Golem,
