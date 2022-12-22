@@ -134,7 +134,7 @@ def upload_wiki_image(file: BytesIO, filename: str, gamever: str, sourcetilepath
                 print('CSRF token expired, retrying...')
                 site.tokens = {}  # clear token cache
             elif err.code == 'mustbeloggedin':
-                print(f'Session expired. Will re-login and try again...')
+                print('Session expired. Will re-login and try again...')
                 site.login(wiki_config['username'], wiki_config['password'])
             else:
                 raise err
