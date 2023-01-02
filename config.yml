@@ -1024,6 +1024,7 @@ Wiki:
       -VehicleGolemConsole S,
       -PaxKlanq2,
       -Chavvah Chime Right,
+      -BaseTau,
       # golems - temporarily excluded until we implement <mixin> tag behavior for QBE
       -Antelope Golem,
       -Ape Golem,
