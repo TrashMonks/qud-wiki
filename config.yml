@@ -166,6 +166,7 @@ Templates:
     MachineWallHotTubing: machine wall (hot).png
     MachineWallColdTubing: machine wall (cold).png
     MerchantAdvertisement: scroll for legendary merchant.png
+    Dreamer: underscore_dreamer.png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -451,6 +452,7 @@ Wiki:
     SultanReliquaryW: sultan reliquary
     MachineWallHotTubing: machine wall (hot)
     MachineWallColdTubing: machine wall (cold)
+    Dreamer: Dreamer
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title'
@@ -1279,7 +1281,9 @@ Wiki:
                         Nacham, Vivira, Vaam, Yona, Sixshrew, Yla Haj, Haddas, Rainwater Shomer,
                         Biographer, Zothom, k-Goninon, Warden 1-FF, Bep, Geeub, Goek, Krka, Mak,
                         Thah, Tillifergaewicz, Une, Rokhas, Many Eyes, 0lam,
-                        Wild Watervine Merchant]
+                        Wild Watervine Merchant, Dyvvrach, Miryam, Tzedech, Tikva, Dreamer,
+                        Thicksalt, Tammuz, Santalalotze, TauWanderer, TauNoLonger, AoygNoLonger,
+                        Hamilcrab]
     Quest Items: [Scrapped Waydroid, Wire Strand, Scratched Data Disk, Stamped Data Disk,
                   Argyve's Data Disk Encoded, Decrypted Signal Data Disk, ClimberBlueprints,
                   Dormant Waydroid, BarathrumKey, Clue_YuckwheatChaff, Clue_SeveredTongue,
