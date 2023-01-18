@@ -1,6 +1,7 @@
 from PySide6.QtCore import QDir
 from PySide6.QtGui import QFontDatabase
 from hagadias.helpers import parse_qud_colors
+import re
 
 
 def displayname_to_wiki(phrase: str):
@@ -17,8 +18,10 @@ def displayname_to_wiki(phrase: str):
     for text, shader in parsed:
         if shader is None:
             output.append(text)
-        elif ' ' in shader:
-            # shader has arguments
+        elif re.search(r'^[A-z](?:-[A-z])* [A-z]+$', shader) is not None:
+            # shader with arguments - matches things like 'W-w sequence',
+            # 'b-B-Y-Y-Y-Y-Y-Y-B-b alternation', or 'C sequence'. Previously we just checked for a
+            # space, but that unintentionally captured multi-word shader names like 'palladium mesh'
             colors, _type = shader.split(' ')
             template = '{{Qud shader|text={{(}}' + text + '{{)}}|colors=' + colors + '|type=' \
                        + _type + '}}'  # text surrounded in {} to preserve whitespace
