@@ -268,6 +268,7 @@ Wiki:
     Chromeling_Bite: bite (chromeling)
     PlatedChromeling_Bite: bite (plated chromeling)
     Chute Crab Claw: crab claw (chute crab)
+    Eyeless Crab_Claw: crab claw (eyeless crab)
     Cloneling_Scalpel: scalpel (cloneling)
     Croc_Bite: bite (croc)
     Dog_Bite: bite (dog)
@@ -344,10 +345,12 @@ Wiki:
     Spark_Tick_Arc: electric arc (spark tick)
     Madpole_Jaws: jaws (madpole)
     Equimax_Kick: kick (equimax)
+    Unimax_Kick: kick (unimax)
     Lovers_Thorns: thorns (jilted lover)
     Creeper_Thorns: thorns (livid creeper)
     Graftek_Tendril: tendril (graftek)
     Glowcrow_Peck: peck (glowcrow)
+    DreamWren_Peck: peck (dream wren)
     HoloMarble: Holographic marble wall
     Sleek Table: table (sleek)
     Gun Rack: gun rack (furniture)
@@ -453,6 +456,12 @@ Wiki:
     MachineWallHotTubing: machine wall (hot)
     MachineWallColdTubing: machine wall (cold)
     Dreamer: Dreamer
+    Metachrome Hand Axe: metachrome spade (hand)
+    Metachrome Foot Axe: metachrome spade (foot)
+    Metachrome Hand LongBlades: metachrome blade (hand)
+    Metachrome Foot LongBlades: metachrome blade (foot)
+    Metachrome Hand ShortBlades: metachrome point (hand)
+    Metachrome Foot ShortBlades: metachrome point (foot)
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title'
@@ -630,6 +639,7 @@ Wiki:
       +Troll Door 1,
       /Crypt Door,
       +Crypt Door,
+      +Door Golem,
       -Bridge,
       /Walkway,
       -WoodFloor,
@@ -733,6 +743,7 @@ Wiki:
       -Air,
       -GritGateMainframeRoomCommPanel,
       -Space-Time Rift,
+      -Overloaded Laser Pistol,
       # Gases
       /PoisonGas,
       +PoisonGas,
@@ -1085,6 +1096,7 @@ Wiki:
       -Swine Golem,
       -Table Golem,
       -Tortoise Golem,
+      -Tree Golem,
       -Tripedal Robot Golem,
       -Troll Golem,
       -Turret Golem,
@@ -1270,6 +1282,18 @@ Wiki:
                           Mechanical Trees Cherub, Mechanical Urchins Cherub,
                           Mechanical Vines Cherub, Mechanical Winged Mammals Cherub,
                           Mechanical Worms Cherub]
+    Golems: [Antelope Golem, Ape Golem, Baboon Golem, Baetyl Golem, Bat Golem, Bear Golem,
+             Bed Golem, Bipedal Robot Golem, Bird Golem, Bush Golem, Cat Golem, Chair Golem,
+             Clam Golem, Crab Golem, Cragmensch Golem, Crystal Golem, Dawnglider Golem, Dog Golem,
+             Door Golem, Dromad Golem, Equine Golem, Fish Golem, Flower Golem, Fractus Golem,
+             Frog Golem, Fungus Golem, Goat Golem, Goatfolk Golem, Grazer Golem,
+             Hexapodal Robot Golem, Hindren Golem, Hover Golem, Human Golem, Humanoid Robot Golem,
+             Infrastructure Golem, Insect Golem, Iron Maiden Golem, Jelly Golem, Lichen Golem,
+             Mopango Golem, Mopango Charioteer Golem, Nest Golem, Oddity Golem, Ooze Golem,
+             Quadrupedal Robot Golem, Reptile Golem, Root Golem, Slug Golem, Slynth Golem,
+             Snail Golem, Snapjaw Golem, Spider Golem, Succulent Golem, Svardym Golem, Swine Golem,
+             Table Golem, Tortoise Golem, Tripedal Robot Golem, Troll Golem, Turret Golem,
+             Urchin Golem, Urshiib Golem, Vine Golem, Wall Golem, Wheeled Robot Golem, Worm Golem]
     Unique Characters: [Phinae Hoshaiah, Argyve, ElderBob, Mehmet, Warden Ualraig,
                         Warden Esthers, Eskhind, Meyehind, Liihart, Isahind, Neelahind, Keh,
                         Kesehind, Angohind, Lulihart, AgateSeveranceStar, Mayor Nuntu, Oboroqoru,
