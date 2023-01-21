@@ -167,6 +167,7 @@ Templates:
     MachineWallColdTubing: machine wall (cold).png
     MerchantAdvertisement: scroll for legendary merchant.png
     Dreamer: underscore_dreamer.png
+    HolographicChavvahTrunk: crystalline trunk holograhpic.png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -182,7 +183,7 @@ Wiki:
            # holographic trees
            Holographic Shimscale Mangrove Tree, Holographic Dicalyptus Tree,
            Holographic Banana Tree, Holographic Dogthorn Tree, Holographic Swarmshade Tree,
-           Holographic Tanglewood Tree,
+           Holographic Tanglewood Tree, HolographicChavvahTrunk,
            # security doors
            Yellow Security Door, Green Security Door, Blue Security Door, Purple Security Door,
            # signs
@@ -402,6 +403,7 @@ Wiki:
     Holographic Dogthorn Tree: Dogthorn Tree (holographic)
     Holographic Swarmshade Tree: Swarmshade Tree (holographic)
     Holographic Tanglewood Tree: Tanglewood Tree (holographic)
+    HolographicChavvahTrunk: crystalline trunk (holographic)
     HumanTinker1: village tinker
     HumanApothecary1: village apothecary
     Yellow Security Door: security door (yellow)
@@ -1054,6 +1056,11 @@ Wiki:
       -Chavvah Chime Right,
       -BaseTau,
       /BaseUnknown,  # Shouldn't be needed, but we have a bug with *noinherit affecting this
+      -Chavvah Roots Spiral StairsDown,
+      /Air,
+      -Pit,
+      -StairsUpUnconnected,
+      -StairsDownUnconnected,
       # Golems - temporarily excluded until we implement <mixin> tag behavior for QBE
       -Antelope Golem,
       -Ape Golem,
@@ -1201,14 +1208,16 @@ Wiki:
     Smooth Gemstones: [Polished Gemstone]
     Security Cards: [Security Card]
     Furniture: [Furniture]
-    Doors: [Door, Archway, BeltCurtains]
+    Doors: [Door, Archway, BeltCurtains, VehicleGolemExit]
     Signs: [Sign]
     Chairs: [BaseChair, FoldingChair]
     Beds: [BaseBed, Hammock, Bedroll]
     Tables: [Table, Octagonal Table, Book Table, Low Table]
     Instruments: [Hammered Dulcimer, Harp, HurdyGurdy, Rectangular Bells]
-    Chests: [Chest, Reliquary, Sarcophagus, SultanSarcophagusW, Woven Basket]
+    Stairs: [StairsUp, StairsDown, Chavvah Spiral StairsUp, Chavvah Spiral StairsDown]
+    Shafts: [SlimyShaft, OpenShaft, ElevatorShaft, ReefOpenShaft]
     Walls: [Wall, Rubble]
+    Chests: [Chest, Reliquary, Sarcophagus, SultanSarcophagusW, Woven Basket, InteriorContainer]
     Fences: [BrinestalkFence, BrinestalkStakes, BrinestalkArrowslit, WoodFence, IronFence]
     Vents: [Walltrap]
     Gemstone Walls: [AgateWall, TopazWall, JasperWall, AmethystWall, SapphireWall, EmeraldWall,
