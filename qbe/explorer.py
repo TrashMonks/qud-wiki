@@ -1,6 +1,7 @@
 """Main file for Qud Blueprint Explorer."""
 import difflib
 import importlib.resources
+import io
 import os
 import re
 from pprint import pformat
@@ -495,7 +496,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if wiki_tile_file.exists:
                     tile_exists.setText('✅')
                     # It exists, but does it match?
-                    if wiki_tile_file.download() == qud_object.tile.get_big_bytes():
+                    img_match = False
+                    with io.BytesIO() as f:
+                        wiki_tile_file.download(f)
+                        img1 = Image.open(f)
+                        img2 = qud_object.tile.get_big_image()
+                        img_match = self.check_image_match(img1, img2)
+                    if img_match:
                         tile_matches.setText('✅')
                     else:
                         tile_matches.setText('❌')
@@ -670,15 +677,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         wiki_tile_file = site.images[qud_object.image]
         if wiki_tile_file.exists:
             self.set_icon(tile_exists_cell_index, '✅', True)
-            wiki_tile_b = wiki_tile_file.download()
-            if wiki_tile_b == qud_object.tile.get_big_bytes():
+
+            img_match = False
+            with io.BytesIO() as f:
+                wiki_tile_file.download(f)
+                img1 = Image.open(f)
+                img2 = qud_object.tile.get_big_image()
+                img_match = self.check_image_match(img1, img2)
+            if img_match:
                 self.set_icon(tile_matches_cell_index, '✅', True)
                 print(f'Image {qud_object.image} already exists and matches our version.')
                 return
             else:
                 self.set_icon(tile_matches_cell_index, '❌', True)
                 if self._prompt_for_image_changes:
-                    QApplication.restoreOverrideCursor()  # temporarily restore cursor for dialog
+                    QApplication.restoreOverrideCursor()  # temp. restore cursor for dialog
 
                     dialog = QDialog()
                     dialog.ui = Ui_WikiImageUpload()
@@ -944,6 +957,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         new = re.sub(r'^\| gameversion = .*?$', '', new, flags=re.MULTILINE)
         current = re.sub(r'^\| gameversion = .*?$', '', current, flags=re.MULTILINE)
         return new in current
+
+    def check_image_match(self, img1: Image, img2: Image) -> bool:
+        """Determines if two images are the same through pixel-by-pixel comparison. Only accepts
+        RGBA images. Will ignore any color differences in fully transparent pixels."""
+        if img1.mode != 'RGBA' or img2.mode != 'RGBA':
+            raise ValueError('Unexpected non-RGBA image type')
+        if img1.height != img2.height or img1.width != img2.width:
+            return False
+        pixels1 = list(img1.getdata())
+        pixels2 = list(img2.getdata())
+
+        # Normalize the color of all fully transparent pixels
+        pixels1 = [i if i[3] > 0 else (0, 0, 0, 0) for i in pixels1]
+        pixels2 = [i if i[3] > 0 else (0, 0, 0, 0) for i in pixels2]
+
+        return pixels1 == pixels2
 
     def show_simple_diff(self):
         """Display a popup showing the diff between our template and the version on the wiki."""
