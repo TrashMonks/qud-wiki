@@ -215,7 +215,20 @@ Wiki:
            StunGasGrenade1, StunGasGrenade2, StunGasGrenade3,
            SunderGrenade1, SunderGrenade2, SunderGrenade3,
            TimeDilationGrenade1, TimeDilationGrenade2, TimeDilationGrenade3,
-           Strength Sap, Toughness Sap, Agility Sap, Intelligence Sap, Ego Sap, Willpower Sap]
+           Strength Sap, Toughness Sap, Agility Sap, Intelligence Sap, Ego Sap, Willpower Sap,
+           # golems
+           Antelope Golem, Ape Golem, Baboon Golem, Baetyl Golem, Bat Golem, Bear Golem,
+           Bed Golem, Bipedal Robot Golem, Bird Golem, Bush Golem, Cat Golem, Chair Golem,
+           Clam Golem, Crab Golem, Cragmensch Golem, Crystal Golem, Dawnglider Golem, Dog Golem,
+           Door Golem, Dromad Golem, Equine Golem, Fish Golem, Flower Golem, Fractus Golem,
+           Frog Golem, Fungus Golem, Goat Golem, Goatfolk Golem, Grazer Golem,
+           Hexapodal Robot Golem, Hindren Golem, Hover Golem, Human Golem, Humanoid Robot Golem,
+           Infrastructure Golem, Insect Golem, Iron Maiden Golem, Jelly Golem, Lichen Golem,
+           Mopango Golem, Mopango Charioteer Golem, Nest Golem, Oddity Golem, Ooze Golem,
+           Quadrupedal Robot Golem, Reptile Golem, Root Golem, Slug Golem, Slynth Golem,
+           Snail Golem, Snapjaw Golem, Spider Golem, Succulent Golem, Svardym Golem, Swine Golem,
+           Table Golem, Tortoise Golem, Tree Golem, Tripedal Robot Golem, Troll Golem, Turret Golem,
+           Urchin Golem, Urshiib Golem, Vine Golem, Wall Golem, Wheeled Robot Golem, Worm Golem]
   Article overrides:
     # Manually specify the wiki page article title to be used for an object ID
     MasterworkCarbine: Scoped masterwork carbine
@@ -744,6 +757,8 @@ Wiki:
       -GritGateMainframeRoomCommPanel,
       -Space-Time Rift,
       -Overloaded Laser Pistol,
+      -AoygDagger,
+      -RelicTonic,
       # Gases
       /PoisonGas,
       +PoisonGas,
@@ -1038,7 +1053,8 @@ Wiki:
       -PaxKlanq2,
       -Chavvah Chime Right,
       -BaseTau,
-      # golems - temporarily excluded until we implement <mixin> tag behavior for QBE
+      /BaseUnknown,  # Shouldn't be needed, but we have a bug with *noinherit affecting this
+      # Golems - temporarily excluded until we implement <mixin> tag behavior for QBE
       -Antelope Golem,
       -Ape Golem,
       -Baboon Golem,
