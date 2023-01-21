@@ -699,7 +699,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     dialog.setAttribute(Qt.WA_DeleteOnClose)
                     # add images
                     qbe_image = ImageQt.ImageQt(qud_object.tile.get_big_image())
-                    wiki_image = QImage.fromData(QByteArray(wiki_tile_b))
+                    wiki_image = QImage.fromData(QByteArray(qud_object.tile.get_big_bytes()))
                     dialog.ui.comparison_tile_1.setPixmap(QPixmap.fromImage(qbe_image))
                     dialog.ui.comparison_tile_2.setPixmap(QPixmap.fromImage(wiki_image))
                     # show compare dialog
