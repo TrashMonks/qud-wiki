@@ -539,36 +539,50 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     extra_imgs_exist.setText('✅')
                     gif_matches = True
                     altimages_match = True
+
                     # does the GIF match what's already on the wiki?
-                    # TODO: This isn't properly recognizing matching images. If you upload to wiki,
-                    #  and then restart QBE, it will indicate that the GIF image doesn't match
-                    #  what's on the wiki.
-                    if gif_exists and wiki_gif_file.download() != \
-                            GifHelper.get_bytes(qud_object.gif_image(0)):
-                        gif_matches = False
+                    if gif_exists:
+                        with io.BytesIO() as f:
+                            wiki_gif_file.download(f)
+                            gif1 = Image.open(f)
+                            gif2 = qud_object.gif_image(0)
+                            if gif1 is not None and gif2 is not None:
+                                gif_matches = self.check_gif_match(gif1, gif2)
+                            else:
+                                gif_matches = False
+
                     # do all of the alt images match what's already on the wiki?
-                    alt_tiles, alt_metas = qud_object.tiles_and_metadata()
-                    total_altimages = len(alt_tiles)
-                    msg_prefix = self.statusbar.currentMessage()
-                    current_index = -1
-                    for alt_tile, alt_meta in zip(alt_tiles, alt_metas):
-                        current_index += 1
-                        self.statusbar.showMessage(msg_prefix +
-                                                   '    [comparing extra images to wiki images ' +
-                                                   f'{current_index + 1}/{total_altimages}]')
+                    if altimages_exist:
+                        alt_tiles, alt_metas = qud_object.tiles_and_metadata()
+                        total_altimages = len(alt_tiles)
+                        msg_prefix = self.statusbar.currentMessage()
+                        current_index = -1
+                        for alt_tile, alt_meta in zip(alt_tiles, alt_metas):
+                            current_index += 1
+                            self.statusbar.showMessage(f'{msg_prefix}    ' +
+                                                       '[comparing extra images to wiki images ' +
+                                                       f'{current_index + 1}/{total_altimages}]')
+                            self.app.processEvents()
+                            alt_file = site.images[alt_meta.filename]
+                            if alt_file.exists:
+                                with io.BytesIO() as f:
+                                    alt_file.download(f)
+                                    wiki_alt_img = Image.open(f)
+                                    if not self.check_image_match(wiki_alt_img,
+                                                                  alt_tile.get_big_image()):
+                                        altimages_match = False
+
+                            if alt_meta.is_animated():
+                                alt_file_gif = site.images[alt_meta.gif_filename]
+                                if alt_file_gif.exists:
+                                    with io.BytesIO() as f:
+                                        alt_file_gif.download(f)
+                                        wiki_alt_gif = Image.open(f)
+                                        qbe_alt_gif = qud_object.gif_image(current_index)
+                                        if not self.check_gif_match(wiki_alt_gif, qbe_alt_gif):
+                                            altimages_match = False
+                        self.statusbar.showMessage(msg_prefix)
                         self.app.processEvents()
-                        alt_file = site.images[alt_meta.filename]
-                        if alt_file.exists and alt_file.download() != alt_tile.get_big_bytes():
-                            altimages_match = False
-                        # Temporarily disabled because comparison with wiki gifs doesn't work:
-                        # if alt_meta.is_animated():
-                        #     alt_file_gif = site.images[alt_meta.gif_filename]
-                        #     if alt_file_gif.exists:
-                        #         alt_qbe_gif = qud_object.gif_image(i)
-                        #         if alt_file_gif.download() != GifHelper.get_bytes(alt_qbe_gif):
-                        #             altimages_match = False
-                    self.statusbar.showMessage(msg_prefix)
-                    self.app.processEvents()
                     if gif_matches and altimages_match:
                         extra_imgs_match.setText('✅')
                     else:
@@ -744,8 +758,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             wiki_gif_file = site.images[qud_object.gif]
             if wiki_gif_file.exists:
                 self.set_icon(extraimages_exist_cell_index, '✅', True)
-                wiki_gif_b = wiki_gif_file.download()
-                if wiki_gif_b == GifHelper.get_bytes(qud_object.gif_image(0)):
+                gif_matches = False
+                with io.BytesIO() as f:
+                    wiki_gif_file.download(f)
+                    gif1 = Image.open(f)
+                    gif2 = qud_object.gif_image(0)
+                    if gif1 is not None and gif2 is not None:
+                        gif_matches = self.check_gif_match(gif1, gif2)
+                if gif_matches:
                     print(f'Image "{qud_object.gif}" already exists and matches our version.')
                     success_ct += 1
                 elif not self._prompt_for_image_changes:
@@ -821,8 +841,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     should_upload_image = True
                 else:
                     self.set_icon(extraimages_exist_cell_index, '✅', True)
-                    image_b = image_file.download()
-                    if image_b == tile.get_big_bytes():
+                    img_match = False
+                    with io.BytesIO() as f:
+                        image_file.download(f)
+                        img1 = Image.open(f)
+                        img2 = tile.get_big_image()
+                        img_match = self.check_image_match(img1, img2)
+                    if img_match:
                         print(f'Extra image "{meta.filename}" already exists and ' +
                               'matches our version.')
                         success_ct += 1
@@ -860,10 +885,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     should_upload_gif = True if qbe_gif is not None else False
                 elif qbe_gif is not None:
                     self.set_icon(extraimages_exist_cell_index, '✅', True)
-                    wiki_gif_b = wiki_gif.download()
-                    if wiki_gif_b == GifHelper.get_bytes(qbe_gif):
-                        # TODO: This probably doesn't work, so figure out why our comparison to
-                        #  wiki .gif is failing
+                    gif_matches = False
+                    with io.BytesIO() as f:
+                        wiki_gif.download(f)
+                        gif1 = Image.open(f)
+                        gif2 = qbe_gif
+                        if gif1 is not None and gif2 is not None:
+                            gif_matches = self.check_gif_match(gif1, gif2)
+                    if gif_matches:
                         print(f'Extra image "{meta.filename}" already exists ' +
                               'and matches our version.')
                         success_ct += 1
