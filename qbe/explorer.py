@@ -974,6 +974,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return pixels1 == pixels2
 
+    def check_gif_match(self, gif1: Image, gif2: Image) -> bool:
+        """Determines if two GIF images are the same through pixel-by-pixel comparison. Only accepts
+        GIF images. Will ignore any color differences in fully transparent pixels."""
+        if gif1.height != gif2.height or gif1.width != gif2.width:
+            return False  # Image resolutions don't match
+        gif1_frames = getattr(gif1, "n_frames", 1)
+        gif2_frames = getattr(gif2, "n_frames", 1)
+        if gif1_frames <= 1 or gif2_frames <= 0:
+            raise ValueError("Expected GIF images but got images without multiple frames.")
+        if gif1_frames != gif2_frames:
+            return False  # GIFs have different number of frames, so they're different
+        for i in range(gif1_frames):
+            try:
+                gif1.seek(i)
+                gif2.seek(i)
+                if not self.check_image_match(gif1.convert('RGBA'), gif2.convert('RGBA')):
+                    return False  # Frame image doesn't match
+            except EOFError:
+                print("Encountered EOF while attempting to read GIF image sequence for comparison.")
+                return False
+        return True
+
     def show_simple_diff(self):
         """Display a popup showing the diff between our template and the version on the wiki."""
         qud_object = self.objTreeView.top_selected_item
