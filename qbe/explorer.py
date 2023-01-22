@@ -1027,7 +1027,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if not self.check_image_match(gif1.convert('RGBA'), gif2.convert('RGBA')):
                     return False  # Frame image doesn't match
             except EOFError:
-                print("Encountered EOF while attempting to read GIF image sequence for comparison.")
+                log.error("Encountered EOF during attempt to read GIF image sequence for %s", name)
                 return False
         return True
 
