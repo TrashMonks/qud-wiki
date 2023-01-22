@@ -1,4 +1,5 @@
 """Main file for Qud Blueprint Explorer."""
+import logging
 import difflib
 import importlib.resources
 import io
@@ -28,6 +29,7 @@ from qbe.tree_view import QudObjTreeView, QudPopTreeView
 from qbe.wiki_config import site
 from qbe.wiki_page import TEMPLATE_RE, TEMPLATE_RE_OLD, WikiPage, upload_wiki_image
 
+log = logging.getLogger(__name__)
 OBJ_HEADER_LABELS = ['Object Name', 'Display Name', 'Wiki Title Override', 'Article?',
                      'Article matches?', 'Image?', 'Image matches?', 'Extra images?',
                      'Extra images match?']
@@ -547,7 +549,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             gif1 = Image.open(f)
                             gif2 = qud_object.gif_image(0)
                             if gif1 is not None and gif2 is not None:
-                                gif_matches = self.check_gif_match(gif1, gif2)
+                                gif_matches = self.check_gif_match(gif1, gif2, qud_object.name)
                             else:
                                 gif_matches = False
 
@@ -579,7 +581,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                         alt_file_gif.download(f)
                                         wiki_alt_gif = Image.open(f)
                                         qbe_alt_gif = qud_object.gif_image(current_index)
-                                        if not self.check_gif_match(wiki_alt_gif, qbe_alt_gif):
+                                        if not self.check_gif_match(wiki_alt_gif, qbe_alt_gif,
+                                                                    qud_object.name):
                                             altimages_match = False
                         self.statusbar.showMessage(msg_prefix)
                         self.app.processEvents()
@@ -764,7 +767,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     gif1 = Image.open(f)
                     gif2 = qud_object.gif_image(0)
                     if gif1 is not None and gif2 is not None:
-                        gif_matches = self.check_gif_match(gif1, gif2)
+                        gif_matches = self.check_gif_match(gif1, gif2, qud_object.name)
                 if gif_matches:
                     print(f'Image "{qud_object.gif}" already exists and matches our version.')
                     success_ct += 1
@@ -891,7 +894,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         gif1 = Image.open(f)
                         gif2 = qbe_gif
                         if gif1 is not None and gif2 is not None:
-                            gif_matches = self.check_gif_match(gif1, gif2)
+                            gif_matches = self.check_gif_match(gif1, gif2, qud_object.name)
                     if gif_matches:
                         print(f'Extra image "{meta.filename}" already exists ' +
                               'and matches our version.')
@@ -1003,15 +1006,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return pixels1 == pixels2
 
-    def check_gif_match(self, gif1: Image, gif2: Image) -> bool:
+    def check_gif_match(self, gif1: Image, gif2: Image, name: str = "Unknown Object") -> bool:
         """Determines if two GIF images are the same through pixel-by-pixel comparison. Only accepts
-        GIF images. Will ignore any color differences in fully transparent pixels."""
+        GIF images. Will ignore any color differences in fully transparent pixels. The 'name'
+        parameter is provided only for debug purposes."""
         if gif1.height != gif2.height or gif1.width != gif2.width:
             return False  # Image resolutions don't match
         gif1_frames = getattr(gif1, "n_frames", 1)
         gif2_frames = getattr(gif2, "n_frames", 1)
         if gif1_frames <= 1 or gif2_frames <= 0:
-            raise ValueError("Expected GIF images but got images without multiple frames.")
+            log.error("Expected multi-frame GIF images to compare, but the GIF for %s does not " +
+                      "have multiple frames.", name)
+            return False
         if gif1_frames != gif2_frames:
             return False  # GIFs have different number of frames, so they're different
         for i in range(gif1_frames):
