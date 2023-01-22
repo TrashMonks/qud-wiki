@@ -55,6 +55,7 @@ Templates:
      chargeproducehydraulic, chargeproducemechanical, chargeproducesolar, unreplicable]
   Image overrides:
     # Manually specify the image name to be used for an object ID:
+    MasterworkCarbine: scoped masterwork carbine.png
     TreeSkillsoft: skillsoft_tree.png
     SkinGlitter2: skin glitter (high-tier).png
     Schemasoft4: schemasoft_high_tier.png
@@ -487,7 +488,6 @@ Wiki:
     # their wiki favilinks will conflict with one another unless each has a distinct display name)
     HumanTinker1: village tinker  # instead of 'human tinker'
     HumanApothecary1: village apothecary  # instead of 'human apothecary'
-    MasterworkCarbine: "scoped &Ymasterwork &ycarbine"
     SultanWall_Period1: carved stone from the sultanate of *Sultan1*
     SultanWall_Period2: carved stone from the sultanate of *Sultan2*
     SultanWall_Period3: carved stone from the sultanate of *Sultan3*
