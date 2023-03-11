@@ -169,6 +169,7 @@ Templates:
     MerchantAdvertisement: scroll for legendary merchant.png
     Dreamer: underscore_dreamer.png
     HolographicChavvahTrunk: crystalline trunk holograhpic.png
+    Chavvah Taproot Floor: crystalline taproot (floor).png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -472,6 +473,7 @@ Wiki:
     MachineWallHotTubing: machine wall (hot)
     MachineWallColdTubing: machine wall (cold)
     Dreamer: Dreamer
+    Chavvah Taproot Floor: crystalline taproot (floor)
     Metachrome Hand Axe: metachrome spade (hand)
     Metachrome Foot Axe: metachrome spade (foot)
     Metachrome Hand LongBlades: metachrome blade (hand)
@@ -1061,6 +1063,7 @@ Wiki:
       -Pit,
       -StairsUpUnconnected,
       -StairsDownUnconnected,
+      -Grid Quantum Rippler,
       # Golems - temporarily excluded until we implement <mixin> tag behavior for QBE
       -Antelope Golem,
       -Ape Golem,
