@@ -790,7 +790,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         dialog.ui.comparison_tile_1.setMovie(qbe_gif_player)
                         qbe_gif_player.start()
                     # add wiki GIF
-                    wiki_gif_bytearray = QByteArray(wiki_gif_b)
+                    wiki_gif_bytearray = QByteArray(wiki_gif_file.download())
                     wiki_gif_buffer = QBuffer(wiki_gif_bytearray)
                     wiki_gif_buffer.open(QIODevice.ReadOnly)
                     wiki_gif_player = QMovie(wiki_gif_buffer, b'GIF')
@@ -919,7 +919,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             dialog.ui.comparison_tile_1.setMovie(qbe_gif_player)
                             qbe_gif_player.start()
                         # add wiki GIF
-                        wiki_gif_bytearray = QByteArray(wiki_gif_b)
+                        wiki_gif_bytearray = QByteArray(wiki_gif.download())
                         wiki_gif_buffer = QBuffer(wiki_gif_bytearray)
                         wiki_gif_buffer.open(QIODevice.ReadOnly)
                         wiki_gif_player = QMovie(wiki_gif_buffer, b'GIF')
