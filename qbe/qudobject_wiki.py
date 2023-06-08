@@ -429,9 +429,8 @@ class QudObjectWiki(QudObjectProps):
     @property
     def uniquechara(self) -> Union[str, None]:
         """Whether this is a unique character, for wiki purposes."""
-        if self.inherits_from('Creature') or self.inherits_from('ActivePlant'):
-            if self.name in config['Wiki']['Categories']['Unique Characters']:
-                return 'yes'
+        if self.name in config['Wiki']['Categories']['Unique Characters']:
+            return 'yes'
 
     @property
     def weaponskill(self) -> Union[str, None]:
