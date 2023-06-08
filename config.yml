@@ -185,7 +185,7 @@ Wiki:
            # holographic trees
            Holographic Shimscale Mangrove Tree, Holographic Dicalyptus Tree,
            Holographic Banana Tree, Holographic Dogthorn Tree, Holographic Swarmshade Tree,
-           Holographic Tanglewood Tree, HolographicChavvahTrunk,
+           Holographic Tanglewood Tree, Holographic Ziv Bough, Holographic Star Palm, HolographicChavvahTrunk,
            # security doors
            Yellow Security Door, Green Security Door, Blue Security Door, Purple Security Door,
            # signs
@@ -405,6 +405,8 @@ Wiki:
     Holographic Dogthorn Tree: Dogthorn Tree (holographic)
     Holographic Swarmshade Tree: Swarmshade Tree (holographic)
     Holographic Tanglewood Tree: Tanglewood Tree (holographic)
+    Holographic Ziv Bough: Ziv Bough (holographic)
+    Holographic Star Palm: Star Palm (holographic)
     HolographicChavvahTrunk: crystalline trunk (holographic)
     HumanTinker1: village tinker
     HumanApothecary1: village apothecary
@@ -802,6 +804,7 @@ Wiki:
       -Starapple Tree Ripe,
       -Swarmshade Tree_blue,
       -Tanglewood Tree_blue,
+      -Ziv Bough_blue,
       -Branchy Tree,
       -Cloudy Tree,
       -Circle Tree,
