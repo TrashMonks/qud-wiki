@@ -1167,7 +1167,8 @@ Wiki:
     Whips: [Leather Whip]
     Missile Weapons: [MissileWeapon]
     Natural Weapons: [NaturalWeapon, NaturalMissileWeapon]
-    Mutated Natural Weapons: [Burrowing Claws Claw, Horns, Icy Vapor, Ghostly Flames, Stinger]
+    Mutated Natural Weapons: [Burrowing Claws Claw, Horns, Icy Vapor, Ghostly Flames, Stinger,
+                              Hooks, Beak]
     Firearms: [BaseFirearm]
     Rifles: [BaseRifle]
     Heavy Weapons: [BaseHeavyWeapon, Chain Laser]
