@@ -106,6 +106,9 @@ Templates:
     Green Security Door: security door green.png
     Blue Security Door: security door blue.png
     Purple Security Door: security door purple.png
+    Troll Door 1: troll door 1.png
+    Troll Door 2: troll door 2.png
+    Troll Door 3: troll door 3.png
     BookSign1: sign (book).png
     BottleSign1: sign (honey).png
     BootSign1: sign (boot).png
@@ -482,6 +485,9 @@ Wiki:
     Metachrome Foot LongBlades: metachrome blade (foot)
     Metachrome Hand ShortBlades: metachrome point (hand)
     Metachrome Foot ShortBlades: metachrome point (foot)
+    Troll Door 1: slumping metal door (copper)
+    Troll Door 2: slumping metal door (silver)
+    Troll Door 3: slumping metal door (gold)
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title'
@@ -655,7 +661,8 @@ Wiki:
       +Life Gate W,
       +Glass Door W,
       +Tinted Glass Door W,
-      +Troll Door 1,
+      '*Troll Door',
+      -Troll Door,
       /Crypt Door,
       +Crypt Door,
       +Door Golem,
