@@ -1064,6 +1064,7 @@ Wiki:
       -Chavvah Roots Spiral StairsDown,
       /Air,
       -Pit,
+      -LazyPit,
       -StairsUpUnconnected,
       -StairsDownUnconnected,
       -Grid Quantum Rippler,
