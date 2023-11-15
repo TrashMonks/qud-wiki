@@ -490,6 +490,10 @@ Wiki:
     Troll Door 1: slumping metal door (copper)
     Troll Door 2: slumping metal door (silver)
     Troll Door 3: slumping metal door (gold)
+    FungalSporeGasLuminous: fungal spores (glowcrust)
+    FungalSporeGasPuff: fungal spores (fickle gill)
+    FungalSporeGasWax: fungal spores (waxflab)
+    FungalSporeGasMumbles: fungal spores (mumble mouth)
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title'
@@ -773,31 +777,28 @@ Wiki:
       -Overloaded Laser Pistol,
       -AoygDagger,
       -RelicTonic,
-      # Gases
-      /PoisonGas,
+      # Gases - exclude densities
+      /Gas,
       +PoisonGas,
-      -Steam,
-      -StableCryoGas,
-      /AcidGas,
-      +AcidGas,
-      /StunGas,
-      +StunGas,
-      /SleepGas,
-      +SleepGas,
-      /ConfusionGas,
-      +ConfusionGas,
-      /NormalityGas,
-      +NormalityGas,
-      /MiasmaticAsh,
       +MiasmaticAsh,
-      /Miasma,
-      +Miasma,
-      /Plasma,
       +Plasma,
-      -FungalSporeGasLuminous,
-      -FungalSporeGasPuff,
-      -FungalSporeGasWax,
-      -FungalSporeGasMumbles,
+      +SteamGas,
+      +CryoGas,
+      +AcidGas,
+      +StunGas,
+      +SleepGas,
+      +ConfusionGas,
+      +Miasma,
+      +NormalityGas,
+      +DefoliantGas,
+      +FungicideGas,
+      +GlitterGas,
+      +FungalSporeGasLuminous,
+      +FungalSporeGasPuff,
+      +FungalSporeGasWax,
+      +FungalSporeGasMumbles,
+      +Shimmering Heat,
+      +Frigid Mist,
       # Plants
       -Godsbrush,
       -LiquidLichen,
