@@ -510,6 +510,7 @@ Wiki:
     Rank Girshling Corpse: girshling corpse (rank)
     Plasmatic Girshling Corpse: girshling corpse (plasmatic)
     Cryptic Girshling Corpse: girshling corpse (cryptic)
+    Girshling_Bite: fangs (girshling)
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title'
@@ -545,6 +546,12 @@ Wiki:
     Crazed Goatfolk Shaman 1: goatfolk shaman (crazed)
     MerchantAdvertisement: advertisement for *legendary merchant*
     Molting Basilisk: molting basilisk
+    Rank Girshling Cresh: girshling cresh (rank)
+    Conjoined Girshling Cresh: girshling cresh (conjoined)
+    Plasmatic Girshling Cresh: girshling cresh (plasmatic)
+    Polarized Girshling Cresh: girshling cresh (polarized)
+    Cryptic Girshling Cresh: girshling cresh (cryptic)
+    Burrowing Girshling Cresh: girshling cresh (burrowing)
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -1160,7 +1167,14 @@ Wiki:
       -Vine Golem,
       -Wall Golem,
       -Wheeled Robot Golem,
-      -Worm Golem
+      -Worm Golem,
+      # Gyre wight variants
+      /Still Gyre Wight of Agolgot,
+      /Still Gyre Wight of Bethsaida,
+      /Still Gyre Wight of Shug'ruith,
+      /Still Gyre Wight of Rermadon,
+      /Still Gyre Wight of Qas,
+      /Still Gyre Wight of Qon
     ]
 
   Categories:
