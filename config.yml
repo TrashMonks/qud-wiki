@@ -421,6 +421,7 @@ Wiki:
     HolographicChavvahTrunk: crystalline trunk (holographic)
     HumanTinker1: village tinker
     HumanApothecary1: village apothecary
+    Apothecary: apothecary (merchant)
     Yellow Security Door: security door (yellow)
     Green Security Door: security door (green)
     Blue Security Door: security door (blue)
@@ -510,6 +511,7 @@ Wiki:
     Rank Girshling Corpse: girshling corpse (rank)
     Plasmatic Girshling Corpse: girshling corpse (plasmatic)
     Cryptic Girshling Corpse: girshling corpse (cryptic)
+    Girshling_Bite: fangs (girshling)
     # Honorifics / Epithets / Titles fixes
     High Priest Eschelstadt: Eschelstadt II, High Priest of the Stilt
     Lulihart: Lulihart, hindren pariah
@@ -577,6 +579,12 @@ Wiki:
     Crazed Goatfolk Shaman 1: goatfolk shaman (crazed)
     MerchantAdvertisement: advertisement for *legendary merchant*
     Molting Basilisk: molting basilisk
+    Rank Girshling Cresh: girshling cresh (rank)
+    Conjoined Girshling Cresh: girshling cresh (conjoined)
+    Plasmatic Girshling Cresh: girshling cresh (plasmatic)
+    Polarized Girshling Cresh: girshling cresh (polarized)
+    Cryptic Girshling Cresh: girshling cresh (cryptic)
+    Burrowing Girshling Cresh: girshling cresh (burrowing)
     # Honorifics / Epithets / Titles fixes
     Doru: Tam, dromad merchant
     High Priest Eschelstadt: Eschelstadt II, High Priest of the Stilt
@@ -1225,7 +1233,14 @@ Wiki:
       -Vine Golem,
       -Wall Golem,
       -Wheeled Robot Golem,
-      -Worm Golem
+      -Worm Golem,
+      # Gyre wight variants
+      /Still Gyre Wight of Agolgot,
+      /Still Gyre Wight of Bethsaida,
+      /Still Gyre Wight of Shug'ruith,
+      /Still Gyre Wight of Rermadon,
+      /Still Gyre Wight of Qas,
+      /Still Gyre Wight of Qon
     ]
 
   Categories:
