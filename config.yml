@@ -1332,7 +1332,7 @@ Wiki:
     Walls: [Wall, Rubble]
     Chests: [Chest, Reliquary, Sarcophagus, SultanSarcophagusW, Woven Basket, InteriorContainer]
     Fences: [BrinestalkFence, BrinestalkStakes, BrinestalkArrowslit, WoodFence, IronFence]
-    Vents: [Walltrap]
+    Vents: [Walltrap, MiasmaticStalagmite]
     Gemstone Walls: [AgateWall, TopazWall, JasperWall, AmethystWall, SapphireWall, EmeraldWall,
                      PeridotWall]
     Glass Walls: [GlassWall, TintedGlassWall, SpindleGlassWall, CyberWall]
