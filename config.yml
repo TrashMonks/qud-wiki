@@ -285,7 +285,8 @@ Wiki:
     Bear_Bite: bite (bear)
     Bear_Claw: claw (bear)
     Beetlebum_Mandibles: massive mandibles (beetlebum)
-    Giant_Ant_Bite: mandibles (giant ant)
+    Giant_Ant_Bite: mandibles (fire ant)
+    Giant_Worker_Ant_Bite: mandibles (worker ant)
     Boar_Gore: bite (boar)
     Cannibal Bite: bite (cannibal)
     Juicing Cannibal Bite: bite (juicing cannibal)
@@ -398,6 +399,7 @@ Wiki:
     ReefSlug_Foot: nacreous foot (kaleidoslug)
     Naser Cannon: naser cannon (galgal)
     Ixlthyxl_Bite: bite (ixlthyxl)
+    Nephal_Claw: spotted claw (Girsh Agolgot)
     Techlight2: arc sconce (variation 1)
     Techlight3: arc sconce (variation 2)
     Tomb Techlight1: arc sconce (variation 3)
@@ -1119,6 +1121,10 @@ Wiki:
       -Farm Bop Sponge,
       -Cherubic Hand Claw,  # Same as Cherubic Claw
       -Mechanical Cherubic Hand Claw,  # Same as Mechanical Cherubic Claw
+      -Nephal_Weapon,  # currently unused
+      /Nephal_Claw,
+      +Nephal_Claw,
+      +Nephal_Claw_Circle,
       /Snapjaw Scavenger,
       +Snapjaw Scavenger 0,
       /Snapjaw Hunter,
