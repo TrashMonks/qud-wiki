@@ -43,16 +43,17 @@ Templates:
   ExtraFields:
     # Fields for the extra info template
     [empsensitive, powerloadsensitive, twohanded, metal, lightprojectile, reflect, movespeedbonus,
-     cursed, filtersgas, destroyonunequip, savemodifier, savemodifieramt,
-     shotcooldown, penetratingammo, omniphaseprojectile, spectacles, refractive, flashprotection,
-     carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic, uniquechara, pettable,
-     liquidburst, flametemperature, bleedliquid, hidden, energycellrequired, energyammoloader,
-     temponenter, temponhit, temponhitmax, isoccluding, waterritualable, iscurrency, noprone, phase,
-     poisononhit, realitydistortionbased, leakswhenbroken, mutatedplant, waterritualskill,
-     animatable, hurtbyfungicide, hurtbydefoliant, hasmentalshield, bodytype, shrinelike, enclosing,
-     capacitorcharge, capacitormax, capacitorrate, chargeconsumebroadcast, chargeconsumeelectrical,
-     chargeconsumehydraulic, chargeconsumemechanical, chargeproducebroadcast, chargeproduceelectric,
-     chargeproducehydraulic, chargeproducemechanical, chargeproducesolar, unreplicable]
+     cursed, filtersgas, gasimmuneconfusion, gasimmunesleep, destroyonunequip, savemodifier,
+     savemodifieramt, shotcooldown, penetratingammo, omniphaseprojectile, spectacles, refractive,
+     flashprotection, carrybonus, solid, flyover, isswarmer, swarmbonus, aquatic, uniquechara,
+     pettable, liquidburst, flametemperature, bleedliquid, hidden, energycellrequired,
+     energyammoloader, temponenter, temponhit, temponhitmax, isoccluding, waterritualable,
+     iscurrency, noprone, phase, poisononhit, realitydistortionbased, leakswhenbroken, mutatedplant,
+     waterritualskill, animatable, hurtbyfungicide, hurtbydefoliant, hasmentalshield, bodytype,
+     shrinelike, enclosing, capacitorcharge, capacitormax, capacitorrate, chargeconsumebroadcast,
+     chargeconsumeelectrical, chargeconsumehydraulic, chargeconsumemechanical,
+     chargeproducebroadcast, chargeproduceelectric, chargeproducehydraulic, chargeproducemechanical,
+     chargeproducesolar, unreplicable]
   Image overrides:
     # Manually specify the image name to be used for an object ID:
     MasterworkCarbine: scoped masterwork carbine.png
@@ -552,6 +553,10 @@ Wiki:
     Qas: Girsh Qas
     Qon: Girsh Qon
     Shugruith: Girsh Shug'ruith the Burrower
+    Cherubic Spines: cherubic spines (arm)
+    Cherubic Body Spines: cherubic spines (body)
+    Mechanical Cherubic Spines: mechanical cherubic spines (arm)
+    Mechanical Cherubic Body Spines: mechanical cherubic spines (body)
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title'
