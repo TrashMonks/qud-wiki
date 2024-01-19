@@ -63,6 +63,9 @@ Templates:
     NightVision: night vision (implant).png
     ElevatorSwitch: control_switch_elevator.png
     TempleSwitch: control_switch_temple.png
+    Stinger Poison: stinger (poison).png
+    Stinger Paralysis: stinger (paralysis).png
+    Stinger Confusion: stinger (confusion).png
     Asphodel: Earl_asphodel.png
     Lulihart: Lulihart.png
     Across1: across moghrayi.png
@@ -278,6 +281,9 @@ Wiki:
     DoorSwitch: control switch (door)
     ElevatorSwitch: control switch (elevator)
     TempleSwitch: control switch (temple)
+    Stinger Poison: stinger (poison)
+    Stinger Paralysis: stinger (paralysis)
+    Stinger Confusion: stinger (confusion)
     Albino ape fist: fist (albino ape)
     Barkbiter_Bite: bite (barkbiter)
     Barkbiter_Claw: claw (barkbiter)
