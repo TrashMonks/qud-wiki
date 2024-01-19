@@ -1093,6 +1093,8 @@ Wiki:
       +SultanMuralWall4,
       +SultanMuralWall5,
       +SultanMuralWall6,
+      -BaseNephilimWall_QasQonHolo,
+      -MechExitHatch,
       -Porous Coral Rag,
       -Starapple Farm Ezra,
       -Ornate Potted Plant 2,
@@ -1179,8 +1181,7 @@ Wiki:
       /BaseUnknown,  # Shouldn't be needed, but we have a bug with *noinherit affecting this
       -Chavvah Roots Spiral StairsDown,
       /Air,
-      -Pit,
-      -LazyPit,
+      /Pit,
       -StairsUpUnconnected,
       -StairsDownUnconnected,
       -Grid Quantum Rippler,
