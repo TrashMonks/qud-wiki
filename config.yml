@@ -206,6 +206,9 @@ Templates:
     Astral_Tabby_Claw: claw (astral tabby).png
     Saltwurm_Crush: crushing bands (salt kraken).png
     Unimax_Kick: kick (unimax).png
+    RankGirshling_Bite: rank fangs (girshling).png
+    PlasmaticGirshling_Bite: incandescent fangs (girshling).png
+    CrypticGirshling_Bite: zigzag fangs (girshling).png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -429,6 +432,9 @@ Wiki:
     Naser Cannon: naser cannon (galgal)
     Ixlthyxl_Bite: bite (ixlthyxl)
     Nephal_Claw: spotted claw (Girsh Agolgot)
+    RankGirshling_Bite: rank fangs (girshling)
+    PlasmaticGirshling_Bite: incandescent fangs (girshling)
+    CrypticGirshling_Bite: zigzag fangs (girshling)
     Techlight2: arc sconce (variation 1)
     Techlight3: arc sconce (variation 2)
     Tomb Techlight1: arc sconce (variation 3)
@@ -718,6 +724,7 @@ Wiki:
       /Vessel,
       +Vase,
       +Bottle,
+      +Wide Bottle,
       +Pitcher,
       +Ewer,
       +Jug,
