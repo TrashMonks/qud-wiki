@@ -186,6 +186,26 @@ Templates:
     Burrowing Girshling Cresh: girshling cresh (burrowing).png
     Barathrumite Tinker: tinker (barathrumite).png
     Barathrumite Arconaut: arconaut (Barathrumite).png
+    Giant_Ant_Bite: mandibles (fire ant).png
+    Giant_Worker_Ant_Bite: mandibles (worker ant).png
+    Cat Claw: claw (cat).png
+    Bear_Claw: claw (bear).png
+    GiantAmoeba_Pseudopod: slimy pseudopod (giant amoeba).png
+    Glowcrow_Peck: peck (glowcrow).png
+    Qudzu_Frond: frond (qudzu).png
+    Chute Crab Claw: crab claw (chute crab).png
+    Girshling_Claw: claw (girshling).png
+    Albino ape fist: fist (albino ape).png
+    Barkbiter_Claw: claw (barkbiter).png
+    Equimax_Kick: kick (equimax).png
+    Breather_Claw: claw (breather).png
+    Slumberling Claw: claw (slumberling).png
+    WaveformWorm_Crush: crushing bands (waveform worm).png
+    BoneWorm_Crush: crushing bands (bone worm).png
+    Ogre ape fist: ape fist (ogre ape).png
+    Astral_Tabby_Claw: claw (astral tabby).png
+    Saltwurm_Crush: crushing bands (salt kraken).png
+    Unimax_Kick: kick (unimax).png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -885,6 +905,8 @@ Wiki:
       -Overloaded Laser Pistol,
       -AoygDagger,
       -RelicTonic,
+      /MachinedEdge,
+      +MachinedEdge,
       # Gases - exclude densities
       /Gas,
       +PoisonGas,
@@ -962,6 +984,10 @@ Wiki:
       -Farm Leech,
       -TestDummy,
       -ProsperousHindrenTrader,
+      -BaseWoodsprog,
+      /Woodsprog,
+      +Woodsprog,
+      +Erah,
       # Robots
       -Sleeping Chromeling,
       -Sleeping Plated Chromeling,
@@ -1007,6 +1033,9 @@ Wiki:
       -TestPax,
       -TestShopper,
       -TestPilgrim,
+      /VillageZeroConvert,
+      /Grand Newfather,
+      +Grand Newfather,
       # NPCs
       /BaseArconaut,
       +Arconaut,
@@ -1418,7 +1447,7 @@ Wiki:
     Hindren: [BaseHindren]
     Issachari: [BaseIssachari]
     Cragmensch: [Cragmensch]
-    Naphtaali: [Naphtaali]
+    Naphtaali: [BaseNaphtaali]
     Insects: [BaseInsect]
     Mechanimists: [Mechanimist]
     Reptiles: [BaseReptile]
