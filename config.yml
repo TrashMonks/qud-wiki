@@ -184,6 +184,8 @@ Templates:
     Polarized Girshling Cresh: girshling cresh (polarized).png
     Cryptic Girshling Cresh: girshling cresh (cryptic).png
     Burrowing Girshling Cresh: girshling cresh (burrowing).png
+    Barathrumite Tinker: tinker (barathrumite).png
+    Barathrumite Arconaut: arconaut (Barathrumite).png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -431,6 +433,8 @@ Wiki:
     HumanTinker1: village tinker
     HumanApothecary1: village apothecary
     Apothecary: apothecary (merchant)
+    Barathrumite Tinker: tinker (Barathrumite)
+    Barathrumite Arconaut: arconaut (Barathrumite)
     Yellow Security Door: security door (yellow)
     Green Security Door: security door (green)
     Blue Security Door: security door (blue)
@@ -924,6 +928,8 @@ Wiki:
       # Creatures
       /Ray Cat,
       +Ray Cat,
+      /Pig,
+      +Pig,
       /SoupSludge,
       +SoupSludge,
       +Ctesiphus,
@@ -965,6 +971,14 @@ Wiki:
       /GritGateChainLaserEmplacement,
       -Sleeping Waydroid,
       -Village Robot,
+      /VehicleTemplarMech1,
+      +VehicleTemplarMech1_Battle,
+      /VehicleTemplarMech2,
+      +VehicleTemplarMech2_Battle,
+      /VehicleTemplarMech3,
+      +VehicleTemplarMech3_Warleader,
+      /Unplanished Godhed,
+      +Unplanished Godhed,
       # Humanoids
       -Uplifted Knight Commander,
       -Missile Cannibal,
