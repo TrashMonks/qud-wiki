@@ -740,7 +740,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Intended for use as an object_handler provided to the upload_wikidata() method.
 
         Extra images include GIF animations and alternate tiles (such as those associated with
-        the RandomTile or Harvestable parts).
+        the RandomTile builders or Harvestable parts).
         """
         extraimages_exist_cell_index = selection_index + 7
         extraimages_match_cell_index = selection_index + 8
