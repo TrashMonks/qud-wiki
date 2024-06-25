@@ -209,6 +209,7 @@ Templates:
     RankGirshling_Bite: rank fangs (girshling).png
     PlasmaticGirshling_Bite: incandescent fangs (girshling).png
     CrypticGirshling_Bite: zigzag fangs (girshling).png
+    quillipede quills: quills (quillipede).png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -701,8 +702,12 @@ Wiki:
       +DataDisk,
       -Argyve's Data Disk,
       -Stun Whip,
-      -Quills+2,
-      -Quills+3,
+      /Quills,
+      +Quills,
+      /Ghostly Flames,
+      +Ghostly Flames,
+      /Icy Vapor,
+      +Icy Vapor,
       -Wings,
       -Burrowing Claws,  # this is the old burrowing claws object
       -Horticulturalist Bio-Scanning Bracelet,
@@ -756,7 +761,11 @@ Wiki:
       /BaseCyberneticsCreditWedge,
       +CyberneticsCreditWedge,  # needs explanatory article for types
       -Village Hologram 2,
+      /BrinestalkWall,
+      +BrinestalkWall,
+      /WoodWall,
       -MetalWallWithPipes,
+      -RustedMetalWallPowerGenerator,
       -MainframeWall,
       -LowSandstoneWall,
       -BasaltWithPipes,
@@ -1077,7 +1086,7 @@ Wiki:
       /Eater Hologram,
       +Eater Hologram,
       -MachineWallHotTubingWithPiping,
-      -MachineWallEmptyTubing,
+      /MachineWallEmptyTubing,
       /CrematoryMainframeWall,  # just copies of the Grit Gate mainframe walls with same names
       -WoodWallWithGearbox,
       /HalfWall,
@@ -1110,6 +1119,8 @@ Wiki:
       +Village Monument Diptych,
       /Village Monument Birdhouse,
       +Village Monument Birdhouse,
+      /Village Monument Amphora,
+      +Village Monument Amphora,
       /GlassHydraulicPipe,
       +GlassHydraulicPipe,
       /Fusion Pumping Station,
@@ -1180,6 +1191,8 @@ Wiki:
       -Powerless Bubblething,
       -Painted Column R,
       -Barathrumite Hyperbiotic Chair,
+      /Multicabinet,
+      +Multicabinet,
       /Electric Crematorium,
       +Electric Crematorium,
       -Yd StairsDown Columbarium,
@@ -1243,6 +1256,11 @@ Wiki:
       -StairsUpUnconnected,
       -StairsDownUnconnected,
       -Grid Quantum Rippler,
+      /VehicleConsole N,
+      +VehicleConsole N,
+      /VehicleGolemSeat,
+      +VehicleGolemSeat,
+      +VehicleGolemPassengerSeat,
       # Golems - temporarily excluded until we implement <mixin> tag behavior for QBE
       -Antelope Golem,
       -Ape Golem,
@@ -1374,13 +1392,13 @@ Wiki:
     Banners: [Issachari Banner, Banner of the Holy Rhombus]
     Floating Nearby: [BaseFloat, Light-Obfuscating Lens, Cyclopean Prism, Hoversled]
     Tokens: [Token]
-    Energy Cells: [Energy Cell]
-    Liquid Fueled Energy Cells: [Liquid Fueled Energy Cell]
     Thrown Weapons: [BaseThrownWeapon, Geomagnetic Disc, ThrowingAxe, CastNet, SmallBoulder,
                      MediumBoulder, LargeBoulder, Small Stone, Large Stone, Poison-tipped Spear,
                      Molting Basilisk Husk]
     Grenades: [Grenade]
     Trinkets: [Trinket]
+    Energy Cells: [Energy Cell]
+    Liquid Fueled Energy Cells: [Liquid Fueled Energy Cell]
     Scrap: [Scrap]
     Recoilers: [BaseRecoiler]
     Applicators: [Fixit Spray, Spraybottle, Metamorphic Polygel, Desalination Pellet, Bandage,
