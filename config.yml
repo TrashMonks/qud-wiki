@@ -594,6 +594,7 @@ Wiki:
     IssachariConvert: Issachari raider and Mechanimist convert
     Warden Yrame: Warden Yrame
     Erah: Ciderer Erah
+    Ehalcodon: Starformed Ehalcodon
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title'
@@ -670,6 +671,7 @@ Wiki:
     Shugruith: Girsh Shug'ruith the Burrower
     Erah: Ciderer Erah
     Warden Yrame: Warden Yrame
+    Ehalcodon: Starformed Ehalcodon
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
