@@ -304,7 +304,7 @@ Wiki:
     Warden Indrix: Warden Indrix
     Svenlainard: Svenlainard
     AppleMerchant: apple farmer (merchant)
-    Doru: Tam, dromad merchant
+    Tam: Tam, dromad merchant
     DoorSwitch: control switch (door)
     ElevatorSwitch: control switch (elevator)
     TempleSwitch: control switch (temple)
@@ -588,6 +588,12 @@ Wiki:
     Cherubic Body Spines: cherubic spines (body)
     Mechanical Cherubic Spines: mechanical cherubic spines (arm)
     Mechanical Cherubic Body Spines: mechanical cherubic spines (body)
+    WatervineFarmerConvert: watervine farmer and Mechanimist convert
+    PigFarmerConvert: pig farmer and Mechanimist convert
+    CannibalConvert: cannibal and Mechanimist convert
+    IssachariConvert: Issachari raider and Mechanimist convert
+    Warden Yrame: Warden Yrame
+    Erah: Ciderer Erah
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title'
@@ -630,7 +636,7 @@ Wiki:
     Cryptic Girshling Cresh: girshling cresh (cryptic)
     Burrowing Girshling Cresh: girshling cresh (burrowing)
     # Honorifics / Epithets / Titles fixes
-    Doru: Tam, dromad merchant
+    Tam: Tam, dromad merchant
     High Priest Eschelstadt: Eschelstadt II, High Priest of the Stilt
     Lulihart: Lulihart, hindren pariah
     Tszappur: Tszappur, disciple of the Coiled Lamb
@@ -662,6 +668,8 @@ Wiki:
     Qas: Girsh Qas
     Qon: Girsh Qon
     Shugruith: Girsh Shug'ruith the Burrower
+    Erah: Ciderer Erah
+    Warden Yrame: Warden Yrame
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -1026,7 +1034,7 @@ Wiki:
       -Missile Cannibal,
       /DromadTrader,
       +DromadTrader1,  # needs explanatory article of 8 varieties
-      +Doru,  # Tam
+      +Tam,  # Tam
       -Glow-Wight Hero of Agolgut 1,
       -Glow-Wight Hero of Bethsaida 1,
       -RedrockZealot,
@@ -1049,9 +1057,15 @@ Wiki:
       -TestPax,
       -TestShopper,
       -TestPilgrim,
-      /VillageZeroConvert,
+      -VillageZeroConvert,
+      -JoppaFarmerConvert,
       /Grand Newfather,
       +Grand Newfather,
+      +WatervineFarmerConvert,
+      +PigFarmerConvert,
+      +CannibalConvert,
+      +IssachariConvert,
+      +Mehmet,
       # NPCs
       /BaseArconaut,
       +Arconaut,
@@ -1059,7 +1073,8 @@ Wiki:
       -Barathrumite Arconaut Omonporch,
       -OthoCopy,
       -MafeoCopy,
-      /BaseWatervineFarmer,
+      -BaseWatervineFarmer,
+      -WatervineFarmerJoppa,
       +WatervineFarmer,
       -Watervine Barathrumite,
       -Starapple Tree Barathrumite,
@@ -1535,14 +1550,14 @@ Wiki:
                         Asphodel, Yurl, Euclid, Warden Indrix, Mamon, Svenlainard, Otho, Q Girl,
                         Barathrum, Sparafucile, Jacobo, Dardi, Hortensa, Iseppa, Neek, Mafeo,
                         Aloysius, High Priest Eschelstadt, Troll King 1, Troll King 2, Troll King 3,
-                        Doru, Rodanis Y, Shem -1, GolgothaSlog, Ctesiphus, OasisGlowpad, PaxKlanq,
+                        Tam, Rodanis Y, Shem -1, GolgothaSlog, Ctesiphus, OasisGlowpad, PaxKlanq,
                         Tszappur, Alchemist, Agyra, Dadogom, Dagasha, Doyoba, Gyamyo, Kah, Lebah,
                         Nacham, Vivira, Vaam, Yona, Sixshrew, Yla Haj, Haddas, Rainwater Shomer,
                         Biographer, Zothom, k-Goninon, Warden 1-FF, Bep, Geeub, Goek, Krka, Mak,
                         Thah, Tillifergaewicz, Une, Rokhas, Many Eyes, 0lam, Crowsong,
                         Wild Watervine Merchant, Dyvvrach, Miryam, Tzedech, Tikva, Dreamer,
                         Thicksalt, Tammuz, Santalalotze, TauWanderer, TauNoLonger, AoygNoLonger,
-                        Hamilcrab]
+                        Hamilcrab, Erah, Nima Ruda, Warden Yrame]
     Quest Items: [Scrapped Waydroid, Wire Strand, Scratched Data Disk, Stamped Data Disk,
                   Argyve's Data Disk Encoded, Decrypted Signal Data Disk, ClimberBlueprints,
                   Dormant Waydroid, BarathrumKey, Clue_YuckwheatChaff, Clue_SeveredTongue,
