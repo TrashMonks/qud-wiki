@@ -57,13 +57,14 @@ Search it up on the app store of your choosing and install the program.
     * Find Python in your downloads, and install it. MAKE SURE TO CHECK THE BOX TO ADD IT TO YOUR PATH! THIS IS VERY IMPORTANT.
 
 4. Download the Tiles.
-    * Click [this download link](https://www.dropbox.com/s/3hub59uoiamz0vq/caves-of-qud-tiles-200.71.zip?dl=1) to access a zip file containing all the tiles from the game.
+    * To get an up to date version of all the tiles, run [brinedump](https://github.com/TrashMonks/brinedump brinedump) on your game. The tiles will be located in Caves of Qud's base folder.
+    * For people of minimal effort, [this download link](https://www.dropbox.com/s/3hub59uoiamz0vq/caves-of-qud-tiles-200.71.zip?dl=1) is a zip file containing most of the tiles from the game.
     * Once again, go to your downloads folder and, once it is finished downloading, right click on the file (which should be called `caves-of-qud-tiles-200.71.zip`) and click "Extract All".
     * You should now be asked to select the files' destination. Type in the file location from earlier and press enter. This will take a while. When this is done, you should have a "Textures" folder in your project directory.
 
 5. Bot credentials.
-    * PM syntaxaire on Discord and ask for bot credentials. They might need your username on wiki.cavesofqud.com. The bot credentials are used because all bot edits are done from the same account which is marked as a bot.
-    * Copy `wiki.yml.example` to `wiki.yml` and edit it to include your own details.
+    * PM syntaxaire/Dij on Discord and ask for bot credentials. They might need your username on wiki.cavesofqud.com. The bot credentials are used because all bot edits are done from the same account which is marked as a bot.
+    * Copy `wiki.yml.example` to `wiki.yml` and edit it to include your own details. You should only be touching username, password, and operator. 
 
 6. Run the App
     * Open your terminal. On Mac you can look for an application called "Terminal" in your applications, on Windows you can search for "Command Prompt". Either way, start the app.
@@ -82,3 +83,9 @@ When you want to open the app again, go to your terminal, type in "cd (File Loca
 If this did not work, please send me a message on Discord. I am pokedragonboy, and would love to help you and make this guide better.
 
 If this did work for you, congratulations and welcome to the wiki team. We look forward to working with you!
+
+## Troubleshooting
+Error: `lxml.etree.XMLSyntaxError: error parsing attribute name, line 233, column 22`
+The packaged hagadias is out of date. We are working on updating this. but in the meantime, you must run a local hagadias to run QBE. Instructions on how to do so are located in hagadias's [CONTRIBUTING.md](https://github.com/TrashMonks/hagadias/blob/main/CONTRIBUTING.md#using-a-local-hagadias-in-a-virtual-environment):
+* clone the hagadias source code
+* Add hagadias directory location to your PYTHONPATH variable
