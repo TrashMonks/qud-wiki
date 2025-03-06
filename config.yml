@@ -1571,3 +1571,13 @@ Wiki:
                   Clue_WornBracer, Clue_BloodyPatchOfFur, Clue_LeatherScraps, Clue_CopperNugget,
                   Clue_BulgingWaterskin, Clue_VillageStores, Gnawed Watervine, Clue_BloodyWatervine,
                   Repulsive Device]
+
+# Map objects in some files to specific namespaces
+NamespaceMapping:
+  Files:
+    "HiddenObjects.xml": "Endgame"
+  Objects:
+    "Ehalcodon": ""
+    "Nephal_Starhoof": ""
+    "Prism Girshling Cresh": ""
+    "Prism Girshling": ""

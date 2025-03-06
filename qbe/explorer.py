@@ -30,9 +30,18 @@ from qbe.wiki_config import site
 from qbe.wiki_page import TEMPLATE_RE, TEMPLATE_RE_OLD, WikiPage, upload_wiki_image
 
 log = logging.getLogger(__name__)
-OBJ_HEADER_LABELS = ['Object Name', 'Display Name', 'Wiki Title Override', 'Article?',
-                     'Article matches?', 'Image?', 'Image matches?', 'Extra images?',
-                     'Extra images match?']
+OBJ_HEADER_LABELS = [
+    'Object Name',
+    'Display Name',
+    'Wiki Title Override',
+    'Article?',
+    'Article matches?',
+    'Image?',
+    'Image matches?',
+    'Extra images?',
+    'Extra images match?',
+    'Namespace'
+]
 POP_HEADER_LABELS = ['Name', 'Type']
 OBJ_TAB_INDEX = 0
 POP_TAB_INDEX = 1
@@ -244,6 +253,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         extra_image_matches = QStandardItem('')
         extra_image_matches.setTextAlignment(Qt.AlignCenter)
         row.append(extra_image_matches)
+        # tenth column: namespace that the object should be put in (or empty for the default
+        # namespace)
+        object_namespace = QStandardItem('')
+        namespace = ""
+        source_file = qud_object.source_file.name
+        if (ns_config := config['NamespaceMapping']['Files'].get(source_file)) is not None:
+            namespace = ns_config
+        if (ns_config := config['NamespaceMapping']['Objects'].get(qud_object.name)) is not None:
+            # Individual object mappings are prioritized over file mappings
+            namespace = ns_config
+        object_namespace.setText(namespace)
+        object_namespace.setTextAlignment(Qt.AlignCenter)
+        row.append(object_namespace)
 
         if not qud_object.is_wiki_eligible():
             row[0].setForeground(QColor.fromRgb(100, 100, 100))
