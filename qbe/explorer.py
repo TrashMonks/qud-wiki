@@ -256,13 +256,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # tenth column: namespace that the object should be put in (or empty for the default
         # namespace)
         object_namespace = QStandardItem('')
-        namespace = ""
-        source_file = qud_object.source_file.name
-        if (ns_config := config['NamespaceMapping']['Files'].get(source_file)) is not None:
-            namespace = ns_config
-        if (ns_config := config['NamespaceMapping']['Objects'].get(qud_object.name)) is not None:
-            # Individual object mappings are prioritized over file mappings
-            namespace = ns_config
+        namespace = qud_object.wiki_namespace()
         object_namespace.setText(namespace)
         object_namespace.setTextAlignment(Qt.AlignCenter)
         row.append(object_namespace)

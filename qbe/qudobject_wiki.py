@@ -105,6 +105,13 @@ class QudObjectWiki(QudObjectProps):
             for name in names:
                 if self.inherits_from(name):
                     ns = config_ns
+
+        if (ns_config := config['NamespaceMapping']['Files'].get(self.source_file.name)) is not None:
+            ns = ns_config
+        if (ns_config := config['NamespaceMapping']['Objects'].get(self.name)) is not None:
+            # Individual object mappings are prioritized over file mappings
+            ns = ns_config
+
         return ns
 
     def is_wiki_eligible(self) -> bool:
