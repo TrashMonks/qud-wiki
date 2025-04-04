@@ -211,6 +211,12 @@ Templates:
     PlasmaticGirshling_Bite: incandescent fangs (girshling).png
     CrypticGirshling_Bite: zigzag fangs (girshling).png
     quillipede quills: quills (quillipede).png
+    # Endgame
+    OmniForcefield: omniforcefield
+    Starship1 Floor Cushion: floor cushion (starship).png
+    Starship1 Wooden Table: wooden table (starship).png
+    ReshephWall3: mainframe status panel (resheph).png
+    ReshephWall4: mainframe monitor (resheph).png
 
 Wiki:
   # See also wiki login configuration in wiki.yml.
@@ -675,7 +681,79 @@ Wiki:
     Shugruith: Girsh Shug'ruith the Burrower
     Erah: Ciderer Erah
     Warden Yrame: Warden Yrame
+    # HiddenObjects.xml
     Ehalcodon: Starformed Ehalcodon
+    Starship Pilot Console: Pilot console (starship)
+    Starship Copilot Console: Copilot console (starship)
+    Starship1 Floor Cushion: Floor cushion (starship)
+    Starship1 Pilot Seat: Pilot seat (starship)
+    Starship1 Copilot Seat: Copilot seat (starship)
+    Starship1 Passenger Seat: Passenger seat (starship)
+    Star Carousel Pilot Console: Pilot console (star carousel)
+    Star Carousel Pilot Seat: Pilot seat (star carousel)
+    Star Carousel Passenger Seat: Passenger seat (star carousel)
+    ReshephWall3: mainframe status panel (Resheph)
+    ReshephWall4: mainframe monitor (Resheph)
+    "True Godling": "Girsh Godling (True)"
+    # Chiliad creature overrides
+    Chiliad Creature Antelopes: Chiliad kudu
+    Chiliad Creature Apes: Chiliad ape
+    Chiliad Creature Arachnids: Chiliad scorpion
+    Chiliad Creature Baboons: Chiliad baboon
+    Chiliad Creature Baetyls: Chiliad baetyl
+    Chiliad Creature Barathrumites: Chiliad urshiib
+    Chiliad Creature Bears: Chiliad bear
+    Chiliad Creature Birds: Chiliad moa
+    Chiliad Creature Cannibals: Chiliad cannibal
+    Chiliad Creature Cats: Chiliad cat
+    Chiliad Creature Chavvah: Chiliad chime
+    Chiliad Creature Consortium: Chiliad member of the Consortium of Phyta
+    Chiliad Creature Crabs: Chiliad crab
+    Chiliad Creature Cragmensch: Chiliad cragmensch
+    Chiliad Creature Daughters: Chiliad Daughter of Exile
+    Chiliad Creature Dogs: Chiliad dog
+    Chiliad Creature Dromads: Chiliad dromad
+    Chiliad Creature Equines: Chiliad zebra
+    Chiliad Creature Farmers: Chiliad farmer
+    Chiliad Creature Wardens: Chiliad warden
+    Chiliad Creature Fish: Chiliad fish
+    Chiliad Creature Flowers: Chiliad flower
+    Chiliad Creature Frogs: Chiliad frog
+    Chiliad Creature Fungi: Chiliad fungus
+    Chiliad Creature Girsh: Chiliad girshling
+    Chiliad Creature Goatfolk: Chiliad goatfolk
+    Chiliad Creature Gyre Wights: Chiliad gyre wight
+    Chiliad Creature Hermits: Chiliad hermit
+    Chiliad Creature Entropic: Chiliad entropic being
+    Chiliad Creature Hindren: Chiliad hindren
+    Chiliad Creature Insects: Chiliad fly
+    Chiliad Creature Issachari: Chiliad Issachari
+    Chiliad Creature Mechanimists: Chiliad Mechanimist
+    Chiliad Creature Merchants: Chiliad trader
+    Chiliad Creature Mollusks: Chiliad clam
+    Chiliad Creature Mopango: Chiliad mopango
+    Chiliad Creature Prey: Chiliad goat
+    Chiliad Creature Strangers: Chiliad mysterious stranger
+    Chiliad Creature Naphtaali: Chiliad Naphtaali
+    Chiliad Creature Oozes: Chiliad ooze
+    Chiliad Creature Templar: Chiliad templar
+    Chiliad Creature Roots: Chiliad root
+    Chiliad Creature Snapjaws: Chiliad snapjaw
+    Chiliad Creature Robots: Chiliad robot
+    Chiliad Creature Succulents: Chiliad succulent
+    Chiliad Creature Svardym: Chiliad svardym
+    Chiliad Creature Swine: Chiliad pig
+    Chiliad Creature Tortoises: Chiliad tortoise
+    Chiliad Creature Trees: Chiliad tree
+    Chiliad Creature Trolls: Chiliad troll
+    Chiliad Creature Urchins: Chiliad urchin
+    Chiliad Creature Unshelled Reptiles: Chiliad lizard
+    Chiliad Creature Vines: Chiliad vine
+    Chiliad Creature Water: Chiliad baron
+    Chiliad Creature Winged Mammals: Chiliad bat
+    Chiliad Creature Worms: Chiliad worm
+    Chiliad Creature Seekers: Chiliad Seeker of the Sightless Way
+    Chiliad Creature Pariahs: Chiliad pariah
 
   Article eligibility categories:
     # Categories, or individual articles, to include or exclude from consideration for
@@ -1101,9 +1179,12 @@ Wiki:
       /Terrain,
       +Clue_Putrescence,
       -Tattoo Gun Barathrum,
-      -SmallBoulder Grey,
-      -MediumBoulder Grey,
-      -LargeBoulder Grey,
+      /SmallBoulder,
+      +SmallBoulder,
+      /MediumBoulder,
+      +MediumBoulder,
+      /LargeBoulder,
+      +LargeBoulder,
       /Eater Hologram,
       +Eater Hologram,
       -MachineWallHotTubingWithPiping,
@@ -1171,7 +1252,8 @@ Wiki:
       +EaterStatue,
       +EaterStatue Gold,
       -NephilimShrine,
-      -Rubble Grey,
+      /Rubble,
+      +Rubble,
       -OpenShaft2,
       -TombShaft,
       /BaseMuralWall,
@@ -1357,7 +1439,40 @@ Wiki:
       /Still Gyre Wight of Shug'ruith,
       /Still Gyre Wight of Rermadon,
       /Still Gyre Wight of Qas,
-      /Still Gyre Wight of Qon
+      /Still Gyre Wight of Qon,
+      # Endgame objects
+      +Va'am's Blower,
+      +TauNoLongerFigurine,
+      +WanderingTauFigurine,
+      +DeadTauFigurine,
+      /BaseEaterGreatMachineShrine, # There should be a single page for the shrine
+      /BaseSpindleSupport,
+      -CircumcestralEaterMonumentWithPiping,
+      -Eater Globe with Piping,
+      -ShevaBrazierGreen,
+      -QuantumReverbLightRail,
+      /BaseMoverChute,
+      -Mover Chair Flipped,
+      /BaseMoverCouch,
+      /StarshipGeometricWall,
+      +StarshipGeometricWall,
+      /BaseStarshipPlatform N,
+      +Infested Starship Platform Nr
+      -StarshipBed W,
+      -StarshipBed E,
+      -StarshipBookshelf W,
+      -StarshipBookshelf E,
+      /Star Carousel Pilot Console,
+      +Star Carousel Pilot Console,
+      /Star Carousel Star Chart L,
+      +Star Carousel Star Chart L,
+      -CrysteelBraidWallwithPiping,
+      -Yempuris Spread,
+      /BaseHologramProjector
+      -Resheph2,
+      /BaseArkCore, # This should all be one page
+      /BaseStarOrchidTempleGate,
+      +Star Orchid Temple Gate N,
     ]
 
   Categories:
@@ -1571,3 +1686,33 @@ Wiki:
                   Clue_WornBracer, Clue_BloodyPatchOfFur, Clue_LeatherScraps, Clue_CopperNugget,
                   Clue_BulgingWaterskin, Clue_VillageStores, Gnawed Watervine, Clue_BloodyWatervine,
                   Repulsive Device]
+    Chiliad Creatures: [Chiliad Creature Antelopes, Chiliad Creature Apes,
+      Chiliad Creature Arachnids, Chiliad Creature Baboons, Chiliad Creature Baetyls,
+      Chiliad Creature Barathrumites, Chiliad Creature Bears, Chiliad Creature Birds,
+      Chiliad Creature Cannibals, Chiliad Creature Cats, Chiliad Creature Chavvah,
+      Chiliad Creature Consortium, Chiliad Creature Crabs, Chiliad Creature Cragmensch,
+      Chiliad Creature Daughters, Chiliad Creature Dogs, Chiliad Creature Dromads,
+      Chiliad Creature Equines, Chiliad Creature Farmers, Chiliad Creature Wardens,
+      Chiliad Creature Fish, Chiliad Creature Flowers, Chiliad Creature Frogs,
+      Chiliad Creature Fungi, Chiliad Creature Girsh, Chiliad Creature Goatfolk,
+      Chiliad Creature Gyre Wights, Chiliad Creature Hermits, Chiliad Creature Entropic,
+      Chiliad Creature Hindren, Chiliad Creature Insects, Chiliad Creature Issachari,
+      Chiliad Creature Mechanimists, Chiliad Creature Merchants, Chiliad Creature Mollusks,
+      Chiliad Creature Mopango, Chiliad Creature Strangers, Chiliad Creature Naphtaali,
+      Chiliad Creature Oozes, Chiliad Creature Templar, Chiliad Creature Roots,
+      Chiliad Creature Snapjaws, Chiliad Creature Robots, Chiliad Creature Succulents,
+      Chiliad Creature Svardym, Chiliad Creature Swine, Chiliad Creature Tortoises,
+      Chiliad Creature Trees, Chiliad Creature Trolls, Chiliad Creature Urchins,
+      Chiliad Creature Unshelled Reptiles,
+      Chiliad Creature Vines, Chiliad Creature Water, Chiliad Creature Winged Mammals,
+      Chiliad Creature Worms, Chiliad Creature Seekers, Chiliad Creature Pariahs]
+
+# Map objects in some files to specific namespaces
+NamespaceMapping:
+  Files:
+    "HiddenObjects.xml": "Endgame"
+  Objects:
+    "Ehalcodon": ""
+    "Nephal_Starhoof": ""
+    "Prism Girshling Cresh": ""
+    "Prism Girshling": ""
