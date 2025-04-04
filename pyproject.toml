@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "qud-wiki"
-version = "1.0rc2"
+version = "1.1.0"
 description = "Desktop app for creating and updating the official Caves of Qud wiki"
 authors = ["Your Name <you@example.com>"]
 license = "AGPL-3.0"
