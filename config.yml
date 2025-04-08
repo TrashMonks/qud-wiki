@@ -604,6 +604,8 @@ Wiki:
     Warden Yrame: Warden Yrame
     Erah: Ciderer Erah
     Ehalcodon: Starformed Ehalcodon
+    # Endgame
+    True Godling: Girsh godling (true)
 
   Displayname overrides:
     # Manually specify the wiki display name to be used for an object ID (returned in the 'title'
@@ -694,7 +696,6 @@ Wiki:
     Star Carousel Passenger Seat: Passenger seat (star carousel)
     ReshephWall3: mainframe status panel (Resheph)
     ReshephWall4: mainframe monitor (Resheph)
-    "True Godling": "Girsh Godling (True)"
     # Chiliad creature overrides
     Chiliad Creature Antelopes: Chiliad kudu
     Chiliad Creature Apes: Chiliad ape
