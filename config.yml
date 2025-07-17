@@ -1458,10 +1458,8 @@ Wiki:
       /StarshipGeometricWall,
       +StarshipGeometricWall,
       /BaseStarshipPlatform N,
-      +Infested Starship Platform Nr
-      -StarshipBed W,
+      +Infested Starship Platform Nr,
       -StarshipBed E,
-      -StarshipBookshelf W,
       -StarshipBookshelf E,
       /Star Carousel Pilot Console,
       +Star Carousel Pilot Console,
