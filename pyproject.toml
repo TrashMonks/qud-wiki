@@ -17,7 +17,7 @@ pyside6 = "^6.5.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.3.1"
-flake8 = "^6.0.0"
+flake8 = ">=6,<8"
 
 [build-system]
 requires = ["poetry-core"]
